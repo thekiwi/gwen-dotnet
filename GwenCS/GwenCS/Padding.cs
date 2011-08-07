@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Gwen.Controls
+namespace Gwen
 {
     public struct Padding : IEquatable<Padding>
     {

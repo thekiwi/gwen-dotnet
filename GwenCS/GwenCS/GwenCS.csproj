@@ -66,6 +66,9 @@
     <Compile Include="Platform\Platform.cs" />
     <Compile Include="Skin\Simple.cs" />
     <Compile Include="Skin\Symbol.cs" />
+    <Compile Include="Skin\TexturedBase.cs" />
+    <Compile Include="Skin\Texturing\Bordered.cs" />
+    <Compile Include="Skin\Texturing\Single.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="ToolTip.cs" />
     <Compile Include="DragAndDrop\DragAndDrop.cs" />

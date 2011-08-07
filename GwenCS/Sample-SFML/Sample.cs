@@ -56,8 +56,9 @@ namespace Gwen.Sample
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
             
             // Create a GWEN skin
-            Skin.Simple skin = new Skin.Simple();
+            Skin.TexturedBase skin = new Skin.TexturedBase();
             skin.Renderer = GwenRenderer;
+            skin.Init("DefaultSkin.png");
 
             // The fonts work differently in SFML - it can't use
             // system fonts. So force the skin to use a local one.
@@ -71,7 +72,7 @@ namespace Gwen.Sample
             canvas.DrawBackground = true;
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
 
-            Label label1 = new Label(canvas);
+            LabelClickable label1 = new LabelClickable(canvas);
             label1.SetPos(10, 50);
             label1.AutoSizeToContents = true;
             label1.SetText("Welcome to GWEN in SFML.NET!");
@@ -100,8 +101,9 @@ namespace Gwen.Sample
 
             CheckBoxWithLabel cb1 = new CheckBoxWithLabel(canvas);
             cb1.SetPos(10, 140);
-            cb1.IsTabable = true;
+            //cb1.IsTabable = true;
             cb1.Label.SetText("Sample checkbox");
+            cb1.Label.SetToolTipText("trololo");
 
             // Create an input processor
             GwenInput = new Input.SFML();

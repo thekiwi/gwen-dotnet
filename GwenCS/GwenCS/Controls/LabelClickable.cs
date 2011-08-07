@@ -12,7 +12,7 @@ namespace Gwen.Controls
             IsToggle = false;
             Alignment = Pos.Left | Pos.CenterV;
         }
-
+        
         protected override void Render(Skin.Base skin)
         {
             

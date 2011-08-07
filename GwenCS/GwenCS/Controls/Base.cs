@@ -207,7 +207,7 @@ namespace Gwen.Controls
         public virtual bool NeedsInputChars { get { return false; } }
 
         private static readonly Point m_MinimumSize = new Point(1, 1);
-        private static readonly Point m_MaximumSize = new Point(4096, 4096);
+        private static readonly Point m_MaximumSize = new Point(Global.MaxCoord, Global.MaxCoord);
         public virtual Point MinimumSize { get { return m_MinimumSize; } }
         public virtual Point MaximumSize { get { return m_MaximumSize; } }
 
