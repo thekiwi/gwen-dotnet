@@ -26,11 +26,12 @@ namespace Gwen.Controls
             IsTabable = false;
         }
 
-        public virtual CheckBox CheckBox { get { return m_CheckBox; } }
-        public virtual LabelClickable Label { get { return m_Label; } }
+        public CheckBox CheckBox { get { return m_CheckBox; } }
+        public LabelClickable Label { get { return m_Label; } }
 
-        public override bool OnKeySpace(bool bDown)
+        internal override bool onKeySpace(bool bDown)
         {
+            base.onKeySpace(bDown);
             if (bDown) 
                 m_CheckBox.IsChecked = !m_CheckBox.IsChecked; 
             return true;

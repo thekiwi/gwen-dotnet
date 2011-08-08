@@ -18,7 +18,7 @@ namespace Gwen.DragDrop
         private static int m_iMouseX;
         private static int m_iMouseY;
 
-        private static bool OnDrop(int x, int y)
+        private static bool onDrop(int x, int y)
         {
             bool bSuccess = false;
 
@@ -144,7 +144,7 @@ namespace Gwen.DragDrop
             return true;
         }
 
-        public static bool OnMouseButton(Base pHoveredControl, int x, int y, bool bDown)
+        public static bool onMouseButton(Base pHoveredControl, int x, int y, bool bDown)
         {
             if (!bDown)
             {
@@ -155,7 +155,7 @@ namespace Gwen.DragDrop
                     return false;
 
                 // We were carrying something, drop it.
-                OnDrop(x, y);
+                onDrop(x, y);
                 return true;
             }
 
@@ -165,7 +165,7 @@ namespace Gwen.DragDrop
                 return false;
 
             // Store the last clicked on control. Don't do anything yet, 
-            // we'll check it in OnMouseMoved, and if it moves further than
+            // we'll check it in onMouseMoved, and if it moves further than
             // x pixels with the mouse down, we'll start to drag.
             LastPressedPos = new Point(x, y);
             LastPressedControl = pHoveredControl;
@@ -173,7 +173,7 @@ namespace Gwen.DragDrop
             return false;
         }
 
-        public static void OnMouseMoved(Base hoveredControl, int x, int y)
+        public static void onMouseMoved(Base hoveredControl, int x, int y)
         {
             // Always keep these up to date, they're used to draw the dragged control.
             m_iMouseX = x;

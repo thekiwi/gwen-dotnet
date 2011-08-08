@@ -8,7 +8,8 @@ namespace Gwen.Controls
     public class CheckBox : Button
     {
         private bool m_bChecked;
-        public virtual bool IsChecked
+
+        public bool IsChecked
         {
             get { return m_bChecked; } 
             set
@@ -19,7 +20,7 @@ namespace Gwen.Controls
             }
         }
 
-        public CheckBox(Base parent):base(parent)
+        public CheckBox(Base parent) : base(parent)
         {
             SetSize(13, 13);
             m_bChecked = true; // [omeg] why?!
@@ -28,6 +29,7 @@ namespace Gwen.Controls
         
         public override void Toggle()
         {
+            base.Toggle();
             IsChecked = !IsChecked;
         }
 
@@ -36,7 +38,7 @@ namespace Gwen.Controls
         public event ControlCallback OnCheckChanged;
 
         // For derived controls
-        protected virtual bool AllowUncheck { get { return true; } }
+        protected bool AllowUncheck { get { return true; } }
 
         protected void OnCheckStatusChanged()
         {
@@ -57,11 +59,13 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
+            base.Render(skin);
             skin.DrawCheckBox(this, m_bChecked, IsDepressed);
         }
 
-        public override void Pressed()
+        protected override void onPress()
         {
+            base.onPress();
             if (IsChecked && !AllowUncheck)
             {
                 return;

@@ -15,7 +15,8 @@ namespace Gwen.Controls
         
         protected override void Render(Skin.Base skin)
         {
-            
+            // [omeg] no button look
         }
+        
     }
 }

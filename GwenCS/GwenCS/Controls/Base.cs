@@ -67,9 +67,9 @@ namespace Gwen.Controls
         public event ControlCallback OnHoverLeave;
 
         // accelerator map
-        private Dictionary<String, ControlCallback> m_Accelerators;
+        protected Dictionary<String, ControlCallback> m_Accelerators;
 
-        public virtual List<Base> InnerChildren
+        public List<Base> InnerChildren
         {
             get
             {
@@ -79,7 +79,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual Base Parent
+        public Base Parent
         {
             get { return m_Parent; }
             set
@@ -102,7 +102,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual Pos Dock
+        public Pos Dock
         {
             get { return m_iDock; }
             set
@@ -117,9 +117,9 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual int NumChildren { get { return Children.Count; } }
+        public int NumChildren { get { return Children.Count; } }
 
-        public virtual Skin.Base Skin
+        public Skin.Base Skin
         {
             get
             {
@@ -133,7 +133,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual Base ToolTip
+        public Base ToolTip
         {
             get { return m_ToolTip; }
             set
@@ -147,7 +147,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual bool IsMenuComponent
+        public bool IsMenuComponent
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual Padding Padding
+        public Padding Padding
         {
             get { return m_Padding; }
             set
@@ -171,7 +171,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual Margin Margin 
+        public Margin Margin 
         { 
             get { return m_Margin; }
             set
@@ -185,34 +185,34 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual bool IsOnTop { get { return this == Parent.Children.First(); } }
-        public virtual object UserData { get { return m_pUserData; } set { m_pUserData = value; } }
-        public virtual bool IsHovered { get { return Global.HoveredControl == this; } }
-        public virtual bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
-        public virtual bool HasFocus { get { return Global.KeyboardFocus == this; } }
-        public virtual bool Disabled { get { return m_bDisabled; } set { m_bDisabled = value; } }
-        public virtual bool IsHidden { get { return m_bHidden; } set { if (value == m_bHidden) return; m_bHidden = value; Invalidate(); } }
-        public virtual bool RestrictToParent { get { return m_bRestrictToParent; } set { m_bRestrictToParent = value; } }
-        public virtual bool MouseInputEnabled { get { return m_bMouseInputEnabled; } set { m_bMouseInputEnabled = value; } }
-        public virtual bool KeyboardInputEnabled { get { return m_bKeyboardInputEnabled; } set { m_bKeyboardInputEnabled = value; } }
-        public virtual Cursor Cursor { get { return m_Cursor; } set { m_Cursor = value; } }
-        public virtual bool IsTabable { get { return m_Tabable; } set { m_Tabable = value; } }
-        public virtual bool ShouldDrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
-        public virtual bool ShouldCacheToTexture { get { return m_bCacheToTexture; } set { m_bCacheToTexture = value; } }
-        public virtual Rectangle Bounds { get { return m_Bounds; } }
+        public bool IsOnTop { get { return this == Parent.Children.First(); } }
+        public object UserData { get { return m_pUserData; } set { m_pUserData = value; } }
+        public bool IsHovered { get { return Global.HoveredControl == this; } }
+        public bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
+        public bool HasFocus { get { return Global.KeyboardFocus == this; } }
+        public bool Disabled { get { return m_bDisabled; } set { m_bDisabled = value; } }
+        public bool IsHidden { get { return m_bHidden; } set { if (value == m_bHidden) return; m_bHidden = value; Invalidate(); } }
+        public bool RestrictToParent { get { return m_bRestrictToParent; } set { m_bRestrictToParent = value; } }
+        public bool MouseInputEnabled { get { return m_bMouseInputEnabled; } set { m_bMouseInputEnabled = value; } }
+        public bool KeyboardInputEnabled { get { return m_bKeyboardInputEnabled; } set { m_bKeyboardInputEnabled = value; } }
+        public Cursor Cursor { get { return m_Cursor; } set { m_Cursor = value; } }
+        public bool IsTabable { get { return m_Tabable; } set { m_Tabable = value; } }
+        public bool ShouldDrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
+        public bool ShouldCacheToTexture { get { return m_bCacheToTexture; } set { m_bCacheToTexture = value; } }
+        public Rectangle Bounds { get { return m_Bounds; } }
         public bool NeedsLayout { get { return m_bNeedsLayout; } }
-        public virtual Rectangle RenderBounds { get { return m_RenderBounds; } }
-        public virtual Rectangle InnerBounds { get { return m_InnerBounds; } }
+        public Rectangle RenderBounds { get { return m_RenderBounds; } }
+        public Rectangle InnerBounds { get { return m_InnerBounds; } }
         public virtual bool AccelOnlyFocus { get { return false; } }
         public virtual bool NeedsInputChars { get { return false; } }
+        public Point MinimumSize { get { return m_MinimumSize; } }
+        public Point MaximumSize { get { return m_MaximumSize; } }
 
         private static readonly Point m_MinimumSize = new Point(1, 1);
         private static readonly Point m_MaximumSize = new Point(Global.MaxCoord, Global.MaxCoord);
-        public virtual Point MinimumSize { get { return m_MinimumSize; } }
-        public virtual Point MaximumSize { get { return m_MaximumSize; } }
 
         // Returns false if this control or its parents are hidden
-        public virtual bool IsVisible
+        public bool IsVisible
         {
             get
             {
@@ -226,12 +226,12 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual int X { get { return m_Bounds.X; } }
-        public virtual int Y { get { return m_Bounds.Y; } }
-        public virtual int Width { get { return m_Bounds.Width; } set { SetSize(value, Height); } }
-        public virtual int Height { get { return m_Bounds.Height; } set { SetSize(Width, value); } }
-        public virtual int Bottom { get { return m_Bounds.Bottom + m_Margin.bottom; } }
-        public virtual int Right { get { return m_Bounds.Right + m_Margin.right; } }
+        public int X { get { return m_Bounds.X; } }
+        public int Y { get { return m_Bounds.Y; } }
+        public int Width { get { return m_Bounds.Width; } set { SetSize(value, Height); } }
+        public int Height { get { return m_Bounds.Height; } set { SetSize(Width, value); } }
+        public int Bottom { get { return m_Bounds.Bottom + m_Margin.bottom; } }
+        public int Right { get { return m_Bounds.Right + m_Margin.right; } }
 
         public Base(Base parent = null)
         {
@@ -290,7 +290,7 @@ namespace Gwen.Controls
             AcceleratePressed();
         }
 
-        public virtual void AcceleratePressed()
+        protected virtual void AcceleratePressed()
         {
             
         }
@@ -438,7 +438,7 @@ namespace Gwen.Controls
             }
 
             Children.Add(child);
-            OnChildAdded(child);
+            onChildAdded(child);
 
             child.m_ActualParent = this;
         }
@@ -458,7 +458,7 @@ namespace Gwen.Controls
             }
 
             Children.Remove(child);
-            OnChildRemoved(child);
+            onChildRemoved(child);
         }
 
         public virtual void RemoveAllChildren()
@@ -466,12 +466,12 @@ namespace Gwen.Controls
             Children.Clear();
         }
 
-        protected virtual void OnChildAdded(Base child)
+        internal virtual void onChildAdded(Base child)
         {
             Invalidate();
         }
 
-        protected virtual void OnChildRemoved(Base child)
+        internal virtual void onChildRemoved(Base child)
         {
             Invalidate();
         }
@@ -530,18 +530,18 @@ namespace Gwen.Controls
             m_Bounds.Width = w;
             m_Bounds.Height = h;
 
-            OnBoundsChanged(oldBounds);
+            onBoundsChanged(oldBounds);
 
             return true;
         }
 
-        protected virtual void OnBoundsChanged(Rectangle oldBounds)
+        internal virtual void onBoundsChanged(Rectangle oldBounds)
         {
             //Anything that needs to update on size changes
             //Iterate my children and tell them I've changed
             //
             if (Parent != null)
-                Parent.OnChildBoundsChanged(oldBounds, this);
+                Parent.onChildBoundsChanged(oldBounds, this);
 
 
             if (m_Bounds.Width != oldBounds.Width || m_Bounds.Height != oldBounds.Height)
@@ -553,15 +553,15 @@ namespace Gwen.Controls
             UpdateRenderBounds();
         }
 
-        protected virtual void OnScaleChanged()
+        internal virtual void onScaleChanged()
         {
             foreach (Base child in Children)
             {
-                child.OnScaleChanged();
+                child.onScaleChanged();
             }
         }
 
-        protected virtual void OnChildBoundsChanged(Rectangle oldChildBounds, Base child)
+        internal virtual void onChildBoundsChanged(Rectangle oldChildBounds, Base child)
         {
 
         }
@@ -696,7 +696,7 @@ namespace Gwen.Controls
             m_Skin = skin;
             Invalidate();
             Redraw();
-            OnSkinChanged(skin);
+            onSkinChanged(skin);
 
             if (doChildren)
             {
@@ -707,45 +707,45 @@ namespace Gwen.Controls
             }
         }
 
-        protected virtual void OnSkinChanged(Skin.Base newSkin)
+        internal virtual void onSkinChanged(Skin.Base newSkin)
         {
 
         }
 
-        public virtual bool OnMouseWheeled(int iDelta)
+        internal virtual bool onMouseWheeled(int iDelta)
         {
             if (m_ActualParent != null)
-                return m_ActualParent.OnMouseWheeled(iDelta);
+                return m_ActualParent.onMouseWheeled(iDelta);
 
             return false;
         }
 
-        public virtual void OnMouseMoved(int x, int y, int dx, int dy)
+        internal virtual void onMouseMoved(int x, int y, int dx, int dy)
         {
 
         }
 
-        public virtual void OnMouseClickLeft(int x, int y, bool pressed)
+        internal virtual void onMouseClickLeft(int x, int y, bool pressed)
         {
 
         }
 
-        public virtual void OnMouseClickRight(int x, int y, bool pressed)
+        internal virtual void onMouseClickRight(int x, int y, bool pressed)
         {
 
         }
 
-        public virtual void OnMouseDoubleClickLeft(int x, int y)
+        internal virtual void onMouseDoubleClickLeft(int x, int y)
         {
-            OnMouseClickLeft(x, y, true); // [omeg] should this be called?
+            onMouseClickLeft(x, y, true); // [omeg] should this be called?
         }
 
-        public virtual void OnMouseDoubleClickRight(int x, int y)
+        internal virtual void onMouseDoubleClickRight(int x, int y)
         {
-            OnMouseClickRight(x, y, true); // [omeg] should this be called?
+            onMouseClickRight(x, y, true); // [omeg] should this be called?
         }
 
-        public virtual void OnMouseEnter()
+        internal virtual void onMouseEnter()
         {
             if (OnHoverEnter != null)
                 OnHoverEnter.Invoke(this);
@@ -756,7 +756,7 @@ namespace Gwen.Controls
                 Gwen.ToolTip.Enable(Parent);
         }
 
-        public virtual void OnMouseLeave()
+        internal virtual void onMouseLeave()
         {
             if (OnHoverLeave != null)
                 OnHoverLeave.Invoke(this);
@@ -771,10 +771,10 @@ namespace Gwen.Controls
                 return;
 
             if (Global.KeyboardFocus != null)
-                Global.KeyboardFocus.OnLostKeyboardFocus();
+                Global.KeyboardFocus.onLostKeyboardFocus();
 
             Global.KeyboardFocus = this;
-            OnKeyboardFocus();
+            onKeyboardFocus();
             Redraw();
         }
 
@@ -784,17 +784,17 @@ namespace Gwen.Controls
                 return;
 
             Global.KeyboardFocus = null;
-            OnLostKeyboardFocus();
+            onLostKeyboardFocus();
             Redraw();
         }
 
         public virtual void Touch()
         {
             if (Parent != null)
-                Parent.OnChildRemoved(this);
+                Parent.onChildRemoved(this);
         }
 
-        public virtual void OnChildTouched(Base control)
+        internal virtual void onChildTouched(Base control)
         {
             Touch();
         }
@@ -1114,7 +1114,7 @@ namespace Gwen.Controls
             return size;
         }
 
-        public virtual bool HandleAccelerator(String accelerator)
+        internal virtual bool HandleAccelerator(String accelerator)
         {
             if (Global.KeyboardFocus == this || !AccelOnlyFocus)
             {
@@ -1163,38 +1163,38 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual bool OnKeyPress(Key key, bool pressed = true)
+        internal virtual bool onKeyPress(Key key, bool pressed = true)
         {
             bool handled = false;
             switch (key)
             {
-                case Key.Tab:       handled = OnKeyTab(pressed); break;
-                case Key.Space:     handled = OnKeySpace(pressed); break;
-                case Key.Home:      handled = OnKeyHome(pressed); break;
-                case Key.End:       handled = OnKeyEnd(pressed); break;
-                case Key.Return:    handled = OnKeyReturn(pressed); break;
-                case Key.Backspace: handled = OnKeyBackspace(pressed); break;
-                case Key.Delete:    handled = OnKeyDelete(pressed); break;
-                case Key.Right:     handled = OnKeyRight(pressed); break;
-                case Key.Left:      handled = OnKeyLeft(pressed); break;
-                case Key.Up:        handled = OnKeyUp(pressed); break;
-                case Key.Down:      handled = OnKeyDown(pressed); break;
-                case Key.Escape:    handled = OnKeyEscape(pressed); break;
+                case Key.Tab:       handled = onKeyTab(pressed); break;
+                case Key.Space:     handled = onKeySpace(pressed); break;
+                case Key.Home:      handled = onKeyHome(pressed); break;
+                case Key.End:       handled = onKeyEnd(pressed); break;
+                case Key.Return:    handled = onKeyReturn(pressed); break;
+                case Key.Backspace: handled = onKeyBackspace(pressed); break;
+                case Key.Delete:    handled = onKeyDelete(pressed); break;
+                case Key.Right:     handled = onKeyRight(pressed); break;
+                case Key.Left:      handled = onKeyLeft(pressed); break;
+                case Key.Up:        handled = onKeyUp(pressed); break;
+                case Key.Down:      handled = onKeyDown(pressed); break;
+                case Key.Escape:    handled = onKeyEscape(pressed); break;
                 default: break;
             }
 
             if (!handled && Parent!=null)
-                Parent.OnKeyPress(key, pressed);
+                Parent.onKeyPress(key, pressed);
 
             return handled;
         }
 
-        public virtual bool OnKeyRelease(Key key)
+        internal virtual bool onKeyRelease(Key key)
         {
-            return OnKeyPress(key, false);
+            return onKeyPress(key, false);
         }
 
-        public virtual bool OnKeyTab(bool pressed)
+        internal virtual bool onKeyTab(bool pressed)
         {
             if (!pressed) 
                 return true;
@@ -1208,31 +1208,31 @@ namespace Gwen.Controls
             return true;
         }
 
-        public virtual bool OnKeySpace(bool bDown) { return false; }
-        public virtual bool OnKeyReturn(bool bDown) { return false; }
-        public virtual bool OnKeyBackspace(bool bDown) { return false; }
-        public virtual bool OnKeyDelete(bool bDown) { return false; }
-        public virtual bool OnKeyRight(bool bDown) { return false; }
-        public virtual bool OnKeyLeft(bool bDown) { return false; }
-        public virtual bool OnKeyHome(bool bDown) { return false; }
-        public virtual bool OnKeyEnd(bool bDown) { return false; }
-        public virtual bool OnKeyUp(bool bDown) { return false; }
-        public virtual bool OnKeyDown(bool bDown) { return false; }
-        public virtual bool OnKeyEscape(bool bDown) { return false; }
+        internal virtual bool onKeySpace(bool bDown) { return false; }
+        internal virtual bool onKeyReturn(bool bDown) { return false; }
+        internal virtual bool onKeyBackspace(bool bDown) { return false; }
+        internal virtual bool onKeyDelete(bool bDown) { return false; }
+        internal virtual bool onKeyRight(bool bDown) { return false; }
+        internal virtual bool onKeyLeft(bool bDown) { return false; }
+        internal virtual bool onKeyHome(bool bDown) { return false; }
+        internal virtual bool onKeyEnd(bool bDown) { return false; }
+        internal virtual bool onKeyUp(bool bDown) { return false; }
+        internal virtual bool onKeyDown(bool bDown) { return false; }
+        internal virtual bool onKeyEscape(bool bDown) { return false; }
 
-        public virtual void OnPaste(Base from)
+        internal virtual void onPaste(Base from)
         {
         }
 
-        public virtual void OnCopy(Base from)
+        internal virtual void onCopy(Base from)
         {
         }
 
-        public virtual void OnCut(Base from)
+        internal virtual void onCut(Base from)
         {
         }
 
-        public virtual void OnSelectAll(Base from)
+        internal virtual void onSelectAll(Base from)
         {
         }
 
@@ -1261,17 +1261,17 @@ namespace Gwen.Controls
             
         }
 
-        public virtual void OnKeyboardFocus()
+        internal virtual void onKeyboardFocus()
         {
 
         }
 
-        public virtual void OnLostKeyboardFocus()
+        internal virtual void onLostKeyboardFocus()
         {
 
         }
 
-        public virtual bool OnChar(Char chr)
+        internal virtual bool onChar(Char chr)
         {
             return false;
         }

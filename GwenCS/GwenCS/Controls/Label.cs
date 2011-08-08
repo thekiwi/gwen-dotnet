@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
@@ -13,37 +10,41 @@ namespace Gwen.Controls
         protected Pos m_iAlign;
         protected Padding m_rTextPadding;
 
-        public virtual Pos Alignment { get { return m_iAlign; } set { m_iAlign = value; } }
-        public virtual String Text { get { return m_Text.String; } }
-        public virtual Font Font { get { return m_Text.Font; } set { m_Text.Font = value; } }
-        public virtual Color TextColor { get { return m_Text.TextColor; } set { m_Text.TextColor = value; } }
+        public Pos Alignment { get { return m_iAlign; } set { m_iAlign = value; } }
+        public String Text { get { return m_Text.String; } }
+        public Font Font { get { return m_Text.Font; } set { m_Text.Font = value; } }
+        public Color TextColor { get { return m_Text.TextColor; } set { m_Text.TextColor = value; } }
 
-        public virtual int TextWidth { get { return m_Text.Width; } }
-        public virtual int TextHeight { get { return m_Text.Height; } }
-        public virtual int TextX { get { return m_Text.X; } }
-        public virtual int TextY { get { return m_Text.Y; } }
-        public virtual int TextLength { get { return m_Text.Length; } }
-        public virtual int TextRight { get { return m_Text.Right; } }
+        public int TextWidth { get { return m_Text.Width; } }
+        public int TextHeight { get { return m_Text.Height; } }
+        public int TextX { get { return m_Text.X; } }
+        public int TextY { get { return m_Text.Y; } }
+        public int TextLength { get { return m_Text.Length; } }
+        public int TextRight { get { return m_Text.Right; } }
 
-        public virtual bool AutoSizeToContents { get { return m_Text.AutoSizeToContents; } set { m_Text.AutoSizeToContents = value; } }
+        public bool AutoSizeToContents { get { return m_Text.AutoSizeToContents; } set { m_Text.AutoSizeToContents = value; } }
 
-        public virtual Padding TextPadding { get { return m_rTextPadding; } set { m_rTextPadding = value; Invalidate(); InvalidateParent(); } }
+        public Padding TextPadding { get { return m_rTextPadding; } set { m_rTextPadding = value; Invalidate(); InvalidateParent(); } }
 
         public Label(Base parent) : base(parent)
         {
             m_Text = new Text(this);
-            m_Text.Font = Skin.DefaultFont;
+            //m_Text.Font = Skin.DefaultFont;
 
             MouseInputEnabled = false;
             SetBounds(0, 0, 100, 10);
             Alignment = Pos.Left | Pos.Top;
+
+            AutoSizeToContents = false;
         }
 
-        protected virtual void OnTextChanged()
+        protected virtual void onTextChanged()
         {}
 
         protected override void Layout(Skin.Base skin)
         {
+            base.Layout(skin);
+
             Pos iAlign = m_iAlign;
 
             int x = m_rTextPadding.Left + m_Padding.Left;
@@ -73,7 +74,7 @@ namespace Gwen.Controls
             Redraw();
 
             if (doEvents)
-                OnTextChanged();
+                onTextChanged();
         }
 
         public virtual void SizeToContents()
@@ -89,6 +90,10 @@ namespace Gwen.Controls
         {
             Point p = m_Text.GetCharacterPosition(index);
             return new Point(p.X + m_Text.X, p.Y + m_Text.Y);
+        }
+
+        protected override void Render(Skin.Base skin)
+        {
         }
     }
 }

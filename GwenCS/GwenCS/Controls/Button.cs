@@ -21,9 +21,9 @@ namespace Gwen.Controls
         public event ControlCallback OnToggleOn;
         public event ControlCallback OnToggleOff;
 
-        public virtual bool IsDepressed { get { return m_bDepressed; } }
-        public virtual bool IsToggle { get { return m_bToggle; } set { m_bToggle = value; } }
-        public virtual bool ToggleState
+        public bool IsDepressed { get { return m_bDepressed; } }
+        public bool IsToggle { get { return m_bToggle; } set { m_bToggle = value; } }
+        public bool ToggleState
         {
             get { return m_bToggleStatus; }
             set
@@ -64,11 +64,13 @@ namespace Gwen.Controls
 
         public virtual void ReceiveEventPress(Base control)
         {
-            Pressed();
+            onPress();
         }
 
         protected override void Render(Skin.Base skin)
         {
+            base.Render(skin);
+
             if (ShouldDrawBackground)
             {
                 bool bDrawDepressed = IsDepressed && IsHovered;
@@ -81,8 +83,9 @@ namespace Gwen.Controls
             }
         }
 
-        public override void OnMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool pressed)
         {
+            base.onMouseClickLeft(x, y, pressed);
             if (pressed)
             {
                 m_bDepressed = true;
@@ -94,7 +97,7 @@ namespace Gwen.Controls
             {
                 if (IsHovered && m_bDepressed)
                 {
-                    Pressed();
+                    onPress();
                 }
 
                 m_bDepressed = false;
@@ -106,7 +109,7 @@ namespace Gwen.Controls
             Redraw();
         }
 
-        public virtual void Pressed()
+        protected virtual void onPress()
         {
             if (IsToggle)
             {
@@ -155,15 +158,17 @@ namespace Gwen.Controls
             }
         }
 
-        public override bool OnKeySpace(bool bDown)
+        internal override bool onKeySpace(bool bDown)
         {
-            OnMouseClickLeft(0, 0, bDown);
+            base.onKeySpace(bDown);
+            onMouseClickLeft(0, 0, bDown);
             return true;
         }
 
-        public override void AcceleratePressed()
+        protected override void AcceleratePressed()
         {
-            Pressed();
+            base.AcceleratePressed();
+            onPress();
         }
 
         protected override void Layout(Skin.Base skin)

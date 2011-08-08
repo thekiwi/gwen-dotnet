@@ -17,10 +17,10 @@ namespace Gwen.Controls
 
         private Color m_BackgroundColor;
 
-        public Base FirstTab;
-        public Base NextTab;
+        internal Base FirstTab;
+        internal Base NextTab;
 
-        public virtual double Scale
+        public double Scale
         {
             get { return m_fScale; }
             set
@@ -33,18 +33,18 @@ namespace Gwen.Controls
                 if (m_Skin != null && m_Skin.Renderer != null)
                     m_Skin.Renderer.Scale = m_fScale;
 
-                OnScaleChanged();
+                onScaleChanged();
                 Redraw();
             }
         }
-        public virtual bool DrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
-        public virtual Color BackgroundColor { get { return m_BackgroundColor; } set { m_BackgroundColor = value; } }
+        public bool DrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
+        public Color BackgroundColor { get { return m_BackgroundColor; } set { m_BackgroundColor = value; } }
 
         // In most situations you will be rendering the canvas
         // every frame. But in some situations you will only want
         // to render when there have been changes. You can do this
         // by checking NeedsRedraw().
-        public virtual bool NeedsRedraw { get { return m_bNeedsRedraw; } set { m_bNeedsRedraw = value; } }
+        public bool NeedsRedraw { get { return m_bNeedsRedraw; } set { m_bNeedsRedraw = value; } }
 
         public Canvas(Skin.Base skin)
         {
@@ -78,7 +78,7 @@ namespace Gwen.Controls
 
         // For additional initialization 
         // (which is sometimes not appropriate in the constructor)
-        public virtual void Initialize()
+        protected virtual void Initialize()
         {
 
         }
@@ -120,18 +120,19 @@ namespace Gwen.Controls
         // Internal. Do not call directly.
         protected override void Render(Skin.Base skin)
         {
+            base.Render(skin);
             m_bNeedsRedraw = false;
         }
 
-        protected override void OnBoundsChanged(Rectangle oldBounds)
+        internal override void onBoundsChanged(Rectangle oldBounds)
         {
-            base.OnBoundsChanged(oldBounds);
+            base.onBoundsChanged(oldBounds);
             InvalidateChildren(true);
         }
 
         // Call this whenever you want to process input. This
         // is usually once a frame..
-        public virtual void DoThink()
+        protected virtual void DoThink()
         {
             if (IsHidden)
                 return;
@@ -152,10 +153,10 @@ namespace Gwen.Controls
             if (NextTab == null)
                 NextTab = FirstTab;
 
-            Input.Input.OnCanvasThink(this);
+            Input.Input.onCanvasThink(this);
         }
 
-        public virtual void AddDelayedDelete(Base control)
+        internal virtual void AddDelayedDelete(Base control)
         {
             if (!m_bAnyDelete || !m_DeleteSet.Contains(control))
             {
@@ -165,7 +166,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual void ProcessDelayedDeletes()
+        internal virtual void ProcessDelayedDeletes()
         {
             while (m_bAnyDelete)
             {
@@ -190,16 +191,16 @@ namespace Gwen.Controls
             // Todo: Handle scaling here..
             //float fScale = 1.0f / Scale();
 
-            Input.Input.OnMouseMoved(this, x, y, dx, dy);
+            Input.Input.onMouseMoved(this, x, y, dx, dy);
 
             if (Global.HoveredControl == null) return false;
             if (Global.HoveredControl == this) return false;
             if (Global.HoveredControl.GetCanvas() != this) return false;
 
-            Global.HoveredControl.OnMouseMoved(x, y, dx, dy);
+            Global.HoveredControl.onMouseMoved(x, y, dx, dy);
             Global.HoveredControl.UpdateCursor();
 
-            DragAndDrop.OnMouseMoved(Global.HoveredControl, x, y);
+            DragAndDrop.onMouseMoved(Global.HoveredControl, x, y);
             return true;
         }
 
@@ -207,7 +208,7 @@ namespace Gwen.Controls
         {
             if (IsHidden) return false;
 
-            return Input.Input.OnMouseClicked(this, button, pressed);
+            return Input.Input.onMouseClicked(this, button, pressed);
         }
 
         public virtual bool InputKey(Key key, bool pressed)
@@ -216,7 +217,7 @@ namespace Gwen.Controls
             if (key <= Key.Invalid) return false;
             if (key >= Key.Count) return false;
 
-            return Input.Input.OnKeyEvent(this, key, pressed);
+            return Input.Input.onKeyEvent(this, key, pressed);
         }
 
         public virtual bool InputCharacter(char chr)
@@ -234,7 +235,7 @@ namespace Gwen.Controls
             if (!Global.KeyboardFocus.IsVisible) return false;
             if (Input.Input.IsControlDown) return false;
 
-            return Global.KeyboardFocus.OnChar(chr);
+            return Global.KeyboardFocus.onChar(chr);
         }
 
         public virtual bool InputMouseWheel(int val)
@@ -244,7 +245,7 @@ namespace Gwen.Controls
             if (Global.HoveredControl == this) return false;
             if (Global.HoveredControl.GetCanvas() != this) return false;
 
-            return Global.HoveredControl.OnMouseWheeled(val);
+            return Global.HoveredControl.onMouseWheeled(val);
         }
     }
 }

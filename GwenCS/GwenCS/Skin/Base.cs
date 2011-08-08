@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Skin
 {
@@ -11,28 +8,29 @@ namespace Gwen.Skin
         protected Font m_DefaultFont = new Font();
         protected Renderer.Base m_Render;
 
-        public virtual Font DefaultFont { get { return m_DefaultFont; } }
+        public Font DefaultFont { get { return m_DefaultFont; } }
 
-        public virtual Renderer.Base Renderer { get { return m_Render; } set { m_Render = value; } }
+        public Renderer.Base Renderer { get { return m_Render; } }
 
-        public Base()
+        protected Base(Renderer.Base renderer)
         {
+            m_Render = renderer;
             m_DefaultFont.FaceName = "Arial";
             m_DefaultFont.Size = 10;
         }
 
         ~Base()
         {
-            ReleaseFont(m_DefaultFont);
+            ReleaseFont(ref m_DefaultFont);
         }
 
-        public virtual void ReleaseFont(Font font)
+        protected virtual void ReleaseFont(ref Font font)
         {
-            if (font == null)
+            if (font.FaceName == null)
                 return;
             if (m_Render == null)
                 return;
-            m_Render.FreeFont(font);
+            m_Render.FreeFont(ref font);
         }
 
         public virtual void SetDefaultFont(String faceName, int size = 10)

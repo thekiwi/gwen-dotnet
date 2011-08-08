@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Gwen
 {
-    public class Font
+    public struct Font
     {
         public String FaceName;
         public int Size;
@@ -20,7 +20,7 @@ namespace Gwen
         // This is the real font size, after it's
         // been scaled by Render->Scale()
         public double RealSize;
-
+        /*
         public Font()
         {
             FaceName = "Arial";
@@ -28,7 +28,7 @@ namespace Gwen
             DropShadow = false;
             Bold = false;
         }
-
+        
         public Font Copy()
         {
             Font f = new Font();
@@ -37,9 +37,10 @@ namespace Gwen
             f.RealSize = RealSize;
             f.Bold = Bold;
             f.DropShadow = DropShadow;
-            f.RendererData = null; // can't copy
+            f.RendererData = RendererData;
 
             return f;
         }
+         */
     }
 }

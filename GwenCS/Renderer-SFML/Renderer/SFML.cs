@@ -42,7 +42,7 @@ namespace Gwen.Renderer
             m_Target.Draw(Shape.Line(new Vector2(x, y), new Vector2(a, b), 1.0f, m_Color));
         }
 
-        public override void DrawFilledRect(System.Drawing.Rectangle rect)
+        public override void DrawFilledRect(Rectangle rect)
         {
             rect = Translate(rect);
             // [omeg] todo: sfml.net should have method accepting coords to not create unnecessary objects
@@ -50,7 +50,7 @@ namespace Gwen.Renderer
             m_Target.Draw(Shape.Rectangle(new FloatRect(rect.X, rect.Y, rect.Width, rect.Height), m_Color));
         }
 
-        public override void LoadFont(Gwen.Font font)
+        public override void LoadFont(ref Font font)
         {
             font.RealSize = font.Size*Scale;
             global::SFML.Graphics.Font sfFont;
@@ -68,7 +68,7 @@ namespace Gwen.Renderer
             font.RendererData = sfFont;
         }
 
-        public override void FreeFont(Gwen.Font font)
+        public override void FreeFont(ref Font font)
         {
             if ( font.RendererData == null ) return;
 
@@ -83,7 +83,7 @@ namespace Gwen.Renderer
             font.RendererData = null;
         }
 
-        public override void RenderText(Font font, System.Drawing.Point pos, string text)
+        public override void RenderText(ref Font font, Point pos, string text)
         {
             pos = Translate(pos);
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
@@ -91,8 +91,8 @@ namespace Gwen.Renderer
             // If the font doesn't exist, or the font size should be changed
             if (sfFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
             {
-                FreeFont(font);
-                LoadFont(font);
+                FreeFont(ref font);
+                LoadFont(ref font);
             }
 
             if (sfFont == null)
@@ -106,15 +106,15 @@ namespace Gwen.Renderer
             m_Target.Draw(sfText);
         }
 
-        public override System.Drawing.Point MeasureText(Font font, string text)
+        public override Point MeasureText(ref Font font, string text)
         {
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
 
             // If the font doesn't exist, or the font size should be changed
             if (sfFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
             {
-                FreeFont(font);
-                LoadFont(font);
+                FreeFont(ref font);
+                LoadFont(ref font);
             }
 
             if (sfFont == null)

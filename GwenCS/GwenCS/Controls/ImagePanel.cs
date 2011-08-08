@@ -32,7 +32,7 @@ namespace Gwen.Controls
             m_uv[3] = v2;
         }
 
-        public virtual String ImageName { get { return m_Texture.Name; } set { m_Texture.Load(value, Skin.Renderer); } }
+        public String ImageName { get { return m_Texture.Name; } set { m_Texture.Load(value, Skin.Renderer); } }
         public virtual void SetDrawColor(Color c)
         {
             m_DrawColor = c;
@@ -40,6 +40,7 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
+            base.Render(skin);
             skin.Renderer.DrawColor = m_DrawColor;
             skin.Renderer.DrawTexturedRect(m_Texture, RenderBounds, m_uv[0], m_uv[1], m_uv[2], m_uv[3]);
         }

@@ -49,7 +49,7 @@ namespace Gwen.Skin
 
         protected Single m_TreeMinus, m_TreePlus;
 
-        public virtual void Init(String TextureName)
+        public TexturedBase(Renderer.Base renderer, String TextureName) : base(renderer)
         {
             m_colBorderColor = Color.FromArgb(255, 80, 80, 80);
             m_colBG = Color.FromArgb(255, 248, 248, 248);
@@ -121,10 +121,12 @@ namespace Gwen.Skin
             if (bDepressed)
                 m_texButton_Pressed.Draw(Renderer, control.RenderBounds);
             else
-                m_texButton.Draw(Renderer, control.RenderBounds);
-
-            if (bHovered)
-                m_texButton_Hovered.Draw(Renderer, control.RenderBounds);
+            {
+                if (bHovered)
+                    m_texButton_Hovered.Draw(Renderer, control.RenderBounds);
+                else
+                    m_texButton.Draw(Renderer, control.RenderBounds);
+            }
         }
 
         public override void DrawMenuItem(Controls.Base control, bool bSubmenuOpen, bool bChecked)

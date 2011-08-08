@@ -15,6 +15,7 @@ namespace Gwen.Controls.Symbol
 
         protected override void Render(Skin.Base skin)
         {
+            base.Render(skin);
             Rectangle r = new Rectangle(Width/2 - 2, Height/2 - 2, 5, 5);
             skin.DrawArrowRight(r);
         }

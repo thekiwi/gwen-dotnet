@@ -41,25 +41,25 @@ namespace Gwen.Input
 
             if (chr == 'C' || chr == 'c' )
             {
-                Global.KeyboardFocus.OnCopy(null);
+                Global.KeyboardFocus.onCopy(null);
                 return true;
             }
 
             if (chr == 'V' || chr == 'v' )
             {
-                Global.KeyboardFocus.OnPaste(null);
+                Global.KeyboardFocus.onPaste(null);
                 return true;
             }
 
             if (chr == 'X' || chr == 'x' )
             {
-                Global.KeyboardFocus.OnCut(null);
+                Global.KeyboardFocus.onCut(null);
                 return true;
             }
 
             if (chr == 'A' || chr == 'a' )
             {
-                Global.KeyboardFocus.OnSelectAll(null);
+                Global.KeyboardFocus.onSelectAll(null);
                 return true;
             }
 
@@ -94,7 +94,7 @@ namespace Gwen.Input
         }
 
         // Send input to canvas for study		
-        public static void OnMouseMoved(Base canvas, int x, int y, int dx, int dy)
+        public static void onMouseMoved(Base canvas, int x, int y, int dx, int dy)
         {
             MousePosition.X = x;
             MousePosition.Y = y;
@@ -102,7 +102,7 @@ namespace Gwen.Input
             UpdateHoveredControl(canvas);
         }
 
-        public static void OnCanvasThink(Base control)
+        public static void onCanvasThink(Base control)
         {
             if (Global.MouseFocus!=null && !Global.MouseFocus.IsVisible)
                 Global.MouseFocus = null;
@@ -132,13 +132,13 @@ namespace Gwen.Input
 
                     if (Global.KeyboardFocus != null)
                     {
-                        Global.KeyboardFocus.OnKeyPress((Key)i);
+                        Global.KeyboardFocus.onKeyPress((Key)i);
                     }
                 }
             }
         }
 
-        public static bool OnMouseClicked(Base canvas, int iMouseButton, bool bDown)
+        public static bool onMouseClicked(Base canvas, int iMouseButton, bool bDown)
         {
             // If we click on a control that isn't a menu we want to close
             // all the open menus. Menus are children of the canvas.
@@ -203,22 +203,22 @@ namespace Gwen.Input
             {
                 case 0:
                     {
-                        if (DragAndDrop.OnMouseButton(Global.HoveredControl, MousePosition.X, MousePosition.Y, bDown))
+                        if (DragAndDrop.onMouseButton(Global.HoveredControl, MousePosition.X, MousePosition.Y, bDown))
                             return true;
 
                         if (bIsDoubleClick)
-                            Global.HoveredControl.OnMouseDoubleClickLeft(MousePosition.X, MousePosition.Y);
+                            Global.HoveredControl.onMouseDoubleClickLeft(MousePosition.X, MousePosition.Y);
                         else
-                            Global.HoveredControl.OnMouseClickLeft(MousePosition.X, MousePosition.Y, bDown);
+                            Global.HoveredControl.onMouseClickLeft(MousePosition.X, MousePosition.Y, bDown);
                         return true;
                     }
 
                 case 1:
                     {
                         if (bIsDoubleClick)
-                            Global.HoveredControl.OnMouseDoubleClickRight(MousePosition.X, MousePosition.Y);
+                            Global.HoveredControl.onMouseDoubleClickRight(MousePosition.X, MousePosition.Y);
                         else
-                            Global.HoveredControl.OnMouseClickRight(MousePosition.X, MousePosition.Y, bDown);
+                            Global.HoveredControl.onMouseClickRight(MousePosition.X, MousePosition.Y, bDown);
                         return true;
                     }
             }
@@ -226,7 +226,7 @@ namespace Gwen.Input
             return false;
         }
 
-        public static bool OnKeyEvent(Base canvas, Key key, bool down)
+        public static bool onKeyEvent(Base canvas, Key key, bool down)
         {
             if (null==Global.KeyboardFocus) return false;
             if (Global.KeyboardFocus.GetCanvas() != canvas) return false;
@@ -241,7 +241,7 @@ namespace Gwen.Input
                     KeyData.NextRepeat[iKey] = Platform.Windows.GetTimeInSeconds() + KeyRepeatDelay;
                     KeyData.Target = Global.KeyboardFocus;
 
-                    return Global.KeyboardFocus.OnKeyPress(key);
+                    return Global.KeyboardFocus.onKeyPress(key);
                 }
             }
             else
@@ -254,7 +254,7 @@ namespace Gwen.Input
                     // to not work. What is disabling it here breaking?
                     //KeyData.Target = NULL;
 
-                    return Global.KeyboardFocus.OnKeyRelease(key);
+                    return Global.KeyboardFocus.onKeyRelease(key);
                 }
             }
 
@@ -267,7 +267,7 @@ namespace Gwen.Input
 
             if (Global.HoveredControl!=null && pHovered != Global.HoveredControl)
             {
-                Global.HoveredControl.OnMouseLeave();
+                Global.HoveredControl.onMouseLeave();
 
                 pInCanvas.Redraw();
             }
@@ -277,7 +277,7 @@ namespace Gwen.Input
                 Global.HoveredControl = pHovered;
 
                 if (Global.HoveredControl != null)
-                    Global.HoveredControl.OnMouseEnter();
+                    Global.HoveredControl.onMouseEnter();
 
                 pInCanvas.Redraw();
             }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using Gwen.Controls;
 
@@ -6,12 +8,22 @@ using SFML.Window;
 
 namespace Gwen.Input
 {
+    /// <summary>
+    /// Data for translating sfml keys to gwen keys
+    /// </summary>
+    public struct KeyTrans
+    {
+        public bool Printable;
+        public Key GwenCode;
+        public char Char;
+    }
+
     public class SFML
     {
         protected Canvas m_Canvas;
         protected int m_MouseX;
         protected int m_MouseY;
-
+        
         public SFML()
         {
             // not needed, retained for clarity
@@ -24,7 +36,7 @@ namespace Gwen.Input
             m_Canvas = c;
         }
 
-        public Key TranslateKeyCode(KeyCode sfKey)
+        private Key TranslateKeyCode(KeyCode sfKey)
         {
             switch (sfKey)
             {
@@ -88,10 +100,9 @@ namespace Gwen.Input
             if (args is KeyEventArgs)
             {
                 KeyEventArgs ev = args as KeyEventArgs;
-                if (ev.Control && ev.Down && ev.Code >= KeyCode.A && ev.Code <= KeyCode.Z)
-                {
-                    return m_Canvas.InputCharacter((char) ev.Code); // [omeg] works?
-                }
+                
+                if (ev.Control && ev.Alt && ev.Code == KeyCode.LControl)
+                    return false; // sfml bug: this is right alt
 
                 Key iKey = TranslateKeyCode(ev.Code);
 

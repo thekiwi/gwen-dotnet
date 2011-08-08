@@ -44,8 +44,6 @@ namespace Gwen.Skin.Texturing
             //x -= 1.0f;
             //y -= 1.0f;
 
-
-
             rects[iNum].uv[0] = x / texw;
             rects[iNum].uv[1] = y / texh;
 

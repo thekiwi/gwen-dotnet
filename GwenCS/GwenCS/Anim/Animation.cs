@@ -11,7 +11,7 @@ namespace Gwen.Anim
         //private static List<Animation> g_AnimationsListed = new List<Animation>(); // unused
         private static Dictionary<Base, List<Animation>> g_Animations = new Dictionary<Base, List<Animation>>();
 
-        public virtual void Think()
+        protected virtual void Think()
         {
             throw new Exception("Pure virtual function call");
         }
@@ -38,7 +38,7 @@ namespace Gwen.Anim
             }
         }
 
-        public static void GlobalThink()
+        internal static void GlobalThink()
         {
             foreach (KeyValuePair<Base, List<Animation>> pair in g_Animations)
             {

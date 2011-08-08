@@ -8,24 +8,24 @@ namespace Gwen.Skin
 {
     public class Simple : Skin.Base
     {
-        public Color m_colBorderColor;
-        public Color m_colControlOutlineLight;
-        public Color m_colControlOutlineLighter;
-        public Color m_colBG;
-        public Color m_colBGDark;
-        public Color m_colControl;
-        public Color m_colControlBorderHighlight;
-        public Color m_colControlDarker;
-        public Color m_colControlOutlineNormal;
-        public Color m_colControlBright;
-        public Color m_colControlDark;
-        public Color m_colHighlightBG;
-        public Color m_colHighlightBorder;
-        public Color m_colToolTipBackground;
-        public Color m_colToolTipBorder;
-        public Color m_colModal;
+        protected Color m_colBorderColor;
+        protected Color m_colControlOutlineLight;
+        protected Color m_colControlOutlineLighter;
+        protected Color m_colBG;
+        protected Color m_colBGDark;
+        protected Color m_colControl;
+        protected Color m_colControlBorderHighlight;
+        protected Color m_colControlDarker;
+        protected Color m_colControlOutlineNormal;
+        protected Color m_colControlBright;
+        protected Color m_colControlDark;
+        protected Color m_colHighlightBG;
+        protected Color m_colHighlightBorder;
+        protected Color m_colToolTipBackground;
+        protected Color m_colToolTipBorder;
+        protected Color m_colModal;
 
-        public Simple()
+        public Simple(Renderer.Base renderer) : base(renderer)
         {
             m_colBorderColor = Color.FromArgb(255, 80, 80, 80);
             m_colBG = Color.FromArgb(255, 248, 248, 248);

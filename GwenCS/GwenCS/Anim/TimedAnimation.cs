@@ -22,8 +22,10 @@ namespace Gwen.Anim
             m_bFinished = false;
         }
 
-        public override void Think()
+        protected override void Think()
         {
+            base.Think();
+
             if (m_bFinished) 
                 return;
 
@@ -35,7 +37,7 @@ namespace Gwen.Anim
             if (!m_bStarted)
             {
                 m_bStarted = true;
-                OnStart();
+                onStart();
             }
 
             double fDelta = fSecondsIn/(m_fEnd - m_fStart);
@@ -49,19 +51,19 @@ namespace Gwen.Anim
             if (fDelta == 1.0)
             {
                 m_bFinished = true;
-                OnFinish();
+                onFinish();
             }
         }
 
         // These are the magic functions you should be overriding
 
-        public virtual void OnStart()
+        protected virtual void onStart()
         {}
 
-        public virtual void Run(double delta)
+        protected virtual void Run(double delta)
         {}
 
-        public virtual void OnFinish()
+        protected virtual void onFinish()
         {}
     }
 }

@@ -12,7 +12,7 @@ namespace Gwen.Renderer
         private Rectangle m_ClipRegion;
         private ICacheToTexture m_RTT;
 
-        public virtual double Scale { get; set; }
+        public double Scale;
 
         public Base()
         {
@@ -63,20 +63,20 @@ namespace Gwen.Renderer
 
         public virtual ICacheToTexture CTT { get { return null; } }
 
-        public virtual void LoadFont(Font font)
+        public virtual void LoadFont(ref Font font)
         {}
 
-        public virtual void FreeFont(Font font)
+        public virtual void FreeFont(ref Font font)
         {}
 
-        public virtual Point MeasureText(Font font, String text)
+        public virtual Point MeasureText(ref Font font, String text)
         {
             Point p = new Point(Global.Trunc(font.Size * Scale * text.Length * 0.4), Global.Trunc(font.Size * Scale));
 
             return p;
         }
 
-        public virtual void RenderText(Font font, Point pos, String text)
+        public virtual void RenderText(ref Font font, Point pos, String text)
         {
             double fSize = font.Size * Scale;
 

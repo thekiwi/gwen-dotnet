@@ -54,6 +54,7 @@
     <Compile Include="Controls\LabelClickable.cs" />
     <Compile Include="Controls\Symbol\Arrow.cs" />
     <Compile Include="Controls\Symbol\Base.cs" />
+    <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="Input\Action.cs" />
     <Compile Include="Input\Input.cs" />

@@ -8,8 +8,8 @@ namespace Gwen.Skin.Texturing
 {
     public class Single
     {
-        Texture texture;
-        float[] uv;
+        private Texture texture;
+        private float[] uv;
 
         public Single(Texture pTexture, float x, float y, float w, float h )
         {

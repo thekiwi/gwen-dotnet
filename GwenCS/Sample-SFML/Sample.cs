@@ -15,6 +15,7 @@ using Color = SFML.Graphics.Color;
 using Image = SFML.Graphics.Image;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
 using Label = Gwen.Controls.Label;
+using TextBox = Gwen.Controls.TextBox;
 
 namespace Gwen.Sample
 {
@@ -22,13 +23,14 @@ namespace Gwen.Sample
     {
         private static Input.SFML GwenInput;
         private static Canvas canvas;
+        private static RenderWindow window;
 
         static void Main()
         {
             int width = 800;
             int height = 600;
             // Create main window
-            RenderWindow window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.NET test",
+            window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.NET test",
                 Styles.Default, new ContextSettings(32, 0));
 
             // Setup event handlers
@@ -40,6 +42,7 @@ namespace Gwen.Sample
             window.MouseButtonReleased += window_MouseButton;
             window.MouseWheelMoved += window_MouseWheelMoved;
             window.MouseMoved += window_MouseMoved;
+            window.TextEntered += new EventHandler<TextEventArgs>(window_TextEntered);
 
             int fps_frames = 50;
             List<int> ftime = new List<int>(fps_frames);
@@ -56,14 +59,13 @@ namespace Gwen.Sample
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
             
             // Create a GWEN skin
-            Skin.TexturedBase skin = new Skin.TexturedBase();
-            skin.Renderer = GwenRenderer;
-            skin.Init("DefaultSkin.png");
+            //Skin.Simple skin = new Skin.Simple(GwenRenderer);
+            Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
 
             // The fonts work differently in SFML - it can't use
             // system fonts. So force the skin to use a local one.
             skin.SetDefaultFont("OpenSans.ttf", 10);
-            Font font2 = skin.DefaultFont.Copy();
+            Font font2 = skin.DefaultFont;
             font2.Size = 15;
 
             // Create a Canvas (it's root, on which all other GWEN panels are created)
@@ -71,14 +73,16 @@ namespace Gwen.Sample
             canvas.SetSize(width, height);
             canvas.DrawBackground = true;
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
+            canvas.KeyboardInputEnabled = true;
 
             LabelClickable label1 = new LabelClickable(canvas);
             label1.SetPos(10, 50);
             label1.AutoSizeToContents = true;
+            //label1.Font = skin.DefaultFont; // this does not corrupt text
             label1.SetText("Welcome to GWEN in SFML.NET!");
             label1.TextColor = System.Drawing.Color.Blue;
             //label1.Dock = Pos.Right;
-
+            
             Label label2 = new Label(canvas);
             label2.SetPos(10, 80);
             label2.AutoSizeToContents = true;
@@ -97,14 +101,27 @@ namespace Gwen.Sample
             button1.Width = 150;
             button1.Height = 30;
             button1.IsTabable = true;
+            button1.KeyboardInputEnabled = true;
             button1.OnPress += button1_OnPress;
 
             CheckBoxWithLabel cb1 = new CheckBoxWithLabel(canvas);
             cb1.SetPos(10, 140);
-            //cb1.IsTabable = true;
-            cb1.Label.SetText("Sample checkbox");
-            cb1.Label.SetToolTipText("trololo");
+            cb1.IsTabable = true;
+            cb1.KeyboardInputEnabled = true;
+            cb1.Label.SetText("Sample checkbox 1");
+            cb1.Label.SetToolTipText("trololo 1");
 
+            CheckBoxWithLabel cb2 = new CheckBoxWithLabel(canvas);
+            cb2.SetPos(300, 140);
+            cb2.IsTabable = true;
+            cb2.KeyboardInputEnabled = true;
+            cb2.Label.SetText("Sample checkbox 2");
+            cb2.Label.SetToolTipText("trololo 2");
+
+            TextBox tb1 = new TextBox(canvas);
+            tb1.SetPos(10, 200);
+            tb1.SetText("sample edit");
+            
             // Create an input processor
             GwenInput = new Input.SFML();
             GwenInput.Initialize(canvas);
@@ -142,6 +159,11 @@ namespace Gwen.Sample
                 window.RestoreGLStates();
                 window.Display();
             }
+        }
+
+        static void window_TextEntered(object sender, TextEventArgs e)
+        {
+            GwenInput.ProcessMessage(e);
         }
 
         static void button1_OnPress(Base control)
@@ -205,6 +227,7 @@ namespace Gwen.Sample
             Gl.glViewport(0, 0, (int)e.Width, (int)e.Height);
             // todo: gwen doesn't handle resizing well
             //canvas.SetSize((int)e.Width, (int)e.Height);
+            // window.ConvertCoords()
         }
     }
 }

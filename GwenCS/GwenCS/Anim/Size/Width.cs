@@ -19,8 +19,22 @@ namespace Gwen.Anim.Size
             m_bHide = bHide;
         }
 
-        public override void OnStart() { m_Control.Width = m_iStartSize; }
-        public override void Run(double delta) { m_Control.Width = (int)Math.Round(m_iStartSize + (m_iDelta * delta)); }
-        public override void OnFinish() { m_Control.Width = m_iStartSize + m_iDelta; m_Control.IsHidden = m_bHide; }
+        protected override void onStart()
+        {
+            base.onStart(); 
+            m_Control.Width = m_iStartSize; 
+        }
+
+        protected override void Run(double delta) 
+        {
+            base.Run(delta);
+            m_Control.Width = (int)Math.Round(m_iStartSize + (m_iDelta * delta)); 
+        }
+
+        protected override void onFinish()
+        {
+            base.onFinish();
+            m_Control.Width = m_iStartSize + m_iDelta; m_Control.IsHidden = m_bHide;
+        }
     }
 }
