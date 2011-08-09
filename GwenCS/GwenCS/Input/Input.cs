@@ -17,7 +17,7 @@ namespace Gwen.Input
         public static int MaxMouseButtons { get { return 5; } }
         public static double DoubleClickSpeed { get { return 0.5; } }
         public static double KeyRepeatRate { get { return 0.03; } }
-        public static double KeyRepeatDelay { get { return 0.3; } }
+        public static double KeyRepeatDelay { get { return 0.5; } }
 
         public static bool IsLeftMouseDown { get { return KeyData.LeftMouseDown; } }
         public static bool IsRightMouseDown { get { return KeyData.RightMouseDown; } }

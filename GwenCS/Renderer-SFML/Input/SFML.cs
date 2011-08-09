@@ -100,14 +100,16 @@ namespace Gwen.Input
             if (args is KeyEventArgs)
             {
                 KeyEventArgs ev = args as KeyEventArgs;
-                
+
                 if (ev.Control && ev.Alt && ev.Code == KeyCode.LControl)
                     return false; // sfml bug: this is right alt
+
+                if (ev.Down && Input.DoSpecialKeys(m_Canvas, (char)ev.Code))
+                    return false;
 
                 Key iKey = TranslateKeyCode(ev.Code);
 
                 return m_Canvas.InputKey(iKey, ev.Down);
-
             }
 
             return false;
