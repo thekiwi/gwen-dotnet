@@ -147,7 +147,7 @@ namespace Gwen.Controls
             }
         }
 
-        public bool IsMenuComponent
+        public virtual bool IsMenuComponent
         {
             get
             {
@@ -190,7 +190,7 @@ namespace Gwen.Controls
         public bool IsHovered { get { return Global.HoveredControl == this; } }
         public bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
         public bool HasFocus { get { return Global.KeyboardFocus == this; } }
-        public bool Disabled { get { return m_bDisabled; } set { m_bDisabled = value; } }
+        public bool IsDisabled { get { return m_bDisabled; } set { m_bDisabled = value; } }
         public bool IsHidden { get { return m_bHidden; } set { if (value == m_bHidden) return; m_bHidden = value; Invalidate(); } }
         public bool RestrictToParent { get { return m_bRestrictToParent; } set { m_bRestrictToParent = value; } }
         public bool MouseInputEnabled { get { return m_bMouseInputEnabled; } set { m_bMouseInputEnabled = value; } }

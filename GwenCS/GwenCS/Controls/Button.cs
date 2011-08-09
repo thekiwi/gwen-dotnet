@@ -120,7 +120,7 @@ namespace Gwen.Controls
                 OnPress.Invoke(this);
         }
         
-        public virtual void SetImage(String name, bool center)
+        public virtual void SetImage(String name, bool center = false)
         {
             if (String.IsNullOrEmpty(name))
             {

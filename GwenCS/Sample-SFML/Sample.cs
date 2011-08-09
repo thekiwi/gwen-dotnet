@@ -15,6 +15,7 @@ using Color = SFML.Graphics.Color;
 using Image = SFML.Graphics.Image;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
 using Label = Gwen.Controls.Label;
+using Menu = Gwen.Controls.Menu;
 using TextBox = Gwen.Controls.TextBox;
 
 namespace Gwen.Sample
@@ -110,6 +111,7 @@ namespace Gwen.Sample
             cb1.KeyboardInputEnabled = true;
             cb1.Label.SetText("Sample checkbox 1");
             cb1.Label.SetToolTipText("trololo 1");
+            cb1.CheckBox.IsChecked = true;
 
             CheckBoxWithLabel cb2 = new CheckBoxWithLabel(canvas);
             cb2.SetPos(300, 140);
@@ -121,6 +123,24 @@ namespace Gwen.Sample
             TextBox tb1 = new TextBox(canvas);
             tb1.SetPos(10, 200);
             tb1.SetText("sample edit");
+            tb1.CursorPos = 3;
+            tb1.CursorEnd = 7; // todo: show even without focus
+            
+            ScrollControl sc1 = new ScrollControl(canvas);
+            sc1.SetBounds(10, 250, 100, 100);
+            Button b = new Button(sc1);
+            b.SetBounds(0, 0, 200, 200);
+            b.SetText("twice as big");
+            //sc1.SetScrollPos(0.5f, 0.5f);
+
+            Menu m1 = new Menu(canvas);
+            m1.AddItem("item 1");
+            var i1 = m1.AddItem("item 2");
+            i1.IsCheckable = true;
+            i1.Checked = true;
+            m1.AddDivider();
+            m1.AddItem("item 3");
+            m1.SetPos(250, 250);
             
             // Create an input processor
             GwenInput = new Input.SFML();

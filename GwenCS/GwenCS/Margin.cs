@@ -13,7 +13,7 @@ namespace Gwen
         public int left;
         public int right;
 
-        public Margin(int t, int b, int l, int r)
+        public Margin(int l, int t, int r, int b)
         {
             top = t;
             bottom = b;

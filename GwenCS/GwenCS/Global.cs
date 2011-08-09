@@ -35,6 +35,24 @@ namespace Gwen
             return new Rectangle(Trunc(x), Trunc(y), Trunc(w), Trunc(h));
         }
 
+        public static int Clamp(int x, int min, int max)
+        {
+            if (x < min)
+                return min;
+            if (x > max)
+                return max;
+            return x;
+        }
+
+        public static float Clamp(float x, float min, float max)
+        {
+            if (x < min)
+                return min;
+            if (x > max)
+                return max;
+            return x;
+        }
+
         public static Rectangle ClampRectToRect(Rectangle inside, Rectangle outside, bool clampSize = false)
         {
             if (inside.X < outside.X)

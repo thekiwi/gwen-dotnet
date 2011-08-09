@@ -21,6 +21,7 @@ namespace Gwen.Controls
         public override bool AccelOnlyFocus { get { return true; } }
         public override bool NeedsInputChars { get { return true; } }
         public bool SelectAllOnFocus { get { return m_bSelectAll; } set { m_bSelectAll = value; if (value) onSelectAll(this); } }
+        public bool HasSelection { get { return m_iCursorPos != m_iCursorEnd; } }
 
         public event ControlCallback OnTextChanged;
         public event ControlCallback OnReturnPressed;
@@ -356,8 +357,6 @@ namespace Gwen.Controls
 
             CursorEnd = m_iCursorPos;
         }
-
-        public bool HasSelection { get { return m_iCursorPos != m_iCursorEnd; } }
 
         public virtual void EraseSelection()
         {

@@ -13,7 +13,7 @@ namespace Gwen
         public int Left;
         public int Right;
 
-        public Padding(int t, int b, int l, int r)
+        public Padding(int l, int t, int r, int b)
         {
             Top = t;
             Bottom = b;
