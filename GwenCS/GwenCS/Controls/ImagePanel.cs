@@ -8,7 +8,7 @@ namespace Gwen.Controls
 {
     public class ImagePanel : Base
     {
-        protected Texture m_Texture;
+        protected Texture m_Texture = new Texture();
         protected float[] m_uv = new float[4];
         protected Color m_DrawColor;
 

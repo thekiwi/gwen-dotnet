@@ -78,11 +78,11 @@ namespace Gwen.Platform
             return m_CurrentTime;
         }
 
-        public static bool FileOpen(String name, String startPath, String extension, Action<String> callback)
+        public static bool FileOpen(String title, String startPath, String extension, Action<String> callback)
         {
             var dialog = new OpenFileDialog
                              {
-                                 Title = name,
+                                 Title = title,
                                  InitialDirectory = startPath,
                                  DefaultExt = @"*.*",
                                  Filter = extension,

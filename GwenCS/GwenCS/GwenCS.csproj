@@ -60,6 +60,7 @@
     <Compile Include="Controls\LabelClickable.cs" />
     <Compile Include="Controls\Menu.cs" />
     <Compile Include="Controls\MenuItem.cs" />
+    <Compile Include="Controls\MenuStrip.cs" />
     <Compile Include="Controls\ScrollControl.cs" />
     <Compile Include="Controls\Symbol\Arrow.cs" />
     <Compile Include="Controls\Symbol\Base.cs" />

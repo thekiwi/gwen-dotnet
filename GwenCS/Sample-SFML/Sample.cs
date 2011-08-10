@@ -16,6 +16,7 @@ using Image = SFML.Graphics.Image;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
 using Label = Gwen.Controls.Label;
 using Menu = Gwen.Controls.Menu;
+using MenuStrip = Gwen.Controls.MenuStrip;
 using TextBox = Gwen.Controls.TextBox;
 
 namespace Gwen.Sample
@@ -26,6 +27,7 @@ namespace Gwen.Sample
         private static Canvas canvas;
         private static RenderWindow window;
 
+        [STAThread]
         static void Main()
         {
             int width = 800;
@@ -49,9 +51,6 @@ namespace Gwen.Sample
             List<int> ftime = new List<int>(fps_frames);
             float time = 0.0F;
             long frame = 0;
-            Text t = new Text(String.Format("FPS: {0}", frame / (time / 1000.0)));
-            t.Position = new Vector2(10, 10);
-            t.Color = Color.Red;
 
             Text btnText = new Text("Button pressed!");
             btnText.Position = new Vector2(200, 100);
@@ -75,12 +74,46 @@ namespace Gwen.Sample
             canvas.DrawBackground = true;
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
             canvas.KeyboardInputEnabled = true;
+            
+            Label fpsLabel = new Label(canvas);
+            fpsLabel.Y = 40;
+            fpsLabel.Dock = Pos.Left;
+
+            MenuStrip ms = new MenuStrip(canvas);
+            ms.Dock = Pos.Top;
+            //ms.SetPos(300, 20);
+            var root = ms.AddItem("File");
+            var item = root.Menu.AddItem("New", "test16.png");
+            item.Menu.AddItem("Account");
+            item.Menu.AddItem("Character", "test16.png");
+            root.Menu.AddItem("Load (works)", "test16.png").OnMenuItemSelected += Sample_OnMenuItemSelectedLoad;
+            root.Menu.AddItem("Save");
+            root.Menu.AddDivider();
+            root.Menu.AddItem("Quit (works)").OnMenuItemSelected += Sample_OnMenuItemSelectedQuit;
+
+            // ms.AddDivider(); // no vertical dividers yet
+
+            root = ms.AddItem("zażółć", "test16.png");
+            root.Menu.AddItem("gęślą");
+            root.Menu.AddItem("jaźń");
+            item = root.Menu.AddItem("checkable");
+            item.IsCheckable = true;
+            item.Checked = true;
+            
+            /////////////////////////////////////////////////////////
+            // bug: if this is moved to the end, tooltips are kind of screwed
+            ScrollControl sc1 = new ScrollControl(canvas);
+            sc1.SetBounds(10, 250, 100, 100);
+            Button b = new Button(sc1);
+            b.SetBounds(0, 0, 200, 200);
+            b.Text = "twice as big";
+            //sc1.SetScrollPos(0.5f, 0.5f);
 
             LabelClickable label1 = new LabelClickable(canvas);
             label1.SetPos(10, 50);
             label1.AutoSizeToContents = true;
             //label1.Font = skin.DefaultFont; // this does not corrupt text
-            label1.SetText("Welcome to GWEN in SFML.NET!");
+            label1.Text = "Welcome to GWEN in SFML.NET!";
             label1.TextColor = System.Drawing.Color.Blue;
             //label1.Dock = Pos.Right;
             
@@ -90,14 +123,14 @@ namespace Gwen.Sample
             label2.Font = font2;
             label2.MouseInputEnabled = true;
             label2.SetToolTipText("this is a tooltip");
-            label2.SetText("Hover mouse here");
+            label2.Text = "Hover mouse here";
             label2.Cursor = Cursors.Cross;
             label2.TextColor = System.Drawing.Color.DeepPink;
             //label2.Dock = Pos.Center;
 
             Button button1 = new Button(canvas);
             button1.AutoSizeToContents = true;
-            button1.SetText("DO STUFF");
+            button1.Text = "DO STUFF";
             button1.SetPos(10, 110);
             button1.Width = 150;
             button1.Height = 30;
@@ -109,7 +142,7 @@ namespace Gwen.Sample
             cb1.SetPos(10, 140);
             cb1.IsTabable = true;
             cb1.KeyboardInputEnabled = true;
-            cb1.Label.SetText("Sample checkbox 1");
+            cb1.Label.Text = "Sample checkbox 1";
             cb1.Label.SetToolTipText("trololo 1");
             cb1.CheckBox.IsChecked = true;
 
@@ -117,31 +150,17 @@ namespace Gwen.Sample
             cb2.SetPos(300, 140);
             cb2.IsTabable = true;
             cb2.KeyboardInputEnabled = true;
-            cb2.Label.SetText("Sample checkbox 2");
+            cb2.Label.Text = "Sample checkbox 2";
             cb2.Label.SetToolTipText("trololo 2");
 
             TextBox tb1 = new TextBox(canvas);
             tb1.SetPos(10, 200);
-            tb1.SetText("sample edit");
+            tb1.Text = "sample edit";
             tb1.CursorPos = 3;
             tb1.CursorEnd = 7; // todo: show even without focus
             
-            ScrollControl sc1 = new ScrollControl(canvas);
-            sc1.SetBounds(10, 250, 100, 100);
-            Button b = new Button(sc1);
-            b.SetBounds(0, 0, 200, 200);
-            b.SetText("twice as big");
-            //sc1.SetScrollPos(0.5f, 0.5f);
-
-            Menu m1 = new Menu(canvas);
-            m1.AddItem("item 1");
-            var i1 = m1.AddItem("item 2");
-            i1.IsCheckable = true;
-            i1.Checked = true;
-            m1.AddDivider();
-            m1.AddItem("item 3");
-            m1.SetPos(250, 250);
             
+           
             // Create an input processor
             GwenInput = new Input.SFML();
             GwenInput.Initialize(canvas);
@@ -158,8 +177,6 @@ namespace Gwen.Sample
                 Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT);
                 window.SaveGLStates();
 
-                canvas.RenderCanvas();
-
                 ulong frametime = window.GetFrameTime();
                 time += frametime;
                 frame++;
@@ -172,13 +189,33 @@ namespace Gwen.Sample
                 if (button1.IsDepressed)
                     window.Draw(btnText);
 
-                t.DisplayedString = String.Format("FPS: {0:F2}", 1000f * ftime.Count / ftime.Sum());
+                if (w.ElapsedMilliseconds > 1000)
+                {
+                    fpsLabel.Text = String.Format("FPS: {0:F0}", 1000f*ftime.Count/ftime.Sum());
+                    w.Restart();
+                }
                 //t.DisplayedString = String.Format("FPS: {0:F2}", 1000f * frame / w.ElapsedMilliseconds);
-                window.Draw(t);
 
+                canvas.RenderCanvas();
+                
                 window.RestoreGLStates();
                 window.Display();
             }
+        }
+
+        static void Sample_OnMenuItemSelectedQuit(Base control)
+        {
+            OnClosed(window, null);
+        }
+
+        static void Sample_OnMenuItemSelectedLoad(Base control)
+        {
+            Platform.Windows.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
+        }
+
+        static void OnFileOpen(String file)
+        {
+            MessageBox.Show("File opened: "+file);
         }
 
         static void window_TextEntered(object sender, TextEventArgs e)

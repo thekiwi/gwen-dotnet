@@ -11,7 +11,7 @@ namespace Gwen.Controls
         protected Padding m_rTextPadding;
 
         public Pos Alignment { get { return m_iAlign; } set { m_iAlign = value; } }
-        public String Text { get { return m_Text.String; } }
+        public String Text { get { return m_Text.String; } set { SetText(value); } }
         public Font Font { get { return m_Text.Font; } set { m_Text.Font = value; } }
         public Color TextColor { get { return m_Text.TextColor; } set { m_Text.TextColor = value; } }
 

@@ -226,8 +226,8 @@ namespace Gwen.Controls
             }
         }
 
-        public int X { get { return m_Bounds.X; } }
-        public int Y { get { return m_Bounds.Y; } }
+        public int X { get { return m_Bounds.X; } set { SetPos(value, Y); } }
+        public int Y { get { return m_Bounds.Y; } set { SetPos(X, value); } }
         public int Width { get { return m_Bounds.Width; } set { SetSize(value, Height); } }
         public int Height { get { return m_Bounds.Height; } set { SetSize(Width, value); } }
         public int Bottom { get { return m_Bounds.Bottom + m_Margin.bottom; } }
