@@ -12,6 +12,7 @@ using Tao.OpenGl;
 using Button = Gwen.Controls.Button;
 using CheckBox = Gwen.Controls.CheckBox;
 using Color = SFML.Graphics.Color;
+using ComboBox = Gwen.Controls.ComboBox;
 using Image = SFML.Graphics.Image;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
 using Label = Gwen.Controls.Label;
@@ -59,8 +60,8 @@ namespace Gwen.Sample
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
             
             // Create a GWEN skin
-            //Skin.Simple skin = new Skin.Simple(GwenRenderer);
-            Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
+            Skin.Simple skin = new Skin.Simple(GwenRenderer);
+            //Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
 
             // The fonts work differently in SFML - it can't use
             // system fonts. So force the skin to use a local one.
@@ -108,6 +109,16 @@ namespace Gwen.Sample
             b.SetBounds(0, 0, 200, 200);
             b.Text = "twice as big";
             //sc1.SetScrollPos(0.5f, 0.5f);
+
+            ComboBox cb = new ComboBox(canvas);
+            cb.SetPos(300, 50);
+            cb.KeyboardInputEnabled = true;
+            cb.AddItem("item 1", "a");
+            cb.AddItem("item 2", "b");
+            cb.AddItem("item 3", "c");
+            cb.AddItem("item 4", "d");
+            cb.AddItem("item 5", "e");
+            cb.AddItem("item 6", "f");
 
             LabelClickable label1 = new LabelClickable(canvas);
             label1.SetPos(10, 50);

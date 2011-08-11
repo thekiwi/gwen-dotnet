@@ -199,6 +199,7 @@ namespace Gwen.Controls
         public bool IsTabable { get { return m_Tabable; } set { m_Tabable = value; } }
         public bool ShouldDrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
         public bool ShouldCacheToTexture { get { return m_bCacheToTexture; } set { m_bCacheToTexture = value; } }
+        public String Name { get { return m_Name; } set { m_Name = value; } }
         public Rectangle Bounds { get { return m_Bounds; } }
         public bool NeedsLayout { get { return m_bNeedsLayout; } }
         public Rectangle RenderBounds { get { return m_RenderBounds; } }
