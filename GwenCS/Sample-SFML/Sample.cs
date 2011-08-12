@@ -60,8 +60,8 @@ namespace Gwen.Sample
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
             
             // Create a GWEN skin
-            Skin.Simple skin = new Skin.Simple(GwenRenderer);
-            //Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
+            //Skin.Simple skin = new Skin.Simple(GwenRenderer);
+            Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
 
             // The fonts work differently in SFML - it can't use
             // system fonts. So force the skin to use a local one.
@@ -149,7 +149,7 @@ namespace Gwen.Sample
             button1.KeyboardInputEnabled = true;
             button1.OnPress += button1_OnPress;
 
-            CheckBoxWithLabel cb1 = new CheckBoxWithLabel(canvas);
+            LabeledCheckBox cb1 = new LabeledCheckBox(canvas);
             cb1.SetPos(10, 140);
             cb1.IsTabable = true;
             cb1.KeyboardInputEnabled = true;
@@ -157,7 +157,7 @@ namespace Gwen.Sample
             cb1.Label.SetToolTipText("trololo 1");
             cb1.CheckBox.IsChecked = true;
 
-            CheckBoxWithLabel cb2 = new CheckBoxWithLabel(canvas);
+            LabeledCheckBox cb2 = new LabeledCheckBox(canvas);
             cb2.SetPos(300, 140);
             cb2.IsTabable = true;
             cb2.KeyboardInputEnabled = true;
@@ -170,6 +170,12 @@ namespace Gwen.Sample
             tb1.CursorPos = 3;
             tb1.CursorEnd = 7; // todo: show even without focus
             
+            RadioButtonController rb1 = new RadioButtonController(canvas);
+            rb1.AddOption("Option 1");
+            rb1.AddOption("Option 2");
+            rb1.AddOption("Option 3");
+            rb1.AddOption("zażółć gęślą jaźń");
+            rb1.SetBounds(10, 350, 200, 200);
             
            
             // Create an input processor

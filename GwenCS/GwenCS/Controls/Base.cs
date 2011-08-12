@@ -607,11 +607,8 @@ namespace Gwen.Controls
                 if (Children.Count > 0)
                 {
                     //Now render my kids
-                    foreach (Base child in Children)
+                    foreach (Base child in Children.Where(child => !child.IsHidden))
                     {
-                        if (child.IsHidden)
-                            continue;
-
                         child.DoCacheRender(skin, master);
                     }
                 }
@@ -666,11 +663,8 @@ namespace Gwen.Controls
                 if (Children.Count > 0)
                 {
                     //Now render my kids
-                    foreach (Base child in Children)
+                    foreach (Base child in Children.Where(child => !child.IsHidden))
                     {
-                        if (child.IsHidden)
-                            continue;
-
                         child.DoRender(skin);
                     }
                 }
@@ -808,11 +802,11 @@ namespace Gwen.Controls
             if (x < 0 || y < 0 || x >= Width || y >= Height)
                 return null;
 
+            // todo: convert to linq FindLast
             var rev = ((IList<Base>)Children).Reverse(); // IList.Reverse creates new list, List.Reverse works in place.. go figure
             foreach (Base child in rev)
             {
-                Base found;
-                found = child.GetControlAt(x - child.X, y - child.Y);
+                Base found = child.GetControlAt(x - child.X, y - child.Y);
                 if (found != null)
                     return found;
             }
@@ -850,11 +844,8 @@ namespace Gwen.Controls
             rBounds.Y += m_Padding.Top;
             rBounds.Height -= m_Padding.Top + m_Padding.Bottom;
 
-            foreach (Base child in Children)
+            foreach (Base child in Children.Where(child => !child.IsHidden))
             {
-                if (child.IsHidden)
-                    continue;
-
                 Pos iDock = child.Dock;
 
                 if (iDock.HasFlag(Pos.Fill))
@@ -1103,11 +1094,8 @@ namespace Gwen.Controls
         {
             Point size = Point.Empty;
 
-            foreach (Base child in Children)
+            foreach (Base child in Children.Where(child => !child.IsHidden))
             {
-                if (child.IsHidden) 
-                    continue;
-
                 size.X = Math.Max(size.X, child.Right);
                 size.Y = Math.Max(size.Y, child.Bottom);
             }
@@ -1126,12 +1114,7 @@ namespace Gwen.Controls
                 }
             }
 
-            foreach (Base child in Children)
-            {
-                if (child.HandleAccelerator(accelerator))
-                    return true;
-            }
-            return false;
+            return Children.Any(child => child.HandleAccelerator(accelerator));
         }
 
         public void AddAccelerator(String accelerator, ControlCallback handler)

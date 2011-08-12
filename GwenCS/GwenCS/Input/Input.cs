@@ -294,10 +294,9 @@ namespace Gwen.Input
             if (pControl.KeyboardInputEnabled)
             {
                 //Make sure none of our children have keyboard focus first - todo recursive
-                foreach (Base child in pControl.Children)
+                if (pControl.Children.Any(child => child == Global.KeyboardFocus))
                 {
-                    if (child == Global.KeyboardFocus)
-                        return;
+                    return;
                 }
 
                 pControl.Focus();

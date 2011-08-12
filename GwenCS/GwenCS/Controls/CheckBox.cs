@@ -38,7 +38,7 @@ namespace Gwen.Controls
         public event ControlCallback OnCheckChanged;
 
         // For derived controls
-        protected bool AllowUncheck { get { return true; } }
+        protected virtual bool AllowUncheck { get { return true; } }
 
         protected void OnCheckStatusChanged()
         {

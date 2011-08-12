@@ -5,12 +5,12 @@ using System.Text;
 
 namespace Gwen.Controls
 {
-    public class CheckBoxWithLabel : Base
+    public class LabeledCheckBox : Base
     {
         private CheckBox m_CheckBox;
         private LabelClickable m_Label;
 
-        public CheckBoxWithLabel(Base parent) : base(parent)
+        public LabeledCheckBox(Base parent) : base(parent)
         {
             SetSize(200, 19);
             m_CheckBox = new CheckBox(this);
