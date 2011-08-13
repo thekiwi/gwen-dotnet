@@ -52,6 +52,7 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\Canvas.cs" />
     <Compile Include="Controls\CheckBox.cs" />
+    <Compile Include="Controls\GroupBox.cs" />
     <Compile Include="Controls\LabeledCheckBox.cs" />
     <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="Controls\HorizontalScrollBar.cs" />
@@ -59,6 +60,10 @@
     <Compile Include="Controls\Label.cs" />
     <Compile Include="Controls\LabelClickable.cs" />
     <Compile Include="Controls\LabeledRadioButton.cs" />
+    <Compile Include="Controls\Layout\Table.cs" />
+    <Compile Include="Controls\Layout\TableRow.cs" />
+    <Compile Include="Controls\ListBox.cs" />
+    <Compile Include="Controls\ListBoxRow.cs" />
     <Compile Include="Controls\Menu.cs" />
     <Compile Include="Controls\MenuItem.cs" />
     <Compile Include="Controls\MenuStrip.cs" />

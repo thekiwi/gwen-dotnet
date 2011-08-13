@@ -154,7 +154,7 @@ namespace Gwen.Controls
 #endif
         }
 
-        protected virtual void UpdateScrollBars()
+        internal virtual void UpdateScrollBars()
         {
             if (null == m_InnerPanel)
                 return;

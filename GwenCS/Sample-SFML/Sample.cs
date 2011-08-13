@@ -13,9 +13,11 @@ using Button = Gwen.Controls.Button;
 using CheckBox = Gwen.Controls.CheckBox;
 using Color = SFML.Graphics.Color;
 using ComboBox = Gwen.Controls.ComboBox;
+using GroupBox = Gwen.Controls.GroupBox;
 using Image = SFML.Graphics.Image;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
 using Label = Gwen.Controls.Label;
+using ListBox = Gwen.Controls.ListBox;
 using Menu = Gwen.Controls.Menu;
 using MenuStrip = Gwen.Controls.MenuStrip;
 using TextBox = Gwen.Controls.TextBox;
@@ -46,7 +48,7 @@ namespace Gwen.Sample
             window.MouseButtonReleased += window_MouseButton;
             window.MouseWheelMoved += window_MouseWheelMoved;
             window.MouseMoved += window_MouseMoved;
-            window.TextEntered += new EventHandler<TextEventArgs>(window_TextEntered);
+            window.TextEntered += window_TextEntered;
 
             int fps_frames = 50;
             List<int> ftime = new List<int>(fps_frames);
@@ -54,7 +56,7 @@ namespace Gwen.Sample
             long frame = 0;
 
             Text btnText = new Text("Button pressed!");
-            btnText.Position = new Vector2(200, 100);
+            btnText.Position = new Vector2(0, 0);
             btnText.Color = Color.White;
 
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
@@ -123,7 +125,6 @@ namespace Gwen.Sample
             LabelClickable label1 = new LabelClickable(canvas);
             label1.SetPos(10, 50);
             label1.AutoSizeToContents = true;
-            //label1.Font = skin.DefaultFont; // this does not corrupt text
             label1.Text = "Welcome to GWEN in SFML.NET!";
             label1.TextColor = System.Drawing.Color.Blue;
             //label1.Dock = Pos.Right;
@@ -175,8 +176,33 @@ namespace Gwen.Sample
             rb1.AddOption("Option 2");
             rb1.AddOption("Option 3");
             rb1.AddOption("zażółć gęślą jaźń");
-            rb1.SetBounds(10, 350, 200, 200);
-            
+            rb1.SetBounds(10, 350, 150, 200);
+
+            GroupBox gb1 = new GroupBox(canvas);
+            gb1.SetBounds(150, 350, 320, 120);
+            gb1.Text = "Listbox test";
+
+            ListBox lb1 = new ListBox(gb1);
+            lb1.ColumnCount = 3;
+            lb1.SetSize(150, 100);
+            lb1.Dock = Pos.Left;
+            lb1.AllowMultiSelect = true;
+            var row = lb1.AddItem("multiselect");
+            row.SetCellText(1, "is");
+            row.SetCellText(2, "on");
+            lb1.AddItem("item 2");
+            lb1.AddItem("item 3").SetCellText(2, "3rd column");
+            row = lb1.AddItem("zażółć");
+            row.SetCellText(1, "gęślą");
+            row.SetCellText(2, "jaźń");
+
+            ListBox lb2 = new ListBox(gb1);
+            lb2.SetSize(150, 100);
+            lb2.Dock = Pos.Left;
+            lb2.AddItem("row 1");
+            lb2.AddItem("row 2");
+            lb2.AddItem("row 3");
+            lb2.AddItem("row 4");
            
             // Create an input processor
             GwenInput = new Input.SFML();
@@ -300,7 +326,7 @@ namespace Gwen.Sample
         {
             Gl.glViewport(0, 0, (int)e.Width, (int)e.Height);
             // todo: gwen doesn't handle resizing well
-            //canvas.SetSize((int)e.Width, (int)e.Height);
+            canvas.SetSize((int)e.Width, (int)e.Height);
             // window.ConvertCoords()
         }
     }

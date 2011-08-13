@@ -1084,7 +1084,7 @@ namespace Gwen.Controls
             return false;
         }
 
-        public virtual bool SizeToChildren(bool w, bool h)
+        public virtual bool SizeToChildren(bool w = true, bool h = true)
         {
             Point size = ChildrenSize();
             return SetSize(w ? size.X : Width, h ? size.Y : Height);
