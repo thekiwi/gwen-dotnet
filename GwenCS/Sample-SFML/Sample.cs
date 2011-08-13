@@ -20,6 +20,7 @@ using Label = Gwen.Controls.Label;
 using ListBox = Gwen.Controls.ListBox;
 using Menu = Gwen.Controls.Menu;
 using MenuStrip = Gwen.Controls.MenuStrip;
+using NumericUpDown = Gwen.Controls.NumericUpDown;
 using TextBox = Gwen.Controls.TextBox;
 
 namespace Gwen.Sample
@@ -166,11 +167,18 @@ namespace Gwen.Sample
             cb2.Label.SetToolTipText("trololo 2");
 
             TextBox tb1 = new TextBox(canvas);
-            tb1.SetPos(10, 200);
+            tb1.SetPos(10, 180);
             tb1.Text = "sample edit";
             tb1.CursorPos = 3;
             tb1.CursorEnd = 7; // todo: show even without focus
-            
+
+            TextBoxNumeric tb2 = new TextBoxNumeric(canvas);
+            tb2.SetPos(10, 200);
+
+            NumericUpDown n1 = new NumericUpDown(canvas);
+            n1.SetPos(10, 220);
+            n1.Min = -10;
+
             RadioButtonController rb1 = new RadioButtonController(canvas);
             rb1.AddOption("Option 1");
             rb1.AddOption("Option 2");
