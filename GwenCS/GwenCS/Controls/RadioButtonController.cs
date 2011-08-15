@@ -66,5 +66,13 @@ namespace Gwen.Controls
 
         }
 
+        // [omeg] added
+        public void SetSelection(int index)
+        {
+            if (index < 0 || index >= Children.Count)
+                return;
+
+            (Children[index] as LabeledRadioButton).RadioButton.onPress();
+        }
     }
 }

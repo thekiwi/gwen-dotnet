@@ -33,7 +33,7 @@ namespace Gwen.Renderer
                 m_Color = new Color(value.R, value.G, value.B, value.A);
             }
         }
-        
+
         public override void DrawLine(int x, int y, int a, int b)
         {
             Translate( ref x, ref y );
@@ -171,6 +171,29 @@ namespace Gwen.Renderer
 
             pTexture.Height = (int)tex.Height;
             pTexture.Width = (int)tex.Width;
+            pTexture.Data = tex;
+        }
+
+        // [omeg] added
+        public override void LoadTextureRaw(Texture pTexture, byte[] pixelData)
+        {
+            if (null == pTexture) return;
+            if (pTexture.Data != null) FreeTexture(pTexture);
+
+            Image tex;
+
+            try
+            {
+                tex = new Image((uint)pTexture.Width, (uint)pTexture.Height, pixelData);
+            }
+            catch (LoadingFailedException)
+            {
+                pTexture.Failed = true;
+                return;
+            }
+
+            tex.Smooth = true;
+
             pTexture.Data = tex;
         }
 

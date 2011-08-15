@@ -2,10 +2,21 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace Gwen.Renderer
 {
+    /*
+    [StructLayout(LayoutKind.Sequential, Pack = 0)]
+    public struct RGBA
+    {
+        public byte R;
+        public byte G;
+        public byte B;
+        public byte A;
+    }
+    */
     public class Base
     {
         private Point m_RenderOffset;
@@ -47,6 +58,11 @@ namespace Gwen.Renderer
         {}
 
         public virtual void LoadTexture(Texture t)
+        {}
+
+        // [omeg] Added to draw custom pixel bitmaps. Pixel data should be in RGBA order.
+        // texture should have width & height set.
+        public virtual void LoadTextureRaw(Texture t, byte[] pixelData)
         {}
 
         public virtual void FreeTexture(Texture t)

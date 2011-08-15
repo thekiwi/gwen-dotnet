@@ -92,11 +92,10 @@ namespace Gwen.Controls
             Value = m_Value - 1;
         }
 
-        protected override bool IsTextAllowed(string str, int iPos)
+        protected override bool IsTextAllowed(string str)
         {
-            String newText = Text.Insert(iPos, str);
             double d;
-            if (!double.TryParse(newText, out d))
+            if (!double.TryParse(str, out d))
                 return false;
             if (d < m_iMin) return false;
             if (d > m_iMax) return false;

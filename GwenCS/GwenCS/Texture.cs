@@ -26,6 +26,15 @@ namespace Gwen
             renderer.LoadTexture(this);
         }
 
+        // [omeg] added. pixel data = RGBA order
+        public void LoadRaw(int width, int height, byte[] pixelData, Renderer.Base renderer)
+        {
+            Width = width;
+            Height = height;
+            renderer.LoadTextureRaw(this, pixelData);
+        }
+
+        // todo: IDisposable
         public void Release(Renderer.Base renderer)
         {
             renderer.FreeTexture(this);

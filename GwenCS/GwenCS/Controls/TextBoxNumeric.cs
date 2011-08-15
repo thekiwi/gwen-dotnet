@@ -14,13 +14,19 @@ namespace Gwen.Controls
             Text = "0";
         }
 
+        // [omeg] added
+        protected virtual bool IsTextAllowed(String str)
+        {
+            if (str == "-")
+                return true; // annoying if single - is not allowed
+            double d;
+            return double.TryParse(str, out d);
+        }
+
         protected override bool IsTextAllowed(String str, int iPos)
         {
             String newText = Text.Insert(iPos, str);
-            if (newText == "-")
-                return true; // annoying if single - is not allowed
-            double d;
-            return double.TryParse(newText, out d);
+            return IsTextAllowed(newText);
         }
 
         public virtual double Value
@@ -44,6 +50,12 @@ namespace Gwen.Controls
             }
             else
                 m_Value = double.Parse(Text);
+        }
+        
+        public override void SetText(string str, bool doEvents = true)
+        {
+            if (IsTextAllowed(str))
+                base.SetText(str, doEvents);
         }
     }
 }

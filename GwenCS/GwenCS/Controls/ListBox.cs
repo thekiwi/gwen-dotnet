@@ -55,6 +55,16 @@ namespace Gwen.Controls
             return AddItem(label, String.Empty);
         }
 
+        // [omeg] added
+        public void SelectRow(int index)
+        {
+            if (index < 0 || index >= m_Table.RowCount)
+                return;
+            if (!m_bMultiSelect)
+                UnselectAll();
+            (m_Table.Children[index] as ListBoxRow).IsSelected = true;
+        }
+
         public TableRow AddItem(String label, String name)
         {
             ListBoxRow pRow = new ListBoxRow(this);

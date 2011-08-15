@@ -44,6 +44,7 @@
     <Compile Include="Anim\Size\Width.cs" />
     <Compile Include="Anim\TimedAnimation.cs" />
     <Compile Include="ControlsInternal\Dragger.cs" />
+    <Compile Include="ControlsInternal\Highlight.cs" />
     <Compile Include="ControlsInternal\ScrollBarBar.cs" />
     <Compile Include="ControlsInternal\ScrollBarButton.cs" />
     <Compile Include="ControlsInternal\Text.cs" />
@@ -52,6 +53,8 @@
     <Compile Include="Controls\Button.cs" />
     <Compile Include="Controls\Canvas.cs" />
     <Compile Include="Controls\CheckBox.cs" />
+    <Compile Include="Controls\ColorLerpBox.cs" />
+    <Compile Include="Controls\ColorSlider.cs" />
     <Compile Include="Controls\GroupBox.cs" />
     <Compile Include="Controls\LabeledCheckBox.cs" />
     <Compile Include="Controls\ComboBox.cs" />
@@ -78,6 +81,7 @@
     <Compile Include="Controls\TextBoxNumeric.cs" />
     <Compile Include="Controls\VerticalScrollBar.cs" />
     <Compile Include="Font.cs" />
+    <Compile Include="HSV.cs" />
     <Compile Include="Input\Action.cs" />
     <Compile Include="Input\Input.cs" />
     <Compile Include="Input\KeyData.cs" />

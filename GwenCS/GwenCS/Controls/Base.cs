@@ -335,7 +335,7 @@ namespace Gwen.Controls
             }
         }
 
-        public void Invalidate()
+        public virtual void Invalidate()
         {
             m_bNeedsLayout = true;
             m_bCacheTextureDirty = true;

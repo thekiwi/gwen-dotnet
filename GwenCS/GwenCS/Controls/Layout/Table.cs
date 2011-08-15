@@ -14,6 +14,7 @@ namespace Gwen.Controls.Layout
         protected int[] m_ColumnWidth = new int[TableRow.MaxColumns];
 
         public int ColumnCount { get { return m_iColumnCount; } set {SetColumnCount(value);}}
+        public int RowCount { get { return Children.Count; } }
 
         public Table(Base parent) : base(parent)
         {

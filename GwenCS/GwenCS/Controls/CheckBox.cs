@@ -16,7 +16,7 @@ namespace Gwen.Controls
             {
                 if (m_bChecked == value) return;
                 m_bChecked = value;
-                OnCheckStatusChanged();
+                onCheckStatusChanged();
             }
         }
 
@@ -40,7 +40,7 @@ namespace Gwen.Controls
         // For derived controls
         protected virtual bool AllowUncheck { get { return true; } }
 
-        protected void OnCheckStatusChanged()
+        protected void onCheckStatusChanged()
         {
             if (IsChecked)
             { 
@@ -63,7 +63,7 @@ namespace Gwen.Controls
             skin.DrawCheckBox(this, m_bChecked, IsDepressed);
         }
 
-        protected override void onPress()
+        internal override void onPress()
         {
             base.onPress();
             if (IsChecked && !AllowUncheck)

@@ -30,6 +30,11 @@ namespace Gwen.Sample
         private static Input.SFML GwenInput;
         private static Canvas canvas;
         private static RenderWindow window;
+        private static Label fpsLabel;
+
+        private static ColorLerpBox _ColorBox;
+        private static ColorSlider _ColorSlider;
+        private static Label _ColorText;
 
         [STAThread]
         static void Main()
@@ -79,7 +84,7 @@ namespace Gwen.Sample
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
             canvas.KeyboardInputEnabled = true;
             
-            Label fpsLabel = new Label(canvas);
+            fpsLabel = new Label(canvas);
             fpsLabel.Y = 40;
             fpsLabel.Dock = Pos.Left;
 
@@ -114,7 +119,7 @@ namespace Gwen.Sample
             //sc1.SetScrollPos(0.5f, 0.5f);
 
             ComboBox cb = new ComboBox(canvas);
-            cb.SetPos(300, 50);
+            cb.SetPos(200, 50);
             cb.KeyboardInputEnabled = true;
             cb.AddItem("item 1", "a");
             cb.AddItem("item 2", "b");
@@ -160,7 +165,7 @@ namespace Gwen.Sample
             cb1.CheckBox.IsChecked = true;
 
             LabeledCheckBox cb2 = new LabeledCheckBox(canvas);
-            cb2.SetPos(300, 140);
+            cb2.SetPos(200, 140);
             cb2.IsTabable = true;
             cb2.KeyboardInputEnabled = true;
             cb2.Label.Text = "Sample checkbox 2";
@@ -171,20 +176,26 @@ namespace Gwen.Sample
             tb1.Text = "sample edit";
             tb1.CursorPos = 3;
             tb1.CursorEnd = 7; // todo: show even without focus
-
+            
             TextBoxNumeric tb2 = new TextBoxNumeric(canvas);
             tb2.SetPos(10, 200);
-
+            tb2.Text = "123.4asdasd"; // this fails
+            tb2.Text = "123.4"; // ok
+            
             NumericUpDown n1 = new NumericUpDown(canvas);
             n1.SetPos(10, 220);
             n1.Min = -10;
-
+            n1.Text = "-51"; // this fails
+            n1.Text = "-5"; // ok
+            
             RadioButtonController rb1 = new RadioButtonController(canvas);
             rb1.AddOption("Option 1");
             rb1.AddOption("Option 2");
             rb1.AddOption("Option 3");
             rb1.AddOption("zażółć gęślą jaźń");
             rb1.SetBounds(10, 350, 150, 200);
+            rb1.SetSelection(1);
+            rb1.SetSelection(2); // overrides above
 
             GroupBox gb1 = new GroupBox(canvas);
             gb1.SetBounds(150, 350, 320, 120);
@@ -203,6 +214,8 @@ namespace Gwen.Sample
             row = lb1.AddItem("zażółć");
             row.SetCellText(1, "gęślą");
             row.SetCellText(2, "jaźń");
+            lb1.SelectRow(1);
+            lb1.SelectRow(3);
 
             ListBox lb2 = new ListBox(gb1);
             lb2.SetSize(150, 100);
@@ -211,6 +224,20 @@ namespace Gwen.Sample
             lb2.AddItem("row 2");
             lb2.AddItem("row 3");
             lb2.AddItem("row 4");
+            lb2.SelectRow(1); // this will be unselected since it's not multiselect
+            lb2.SelectRow(2);
+
+            _ColorBox = new ColorLerpBox(canvas);
+            _ColorBox.SetPos(400, 50);
+            _ColorBox.OnSelectionChanged += new Base.ControlCallback(_ColorBox_OnSelectionChanged);
+
+            _ColorSlider = new ColorSlider(canvas);
+            _ColorSlider.SetBounds(528, 50, 20, _ColorBox.Height);
+            _ColorSlider.OnSelectionChanged += new Base.ControlCallback(csl_OnSelectionChanged);
+
+            _ColorText = new Label(canvas);
+            _ColorText.SetPos(400, 50 + 128);
+            _ColorText.AutoSizeToContents = true;
            
             // Create an input processor
             GwenInput = new Input.SFML();
@@ -238,7 +265,9 @@ namespace Gwen.Sample
                 ftime.Add((int)frametime);
 
                 if (button1.IsDepressed)
-                    window.Draw(btnText);
+                    fpsLabel.TextColor = System.Drawing.Color.Red;
+                else
+                    fpsLabel.TextColor = System.Drawing.Color.Black;
 
                 if (w.ElapsedMilliseconds > 1000)
                 {
@@ -252,6 +281,19 @@ namespace Gwen.Sample
                 window.RestoreGLStates();
                 window.Display();
             }
+        }
+
+        static void _ColorBox_OnSelectionChanged(Base control)
+        {
+            var c = _ColorBox.SelectedColor;
+            var hsv = c.ToHSV();
+            _ColorText.Text = String.Format("RGB: {0:X2}{1:X2}{2:X2} HSV: {3:F1} {4:F2} {5:F2}",
+                                            c.R, c.G, c.B, hsv.h, hsv.s, hsv.v);
+        }
+
+        static void csl_OnSelectionChanged(Base control)
+        {
+            _ColorBox.SetColor(_ColorSlider.SelectedColor);
         }
 
         static void Sample_OnMenuItemSelectedQuit(Base control)
@@ -276,7 +318,6 @@ namespace Gwen.Sample
 
         static void button1_OnPress(Base control)
         {
-            
         }
 
         static void window_MouseMoved(object sender, MouseMoveEventArgs e)

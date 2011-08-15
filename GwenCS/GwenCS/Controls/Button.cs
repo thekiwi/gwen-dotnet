@@ -109,7 +109,7 @@ namespace Gwen.Controls
             Redraw();
         }
 
-        protected virtual void onPress()
+        internal virtual void onPress()
         {
             if (IsToggle)
             {
