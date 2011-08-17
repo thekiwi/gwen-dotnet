@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using SFML;
 using SFML.Graphics;
+using SFML.Window;
 using Tao.OpenGl;
 using Color = SFML.Graphics.Color;
 using Image = SFML.Graphics.Image;
@@ -12,7 +12,7 @@ using Image = SFML.Graphics.Image;
 
 namespace Gwen.Renderer
 {
-    public class SFML : Renderer.Base
+    public class SFML : Renderer.Base, ICacheToTexture
     {
         protected RenderTarget m_Target;
         protected Color m_Color;
@@ -20,6 +20,11 @@ namespace Gwen.Renderer
         public SFML(RenderTarget target)
         {
             m_Target = target;
+        }
+
+        public override ICacheToTexture CTT
+        {
+            get { return this; }
         }
         
         public override System.Drawing.Color DrawColor
@@ -39,7 +44,7 @@ namespace Gwen.Renderer
             Translate( ref x, ref y );
             Translate( ref a, ref b );
             // [omeg] todo: sfml.net should have method accepting coords to not create unnecessary objects
-            m_Target.Draw(Shape.Line(new Vector2(x, y), new Vector2(a, b), 1.0f, m_Color));
+            m_Target.Draw(Shape.Line(new Vector2f(x, y), new Vector2f(a, b), 1.0f, m_Color));
         }
 
         public override void DrawFilledRect(Rectangle rect)
@@ -85,6 +90,7 @@ namespace Gwen.Renderer
 
         public override void RenderText(ref Font font, Point pos, string text)
         {
+            //m_Target.SaveGLStates();
             pos = Translate(pos);
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
 
@@ -100,10 +106,11 @@ namespace Gwen.Renderer
 
             Text sfText = new Text(text);
             sfText.Font = sfFont;
-            sfText.Position = new Vector2(pos.X, pos.Y); // [omeg] todo: correct? or origin?
+            sfText.Position = new Vector2f(pos.X, pos.Y); // [omeg] todo: correct? or origin?
             sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
             sfText.Color = m_Color;
             m_Target.Draw(sfText);
+            //m_Target.RestoreGLStates();
         }
 
         public override Point MeasureText(ref Font font, string text)
@@ -131,16 +138,48 @@ namespace Gwen.Renderer
 
         public override void DrawTexturedRect(Texture t, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
         {
-            Image tex = t.Data as Image;
+            Sprite tex = t.Data as Sprite;
             if (null == tex)
             {
                 DrawMissingImage(targetRect);
                 return;
             }
 
-            Rectangle rect = Translate(targetRect);
-            tex.Bind();
+            DrawTexturedRect(tex, targetRect, u1, v1, u2, v2);
+        }
 
+        protected void DrawTexturedRect(Sprite tex, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
+        {
+            Rectangle rect = Translate(targetRect);
+            //DrawMissingImage(rect); return;
+            
+            //m_Target.SaveGLStates();
+            int x1 = Global.Trunc(u1 * tex.Texture.Width);
+            int y1 = Global.Trunc(v1*tex.Texture.Height);
+            int w = Global.Trunc((u2 - u1)*tex.Texture.Width);
+            int h = Global.Trunc((v2 - v1)*tex.Texture.Height);
+            var r = new IntRect(x1, y1, w, h);
+            /*
+            double delta = 0.0001;
+            if (u1 - r.Left > delta)
+                throw new InvalidOperationException("u1");
+            if (v1 - r.Top > delta)
+                throw new InvalidOperationException("v1");
+            if (u2-u1 - r.Width > delta)
+                throw new InvalidOperationException("width");
+            if (v2-v1 - r.Height > delta)
+                throw new InvalidOperationException("height");
+            */
+            tex.Position = new Vector2f(rect.X, rect.Y);
+            tex.SubRect = r;
+            tex.Width = rect.Width;
+            tex.Height = rect.Height;
+            m_Target.Draw(tex);
+            //m_Target.RestoreGLStates();
+            
+            /*
+            // original rendering code
+            tex.Texture.Bind();
             Gl.glColor4f(1, 1, 1, 1);
             Gl.glBegin(Gl.GL_QUADS);
             Gl.glTexCoord2f(u1, v1); Gl.glVertex2f(rect.X, rect.Y);
@@ -148,6 +187,7 @@ namespace Gwen.Renderer
             Gl.glTexCoord2f(u2, v2); Gl.glVertex2f(rect.Right, rect.Bottom);
             Gl.glTexCoord2f(u2, v1); Gl.glVertex2f(rect.Right, rect.Y);
             Gl.glEnd();
+            */
         }
 
         public override void LoadTexture(Texture pTexture)
@@ -155,11 +195,14 @@ namespace Gwen.Renderer
             if (null == pTexture) return;
             if (pTexture.Data != null) FreeTexture(pTexture);
 
-            Image tex;
+            global::SFML.Graphics.Texture tex;
+            Sprite sprite;
 
             try
             {
-                tex = new Image(pTexture.Name);
+                tex = new global::SFML.Graphics.Texture(pTexture.Name);
+                tex.Smooth = true;
+                sprite = new Sprite(tex);
             }
             catch (LoadingFailedException)
             {
@@ -167,11 +210,9 @@ namespace Gwen.Renderer
                 return;
             }
 
-            tex.Smooth = true;
-
             pTexture.Height = (int)tex.Height;
             pTexture.Width = (int)tex.Width;
-            pTexture.Data = tex;
+            pTexture.Data = sprite;
         }
 
         // [omeg] added
@@ -180,11 +221,15 @@ namespace Gwen.Renderer
             if (null == pTexture) return;
             if (pTexture.Data != null) FreeTexture(pTexture);
 
-            Image tex;
+            global::SFML.Graphics.Texture tex;
+            Sprite sprite;
 
             try
             {
-                tex = new Image((uint)pTexture.Width, (uint)pTexture.Height, pixelData);
+                var img = new Image((uint)pTexture.Width, (uint)pTexture.Height, pixelData);
+                tex = new global::SFML.Graphics.Texture(img);
+                tex.Smooth = true;
+                sprite = new Sprite(tex);
             }
             catch (LoadingFailedException)
             {
@@ -192,14 +237,12 @@ namespace Gwen.Renderer
                 return;
             }
 
-            tex.Smooth = true;
-
-            pTexture.Data = tex;
+            pTexture.Data = sprite;
         }
 
         public override void FreeTexture(Texture t)
         {
-            Image tex = t.Data as Image;
+            Sprite tex = t.Data as Sprite;
             if (tex != null)
                 tex.Dispose();
 
@@ -211,11 +254,9 @@ namespace Gwen.Renderer
             Rectangle rect = ClipRegion;
             // OpenGL's coords are from the bottom left
             // so we need to translate them here.
-            {
-                int[] view = new int[4];
-                Gl.glGetIntegerv(Gl.GL_VIEWPORT, view);
-                rect.Y = view[3] - (rect.Y + rect.Height);
-            }
+            var v = m_Target.GetViewport(m_Target.GetView());
+            rect.Y = v.Height - (rect.Y + rect.Height);
+            
             Gl.glScissor(Global.Trunc(rect.X*Scale), Global.Trunc(rect.Y*Scale),
                          Global.Trunc(rect.Width*Scale), Global.Trunc(rect.Height*Scale));
             Gl.glEnable(Gl.GL_SCISSOR_TEST);
@@ -225,5 +266,90 @@ namespace Gwen.Renderer
         {
             Gl.glDisable(Gl.GL_SCISSOR_TEST);
         }
+
+        #region Implementation of ICacheToTexture
+
+        private Dictionary<Controls.Base, RenderTexture> m_RT;
+        private Stack<RenderTarget> m_Stack;
+        private RenderTarget m_RealRT;
+
+        public void Initialize()
+        {
+            m_RT = new Dictionary<Controls.Base, RenderTexture>();
+            m_Stack = new Stack<RenderTarget>();
+        }
+
+        public void ShutDown()
+        {
+            m_RT.Clear();
+            if (m_Stack.Count > 0)
+                throw new InvalidOperationException("Render stack not empty");
+        }
+
+        /// <summary>
+        /// Called to set the target up for rendering.
+        /// </summary>
+        /// <param name="control">Control to be rendered.</param>
+        public void SetupCacheTexture(Controls.Base control)
+        {
+            m_RealRT = m_Target;
+            m_Stack.Push(m_Target); // save current RT
+            m_Target = m_RT[control]; // make cache current RT
+        }
+
+        /// <summary>
+        /// Called when cached rendering is done.
+        /// </summary>
+        /// <param name="control">Control to be rendered.</param>
+        public void FinishCacheTexture(Controls.Base control)
+        {
+            m_Target = m_Stack.Pop();
+        }
+
+        /// <summary>
+        /// Called when gwen wants to draw the cached version of the control. 
+        /// </summary>
+        /// <param name="control">Control to be rendered.</param>
+        public void DrawCachedControlTexture(Controls.Base control)
+        {
+            RenderTexture ri = m_RT[control];
+            //ri.Display();
+            RenderTarget rt = m_Target;
+            m_Target = m_RealRT;
+            DrawTexturedRect(new Sprite(ri.Texture), control.Bounds);
+            //DrawMissingImage(control.Bounds);
+            m_Target = rt;
+        }
+
+        /// <summary>
+        /// Called to actually create a cached texture. 
+        /// </summary>
+        /// <param name="control">Control to be rendered.</param>
+        public void CreateControlCacheTexture(Controls.Base control)
+        {
+            // initialize cache RT
+            if (!m_RT.ContainsKey(control))
+            {
+                m_RT[control] = new RenderTexture((uint)control.Width, (uint)control.Height);
+                View view = new View(new FloatRect(0, 0, control.Width, control.Height));
+                //view.Viewport = new FloatRect(0, control.Height, control.Width, control.Height);
+                m_RT[control].SetView(view);
+            }
+
+            RenderTexture ri = m_RT[control];
+            ri.Display();
+        }
+
+        public void UpdateControlCacheTexture(Controls.Base control)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetRenderer(Base renderer)
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

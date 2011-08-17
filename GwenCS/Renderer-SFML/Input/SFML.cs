@@ -36,28 +36,28 @@ namespace Gwen.Input
             m_Canvas = c;
         }
 
-        private Key TranslateKeyCode(KeyCode sfKey)
+        private Key TranslateKeyCode(Keyboard.Key sfKey)
         {
             switch (sfKey)
             {
-                        case KeyCode.Back:			return Key.Backspace;
-                        case KeyCode.Return:		return Key.Return;
-                        case KeyCode.Escape:		return Key.Escape;
-                        case KeyCode.Tab:			return Key.Tab;
-                        case KeyCode.Space:		    return Key.Space;
-                        case KeyCode.Up:			return Key.Up;
-                        case KeyCode.Down:			return Key.Down;
-                        case KeyCode.Left:			return Key.Left;
-                        case KeyCode.Right:		    return Key.Right;
-                        case KeyCode.Home:			return Key.Home;
-                        case KeyCode.End:			return Key.End;
-                        case KeyCode.Delete:		return Key.Delete;
-                        case KeyCode.LControl:		return Key.Control;
-                        case KeyCode.LAlt:			return Key.Alt;
-                        case KeyCode.LShift:		return Key.Shift;
-                        case KeyCode.RControl:		return Key.Control;
-                        case KeyCode.RAlt:			return Key.Alt;
-                        case KeyCode.RShift:		return Key.Shift;
+                        case Keyboard.Key.Back:			return Key.Backspace;
+                        case Keyboard.Key.Return:		return Key.Return;
+                        case Keyboard.Key.Escape:		return Key.Escape;
+                        case Keyboard.Key.Tab:			return Key.Tab;
+                        case Keyboard.Key.Space:		    return Key.Space;
+                        case Keyboard.Key.Up:			return Key.Up;
+                        case Keyboard.Key.Down:			return Key.Down;
+                        case Keyboard.Key.Left:			return Key.Left;
+                        case Keyboard.Key.Right:		    return Key.Right;
+                        case Keyboard.Key.Home:			return Key.Home;
+                        case Keyboard.Key.End:			return Key.End;
+                        case Keyboard.Key.Delete:		return Key.Delete;
+                        case Keyboard.Key.LControl:		return Key.Control;
+                        case Keyboard.Key.LAlt:			return Key.Alt;
+                        case Keyboard.Key.LShift:		return Key.Shift;
+                        case Keyboard.Key.RControl:		return Key.Control;
+                        case Keyboard.Key.RAlt:			return Key.Alt;
+                        case Keyboard.Key.RShift:		return Key.Shift;
             }
             return Key.Invalid;
         }
@@ -101,7 +101,7 @@ namespace Gwen.Input
             {
                 KeyEventArgs ev = args as KeyEventArgs;
 
-                if (ev.Control && ev.Alt && ev.Code == KeyCode.LControl)
+                if (ev.Control && ev.Alt && ev.Code == Keyboard.Key.LControl)
                     return false; // sfml bug: this is right alt
 
                 if (ev.Down && Input.DoSpecialKeys(m_Canvas, (char)ev.Code))

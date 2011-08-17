@@ -120,6 +120,7 @@ namespace Gwen.Controls
         // Internal. Do not call directly.
         protected override void Render(Skin.Base skin)
         {
+            //skin.Renderer.rnd = new Random(1);
             base.Render(skin);
             m_bNeedsRedraw = false;
         }

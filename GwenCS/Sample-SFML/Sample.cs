@@ -22,6 +22,7 @@ using Menu = Gwen.Controls.Menu;
 using MenuStrip = Gwen.Controls.MenuStrip;
 using NumericUpDown = Gwen.Controls.NumericUpDown;
 using TextBox = Gwen.Controls.TextBox;
+using View = SFML.Graphics.View;
 
 namespace Gwen.Sample
 {
@@ -62,8 +63,14 @@ namespace Gwen.Sample
             long frame = 0;
 
             Text btnText = new Text("Button pressed!");
-            btnText.Position = new Vector2(0, 0);
+            btnText.Position = new Vector2f(0, 0);
             btnText.Color = Color.White;
+
+            RenderTexture ri = new RenderTexture(100, 100);
+            View vi = new View(new FloatRect(0, 0, 100, 100));
+            ri.SetView(vi);
+            ri.Draw(btnText);
+            ri.Display();
 
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
             
@@ -85,7 +92,7 @@ namespace Gwen.Sample
             canvas.KeyboardInputEnabled = true;
             
             fpsLabel = new Label(canvas);
-            fpsLabel.Y = 40;
+            fpsLabel.SetPos(0, 40);
             fpsLabel.Dock = Pos.Left;
 
             MenuStrip ms = new MenuStrip(canvas);
@@ -99,7 +106,7 @@ namespace Gwen.Sample
             root.Menu.AddItem("Save");
             root.Menu.AddDivider();
             root.Menu.AddItem("Quit (works)").OnMenuItemSelected += Sample_OnMenuItemSelectedQuit;
-
+            //ms.ShouldCacheToTexture = true;
             // ms.AddDivider(); // no vertical dividers yet
 
             root = ms.AddItem("zażółć", "test16.png");
@@ -116,7 +123,9 @@ namespace Gwen.Sample
             Button b = new Button(sc1);
             b.SetBounds(0, 0, 200, 200);
             b.Text = "twice as big";
+            //b.ShouldCacheToTexture = true;
             //sc1.SetScrollPos(0.5f, 0.5f);
+            //sc1.ShouldCacheToTexture = true;
 
             ComboBox cb = new ComboBox(canvas);
             cb.SetPos(200, 50);
@@ -127,9 +136,10 @@ namespace Gwen.Sample
             cb.AddItem("item 4", "d");
             cb.AddItem("item 5", "e");
             cb.AddItem("item 6", "f");
+            //cb.ShouldCacheToTexture = true;
 
             LabelClickable label1 = new LabelClickable(canvas);
-            label1.SetPos(10, 50);
+            label1.SetBounds(10, 50, 100, 10);
             label1.AutoSizeToContents = true;
             label1.Text = "Welcome to GWEN in SFML.NET!";
             label1.TextColor = System.Drawing.Color.Blue;
@@ -196,9 +206,9 @@ namespace Gwen.Sample
             rb1.SetBounds(10, 350, 150, 200);
             rb1.SetSelection(1);
             rb1.SetSelection(2); // overrides above
-
+            
             GroupBox gb1 = new GroupBox(canvas);
-            gb1.SetBounds(150, 350, 320, 120);
+            gb1.SetBounds(150, 250, 320, 120);
             gb1.Text = "Listbox test";
 
             ListBox lb1 = new ListBox(gb1);
@@ -238,7 +248,13 @@ namespace Gwen.Sample
             _ColorText = new Label(canvas);
             _ColorText.SetPos(400, 50 + 128);
             _ColorText.AutoSizeToContents = true;
-           
+            /*
+            gb1.ShouldCacheToTexture = true;
+            n1.ShouldCacheToTexture = true;
+            button1.ShouldCacheToTexture = true;
+            label1.ShouldCacheToTexture = true;
+            rb1.ShouldCacheToTexture = true;
+            */
             // Create an input processor
             GwenInput = new Input.SFML();
             GwenInput.Initialize(canvas);
@@ -263,6 +279,8 @@ namespace Gwen.Sample
                     ftime.RemoveAt(0);
 
                 ftime.Add((int)frametime);
+
+                //window.Draw(new Sprite(ri.Image));
 
                 if (button1.IsDepressed)
                     fpsLabel.TextColor = System.Drawing.Color.Red;
@@ -355,14 +373,14 @@ namespace Gwen.Sample
         static void OnKeyPressed(object sender, KeyEventArgs e)
         {
             RenderWindow window = (RenderWindow)sender;
-            if (e.Code == KeyCode.Escape)
+            if (e.Code == Keyboard.Key.Escape)
                 window.Close();
 
-            if (e.Code == KeyCode.F12)
+            if (e.Code == Keyboard.Key.F12)
             {
-                Image i = new Image(1, 1);
-                i.CopyScreen(window);
-                i.SaveToFile(string.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
+                SFML.Graphics.Texture t = new SFML.Graphics.Texture(window.Width, window.Height);
+                t.Update(window);
+                t.CopyToImage().SaveToFile(string.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
                                            DateTime.Now.Second));
             }
             GwenInput.ProcessMessage(e);

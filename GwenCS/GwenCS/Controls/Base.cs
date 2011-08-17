@@ -198,7 +198,7 @@ namespace Gwen.Controls
         public Cursor Cursor { get { return m_Cursor; } set { m_Cursor = value; } }
         public bool IsTabable { get { return m_Tabable; } set { m_Tabable = value; } }
         public bool ShouldDrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
-        public bool ShouldCacheToTexture { get { return m_bCacheToTexture; } set { m_bCacheToTexture = value; } }
+        public bool ShouldCacheToTexture { get { return m_bCacheToTexture; } set { m_bCacheToTexture = value; /*Children.ForEach(x => x.ShouldCacheToTexture=value);*/ } }
         public String Name { get { return m_Name; } set { m_Name = value; } }
         public Rectangle Bounds { get { return m_Bounds; } }
         public bool NeedsLayout { get { return m_bNeedsLayout; } }
@@ -591,7 +591,7 @@ namespace Gwen.Controls
             else
             {
                 render.RenderOffset = Point.Empty;
-                render.ClipRegion = Bounds;
+                render.ClipRegion = new Rectangle(0, 0, Width, Height);
             }
 
             if (m_bCacheTextureDirty && render.ClipRegionVisible)
@@ -602,7 +602,13 @@ namespace Gwen.Controls
                     cache.SetupCacheTexture(this);
 
                 //Render myself first
+                //var old = render.ClipRegion;
+                //render.ClipRegion = Bounds;
+                //var old = render.RenderOffset;
+                //render.RenderOffset = new Point(Bounds.X, Bounds.Y);
                 Render(skin);
+                //render.RenderOffset = old;
+                //render.ClipRegion = old;
 
                 if (Children.Count > 0)
                 {
@@ -623,10 +629,12 @@ namespace Gwen.Controls
             render.ClipRegion = rOldRegion;
             render.StartClip();
             render.RenderOffset = pOldRenderOffset;
-            cache.DrawCachedControlTexture(this);
+
+            if (ShouldCacheToTexture)
+                cache.DrawCachedControlTexture(this);
         }
 
-        public virtual void DoRender(Skin.Base skin)
+        internal virtual void DoRender(Skin.Base skin)
         {
             // If this control has a different skin, 
             // then so does its children.

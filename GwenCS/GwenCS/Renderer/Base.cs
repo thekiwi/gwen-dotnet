@@ -19,16 +19,20 @@ namespace Gwen.Renderer
     */
     public class Base
     {
-        private Point m_RenderOffset;
-        private Rectangle m_ClipRegion;
-        private ICacheToTexture m_RTT;
+        //public Random rnd;
+        protected Point m_RenderOffset;
+        protected Rectangle m_ClipRegion;
+        //protected ICacheToTexture m_RTT;
 
         public double Scale;
 
         public Base()
         {
+            //rnd = new Random();
             m_RenderOffset = Point.Empty;
             Scale = 1.0;
+            if (CTT != null)
+                CTT.Initialize();
         }
 
         ~Base()
@@ -73,6 +77,7 @@ namespace Gwen.Renderer
 
         public virtual void DrawMissingImage(Rectangle rect)
         {
+            //DrawColor = Color.FromArgb(255, rnd.Next(0,255), rnd.Next(0,255), rnd.Next(0, 255));
             DrawColor = Color.Red;
             DrawFilledRect(rect);
         }
@@ -239,6 +244,7 @@ namespace Gwen.Renderer
 
         public void AddClipRegion(Rectangle rect)
         {
+
             rect.X = m_RenderOffset.X;
             rect.Y = m_RenderOffset.Y;
 
@@ -255,14 +261,14 @@ namespace Gwen.Renderer
                 r.Y = m_ClipRegion.Y;
             }
 
-            if (rect.X + rect.Width > m_ClipRegion.X + m_ClipRegion.Width)
+            if (rect.Right > m_ClipRegion.Right)
             {
-                r.Width = (m_ClipRegion.X + m_ClipRegion.Width) - r.X;
+                r.Width = m_ClipRegion.Right - r.X;
             }
 
-            if (rect.Y + rect.Height > m_ClipRegion.Y + m_ClipRegion.Height)
+            if (rect.Bottom > m_ClipRegion.Bottom)
             {
-                r.Height = (m_ClipRegion.Y + m_ClipRegion.Height) - r.Y;
+                r.Height = m_ClipRegion.Bottom - r.Y;
             }
 
             m_ClipRegion = r;
