@@ -6,22 +6,29 @@ using System.Text;
 
 namespace Gwen.Controls
 {
-    public class ImagePanel : Base
+    public class ImagePanel : Base, IDisposable
     {
-        protected Texture m_Texture = new Texture();
-        protected float[] m_uv = new float[4];
+        protected Texture m_Texture;
+        protected float[] m_uv;
         protected Color m_DrawColor;
 
         public ImagePanel(Base parent) : base(parent)
         {
+            m_uv = new float[4];
+            m_Texture = new Texture(Skin.Renderer);
             SetUV(0, 0, 1, 1);
             MouseInputEnabled = false;
             m_DrawColor = Color.White;
         }
 
-        ~ImagePanel()
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public override void Dispose()
         {
-            m_Texture.Release(Skin.Renderer);
+            base.Dispose();
+            m_Texture.Dispose();
         }
 
         public virtual void SetUV(float u1, float v1, float u2, float v2)
@@ -32,7 +39,7 @@ namespace Gwen.Controls
             m_uv[3] = v2;
         }
 
-        public String ImageName { get { return m_Texture.Name; } set { m_Texture.Load(value, Skin.Renderer); } }
+        public String ImageName { get { return m_Texture.Name; } set { m_Texture.Load(value); } }
         public virtual void SetDrawColor(Color c)
         {
             m_DrawColor = c;

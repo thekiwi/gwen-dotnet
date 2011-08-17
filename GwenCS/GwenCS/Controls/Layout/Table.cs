@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls.Layout
 {
@@ -66,7 +65,14 @@ namespace Gwen.Controls.Layout
 
         public void RemoveRow(TableRow row)
         {
-            row.DelayedDelete();
+            Children.Remove(row);
+            row.Dispose();
+        }
+
+        public void RemoveRow(int idx)
+        {
+            var row = Children[idx];
+            RemoveRow(row as TableRow);
         }
 
         public void Clear()

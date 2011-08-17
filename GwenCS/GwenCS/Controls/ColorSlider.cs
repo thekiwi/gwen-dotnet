@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
@@ -19,6 +18,12 @@ namespace Gwen.Controls
             SetSize(32, 128);
             MouseInputEnabled=true;
             m_bDepressed = false;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            m_Texture.Dispose();
         }
 
         protected override void Render(Skin.Base skin)
@@ -48,10 +53,10 @@ namespace Gwen.Controls
                     skin.Renderer.DrawFilledRect(new Rectangle(5, y, Width - 10, 1));
                 }
                 */
-                m_Texture = new Texture();
+                m_Texture = new Texture(skin.Renderer);
                 m_Texture.Width = Width;
                 m_Texture.Height = Height;
-                m_Texture.LoadRaw(Width, Height, pixelData, skin.Renderer);
+                m_Texture.LoadRaw(Width, Height, pixelData);
             }
 
             skin.Renderer.DrawTexturedRect(m_Texture, new Rectangle(5, 0, Width-10, Height));

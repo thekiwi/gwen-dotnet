@@ -75,8 +75,8 @@ namespace Gwen.Skin
             m_DefaultFont.FaceName = "Microsoft Sans Serif";
             m_DefaultFont.Size = 11;
 
-            m_Texture = new Texture();
-            m_Texture.Load(TextureName, Renderer);
+            m_Texture = new Texture(Renderer);
+            m_Texture.Load(TextureName);
 
             m_texButton = new Bordered(m_Texture, 194, 0, 24, 24, new Margin(8, 8, 8, 8));
             m_texButton_Hovered = new Bordered(m_Texture, 194, 25, 24, 24, new Margin(8, 8, 8, 8));

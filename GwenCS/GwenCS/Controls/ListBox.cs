@@ -65,6 +65,12 @@ namespace Gwen.Controls
             (m_Table.Children[index] as ListBoxRow).IsSelected = true;
         }
 
+        // [omeg] added
+        public void RemoveRow(int idx)
+        {
+            m_Table.RemoveRow(idx); // this calls Dispose()
+        }
+
         public TableRow AddItem(String label, String name)
         {
             ListBoxRow pRow = new ListBoxRow(this);

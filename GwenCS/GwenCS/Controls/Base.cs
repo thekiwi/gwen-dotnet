@@ -8,7 +8,7 @@ using Gwen.DragDrop;
 
 namespace Gwen.Controls
 {
-    public class Base
+    public class Base : IDisposable
     {
         // [omeg] C# delegates/events instead of Gwen::Event
         public delegate void ControlCallback(Base control);
@@ -260,18 +260,13 @@ namespace Gwen.Controls
             m_bCacheTextureDirty = true;
             m_bCacheToTexture = false;
         }
-
-        ~Base()
+        
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public virtual void Dispose()
         {
-            Canvas canvas = GetCanvas();
-            if (canvas != null)
-                canvas.PreDelete(this);
-
-            // delete children (auto)
-            // delete accel map
-
-            //Parent = null;
-
             if (Global.HoveredControl == this)
                 Global.HoveredControl = null;
             if (Global.KeyboardFocus == this)
@@ -282,8 +277,6 @@ namespace Gwen.Controls
             DragAndDrop.ControlDeleted(this);
             Gwen.ToolTip.ControlDeleted(this);
             Animation.Cancel(this);
-
-            // delete dragdrop (auto)
         }
 
         public void DefaultAccel(Base control)
@@ -308,6 +301,8 @@ namespace Gwen.Controls
 
         public virtual void SetToolTipText(String text)
         {
+            if (ToolTip != null)
+                ToolTip.Dispose();
             Label tooltip = new Label(this);
             tooltip.SetText(text);
             tooltip.SizeToContents();
@@ -364,13 +359,6 @@ namespace Gwen.Controls
             m_Parent.Children.Remove(this);
             m_Parent.Children.Add(this);
             InvalidateParent();
-        }
-
-        public virtual void DelayedDelete()
-        {
-            Canvas canvas = GetCanvas();
-            if (canvas != null)
-                canvas.AddDelayedDelete(this);
         }
 
         public virtual Canvas GetCanvas()
@@ -460,11 +448,14 @@ namespace Gwen.Controls
 
             Children.Remove(child);
             onChildRemoved(child);
+            child.Dispose();
         }
 
         public virtual void RemoveAllChildren()
         {
-            Children.Clear();
+            // todo: probably shouldn't invalidate after each removal
+            while (Children.Count > 0)
+                RemoveChild(Children[0]);
         }
 
         internal virtual void onChildAdded(Base child)

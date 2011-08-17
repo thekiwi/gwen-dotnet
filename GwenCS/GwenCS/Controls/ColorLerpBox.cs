@@ -99,10 +99,16 @@ namespace Gwen.Controls
         {
             if (m_Texture != null)
             {
-                m_Texture.Release(Skin.Renderer);
+                m_Texture.Dispose();
                 m_Texture = null;
             }
             base.Invalidate();
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            m_Texture.Dispose();
         }
 
         protected override void Render(Skin.Base skin)
@@ -124,10 +130,10 @@ namespace Gwen.Controls
                     }
                 }
 
-                m_Texture = new Texture();
+                m_Texture = new Texture(skin.Renderer);
                 m_Texture.Width = Width;
                 m_Texture.Height = Height;
-                m_Texture.LoadRaw(Width, Height, pixelData, skin.Renderer);
+                m_Texture.LoadRaw(Width, Height, pixelData);
             }
 
             skin.Renderer.DrawTexturedRect(m_Texture, RenderBounds);

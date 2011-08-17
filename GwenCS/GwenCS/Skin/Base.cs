@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Gwen.Skin
 {
-    public class Base
+    public class Base : IDisposable
     {
         protected Font m_DefaultFont = new Font();
         protected Renderer.Base m_Render;
@@ -18,12 +18,12 @@ namespace Gwen.Skin
             m_DefaultFont.FaceName = "Arial";
             m_DefaultFont.Size = 10;
         }
-
-        ~Base()
+        
+        public virtual void Dispose()
         {
             ReleaseFont(ref m_DefaultFont);
         }
-
+        
         protected virtual void ReleaseFont(ref Font font)
         {
             if (font.FaceName == null)
@@ -32,7 +32,7 @@ namespace Gwen.Skin
                 return;
             m_Render.FreeFont(ref font);
         }
-
+        
         public virtual void SetDefaultFont(String faceName, int size = 10)
         {
             m_DefaultFont.FaceName = faceName;

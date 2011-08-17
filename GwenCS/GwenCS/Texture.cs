@@ -5,39 +5,49 @@ using System.Text;
 
 namespace Gwen
 {
-    public class Texture
+    public class Texture : IDisposable
     {
         public String Name { get; set; }
-        public object Data { get; set; }
+        public object RendererData { get; set; }
         public bool Failed { get; set; }
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public Texture()
+        private Renderer.Base m_Renderer;
+
+        public Texture(Renderer.Base renderer)
         {
+            m_Renderer = renderer;
             Width = 4;
             Height = 4;
             Failed = false;
         }
 
-        public void Load(String name, Renderer.Base renderer)
+        public void Load(String name)
         {
             Name = name;
-            renderer.LoadTexture(this);
+            m_Renderer.LoadTexture(this);
         }
 
         // [omeg] added. pixel data = RGBA order
-        public void LoadRaw(int width, int height, byte[] pixelData, Renderer.Base renderer)
+        public void LoadRaw(int width, int height, byte[] pixelData)
         {
             Width = width;
             Height = height;
-            renderer.LoadTextureRaw(this, pixelData);
+            m_Renderer.LoadTextureRaw(this, pixelData);
         }
 
-        // todo: IDisposable
-        public void Release(Renderer.Base renderer)
+        #region Implementation of IDisposable
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
         {
-            renderer.FreeTexture(this);
+            m_Renderer.FreeTexture(this);
         }
+
+        #endregion
     }
 }

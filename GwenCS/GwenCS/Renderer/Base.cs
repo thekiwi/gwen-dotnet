@@ -34,13 +34,13 @@ namespace Gwen.Renderer
             if (CTT != null)
                 CTT.Initialize();
         }
-
+        
         ~Base()
         {
             if (CTT != null)
                 CTT.ShutDown();
         }
-
+        
         public virtual void Begin() 
         {}
 

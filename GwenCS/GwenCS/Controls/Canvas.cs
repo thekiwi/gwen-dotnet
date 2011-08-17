@@ -9,11 +9,7 @@ namespace Gwen.Controls
     public class Canvas : Base
     {
         private bool m_bNeedsRedraw;
-        private bool m_bAnyDelete;
         private double m_fScale;
-
-        private List<Base> m_DeleteList;
-        private HashSet<Base> m_DeleteSet;
 
         private Color m_BackgroundColor;
 
@@ -54,21 +50,7 @@ namespace Gwen.Controls
             BackgroundColor = Color.FromArgb(255, 255, 255, 255);
             DrawBackground = false;
         }
-
-        // was private+friend
-        internal void PreDelete(Base control)
-        {
-            if (m_bAnyDelete)
-            {
-                if (m_DeleteSet.Contains(control))
-                {
-                    m_DeleteList.Remove(control);
-                    m_DeleteSet.Remove(control);
-                    m_bAnyDelete = m_DeleteSet.Count > 0;
-                }
-            }
-        }
-
+        
         // Childpanels call parent->GetCanvas() until they get to 
         // this top level function.
         public override Canvas GetCanvas()
@@ -113,8 +95,6 @@ namespace Gwen.Controls
             render.EndClip();
 
             render.End();
-
-            ProcessDelayedDeletes();
         }
 
         // Internal. Do not call directly.
@@ -146,7 +126,6 @@ namespace Gwen.Controls
                 FirstTab = null;
             }
 
-            ProcessDelayedDeletes();
             // Check has focus etc..
             RecurseLayout(m_Skin);
 
@@ -156,34 +135,7 @@ namespace Gwen.Controls
 
             Input.Input.onCanvasThink(this);
         }
-
-        internal virtual void AddDelayedDelete(Base control)
-        {
-            if (!m_bAnyDelete || !m_DeleteSet.Contains(control))
-            {
-                m_bAnyDelete = true;
-                m_DeleteSet.Add(control);
-                m_DeleteList.Add(control);
-            }
-        }
-
-        internal virtual void ProcessDelayedDeletes()
-        {
-            while (m_bAnyDelete)
-            {
-                m_bAnyDelete = false;
-
-                m_DeleteList.Clear();
-                m_DeleteSet.Clear();
-                // no deletes in c# ;)
-            }
-        }
-
-        public virtual void Release()
-        {
-            // memory management, no need
-        }
-
+        
         public virtual bool InputMouseMoved(int x, int y, int dx, int dy)
         {
             if (IsHidden)

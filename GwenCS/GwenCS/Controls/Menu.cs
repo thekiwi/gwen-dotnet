@@ -87,7 +87,7 @@ namespace Gwen.Controls
         {
             foreach (Base child in m_InnerPanel.Children)
             {
-                child.DelayedDelete();
+                child.Dispose();
             }
         }
 

@@ -44,7 +44,9 @@ namespace Gwen.Renderer
             Translate( ref x, ref y );
             Translate( ref a, ref b );
             // [omeg] todo: sfml.net should have method accepting coords to not create unnecessary objects
-            m_Target.Draw(Shape.Line(new Vector2f(x, y), new Vector2f(a, b), 1.0f, m_Color));
+            var shape = Shape.Line(new Vector2f(x, y), new Vector2f(a, b), 1.0f, m_Color);
+            m_Target.Draw(shape);
+            shape.Dispose();
         }
 
         public override void DrawFilledRect(Rectangle rect)
@@ -52,7 +54,9 @@ namespace Gwen.Renderer
             rect = Translate(rect);
             // [omeg] todo: sfml.net should have method accepting coords to not create unnecessary objects
             //m_Target.Draw(Shape.Rectangle(new FloatRect(rect.X, rect.Y, rect.Right, rect.Bottom), m_Color)); // [omeg] bug in gwen
-            m_Target.Draw(Shape.Rectangle(new FloatRect(rect.X, rect.Y, rect.Width, rect.Height), m_Color));
+            var shape = Shape.Rectangle(new FloatRect(rect.X, rect.Y, rect.Width, rect.Height), m_Color);
+            m_Target.Draw(shape);
+            shape.Dispose();
         }
 
         public override void LoadFont(ref Font font)
@@ -110,6 +114,7 @@ namespace Gwen.Renderer
             sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
             sfText.Color = m_Color;
             m_Target.Draw(sfText);
+            sfText.Dispose();
             //m_Target.RestoreGLStates();
         }
 
@@ -133,12 +138,13 @@ namespace Gwen.Renderer
             sfText.Color = m_Color; // [omeg] not needed?
 
             FloatRect fr = sfText.GetRect();
+            sfText.Dispose();
             return new Point(Global.Trunc(fr.Width), Global.Trunc(fr.Height));
         }
 
         public override void DrawTexturedRect(Texture t, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
         {
-            Sprite tex = t.Data as Sprite;
+            Sprite tex = t.RendererData as Sprite;
             if (null == tex)
             {
                 DrawMissingImage(targetRect);
@@ -193,7 +199,7 @@ namespace Gwen.Renderer
         public override void LoadTexture(Texture pTexture)
         {
             if (null == pTexture) return;
-            if (pTexture.Data != null) FreeTexture(pTexture);
+            if (pTexture.RendererData != null) FreeTexture(pTexture);
 
             global::SFML.Graphics.Texture tex;
             Sprite sprite;
@@ -212,14 +218,14 @@ namespace Gwen.Renderer
 
             pTexture.Height = (int)tex.Height;
             pTexture.Width = (int)tex.Width;
-            pTexture.Data = sprite;
+            pTexture.RendererData = sprite;
         }
 
         // [omeg] added
         public override void LoadTextureRaw(Texture pTexture, byte[] pixelData)
         {
             if (null == pTexture) return;
-            if (pTexture.Data != null) FreeTexture(pTexture);
+            if (pTexture.RendererData != null) FreeTexture(pTexture);
 
             global::SFML.Graphics.Texture tex;
             Sprite sprite;
@@ -230,6 +236,7 @@ namespace Gwen.Renderer
                 tex = new global::SFML.Graphics.Texture(img);
                 tex.Smooth = true;
                 sprite = new Sprite(tex);
+                img.Dispose();
             }
             catch (LoadingFailedException)
             {
@@ -237,16 +244,16 @@ namespace Gwen.Renderer
                 return;
             }
 
-            pTexture.Data = sprite;
+            pTexture.RendererData = sprite;
         }
 
         public override void FreeTexture(Texture t)
         {
-            Sprite tex = t.Data as Sprite;
+            Sprite tex = t.RendererData as Sprite;
             if (tex != null)
                 tex.Dispose();
 
-            t.Data = null;
+            t.RendererData = null;
         }
 
         public override void StartClip()
@@ -254,7 +261,9 @@ namespace Gwen.Renderer
             Rectangle rect = ClipRegion;
             // OpenGL's coords are from the bottom left
             // so we need to translate them here.
-            var v = m_Target.GetViewport(m_Target.GetView());
+            var view = m_Target.GetView();
+            var v = m_Target.GetViewport(view);
+            view.Dispose();
             rect.Y = v.Height - (rect.Y + rect.Height);
             
             Gl.glScissor(Global.Trunc(rect.X*Scale), Global.Trunc(rect.Y*Scale),

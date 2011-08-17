@@ -47,7 +47,7 @@ namespace Gwen.Controls.Layout
                 }
                 else if (null != m_Columns[i])
                 {
-                    m_Columns[i].DelayedDelete();
+                    //m_Columns[i].DelayedDelete();
                     m_Columns[i] = null;
                 }
 

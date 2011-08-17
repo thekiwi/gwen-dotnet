@@ -71,6 +71,7 @@ namespace Gwen.Sample
             ri.SetView(vi);
             ri.Draw(btnText);
             ri.Display();
+            vi.Dispose();
 
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
             
@@ -234,9 +235,10 @@ namespace Gwen.Sample
             lb2.AddItem("row 2");
             lb2.AddItem("row 3");
             lb2.AddItem("row 4");
-            lb2.SelectRow(1); // this will be unselected since it's not multiselect
-            lb2.SelectRow(2);
-
+            lb2.SelectRow(0); // this will be unselected since it's not multiselect
+            lb2.SelectRow(1);
+            lb2.RemoveRow(2);
+                
             _ColorBox = new ColorLerpBox(canvas);
             _ColorBox.SetPos(400, 50);
             _ColorBox.OnSelectionChanged += new Base.ControlCallback(_ColorBox_OnSelectionChanged);
