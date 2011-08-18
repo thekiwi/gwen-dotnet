@@ -33,8 +33,6 @@ namespace Gwen.Sample
         private static RenderWindow window;
         private static Label fpsLabel;
 
-        private static ColorLerpBox _ColorBox;
-        private static ColorSlider _ColorSlider;
         private static Label _ColorText;
 
         [STAThread]
@@ -209,7 +207,7 @@ namespace Gwen.Sample
             rb1.SetSelection(2); // overrides above
             
             GroupBox gb1 = new GroupBox(canvas);
-            gb1.SetBounds(150, 250, 320, 120);
+            gb1.SetBounds(130, 250, 250, 120);
             gb1.Text = "Listbox test";
 
             ListBox lb1 = new ListBox(gb1);
@@ -229,7 +227,7 @@ namespace Gwen.Sample
             lb1.SelectRow(3);
 
             ListBox lb2 = new ListBox(gb1);
-            lb2.SetSize(150, 100);
+            lb2.SetSize(70, 100);
             lb2.Dock = Pos.Left;
             lb2.AddItem("row 1");
             lb2.AddItem("row 2");
@@ -238,17 +236,18 @@ namespace Gwen.Sample
             lb2.SelectRow(0); // this will be unselected since it's not multiselect
             lb2.SelectRow(1);
             lb2.RemoveRow(2);
-                
-            _ColorBox = new ColorLerpBox(canvas);
-            _ColorBox.SetPos(400, 50);
-            _ColorBox.OnSelectionChanged += new Base.ControlCallback(_ColorBox_OnSelectionChanged);
 
-            _ColorSlider = new ColorSlider(canvas);
-            _ColorSlider.SetBounds(528, 50, 20, _ColorBox.Height);
-            _ColorSlider.OnSelectionChanged += new Base.ControlCallback(csl_OnSelectionChanged);
+            HSVColorPicker cp1 = new HSVColorPicker(canvas);
+            cp1.SetPos(400, 50);
+            cp1.SetColor(System.Drawing.Color.Green);
+            cp1.OnColorChanged += OnColorChanged;
+
+            ColorPicker cp2 = new ColorPicker(canvas);
+            cp2.SetPos(400, 250);
+            cp2.OnColorChanged += OnColorChanged;
 
             _ColorText = new Label(canvas);
-            _ColorText.SetPos(400, 50 + 128);
+            _ColorText.SetPos(400, 200);
             _ColorText.AutoSizeToContents = true;
             /*
             gb1.ShouldCacheToTexture = true;
@@ -303,17 +302,13 @@ namespace Gwen.Sample
             }
         }
 
-        static void _ColorBox_OnSelectionChanged(Base control)
+        static void OnColorChanged(Base control)
         {
-            var c = _ColorBox.SelectedColor;
+            var picker = control as IColorPicker;
+            var c = picker.Color;
             var hsv = c.ToHSV();
             _ColorText.Text = String.Format("RGB: {0:X2}{1:X2}{2:X2} HSV: {3:F1} {4:F2} {5:F2}",
                                             c.R, c.G, c.B, hsv.h, hsv.s, hsv.v);
-        }
-
-        static void csl_OnSelectionChanged(Base control)
-        {
-            _ColorBox.SetColor(_ColorSlider.SelectedColor);
         }
 
         static void Sample_OnMenuItemSelectedQuit(Base control)

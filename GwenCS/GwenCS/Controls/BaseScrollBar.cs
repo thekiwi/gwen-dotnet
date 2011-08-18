@@ -24,7 +24,7 @@ namespace Gwen.Controls
         public float ContentSize { get { return m_fContentSize; } set { if (m_fContentSize != value) Invalidate(); m_fContentSize = value; } }
         public float ViewableContentSize { get { return m_fViewableContentSize; } set { if (m_fViewableContentSize != value) Invalidate(); m_fViewableContentSize = value; } }
 
-        public BaseScrollBar(Base parent) : base(parent)
+        protected BaseScrollBar(Base parent) : base(parent)
         {
             m_ScrollButton[0] = new ScrollBarButton(this);
             m_ScrollButton[1] = new ScrollBarButton(this);

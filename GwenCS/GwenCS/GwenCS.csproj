@@ -43,6 +43,9 @@
     <Compile Include="Anim\Size\Height.cs" />
     <Compile Include="Anim\Size\Width.cs" />
     <Compile Include="Anim\TimedAnimation.cs" />
+    <Compile Include="ControlsInternal\ColorDisplay.cs" />
+    <Compile Include="ControlsInternal\SliderBar.cs" />
+    <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="ControlsInternal\Dragger.cs" />
     <Compile Include="ControlsInternal\Highlight.cs" />
     <Compile Include="ControlsInternal\ScrollBarBar.cs" />
@@ -56,6 +59,9 @@
     <Compile Include="Controls\ColorLerpBox.cs" />
     <Compile Include="Controls\ColorSlider.cs" />
     <Compile Include="Controls\GroupBox.cs" />
+    <Compile Include="Controls\HorizontalSlider.cs" />
+    <Compile Include="Controls\HSVColorPicker.cs" />
+    <Compile Include="Controls\IColorPicker.cs" />
     <Compile Include="Controls\LabeledCheckBox.cs" />
     <Compile Include="Controls\ComboBox.cs" />
     <Compile Include="Controls\HorizontalScrollBar.cs" />
@@ -75,11 +81,13 @@
     <Compile Include="Controls\RadioButton.cs" />
     <Compile Include="Controls\RadioButtonController.cs" />
     <Compile Include="Controls\ScrollControl.cs" />
+    <Compile Include="Controls\Slider.cs" />
     <Compile Include="Controls\Symbol\Arrow.cs" />
     <Compile Include="Controls\Symbol\Base.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\TextBoxNumeric.cs" />
     <Compile Include="Controls\VerticalScrollBar.cs" />
+    <Compile Include="Controls\VerticalSlider.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Input\Action.cs" />

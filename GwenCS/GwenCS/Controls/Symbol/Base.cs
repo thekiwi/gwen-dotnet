@@ -7,7 +7,7 @@ namespace Gwen.Controls.Symbol
 {
     public class Base : Controls.Base
     {
-        public Base(Controls.Base parent) : base(parent)
+        protected Base(Controls.Base parent) : base(parent)
         {
             MouseInputEnabled = false;
         }
