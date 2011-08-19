@@ -4,7 +4,7 @@ namespace Gwen.Controls
 {
     public class TextBoxNumeric : TextBox
     {
-        protected double m_Value;
+        protected float m_Value;
 
         public TextBoxNumeric(Base parent) : base(parent)
         {
@@ -16,8 +16,8 @@ namespace Gwen.Controls
         {
             if (str == "" || str == "-")
                 return true; // annoying if single - is not allowed
-            double d;
-            return double.TryParse(str, out d);
+            float d;
+            return float.TryParse(str, out d);
         }
 
         protected override bool IsTextAllowed(String str, int iPos)
@@ -26,7 +26,7 @@ namespace Gwen.Controls
             return IsTextAllowed(newText);
         }
 
-        public virtual double Value
+        public virtual float Value
         {
             get { return m_Value; }
             set
@@ -45,7 +45,7 @@ namespace Gwen.Controls
                 //SetText("0");
             }
             else
-                m_Value = double.Parse(Text);
+                m_Value = float.Parse(Text);
             base.onTextChanged();
         }
         

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Gwen.Renderer
 {
@@ -24,13 +20,13 @@ namespace Gwen.Renderer
         protected Rectangle m_ClipRegion;
         //protected ICacheToTexture m_RTT;
 
-        public double Scale;
+        public float Scale;
 
         public Base()
         {
             //rnd = new Random();
             m_RenderOffset = Point.Empty;
-            Scale = 1.0;
+            Scale = 1.0f;
             if (CTT != null)
                 CTT.Initialize();
         }
@@ -92,14 +88,14 @@ namespace Gwen.Renderer
 
         public virtual Point MeasureText(ref Font font, String text)
         {
-            Point p = new Point(Global.Trunc(font.Size * Scale * text.Length * 0.4), Global.Trunc(font.Size * Scale));
+            Point p = new Point(Global.Trunc(font.Size * Scale * text.Length * 0.4f), Global.Trunc(font.Size * Scale));
 
             return p;
         }
 
         public virtual void RenderText(ref Font font, Point pos, String text)
         {
-            double fSize = font.Size * Scale;
+            float fSize = font.Size * Scale;
 
             for ( int i=0; i<text.Length; i++ )
             {
@@ -108,7 +104,7 @@ namespace Gwen.Renderer
                 if ( chr == ' ' ) 
                     continue;
 
-                Rectangle r = Global.FloatRect(pos.X + i * fSize * 0.4, pos.Y, fSize * 0.4 - 1, fSize);
+                Rectangle r = Global.FloatRect(pos.X + i * fSize * 0.4f, pos.Y, fSize * 0.4f - 1, fSize);
 
                 /*
                     This isn't important, it's just me messing around changing the
@@ -120,8 +116,8 @@ namespace Gwen.Renderer
                 }
                 else if ( chr >= 'a' && chr <= 'z' )
                 {
-                    r.Y += Global.Trunc(fSize * 0.5);
-                    r.Height -= Global.Trunc(fSize * 0.4);
+                    r.Y += Global.Trunc(fSize * 0.5f);
+                    r.Height -= Global.Trunc(fSize * 0.4f);
                 }
                 else if ( chr == '.' || chr == ',' )
                 {

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using Gwen.Anim;
 using Gwen.DragDrop;
@@ -9,14 +8,14 @@ namespace Gwen.Controls
     public class Canvas : Base
     {
         private bool m_bNeedsRedraw;
-        private double m_fScale;
+        private float m_fScale;
 
         private Color m_BackgroundColor;
 
         internal Base FirstTab;
         internal Base NextTab;
 
-        public double Scale
+        public float Scale
         {
             get { return m_fScale; }
             set
@@ -47,7 +46,7 @@ namespace Gwen.Controls
             SetBounds(0, 0, 10000, 10000);
             SetSkin(skin);
             Scale = 1.0f;
-            BackgroundColor = Color.FromArgb(255, 255, 255, 255);
+            BackgroundColor = Color.White;
             DrawBackground = false;
         }
         

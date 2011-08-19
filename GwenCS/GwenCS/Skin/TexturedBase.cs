@@ -369,13 +369,13 @@ namespace Gwen.Skin
 
             if (bIsHorizontal)
             {
-                rect.Y += Global.Trunc(rect.Height * 0.4);
-                rect.Height -= Global.Trunc(rect.Height * 0.8);
+                rect.Y += Global.Trunc(rect.Height * 0.4f);
+                rect.Height -= Global.Trunc(rect.Height * 0.8f);
             }
             else
             {
-                rect.X += Global.Trunc(rect.Width * 0.4);
-                rect.Width -= Global.Trunc(rect.Width * 0.8);
+                rect.X += Global.Trunc(rect.Width * 0.4f);
+                rect.Width -= Global.Trunc(rect.Width * 0.8f);
             }
 
             Renderer.DrawColor = m_colBGDark;
@@ -572,8 +572,8 @@ namespace Gwen.Skin
 
                 Renderer.DrawColor = Color.FromArgb(128, 128, 128, 128);
 
-                Renderer.DrawFilledRect(Global.FloatRect(0, 0, rect.Width * 0.5, rect.Height * 0.5));
-                Renderer.DrawFilledRect(Global.FloatRect(rect.Width * 0.5, rect.Height * 0.5, rect.Width * 0.5, rect.Height * 0.5));
+                Renderer.DrawFilledRect(Global.FloatRect(0, 0, rect.Width * 0.5f, rect.Height * 0.5f));
+                Renderer.DrawFilledRect(Global.FloatRect(rect.Width * 0.5f, rect.Height * 0.5f, rect.Width * 0.5f, rect.Height * 0.5f));
             }
 
             Renderer.DrawColor = color;

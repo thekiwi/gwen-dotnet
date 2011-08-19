@@ -94,20 +94,20 @@ namespace Gwen.Skin
 
         public virtual void DrawArrowDown(Rectangle rect)
         {
-            double x = (rect.Width / 5.0);
-            double y = (rect.Height / 5.0);
+            float x = (rect.Width / 5.0f);
+            float y = (rect.Height / 5.0f);
 
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 0.0, rect.Y + y * 1.0, x, y * 1.0));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 1.0, rect.Y + y * 1.0, x, y * 2.0));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 2.0, rect.Y + y * 1.0, x, y * 3.0));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 3.0, rect.Y + y * 1.0, x, y * 2.0));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 4.0, rect.Y + y * 1.0, x, y * 1.0));
+            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 0.0f, rect.Y + y * 1.0f, x, y * 1.0f));
+            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 1.0f, rect.Y + y * 1.0f, x, y * 2.0f));
+            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x, y * 3.0f));
+            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 3.0f, rect.Y + y * 1.0f, x, y * 2.0f));
+            m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 4.0f, rect.Y + y * 1.0f, x, y * 1.0f));
         }
 
         public virtual void DrawArrowUp(Rectangle rect)
         {
-            double x = (rect.Width / 5.0);
-            double y = (rect.Height / 5.0);
+            float x = (rect.Width / 5.0f);
+            float y = (rect.Height / 5.0f);
 
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 0.0f, rect.Y + y * 3.0f, x, y * 1.0f));
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x, y * 2.0f));
@@ -118,8 +118,8 @@ namespace Gwen.Skin
 
         public virtual void DrawArrowLeft(Rectangle rect)
         {
-            double x = (rect.Width / 5.0);
-            double y = (rect.Height / 5.0);
+            float x = (rect.Width / 5.0f);
+            float y = (rect.Height / 5.0f);
 
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 3.0f, rect.Y + y * 0.0f, x * 1.0f, y));
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x * 2.0f, y));
@@ -130,8 +130,8 @@ namespace Gwen.Skin
 
         public virtual void DrawArrowRight(Rectangle rect)
         {
-            double x = (rect.Width / 5.0);
-            double y = (rect.Height / 5.0);
+            float x = (rect.Width / 5.0f);
+            float y = (rect.Height / 5.0f);
 
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 1.0f, rect.Y + y * 0.0f, x * 1.0f, y));
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 1.0f, rect.Y + y * 1.0f, x * 2.0f, y));
@@ -142,8 +142,8 @@ namespace Gwen.Skin
 
         public virtual void DrawCheck(Rectangle rect)
         {
-            double x = (rect.Width / 5.0);
-            double y = (rect.Height / 5.0);
+            float x = (rect.Width / 5.0f);
+            float y = (rect.Height / 5.0f);
 
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 0.0f, rect.Y + y * 3.0f, x * 2, y * 2));
             m_Render.DrawFilledRect(Global.FloatRect(rect.X + x * 1.0f, rect.Y + y * 4.0f, x * 2, y * 2));

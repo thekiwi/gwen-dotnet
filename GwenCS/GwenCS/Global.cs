@@ -15,22 +15,22 @@ namespace Gwen
 
         public const int MaxCoord = 4096; // added here from various places in code
 
-        public static int Round(double x)
+        public static int Round(float x)
         {
             return (int)Math.Round(x, MidpointRounding.AwayFromZero);
         }
 
-        public static int Trunc(double x)
+        public static int Trunc(float x)
         {
             return (int)Math.Truncate(x);
         }
 
-        public static int Ceil(double x)
+        public static int Ceil(float x)
         {
             return (int)Math.Ceiling(x);
         }
 
-        public static Rectangle FloatRect(double x, double y, double w, double h)
+        public static Rectangle FloatRect(float x, float y, float w, float h)
         {
             return new Rectangle(Trunc(x), Trunc(y), Trunc(w), Trunc(h));
         }
@@ -96,7 +96,7 @@ namespace Gwen
         public static Color HSVToColor(float h, float s, float v)
         {
             int hi = Convert.ToInt32(Math.Floor(h / 60)) % 6;
-            double f = h / 60 - Math.Floor(h / 60);
+            float f = h / 60 - (float)Math.Floor(h / 60);
 
             v = v * 255;
             int va= Convert.ToInt32(v);

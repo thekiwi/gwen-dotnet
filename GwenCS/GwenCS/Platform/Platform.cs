@@ -11,7 +11,7 @@ namespace Gwen.Platform
     public static class Windows
     {
         private static DateTime m_LastTime;
-        private static double m_CurrentTime;
+        private static float m_CurrentTime;
 
         public static void SetCursor(Cursor cursor)
         {
@@ -66,14 +66,14 @@ namespace Gwen.Platform
             return ret;
         }
 
-        public static double GetTimeInSeconds()
+        public static float GetTimeInSeconds()
         {
             var time = DateTime.UtcNow;
             var diff = time - m_LastTime;
             var seconds = diff.TotalSeconds;
             if (seconds > 0.1)
                 seconds = 0.1;
-            m_CurrentTime += seconds;
+            m_CurrentTime += (float)seconds;
             m_LastTime = time;
             return m_CurrentTime;
         }

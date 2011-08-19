@@ -45,6 +45,7 @@
     <Compile Include="Anim\TimedAnimation.cs" />
     <Compile Include="ControlsInternal\ColorDisplay.cs" />
     <Compile Include="ControlsInternal\SliderBar.cs" />
+    <Compile Include="ControlsInternal\SplitterBar.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="ControlsInternal\Dragger.cs" />
     <Compile Include="ControlsInternal\Highlight.cs" />
@@ -58,6 +59,7 @@
     <Compile Include="Controls\CheckBox.cs" />
     <Compile Include="Controls\ColorLerpBox.cs" />
     <Compile Include="Controls\ColorSlider.cs" />
+    <Compile Include="Controls\CrossSplitter.cs" />
     <Compile Include="Controls\GroupBox.cs" />
     <Compile Include="Controls\HorizontalSlider.cs" />
     <Compile Include="Controls\HSVColorPicker.cs" />

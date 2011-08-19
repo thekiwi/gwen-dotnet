@@ -11,13 +11,13 @@ namespace Gwen.Input
     public static class Input
     {
         private static KeyData KeyData = new KeyData();
-        private static double[] g_fLastClickTime = new double[MaxMouseButtons];
+        private static float [] g_fLastClickTime = new float[MaxMouseButtons];
         private static Point g_pntLastClickPos;
 
         public static int MaxMouseButtons { get { return 5; } }
-        public static double DoubleClickSpeed { get { return 0.5; } }
-        public static double KeyRepeatRate { get { return 0.03; } }
-        public static double KeyRepeatDelay { get { return 0.5; } }
+        public static float DoubleClickSpeed { get { return 0.5f; } }
+        public static float KeyRepeatRate { get { return 0.03f; } }
+        public static float KeyRepeatDelay { get { return 0.5f; } }
 
         public static bool IsLeftMouseDown { get { return KeyData.LeftMouseDown; } }
         public static bool IsRightMouseDown { get { return KeyData.RightMouseDown; } }
@@ -113,7 +113,7 @@ namespace Gwen.Input
             if (null==Global.KeyboardFocus) return;
             if (Global.KeyboardFocus.GetCanvas() != control) return;
 
-            double fTime = Platform.Windows.GetTimeInSeconds();
+            float fTime = Platform.Windows.GetTimeInSeconds();
 
             //
             // Simulate Key-Repeats

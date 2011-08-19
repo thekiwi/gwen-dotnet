@@ -473,6 +473,11 @@ namespace Gwen.Controls
             SetBounds(X + x, Y + y, Width, Height);
         }
 
+        public virtual void MoveTo(float x, float y)
+        {
+            MoveTo((int)x, (int)y);
+        }
+
         public virtual void MoveTo(int x, int y)
         {
             if (m_bRestrictToParent && (Parent != null))
@@ -491,6 +496,11 @@ namespace Gwen.Controls
             SetBounds(x, y, Width, Height);
         }
 
+        public virtual void SetPos(float x, float y)
+        {
+            SetPos((int)x, (int)y);
+        }
+
         public virtual void SetPos(int x, int y)
         {
             SetBounds(x, y, Width, Height);
@@ -504,6 +514,11 @@ namespace Gwen.Controls
         public virtual bool SetBounds(Rectangle bounds)
         {
             return SetBounds(bounds.X, bounds.Y, bounds.Width, bounds.Height);
+        }
+
+        public virtual bool SetBounds(float x, float y, float w, float h)
+        {
+            return SetBounds((int) x, (int) y, (int) w, (int) h);
         }
 
         public virtual bool SetBounds(int x, int y, int w, int h)

@@ -38,7 +38,7 @@ namespace Gwen
             Point MousePos = Input.Input.MousePosition;
             Rectangle Bounds = g_ToolTip.ToolTip.Bounds;
 
-            Rectangle rOffset = Global.FloatRect(MousePos.X - Bounds.Width*0.5, MousePos.Y - Bounds.Height - 10,
+            Rectangle rOffset = Global.FloatRect(MousePos.X - Bounds.Width*0.5f, MousePos.Y - Bounds.Height - 10,
                                                  Bounds.Width, Bounds.Height);
             rOffset = Global.ClampRectToRect(rOffset, g_ToolTip.GetCanvas().Bounds);
 

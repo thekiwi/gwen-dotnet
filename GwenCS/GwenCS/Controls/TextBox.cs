@@ -16,7 +16,7 @@ namespace Gwen.Controls
         protected Rectangle m_rectSelectionBounds;
         protected Rectangle m_rectCaretBounds;
 
-        protected double m_fLastInputTime;
+        protected float m_fLastInputTime;
 
         public override bool AccelOnlyFocus { get { return true; } }
         public override bool NeedsInputChars { get { return true; } }
@@ -424,7 +424,7 @@ namespace Gwen.Controls
             }
 
             // The ideal position is for the carat to be right in the middle
-            int idealx = Global.Trunc(-iCaretPos + Width*0.5);
+            int idealx = Global.Trunc(-iCaretPos + Width*0.5f);
 
             // Don't show too much whitespace to the right
             if (idealx + m_Text.Width < Width - m_rTextPadding.Right)

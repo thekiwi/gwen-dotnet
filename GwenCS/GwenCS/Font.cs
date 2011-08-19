@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Gwen
 {
@@ -19,7 +16,7 @@ namespace Gwen
 
         // This is the real font size, after it's
         // been scaled by Render->Scale()
-        public double RealSize;
+        public float RealSize;
         /*
         public Font()
         {

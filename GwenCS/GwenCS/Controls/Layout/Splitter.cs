@@ -45,13 +45,13 @@ namespace Gwen.Controls.Layout
             if (m_Panel[0] != null)
             {
                 Margin m = m_Panel[0].Margin;
-                m_Panel[0].SetBounds(m.left, m.top, w - m.left - m.right, Global.Trunc((h*0.5) - m.top - m.bottom));
+                m_Panel[0].SetBounds(m.left, m.top, w - m.left - m.right, (h*0.5f) - m.top - m.bottom);
             }
 
             if (m_Panel[1] != null)
             {
                 Margin m = m_Panel[1].Margin;
-                m_Panel[1].SetBounds(m.left, Global.Trunc(m.top + (h*0.5f)), w - m.left - m.right, Global.Trunc((h*0.5f) - m.top - m.bottom));
+                m_Panel[1].SetBounds(m.left, m.top + (h*0.5f), w - m.left - m.right, (h*0.5f) - m.top - m.bottom);
             }
         }
 

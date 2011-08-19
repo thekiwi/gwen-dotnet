@@ -11,7 +11,7 @@ namespace Gwen.Anim.Size
         protected int m_iDelta;
         protected bool m_bHide;
 
-        public Width(int iStartSize, int iEndSize, double fLength, bool bHide = false, double fDelay = 0.0, double fEase = 1.0)
+        public Width(int iStartSize, int iEndSize, float fLength, bool bHide = false, float fDelay = 0.0f, float fEase = 1.0f)
             : base(fLength, fDelay, fEase)
         {
             m_iStartSize = iStartSize;
@@ -25,7 +25,7 @@ namespace Gwen.Anim.Size
             m_Control.Width = m_iStartSize; 
         }
 
-        protected override void Run(double delta) 
+        protected override void Run(float delta) 
         {
             base.Run(delta);
             m_Control.Width = (int)Math.Round(m_iStartSize + (m_iDelta * delta)); 

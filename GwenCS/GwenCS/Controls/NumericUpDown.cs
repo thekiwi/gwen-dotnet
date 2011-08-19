@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Gwen.Controls.Layout;
 
 namespace Gwen.Controls
@@ -64,7 +61,7 @@ namespace Gwen.Controls
 
             m_iMax = 100;
             m_iMin = 0;
-            m_Value = 0;
+            m_Value = 0f;
             SetText("0");
         }
 
@@ -94,15 +91,15 @@ namespace Gwen.Controls
 
         protected override bool IsTextAllowed(string str)
         {
-            double d;
-            if (!double.TryParse(str, out d))
+            float d;
+            if (!float.TryParse(str, out d))
                 return false;
             if (d < m_iMin) return false;
             if (d > m_iMax) return false;
             return true;
         }
 
-        public override double Value
+        public override float Value
         {
             get
             {

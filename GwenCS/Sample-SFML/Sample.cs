@@ -250,6 +250,23 @@ namespace Gwen.Sample
             _ColorText = new Label(canvas);
             _ColorText.SetPos(400, 200);
             _ColorText.AutoSizeToContents = true;
+
+            CrossSplitter spl = new CrossSplitter(canvas);
+            spl.SetBounds(150, 380, 150, 150);
+            spl.SplittersVisible = true;
+
+            Button btl = new Button(spl);
+            btl.Text = "Top Left";
+            spl.SetPanel(0, btl);
+            Button btr = new Button(spl);
+            btr.Text = "Top Right";
+            spl.SetPanel(1, btr);
+            Button bbl = new Button(spl);
+            bbl.Text = "Bottom Left";
+            spl.SetPanel(2, bbl);
+            Button bbr = new Button(spl);
+            bbr.Text = "Bottom Right";
+            spl.SetPanel(3, bbr);
             /*
             gb1.ShouldCacheToTexture = true;
             n1.ShouldCacheToTexture = true;

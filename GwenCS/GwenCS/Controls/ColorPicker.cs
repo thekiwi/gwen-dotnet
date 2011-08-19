@@ -158,7 +158,7 @@ namespace Gwen.Controls
 
             GroupBox groupBox = FindChildByName("ResultGroupBox", true) as GroupBox;
             if (groupBox != null)
-                groupBox.SetPos(groupBox.X, Global.Trunc(Height * 0.5f - groupBox.Height * 0.5f));
+                groupBox.SetPos(groupBox.X, Height * 0.5f - groupBox.Height * 0.5f);
 
             //UpdateControls(); // this spams events continuously every tick
         }
