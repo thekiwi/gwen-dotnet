@@ -190,6 +190,7 @@ namespace Gwen.Sample
             tb2.SetPos(10, 200);
             tb2.Text = "123.4asdasd"; // this fails
             tb2.Text = "123.4"; // ok
+            tb2.SelectAllOnFocus = true;
             
             NumericUpDown n1 = new NumericUpDown(canvas);
             n1.SetPos(10, 220);

@@ -604,8 +604,10 @@ namespace Gwen.Controls
                 if (Children.Count > 0)
                 {
                     //Now render my kids
-                    foreach (Base child in Children.Where(child => !child.IsHidden))
+                    foreach (Base child in Children)
                     {
+                        if (child.IsHidden)
+                            continue;
                         child.DoCacheRender(skin, master);
                     }
                 }
@@ -662,8 +664,10 @@ namespace Gwen.Controls
                 if (Children.Count > 0)
                 {
                     //Now render my kids
-                    foreach (Base child in Children.Where(child => !child.IsHidden))
+                    foreach (Base child in Children)
                     {
+                        if (child.IsHidden)
+                            continue;
                         child.DoRender(skin);
                     }
                 }
@@ -843,8 +847,11 @@ namespace Gwen.Controls
             rBounds.Y += m_Padding.Top;
             rBounds.Height -= m_Padding.Top + m_Padding.Bottom;
 
-            foreach (Base child in Children.Where(child => !child.IsHidden))
+            foreach (Base child in Children)
             {
+                if (child.IsHidden)
+                    continue;
+
                 Pos iDock = child.Dock;
 
                 if (iDock.HasFlag(Pos.Fill))
@@ -1093,8 +1100,11 @@ namespace Gwen.Controls
         {
             Point size = Point.Empty;
 
-            foreach (Base child in Children.Where(child => !child.IsHidden))
+            foreach (Base child in Children)
             {
+                if (child.IsHidden)
+                    continue;
+
                 size.X = Math.Max(size.X, child.Right);
                 size.Y = Math.Max(size.Y, child.Bottom);
             }

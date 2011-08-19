@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
@@ -11,13 +8,13 @@ namespace Gwen.Controls
 
         public TextBoxNumeric(Base parent) : base(parent)
         {
-            Text = "0";
+            SetText("0", false);
         }
 
         // [omeg] added
         protected virtual bool IsTextAllowed(String str)
         {
-            if (str == "-")
+            if (str == "" || str == "-")
                 return true; // annoying if single - is not allowed
             double d;
             return double.TryParse(str, out d);
@@ -42,14 +39,14 @@ namespace Gwen.Controls
         // text -> value
         protected override void onTextChanged()
         {
-            base.onTextChanged();
             if (String.IsNullOrEmpty(Text) || Text == "-")
             {
                 m_Value = 0;
-                Text = "0";
+                //SetText("0");
             }
             else
                 m_Value = double.Parse(Text);
+            base.onTextChanged();
         }
         
         public override void SetText(string str, bool doEvents = true)

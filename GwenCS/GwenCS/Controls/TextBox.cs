@@ -93,7 +93,7 @@ namespace Gwen.Controls
             if (m_iCursorEnd > TextLength) m_iCursorEnd = TextLength;
 
             if (OnTextChanged != null)
-            OnTextChanged.Invoke(this);
+                OnTextChanged.Invoke(this);
         }
 
         internal override bool onChar(char chr)
@@ -203,7 +203,7 @@ namespace Gwen.Controls
 
         internal override void onSelectAll(Base from)
         {
-            base.onSelectAll(from);
+            //base.onSelectAll(from);
             m_iCursorEnd = 0;
             m_iCursorPos = TextLength;
 
@@ -212,7 +212,7 @@ namespace Gwen.Controls
 
         internal override void onMouseDoubleClickLeft(int x, int y)
         {
-            base.onMouseDoubleClickLeft(x, y);
+            //base.onMouseDoubleClickLeft(x, y);
             onSelectAll(this);
         }
 
@@ -377,7 +377,7 @@ namespace Gwen.Controls
             if (m_bSelectAll)
             {
                 onSelectAll(this);
-                m_bSelectAll = false;
+                //m_bSelectAll = false;
                 return;
             }
 
