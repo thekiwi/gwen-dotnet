@@ -117,7 +117,7 @@ namespace Gwen.Controls
             }
         }
 
-        public int NumChildren { get { return Children.Count; } }
+        public int ChildrenCount { get { return Children.Count; } }
 
         public Skin.Base Skin
         {

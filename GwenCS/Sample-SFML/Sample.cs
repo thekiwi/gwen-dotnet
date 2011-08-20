@@ -21,6 +21,7 @@ using ListBox = Gwen.Controls.ListBox;
 using Menu = Gwen.Controls.Menu;
 using MenuStrip = Gwen.Controls.MenuStrip;
 using NumericUpDown = Gwen.Controls.NumericUpDown;
+using TabControl = Gwen.Controls.TabControl;
 using TextBox = Gwen.Controls.TextBox;
 using View = SFML.Graphics.View;
 
@@ -32,6 +33,8 @@ namespace Gwen.Sample
         private static Canvas canvas;
         private static RenderWindow window;
         private static Label fpsLabel;
+        private static RadioButtonController rbc2;
+        private static TabControl tab;
 
         private static Label _ColorText;
 
@@ -72,7 +75,7 @@ namespace Gwen.Sample
             vi.Dispose();
 
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
-            
+
             // Create a GWEN skin
             //Skin.Simple skin = new Skin.Simple(GwenRenderer);
             Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
@@ -89,7 +92,7 @@ namespace Gwen.Sample
             canvas.DrawBackground = true;
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
             canvas.KeyboardInputEnabled = true;
-            
+
             fpsLabel = new Label(canvas);
             fpsLabel.SetPos(0, 40);
             fpsLabel.Dock = Pos.Left;
@@ -114,7 +117,7 @@ namespace Gwen.Sample
             item = root.Menu.AddItem("checkable");
             item.IsCheckable = true;
             item.Checked = true;
-            
+
             /////////////////////////////////////////////////////////
             // bug: if this is moved to the end, tooltips are kind of screwed
             ScrollControl sc1 = new ScrollControl(canvas);
@@ -143,7 +146,7 @@ namespace Gwen.Sample
             label1.Text = "Welcome to GWEN in SFML.NET!";
             label1.TextColor = System.Drawing.Color.Blue;
             //label1.Dock = Pos.Right;
-            
+
             Label label2 = new Label(canvas);
             label2.SetPos(10, 80);
             label2.AutoSizeToContents = true;
@@ -185,19 +188,19 @@ namespace Gwen.Sample
             tb1.Text = "sample edit";
             tb1.CursorPos = 3;
             tb1.CursorEnd = 7; // todo: show even without focus
-            
+
             TextBoxNumeric tb2 = new TextBoxNumeric(canvas);
             tb2.SetPos(10, 200);
             tb2.Text = "123.4asdasd"; // this fails
             tb2.Text = "123.4"; // ok
             tb2.SelectAllOnFocus = true;
-            
+
             NumericUpDown n1 = new NumericUpDown(canvas);
             n1.SetPos(10, 220);
             n1.Min = -10;
             n1.Text = "-51"; // this fails
             n1.Text = "-5"; // ok
-            
+
             RadioButtonController rb1 = new RadioButtonController(canvas);
             rb1.AddOption("Option 1");
             rb1.AddOption("Option 2");
@@ -206,7 +209,7 @@ namespace Gwen.Sample
             rb1.SetBounds(10, 350, 150, 200);
             rb1.SetSelection(1);
             rb1.SetSelection(2); // overrides above
-            
+
             GroupBox gb1 = new GroupBox(canvas);
             gb1.SetBounds(130, 250, 250, 120);
             gb1.Text = "Listbox test";
@@ -267,6 +270,25 @@ namespace Gwen.Sample
             Button bbr = new Button(spl);
             bbr.Text = "Bottom Right";
             spl.SetPanel(3, bbr);
+
+            tab = new TabControl(canvas);
+            tab.SetBounds(420, 400, 200, 150);
+            
+            var tabbtn1 = tab.AddPage("Controls");
+            
+            rbc2 = new RadioButtonController(tabbtn1.Page);
+            rbc2.SetBounds(10, 10, 100, 100);
+            rbc2.AddOption("Top").Select();
+            rbc2.AddOption("Bottom");
+            rbc2.AddOption("Left");
+            rbc2.AddOption("Right");
+            rbc2.OnSelectionChange += rbc2_OnSelectionChange;
+            
+            tab.AddPage("Red");
+            tab.AddPage("Green");
+            tab.AddPage("Blue");
+
+            tab.AllowReorder = true;
             /*
             gb1.ShouldCacheToTexture = true;
             n1.ShouldCacheToTexture = true;
@@ -308,16 +330,26 @@ namespace Gwen.Sample
 
                 if (w.ElapsedMilliseconds > 1000)
                 {
-                    fpsLabel.Text = String.Format("FPS: {0:F0}", 1000f*ftime.Count/ftime.Sum());
+                    fpsLabel.Text = String.Format("FPS: {0:F0}", 1000f * ftime.Count / ftime.Sum());
                     w.Restart();
                 }
                 //t.DisplayedString = String.Format("FPS: {0:F2}", 1000f * frame / w.ElapsedMilliseconds);
 
                 canvas.RenderCanvas();
-                
+
                 window.RestoreGLStates();
                 window.Display();
             }
+        }
+
+        static void rbc2_OnSelectionChange(Base control)
+        {
+            RadioButtonController rc = control as RadioButtonController;
+
+            if (rc.SelectedLabel == "Top") tab.TabStripPosition = Pos.Top;
+            if (rc.SelectedLabel == "Bottom") tab.TabStripPosition = Pos.Bottom;
+            if (rc.SelectedLabel == "Left") tab.TabStripPosition = Pos.Left;
+            if (rc.SelectedLabel == "Right") tab.TabStripPosition = Pos.Right;
         }
 
         static void OnColorChanged(Base control)

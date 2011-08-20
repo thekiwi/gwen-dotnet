@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls.Layout
 {
@@ -98,7 +95,7 @@ namespace Gwen.Controls.Layout
 
                 // Note, more than 1 child here, because the 
                 // label has a child built in ( The Text )
-                if (m_Columns[i].NumChildren > 1)
+                if (m_Columns[i].ChildrenCount > 1)
                 {
                     m_Columns[i].SizeToChildren();
                 }

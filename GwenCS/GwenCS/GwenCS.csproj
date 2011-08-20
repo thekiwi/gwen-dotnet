@@ -46,6 +46,9 @@
     <Compile Include="ControlsInternal\ColorDisplay.cs" />
     <Compile Include="ControlsInternal\SliderBar.cs" />
     <Compile Include="ControlsInternal\SplitterBar.cs" />
+    <Compile Include="ControlsInternal\TabControlInner.cs" />
+    <Compile Include="ControlsInternal\TabStrip.cs" />
+    <Compile Include="Controls\TabButton.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="ControlsInternal\Dragger.cs" />
     <Compile Include="ControlsInternal\Highlight.cs" />
@@ -86,6 +89,7 @@
     <Compile Include="Controls\Slider.cs" />
     <Compile Include="Controls\Symbol\Arrow.cs" />
     <Compile Include="Controls\Symbol\Base.cs" />
+    <Compile Include="Controls\TabControl.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\TextBoxNumeric.cs" />
     <Compile Include="Controls\VerticalScrollBar.cs" />
