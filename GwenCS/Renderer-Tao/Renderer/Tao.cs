@@ -1,0 +1,281 @@
+﻿using System;
+using System.Diagnostics;
+using System.Drawing;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
+using Tao.OpenGl;
+
+namespace Gwen.Renderer
+{
+    public class Tao : Base
+    {
+        [StructLayout(LayoutKind.Sequential, Pack = 1)]
+        public struct Vertex
+        {
+            public float x, y, z;
+            public float u, v;
+            public byte r, g, b, a;
+        }
+
+        protected const int MaxVerts = 1024;
+        protected Color m_Color;
+        protected int m_iVertNum;
+        protected Vertex[] m_Vertices;
+        protected int m_VertexSize;
+
+        public Tao() : base()
+        {
+            m_Vertices = new Vertex[MaxVerts];
+            m_iVertNum = 0;
+            for (int i = 0; i < MaxVerts; i++)
+                m_Vertices[i].z = 0.5f;
+
+            m_VertexSize = Marshal.SizeOf(m_Vertices[0]);
+            //Debug.Assert(Marshal.SizeOf(m_Vertices) != MaxVerts*m_VertexSize);
+        }
+
+        public override void Begin()
+        {
+            Gl.glBlendFunc(Gl.GL_SRC_ALPHA, Gl.GL_ONE_MINUS_SRC_ALPHA);
+            Gl.glAlphaFunc(Gl.GL_GREATER, 1.0f);
+            Gl.glEnable(Gl.GL_BLEND);
+        }
+
+        public override void End()
+        {
+            Flush();
+        }
+
+        private unsafe void Flush()
+        {
+            if (m_iVertNum == 0) return;
+
+            Gl.glEnableClientState(Gl.GL_VERTEX_ARRAY);
+            fixed (float* ptr1 = &m_Vertices[0].x)
+                Gl.glVertexPointer(3, Gl.GL_FLOAT, m_VertexSize, (IntPtr)ptr1);
+
+            Gl.glEnableClientState(Gl.GL_COLOR_ARRAY);
+            fixed (byte* ptr2 = &m_Vertices[0].r)
+                Gl.glColorPointer(4, Gl.GL_UNSIGNED_BYTE, m_VertexSize, (IntPtr)ptr2);
+
+            Gl.glEnableClientState(Gl.GL_TEXTURE_COORD_ARRAY);
+            fixed (float* ptr3 = &m_Vertices[0].u)
+                Gl.glTexCoordPointer(2, Gl.GL_FLOAT, m_VertexSize, (IntPtr)ptr3);
+            
+            Gl.glDrawArrays(Gl.GL_TRIANGLES, 0, m_iVertNum);
+
+            m_iVertNum = 0;
+            Gl.glFlush();
+        }
+
+        private void AddVert(int x, int y, float u = 0.0f, float v = 0.0f)
+        {
+            if (m_iVertNum >= MaxVerts - 1)
+            {
+                Flush();
+            }
+
+            m_Vertices[m_iVertNum].x = x;
+            m_Vertices[m_iVertNum].y = y;
+            m_Vertices[m_iVertNum].u = u;
+            m_Vertices[m_iVertNum].v = v;
+
+            m_Vertices[m_iVertNum].r = m_Color.R;
+            m_Vertices[m_iVertNum].g = m_Color.G;
+            m_Vertices[m_iVertNum].b = m_Color.B;
+            m_Vertices[m_iVertNum].a = m_Color.A;
+
+            m_iVertNum++;
+        }
+
+        public override void DrawFilledRect(Rectangle rect)
+        {
+            int texturesOn;
+
+            Gl.glGetBooleanv(Gl.GL_TEXTURE_2D, out texturesOn);
+            if (texturesOn != 0)
+            {
+                Flush();
+                Gl.glDisable(Gl.GL_TEXTURE_2D);
+            }
+
+            rect = Translate(rect);
+
+            AddVert(rect.X, rect.Y);
+            AddVert(rect.X + rect.Width, rect.Y);
+            AddVert(rect.X, rect.Y + rect.Height);
+
+            AddVert(rect.X + rect.Width, rect.Y);
+            AddVert(rect.X + rect.Width, rect.Y + rect.Height);
+            AddVert(rect.X, rect.Y + rect.Height);
+        }
+
+        public override Color DrawColor
+        {
+            get { return m_Color; }
+            set
+            {
+                byte[] col = new byte[4];
+                col[0] = value.R;
+                col[1] = value.G;
+                col[2] = value.B;
+                col[3] = value.A;
+                Gl.glColor4ubv(col);
+                m_Color = value;
+            }
+        }
+
+        public override void StartClip()
+        {
+            Flush();
+            Rectangle rect = ClipRegion;
+
+            // OpenGL's coords are from the bottom left
+            // so we need to translate them here.
+            {
+                int[] view = new int[4];
+                Gl.glGetIntegerv(Gl.GL_VIEWPORT, view);
+                rect.Y = view[3] - (rect.Y + rect.Height);
+            }
+
+            Gl.glScissor((int) (rect.X*Scale), (int) (rect.Y*Scale), (int) (rect.Width*Scale), (int) (rect.Height*Scale));
+            Gl.glEnable(Gl.GL_SCISSOR_TEST);
+        }
+
+        public override void EndClip()
+        {
+            Flush();
+            Gl.glDisable(Gl.GL_SCISSOR_TEST);
+        }
+
+        public override void DrawTexturedRect(Texture t, Rectangle rect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
+        {
+            int tex = (int)t.RendererData;
+
+            // Missing image, not loaded properly?
+            if (0==tex)
+            {
+                DrawMissingImage(rect);
+                return;
+            }
+
+            rect = Translate(rect);
+            int boundtex;
+
+            int texturesOn;
+            Gl.glGetBooleanv(Gl.GL_TEXTURE_2D, out texturesOn);
+            Gl.glGetIntegerv(Gl.GL_TEXTURE_BINDING_2D, out boundtex);
+            if (0==texturesOn || tex != boundtex)
+            {
+                Flush();
+                Gl.glBindTexture(Gl.GL_TEXTURE_2D, tex);
+                Gl.glEnable(Gl.GL_TEXTURE_2D);
+            }
+
+            AddVert(rect.X, rect.Y, u1, v1);
+            AddVert(rect.X + rect.Width, rect.Y, u2, v1);
+            AddVert(rect.X, rect.Y + rect.Height, u1, v2);
+
+            AddVert(rect.X + rect.Width, rect.Y, u2, v1);
+            AddVert(rect.X + rect.Width, rect.Y + rect.Height, u2, v2);
+            AddVert(rect.X, rect.Y + rect.Height, u1, v2);
+        }
+
+        public override void LoadTexture(Texture t)
+        {
+            Bitmap bmp;
+            try
+            {
+                bmp = new Bitmap(t.Name);
+            }
+            catch (Exception)
+            {
+                t.Failed = true;
+                return;
+            }
+
+            // todo: convert to proper format
+            if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
+            {
+                t.Failed = true;
+                bmp.Dispose();
+                return;
+            }
+
+            // Flip
+            //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+            int glTex;
+
+            // Create the opengl texture
+            Gl.glGenTextures(1, out glTex);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, glTex);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+
+            // Sort out our GWEN texture
+            t.RendererData = glTex;
+            t.Width = bmp.Width;
+            t.Height = bmp.Height;
+
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+                                    PixelFormat.Format32bppArgb);
+
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, t.Width, t.Height, 0, Gl.GL_BGRA,
+                            Gl.GL_UNSIGNED_BYTE, data.Scan0);
+            
+            bmp.UnlockBits(data);
+            bmp.Dispose();
+        }
+
+        public override void LoadTextureRaw(Texture t, byte[] pixelData)
+        {
+            Bitmap bmp;
+            try
+            {
+                unsafe
+                {
+                    fixed (byte* ptr = &pixelData[0])
+                        bmp = new Bitmap(t.Width, t.Height, 4*t.Width, PixelFormat.Format32bppArgb, (IntPtr) ptr);
+                }
+            }
+            catch (Exception)
+            {
+                t.Failed = true;
+                return;
+            }
+
+            // Flip
+            //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
+
+            int glTex;
+
+            // Create the opengl texture
+            Gl.glGenTextures(1, out glTex);
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, glTex);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MIN_FILTER, Gl.GL_LINEAR);
+            Gl.glTexParameteri(Gl.GL_TEXTURE_2D, Gl.GL_TEXTURE_MAG_FILTER, Gl.GL_LINEAR);
+
+            // Sort out our GWEN texture
+            t.RendererData = glTex;
+
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+                                    PixelFormat.Format32bppArgb);
+
+            Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, t.Width, t.Height, 0, Gl.GL_BGRA,
+                            Gl.GL_UNSIGNED_BYTE, data.Scan0);
+
+            bmp.UnlockBits(data);
+            bmp.Dispose();
+        }
+
+        public override void FreeTexture(Texture t)
+        {
+            int tex = (int) t.RendererData;
+            if (tex == 0)
+                return;
+            Gl.glDeleteTextures(1, ref tex);
+            t.RendererData = null;
+        }
+    }
+}

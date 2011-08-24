@@ -1,102 +1,57 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using Gwen;
 using Gwen.Controls;
-using SFML.Graphics;
-using SFML.Window;
 using Tao.OpenGl;
 using Button = Gwen.Controls.Button;
-using CheckBox = Gwen.Controls.CheckBox;
-using Color = SFML.Graphics.Color;
 using ComboBox = Gwen.Controls.ComboBox;
 using GroupBox = Gwen.Controls.GroupBox;
-using Image = SFML.Graphics.Image;
-using KeyEventArgs = SFML.Window.KeyEventArgs;
 using Label = Gwen.Controls.Label;
 using ListBox = Gwen.Controls.ListBox;
-using Menu = Gwen.Controls.Menu;
 using MenuStrip = Gwen.Controls.MenuStrip;
 using NumericUpDown = Gwen.Controls.NumericUpDown;
 using TabControl = Gwen.Controls.TabControl;
 using TextBox = Gwen.Controls.TextBox;
-using View = SFML.Graphics.View;
 
-namespace Gwen.Sample
+namespace Sample_Tao_Windows
 {
-    public class Sample
+    public partial class GlForm : Form
     {
-        private static Input.SFML GwenInput;
-        private static RenderWindow window;
+        private Canvas canvas;
+        private Gwen.Renderer.Tao renderer;
+        private Gwen.Skin.Base skin;
 
-        private static Canvas canvas;
         private static Label fpsLabel;
         private static RadioButtonController rbc2;
         private static TabControl tab;
 
         private static Label _ColorText;
 
-        [STAThread]
-        static void Main()
+        public GlForm()
         {
-            int width = 800;
-            int height = 600;
-            // Create main window
-            window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.NET test",
-                Styles.Default, new ContextSettings(32, 0));
+            InitializeComponent();
+        }
 
-            // Setup event handlers
-            window.Closed += OnClosed;
-            window.KeyPressed += OnKeyPressed;
-            window.Resized += OnResized;
-            window.KeyReleased += window_KeyReleased;
-            window.MouseButtonPressed += window_MouseButton;
-            window.MouseButtonReleased += window_MouseButton;
-            window.MouseWheelMoved += window_MouseWheelMoved;
-            window.MouseMoved += window_MouseMoved;
-            window.TextEntered += window_TextEntered;
+        private void GlForm_Load(object sender, EventArgs e)
+        {
+            glControl.InitializeContexts();
+            Gl.glClearColor(1f, 0f, 0f, 1f);
+            Gl.glMatrixMode(Gl.GL_PROJECTION);
+            Gl.glLoadIdentity();
+            Gl.glOrtho(0, glControl.Width, glControl.Height, 0, -1, 1);
+            Gl.glMatrixMode(Gl.GL_MODELVIEW);
+            Gl.glViewport(0, 0, glControl.Width, glControl.Height);
 
-            int fps_frames = 50;
-            List<int> ftime = new List<int>(fps_frames);
-            float time = 0.0F;
-            long frame = 0;
-
-            Text btnText = new Text("Button pressed!");
-            btnText.Position = new Vector2f(0, 0);
-            btnText.Color = Color.White;
-
-            RenderTexture ri = new RenderTexture(100, 100);
-            View vi = new View(new FloatRect(0, 0, 100, 100));
-            ri.SetView(vi);
-            ri.Draw(btnText);
-            ri.Display();
-            vi.Dispose();
-
-            Renderer.SFML GwenRenderer = new Renderer.SFML(window);
-
-            // Create a GWEN skin
-            //Skin.Simple skin = new Skin.Simple(GwenRenderer);
-            Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
-
-            // The fonts work differently in SFML - it can't use
-            // system fonts. So force the skin to use a local one.
-            skin.SetDefaultFont("OpenSans.ttf", 10);
-            Font font2 = skin.DefaultFont;
-            font2.Size = 15;
-
-            // Create a Canvas (it's root, on which all other GWEN panels are created)
+            renderer = new Gwen.Renderer.Tao();
+            skin = new Gwen.Skin.TexturedBase(renderer, "DefaultSkin.png");
+            //skin = new Gwen.Skin.Simple(renderer);
             canvas = new Canvas(skin);
-            canvas.SetSize(width, height);
+            canvas.SetSize(glControl.Width, glControl.Height);
             canvas.DrawBackground = true;
-            canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
-            canvas.KeyboardInputEnabled = true;
-
-            fpsLabel = new Label(canvas);
-            fpsLabel.SetPos(0, 40);
-            fpsLabel.Dock = Pos.Left;
+            canvas.BackgroundColor = Color.FromArgb(255, 150, 170, 170);
+            //canvas.KeyboardInputEnabled = true;
 
             MenuStrip ms = new MenuStrip(canvas);
             ms.Dock = Pos.Top;
@@ -151,7 +106,7 @@ namespace Gwen.Sample
             Label label2 = new Label(canvas);
             label2.SetPos(10, 80);
             label2.AutoSizeToContents = true;
-            label2.Font = font2;
+            //label2.Font = font2;
             label2.MouseInputEnabled = true;
             label2.SetToolTipText("this is a tooltip");
             label2.Text = "Hover mouse here";
@@ -274,9 +229,9 @@ namespace Gwen.Sample
 
             tab = new TabControl(canvas);
             tab.SetBounds(420, 400, 200, 150);
-            
+
             var tabbtn1 = tab.AddPage("Controls");
-            
+
             rbc2 = new RadioButtonController(tabbtn1.Page);
             rbc2.SetBounds(10, 10, 100, 100);
             rbc2.AddOption("Top").Select();
@@ -284,68 +239,54 @@ namespace Gwen.Sample
             rbc2.AddOption("Left");
             rbc2.AddOption("Right");
             rbc2.OnSelectionChange += rbc2_OnSelectionChange;
-            
+
             tab.AddPage("Red");
             tab.AddPage("Green");
             tab.AddPage("Blue");
 
             tab.AllowReorder = true;
-            /*
-            gb1.ShouldCacheToTexture = true;
-            n1.ShouldCacheToTexture = true;
-            button1.ShouldCacheToTexture = true;
-            label1.ShouldCacheToTexture = true;
-            rb1.ShouldCacheToTexture = true;
-            */
-            // Create an input processor
-            GwenInput = new Input.SFML();
-            GwenInput.Initialize(canvas);
-
-            Stopwatch w = new Stopwatch();
-            w.Start();
-            while (window.IsOpened())
-            {
-                window.SetActive();
-                window.DispatchEvents();
-                window.Clear();
-
-                // Clear depth buffer
-                Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT|Gl.GL_COLOR_BUFFER_BIT);
-                
-                window.SaveGLStates();
-                
-                ulong frametime = window.GetFrameTime();
-                time += frametime;
-                frame++;
-
-                if (ftime.Count == fps_frames)
-                    ftime.RemoveAt(0);
-
-                ftime.Add((int)frametime);
-
-                //window.Draw(new Sprite(ri.Image));
-
-                if (button1.IsDepressed)
-                    fpsLabel.TextColor = System.Drawing.Color.Red;
-                else
-                    fpsLabel.TextColor = System.Drawing.Color.Black;
-
-                if (w.ElapsedMilliseconds > 1000)
-                {
-                    fpsLabel.Text = String.Format("FPS: {0:F0}", 1000f * ftime.Count / ftime.Sum());
-                    w.Restart();
-                }
-                //t.DisplayedString = String.Format("FPS: {0:F2}", 1000f * frame / w.ElapsedMilliseconds);
-
-                canvas.RenderCanvas();
-                
-                window.RestoreGLStates();
-                
-                window.Display();
-            }
         }
 
-        static void rbc2_OnSelectionChange(Base control)
+        private void GlForm_Resize(object sender, EventArgs e)
+        {
+            canvas.SetSize(glControl.Width, glControl.Height);
+        }
+
+        private void glControl_Paint(object sender, PaintEventArgs e)
+        {
+            Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
+            canvas.RenderCanvas();
+        }
+
+        void Sample_OnMenuItemSelectedQuit(Base control)
+        {
+            this.Close();
+        }
+
+        void Sample_OnMenuItemSelectedLoad(Base control)
+        {
+            Gwen.Platform.Windows.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
+        }
+
+        static void OnFileOpen(String file)
+        {
+            MessageBox.Show("File opened: " + file);
+        }
+        
+        void button1_OnPress(Base control)
+        {
+        }
+
+        void OnColorChanged(Base control)
+        {
+            var picker = control as IColorPicker;
+            var c = picker.Color;
+            var hsv = c.ToHSV();
+            _ColorText.Text = String.Format("RGB: {0:X2}{1:X2}{2:X2} HSV: {3:F1} {4:F2} {5:F2}",
+                                            c.R, c.G, c.B, hsv.h, hsv.s, hsv.v);
+        }
+
+        void rbc2_OnSelectionChange(Base control)
         {
             RadioButtonController rc = control as RadioButtonController;
 
@@ -355,96 +296,5 @@ namespace Gwen.Sample
             if (rc.SelectedLabel == "Right") tab.TabStripPosition = Pos.Right;
         }
 
-        static void OnColorChanged(Base control)
-        {
-            var picker = control as IColorPicker;
-            var c = picker.Color;
-            var hsv = c.ToHSV();
-            _ColorText.Text = String.Format("RGB: {0:X2}{1:X2}{2:X2} HSV: {3:F1} {4:F2} {5:F2}",
-                                            c.R, c.G, c.B, hsv.h, hsv.s, hsv.v);
-        }
-
-        static void Sample_OnMenuItemSelectedQuit(Base control)
-        {
-            OnClosed(window, null);
-        }
-
-        static void Sample_OnMenuItemSelectedLoad(Base control)
-        {
-            Platform.Windows.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
-        }
-
-        static void OnFileOpen(String file)
-        {
-            MessageBox.Show("File opened: "+file);
-        }
-
-        static void window_TextEntered(object sender, TextEventArgs e)
-        {
-            GwenInput.ProcessMessage(e);
-        }
-
-        static void button1_OnPress(Base control)
-        {
-        }
-
-        static void window_MouseMoved(object sender, MouseMoveEventArgs e)
-        {
-            GwenInput.ProcessMessage(e);
-        }
-
-        static void window_MouseWheelMoved(object sender, MouseWheelEventArgs e)
-        {
-            GwenInput.ProcessMessage(e);
-        }
-
-        static void window_MouseButton(object sender, MouseButtonEventArgs e)
-        {
-            GwenInput.ProcessMessage(e);
-        }
-
-        static void window_KeyReleased(object sender, KeyEventArgs e)
-        {
-            GwenInput.ProcessMessage(e);
-        }
-
-        /// <summary>
-        /// Function called when the window is closed
-        /// </summary>
-        static void OnClosed(object sender, EventArgs e)
-        {
-            RenderWindow window = (RenderWindow)sender;
-            window.Close();
-        }
-
-        /// <summary>
-        /// Function called when a key is pressed
-        /// </summary>
-        static void OnKeyPressed(object sender, KeyEventArgs e)
-        {
-            RenderWindow window = (RenderWindow)sender;
-            if (e.Code == Keyboard.Key.Escape)
-                window.Close();
-
-            if (e.Code == Keyboard.Key.F12)
-            {
-                SFML.Graphics.Texture t = new SFML.Graphics.Texture(window.Width, window.Height);
-                t.Update(window);
-                t.CopyToImage().SaveToFile(string.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
-                                           DateTime.Now.Second));
-            }
-            GwenInput.ProcessMessage(e);
-        }
-
-        /// <summary>
-        /// Function called when the window is resized
-        /// </summary>
-        static void OnResized(object sender, SizeEventArgs e)
-        {
-            Gl.glViewport(0, 0, (int)e.Width, (int)e.Height);
-            // todo: gwen doesn't handle resizing well
-            canvas.SetSize((int)e.Width, (int)e.Height);
-            // window.ConvertCoords()
-        }
     }
 }

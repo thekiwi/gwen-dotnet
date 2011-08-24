@@ -1,23 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-
 using Gwen.Controls;
-
 using SFML.Window;
 
 namespace Gwen.Input
 {
-    /// <summary>
-    /// Data for translating sfml keys to gwen keys
-    /// </summary>
-    public struct KeyTrans
-    {
-        public bool Printable;
-        public Key GwenCode;
-        public char Char;
-    }
-
     public class SFML
     {
         protected Canvas m_Canvas;
@@ -40,24 +26,24 @@ namespace Gwen.Input
         {
             switch (sfKey)
             {
-                        case Keyboard.Key.Back:			return Key.Backspace;
-                        case Keyboard.Key.Return:		return Key.Return;
-                        case Keyboard.Key.Escape:		return Key.Escape;
-                        case Keyboard.Key.Tab:			return Key.Tab;
-                        case Keyboard.Key.Space:		    return Key.Space;
-                        case Keyboard.Key.Up:			return Key.Up;
-                        case Keyboard.Key.Down:			return Key.Down;
-                        case Keyboard.Key.Left:			return Key.Left;
-                        case Keyboard.Key.Right:		    return Key.Right;
-                        case Keyboard.Key.Home:			return Key.Home;
-                        case Keyboard.Key.End:			return Key.End;
-                        case Keyboard.Key.Delete:		return Key.Delete;
-                        case Keyboard.Key.LControl:		return Key.Control;
-                        case Keyboard.Key.LAlt:			return Key.Alt;
-                        case Keyboard.Key.LShift:		return Key.Shift;
-                        case Keyboard.Key.RControl:		return Key.Control;
-                        case Keyboard.Key.RAlt:			return Key.Alt;
-                        case Keyboard.Key.RShift:		return Key.Shift;
+                case Keyboard.Key.Back:			return Key.Backspace;
+                case Keyboard.Key.Return:		return Key.Return;
+                case Keyboard.Key.Escape:		return Key.Escape;
+                case Keyboard.Key.Tab:			return Key.Tab;
+                case Keyboard.Key.Space:		return Key.Space;
+                case Keyboard.Key.Up:			return Key.Up;
+                case Keyboard.Key.Down:			return Key.Down;
+                case Keyboard.Key.Left:			return Key.Left;
+                case Keyboard.Key.Right:		return Key.Right;
+                case Keyboard.Key.Home:			return Key.Home;
+                case Keyboard.Key.End:			return Key.End;
+                case Keyboard.Key.Delete:		return Key.Delete;
+                case Keyboard.Key.LControl:		return Key.Control;
+                case Keyboard.Key.LAlt:			return Key.Alt;
+                case Keyboard.Key.LShift:		return Key.Shift;
+                case Keyboard.Key.RControl:		return Key.Control;
+                case Keyboard.Key.RAlt:			return Key.Alt;
+                case Keyboard.Key.RShift:		return Key.Shift;
             }
             return Key.Invalid;
         }
@@ -114,6 +100,5 @@ namespace Gwen.Input
 
             return false;
         }
-
     }
 }
