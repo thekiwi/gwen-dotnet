@@ -16,7 +16,7 @@ namespace Gwen.Controls
 
             m_RadioButton = new RadioButton(this);
             m_RadioButton.Dock = Pos.Left;
-            m_RadioButton.Margin = new Margin(0, 4, 2, 4);
+            m_RadioButton.Margin = new Margin(0, 2, 2, 2);
             m_RadioButton.IsTabable = false;
             m_RadioButton.KeyboardInputEnabled = false;
 

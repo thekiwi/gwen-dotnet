@@ -38,6 +38,16 @@ namespace Gwen.Renderer
             }
         }
 
+        public override System.Drawing.Color PixelColour(Texture texture, uint x, uint y, System.Drawing.Color defaultColor)
+        {
+            global::SFML.Graphics.Texture tex = texture.RendererData as global::SFML.Graphics.Texture;
+            if (tex == null)
+                return defaultColor;
+            var img = tex.CopyToImage();
+            Color pixel = img.GetPixel(x, y);
+            return System.Drawing.Color.FromArgb(pixel.A, pixel.R, pixel.G, pixel.B);
+        }
+
         public override void DrawLine(int x, int y, int a, int b)
         {
             Translate( ref x, ref y );

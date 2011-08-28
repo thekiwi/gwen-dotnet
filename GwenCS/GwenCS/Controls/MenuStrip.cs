@@ -12,7 +12,7 @@ namespace Gwen.Controls
         {
             SetBounds(0, 0, 200, 22);
             Dock = Pos.Top;
-            m_InnerPanel.Padding = new Padding(5, 2, 2, 2);
+            m_InnerPanel.Padding = new Padding(5, 0, 0, 0);
         }
 
         public override void Close()
@@ -42,7 +42,8 @@ namespace Gwen.Controls
         protected override void onAddItem(MenuItem item)
         {
             item.Dock = Pos.Left;
-            item.Padding = new Padding(5, 0, 5, 0);
+            item.TextPadding = new Padding(5, 0, 5, 0);
+            item.Padding = new Padding(10, 0, 10, 0);
             item.SizeToContents();
             item.IsOnStrip = true;
             item.OnHoverEnter += onHoverItem;

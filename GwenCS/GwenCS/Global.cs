@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+
 using Gwen.Controls;
 
 namespace Gwen
@@ -131,6 +129,11 @@ namespace Gwen
         public static Color Multiply(this Color color, float amount)
         {
             return Color.FromArgb(color.A, Trunc(color.R*amount), Trunc(color.G*amount), Trunc(color.B*amount));
+        }
+
+        public static Rectangle Add(this Rectangle r, Rectangle other)
+        {
+            return new Rectangle(r.X + other.X, r.Y + other.Y, r.Width + other.Width, r.Height + other.Height);
         }
     }
 }

@@ -23,6 +23,7 @@ namespace Gwen.Controls
         public float ScrollAmount { get { return m_fScrollAmount; } }
         public float ContentSize { get { return m_fContentSize; } set { if (m_fContentSize != value) Invalidate(); m_fContentSize = value; } }
         public float ViewableContentSize { get { return m_fViewableContentSize; } set { if (m_fViewableContentSize != value) Invalidate(); m_fViewableContentSize = value; } }
+        public virtual bool IsHorizontal { get { return false; } }
 
         protected BaseScrollBar(Base parent) : base(parent)
         {
@@ -56,7 +57,7 @@ namespace Gwen.Controls
         */
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawScrollBar(this, false, m_bDepressed); // [omeg] always horizontal?
+            skin.DrawScrollBar(this, IsHorizontal, m_bDepressed);
         }
 
         protected virtual void onBarMoved(Base control)

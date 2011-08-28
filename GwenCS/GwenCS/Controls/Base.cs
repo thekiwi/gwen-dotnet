@@ -171,8 +171,8 @@ namespace Gwen.Controls
             }
         }
 
-        public Margin Margin 
-        { 
+        public Margin Margin
+        {
             get { return m_Margin; }
             set
             {
@@ -260,7 +260,7 @@ namespace Gwen.Controls
             m_bCacheTextureDirty = true;
             m_bCacheToTexture = false;
         }
-        
+
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -286,7 +286,7 @@ namespace Gwen.Controls
 
         protected virtual void AcceleratePressed()
         {
-            
+
         }
 
         public virtual void Hide()
@@ -338,27 +338,28 @@ namespace Gwen.Controls
 
         public virtual void SendToBack()
         {
-            if (m_Parent == null)
+            if (m_ActualParent == null)
                 return;
-            if (m_Parent.Children.First() == this)
+            if (m_ActualParent.Children.First() == this)
                 return;
 
-            m_Parent.Children.Remove(this);
-            m_Parent.Children.Insert(0, this);
+            m_ActualParent.Children.Remove(this);
+            m_ActualParent.Children.Insert(0, this);
 
             InvalidateParent();
         }
 
         public virtual void BringToFront()
         {
-            if (m_Parent == null)
+            if (m_ActualParent == null)
                 return;
-            if (m_Parent.Children.Last() == this)
+            if (m_ActualParent.Children.Last() == this)
                 return;
 
-            m_Parent.Children.Remove(this);
-            m_Parent.Children.Add(this);
+            m_ActualParent.Children.Remove(this);
+            m_ActualParent.Children.Add(this);
             InvalidateParent();
+            Redraw();
         }
 
         public virtual Canvas GetCanvas()
@@ -372,14 +373,14 @@ namespace Gwen.Controls
 
         public virtual void BringNextToControl(Base child, bool behind)
         {
-            if (null == m_Parent)
+            if (null == m_ActualParent)
                 return;
 
-            m_Parent.Children.Remove(this);
+            m_ActualParent.Children.Remove(this);
 
             // todo: validate
-            int idx = m_Parent.Children.IndexOf(child);
-            if (idx == m_Parent.Children.Count - 1)
+            int idx = m_ActualParent.Children.IndexOf(child);
+            if (idx == m_ActualParent.Children.Count - 1)
             {
                 BringToFront();
                 return;
@@ -389,14 +390,14 @@ namespace Gwen.Controls
             {
                 ++idx;
 
-                if (idx == m_Parent.Children.Count - 1)
+                if (idx == m_ActualParent.Children.Count - 1)
                 {
                     BringToFront();
                     return;
                 }
             }
 
-            m_Parent.Children.Insert(idx, this);
+            m_ActualParent.Children.Insert(idx, this);
             InvalidateParent();
         }
 
@@ -518,7 +519,7 @@ namespace Gwen.Controls
 
         public virtual bool SetBounds(float x, float y, float w, float h)
         {
-            return SetBounds((int) x, (int) y, (int) w, (int) h);
+            return SetBounds((int)x, (int)y, (int)w, (int)h);
         }
 
         public virtual bool SetBounds(int x, int y, int w, int h)
@@ -654,48 +655,52 @@ namespace Gwen.Controls
 
             Renderer.Base render = skin.Renderer;
 
-            if (render.CTT!=null && ShouldCacheToTexture)
+            if (render.CTT != null && ShouldCacheToTexture)
             {
                 DoCacheRender(skin, this);
                 return;
             }
 
+            RenderRecursive(skin, Bounds);
+        }
+
+        protected virtual void RenderRecursive(Skin.Base skin, Rectangle clipRect)
+        {
+            Renderer.Base render = skin.Renderer;
             Point pOldRenderOffset = render.RenderOffset;
 
-            render.AddRenderOffset(Bounds);
+            render.AddRenderOffset(clipRect);
 
             RenderUnder(skin);
 
             Rectangle rOldRegion = render.ClipRegion;
-            render.AddClipRegion(Bounds);
+            render.AddClipRegion(clipRect);
 
-            if (render.ClipRegionVisible)
+            if (!render.ClipRegionVisible)
             {
-                render.StartClip();
+                render.ClipRegion = rOldRegion;
+                return;
+            }
 
-                //Render myself first
-                Render(skin);
+            render.StartClip();
 
-                if (Children.Count > 0)
+            //Render myself first
+            Render(skin);
+
+            if (Children.Count > 0)
+            {
+                //Now render my kids
+                foreach (Base child in Children)
                 {
-                    //Now render my kids
-                    foreach (Base child in Children)
-                    {
-                        if (child.IsHidden)
-                            continue;
-                        child.DoRender(skin);
-                    }
+                    if (child.IsHidden)
+                        continue;
+                    child.DoRender(skin);
                 }
-
-                render.ClipRegion = rOldRegion;
-                render.StartClip();
-
-                RenderOver(skin);
             }
-            else
-            {
-                render.ClipRegion = rOldRegion;
-            }
+
+            render.ClipRegion = rOldRegion;
+            render.StartClip();
+            RenderOver(skin);
 
             RenderFocus(skin);
 
@@ -1084,19 +1089,19 @@ namespace Gwen.Controls
         // receiver
         public virtual void DragAndDrop_HoverEnter(Package p, int x, int y)
         {
-            
+
         }
 
         // receiver
         public virtual void DragAndDrop_HoverLeave(Package p)
         {
-            
+
         }
 
         // receiver
         public virtual void DragAndDrop_Hover(Package p, int x, int y)
         {
-            
+
         }
 
         // receiver
@@ -1153,13 +1158,13 @@ namespace Gwen.Controls
 
         protected virtual void PostLayout(Skin.Base skin)
         {
-            
+
         }
 
         public virtual void Redraw()
         {
-            m_bCacheTextureDirty = true; 
-            if (m_Parent != null) 
+            m_bCacheTextureDirty = true;
+            if (m_Parent != null)
                 m_Parent.Redraw();
         }
 
@@ -1176,22 +1181,22 @@ namespace Gwen.Controls
             bool handled = false;
             switch (key)
             {
-                case Key.Tab:       handled = onKeyTab(pressed); break;
-                case Key.Space:     handled = onKeySpace(pressed); break;
-                case Key.Home:      handled = onKeyHome(pressed); break;
-                case Key.End:       handled = onKeyEnd(pressed); break;
-                case Key.Return:    handled = onKeyReturn(pressed); break;
+                case Key.Tab: handled = onKeyTab(pressed); break;
+                case Key.Space: handled = onKeySpace(pressed); break;
+                case Key.Home: handled = onKeyHome(pressed); break;
+                case Key.End: handled = onKeyEnd(pressed); break;
+                case Key.Return: handled = onKeyReturn(pressed); break;
                 case Key.Backspace: handled = onKeyBackspace(pressed); break;
-                case Key.Delete:    handled = onKeyDelete(pressed); break;
-                case Key.Right:     handled = onKeyRight(pressed); break;
-                case Key.Left:      handled = onKeyLeft(pressed); break;
-                case Key.Up:        handled = onKeyUp(pressed); break;
-                case Key.Down:      handled = onKeyDown(pressed); break;
-                case Key.Escape:    handled = onKeyEscape(pressed); break;
+                case Key.Delete: handled = onKeyDelete(pressed); break;
+                case Key.Right: handled = onKeyRight(pressed); break;
+                case Key.Left: handled = onKeyLeft(pressed); break;
+                case Key.Up: handled = onKeyUp(pressed); break;
+                case Key.Down: handled = onKeyDown(pressed); break;
+                case Key.Escape: handled = onKeyEscape(pressed); break;
                 default: break;
             }
 
-            if (!handled && Parent!=null)
+            if (!handled && Parent != null)
                 Parent.onKeyPress(key, pressed);
 
             return handled;
@@ -1204,7 +1209,7 @@ namespace Gwen.Controls
 
         internal virtual bool onKeyTab(bool pressed)
         {
-            if (!pressed) 
+            if (!pressed)
                 return true;
 
             if (GetCanvas().NextTab != null)
@@ -1246,9 +1251,9 @@ namespace Gwen.Controls
 
         protected virtual void RenderFocus(Skin.Base skin)
         {
-            if (Global.KeyboardFocus != this) 
+            if (Global.KeyboardFocus != this)
                 return;
-            if (!IsTabable) 
+            if (!IsTabable)
                 return;
 
             skin.DrawKeyboardHighlight(this, RenderBounds, 3);
@@ -1256,17 +1261,17 @@ namespace Gwen.Controls
 
         protected virtual void RenderUnder(Skin.Base skin)
         {
-            
+
         }
 
         protected virtual void RenderOver(Skin.Base skin)
         {
-            
+
         }
 
         public virtual void Think()
         {
-            
+
         }
 
         internal virtual void onKeyboardFocus()
@@ -1290,21 +1295,20 @@ namespace Gwen.Controls
             Width = 0;
         }
 
-        public virtual void Anim_HeightIn( float fLength, float fDelay, float fEase )
+        public virtual void Anim_HeightIn(float fLength, float fDelay, float fEase)
         {
             Animation.Add(this, new Anim.Size.Height(0, Height, fLength, false, fDelay, fEase));
             Height = 0;
         }
 
-        public virtual void Anim_WidthOut( float fLength, bool bHide, float fDelay, float fEase )
+        public virtual void Anim_WidthOut(float fLength, bool bHide, float fDelay, float fEase)
         {
             Animation.Add(this, new Anim.Size.Width(Width, 0, fLength, bHide, fDelay, fEase));
         }
 
-        public virtual void Anim_HeightOut( float fLength, bool bHide, float fDelay, float fEase )
+        public virtual void Anim_HeightOut(float fLength, bool bHide, float fDelay, float fEase)
         {
             Animation.Add(this, new Anim.Size.Height(Height, 0, fLength, bHide, fDelay, fEase));
         }
-
     }
 }

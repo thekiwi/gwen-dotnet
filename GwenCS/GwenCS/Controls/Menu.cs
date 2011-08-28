@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
@@ -11,7 +9,6 @@ namespace Gwen.Controls
 
         public override bool IsMenuComponent { get { return true; } }
         public bool IconMarginDisabled { get { return m_bDisableIconMargin; } set { m_bDisableIconMargin = value; } }
-        public virtual bool ShouldClip { get { return true; } }
 
         protected virtual bool ShouldHoverOpenMenu { get { return true; } }
 
@@ -57,6 +54,7 @@ namespace Gwen.Controls
         public virtual MenuItem AddItem(String strName, String strIconName, ControlCallback handler = null)
         {
             MenuItem item = new MenuItem(this);
+            item.Padding = new Padding(4, 4, 4, 4);
             item.SetText(strName);
             item.SetImage(strIconName);
 
@@ -70,9 +68,8 @@ namespace Gwen.Controls
 
         protected virtual void onAddItem(MenuItem item)
         {
-            item.Dock = Pos.Top;
             item.TextPadding = new Padding(IconMarginDisabled ? 0 : 24, 0, 16, 0);
-            item.Padding = new Padding(4, 4, 4, 4);
+            item.Dock = Pos.Top;
             item.SizeToContents();
             item.Alignment = Pos.CenterV | Pos.Left;
             item.OnHoverEnter += onHoverItem;

@@ -3,10 +3,24 @@ using System.Drawing;
 
 namespace Gwen.Skin
 {
+    // bit ugly...
+    public struct SkinColors
+    {
+        public struct _Window
+        {
+            public Color TitleActive;
+            public Color TitleInactive;
+        }
+
+        public _Window Window;
+    }
+
     public class Base : IDisposable
     {
         protected Font m_DefaultFont = new Font();
         protected Renderer.Base m_Render;
+
+        public SkinColors Colors;
 
         public Font DefaultFont { get { return m_DefaultFont; } }
 
@@ -39,9 +53,9 @@ namespace Gwen.Skin
             m_DefaultFont.Size = size;
         }
 
-        public virtual void DrawButton(Controls.Base control, bool bDepressed, bool bHovered) { }
-        public virtual void DrawTabButton(Controls.Base control, bool bActive) { }
-        public virtual void DrawTabControl(Controls.Base control, Rectangle CurrentButtonRect) { }
+        public virtual void DrawButton(Controls.Base control, bool bDepressed, bool bHovered, bool disabled) { }
+        public virtual void DrawTabButton(Controls.Base control, bool bActive, Pos dir) { }
+        public virtual void DrawTabControl(Controls.Base control) { }
         public virtual void DrawTabTitleBar(Controls.Base control) { }
 
         public virtual void DrawMenuItem(Controls.Base control, bool bSubmenuOpen, bool bChecked) { }
@@ -52,6 +66,7 @@ namespace Gwen.Skin
         public virtual void DrawGroupBox(Controls.Base control, int textStart, int textHeight, int textWidth) { }
         public virtual void DrawTextBox(Controls.Base control) { }
         public virtual void DrawWindow(Controls.Base control, int topHeight, bool inFocus) { }
+        public virtual void DrawWindowCloseButton(Controls.Base control, bool depressed, bool hovered, bool disabled) { }
         public virtual void DrawHighlight(Controls.Base control) { }
         public virtual void DrawBackground(Controls.Base control) { }
         public virtual void DrawStatusBar(Controls.Base control) { }
@@ -59,7 +74,7 @@ namespace Gwen.Skin
         public virtual void DrawShadow(Controls.Base control) { }
         public virtual void DrawScrollBarBar(Controls.Base control, bool bDepressed, bool isHovered, bool isHorizontal) { }
         public virtual void DrawScrollBar(Controls.Base control, bool isHorizontal, bool bDepressed) { }
-        public virtual void DrawScrollButton(Controls.Base control, Pos iDirection, bool bDepressed) { }
+        public virtual void DrawScrollButton(Controls.Base control, Pos iDirection, bool bDepressed, bool hovered, bool disabled) { }
         public virtual void DrawProgressBar(Controls.Base control, bool isHorizontal, float progress) { }
 
         public virtual void DrawListBox(Controls.Base control) { }

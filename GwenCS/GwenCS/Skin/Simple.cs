@@ -52,7 +52,7 @@ namespace Gwen.Skin
             m_DefaultFont.Size = 11;
         }
 
-        public override void DrawButton(Controls.Base control, bool bDepressed, bool bHovered)
+        public override void DrawButton(Controls.Base control, bool bDepressed, bool bHovered, bool disabled)
         {
             int w = control.Width;
             int h = control.Height;
@@ -290,38 +290,30 @@ namespace Gwen.Skin
             }
         }
 
-        public override void DrawTabButton(Controls.Base control, bool bActive)
+        public override void DrawTabButton(Controls.Base control, bool bActive, Pos dir)
         {
             Rectangle rect = control.RenderBounds;
             bool bHovered = control.IsHovered;
 
-            if (bActive)
-            {
-                m_Render.DrawColor = m_colControl;
-                m_Render.DrawFilledRect(new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, rect.Height - 1));
-            }
-            else
-            {
-                if (bHovered) m_Render.DrawColor = m_colControlBright;
-                else m_Render.DrawColor = m_colControl;
+            if (bHovered) m_Render.DrawColor = m_colControlBright;
+            else m_Render.DrawColor = m_colControl;
 
-                m_Render.DrawFilledRect(new Rectangle(1, 1, rect.Width - 2, rect.Height - 1));
+            m_Render.DrawFilledRect(new Rectangle(1, 1, rect.Width - 2, rect.Height - 1));
 
-                if (bHovered) m_Render.DrawColor = m_colControl;
-                else m_Render.DrawColor = m_colControlDark;
+            if (bHovered) m_Render.DrawColor = m_colControl;
+            else m_Render.DrawColor = m_colControlDark;
 
-                m_Render.DrawFilledRect(Global.FloatRect(1, rect.Height * 0.5f, rect.Width - 2, rect.Height * 0.5f - 1));
+            m_Render.DrawFilledRect(Global.FloatRect(1, rect.Height*0.5f, rect.Width - 2, rect.Height*0.5f - 1));
 
-                m_Render.DrawColor = m_colControlBright;
-                m_Render.DrawShavedCornerRect(new Rectangle(1, 1, rect.Width - 2, rect.Height));
-            }
+            m_Render.DrawColor = m_colControlBright;
+            m_Render.DrawShavedCornerRect(new Rectangle(1, 1, rect.Width - 2, rect.Height));
 
             m_Render.DrawColor = m_colBorderColor;
 
             m_Render.DrawShavedCornerRect(new Rectangle(0, 0, rect.Width, rect.Height));
         }
 
-        public override void DrawTabControl(Controls.Base control, Rectangle CurrentButtonRect)
+        public override void DrawTabControl(Controls.Base control)
         {
             Rectangle rect = control.RenderBounds;
 
@@ -331,8 +323,8 @@ namespace Gwen.Skin
             m_Render.DrawColor = m_colBorderColor;
             m_Render.DrawLinedRect(rect);
 
-            m_Render.DrawColor = m_colControl;
-            m_Render.DrawFilledRect(CurrentButtonRect);
+            //m_Render.DrawColor = m_colControl;
+            //m_Render.DrawFilledRect(CurrentButtonRect);
         }
 
         public override void DrawWindow(Controls.Base control, int topHeight, bool inFocus)
@@ -378,6 +370,12 @@ namespace Gwen.Skin
             m_Render.DrawShavedCornerRect(new Rectangle(rect.X, rect.Y, rect.Width, rect.Height));
         }
 
+        public override void DrawWindowCloseButton(Controls.Base control, bool depressed, bool hovered, bool disabled)
+        {
+            // TODO
+            DrawButton(control, depressed, hovered, disabled);
+        }
+
         public override void DrawHighlight(Controls.Base control)
         {
             Rectangle rect = control.RenderBounds;
@@ -398,7 +396,7 @@ namespace Gwen.Skin
         public override void DrawScrollBarBar(Controls.Base control, bool bDepressed, bool isHovered, bool isHorizontal)
         {
             //TODO: something specialized
-            DrawButton(control, bDepressed, isHovered);
+            DrawButton(control, bDepressed, isHovered, false);
         }
 
         public override void DrawTabTitleBar(Controls.Base control)
@@ -571,9 +569,9 @@ namespace Gwen.Skin
             m_Render.DrawLinedRect(rct);
         }
 
-        public override void DrawScrollButton(Controls.Base control, Pos iDirection, bool bDepressed)
+        public override void DrawScrollButton(Controls.Base control, Pos iDirection, bool bDepressed, bool hovered, bool disabled)
         {
-            DrawButton(control, bDepressed, false);
+            DrawButton(control, bDepressed, false, false);
 
             m_Render.DrawColor = Color.FromArgb(240, 0, 0, 0);
 

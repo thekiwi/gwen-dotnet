@@ -228,6 +228,28 @@ namespace Gwen.Renderer
             bmp.Dispose();
         }
 
+        public override unsafe Color PixelColour(Texture texture, uint x, uint y, Color defaultColor)
+        {
+            int tex = (int)texture.RendererData;
+            if (tex == 0)
+                return defaultColor;
+
+            Color pixel;
+            Gl.glBindTexture(Gl.GL_TEXTURE_2D, tex);
+            long offset = 4 * (x + y * texture.Width);
+            byte[] data = new byte[4 * texture.Width * texture.Height];
+            fixed (byte* ptr = &data[0])
+            {
+                Gl.glGetTexImage(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, Gl.GL_UNSIGNED_BYTE, (IntPtr)ptr);
+                pixel = Color.FromArgb(data[offset + 3], data[offset + 0], data[offset + 1], data[offset + 2]);
+            }
+            // Retrieving the entire texture for a single pixel read
+            // is kind of a waste - maybe cache this pointer in the texture
+            // data and then release later on? It's never called during runtime
+            // - only during initialization.
+            return pixel;
+        }
+
         public override void LoadTextureRaw(Texture t, byte[] pixelData)
         {
             Bitmap bmp;

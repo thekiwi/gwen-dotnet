@@ -15,7 +15,7 @@ namespace Gwen.Controls
             SetSize(200, 19);
             m_CheckBox = new CheckBox(this);
             m_CheckBox.Dock = Pos.Left;
-            m_CheckBox.Margin = new Margin(0, 3, 3, 3);
+            m_CheckBox.Margin = new Margin(0, 2, 2, 2);
             m_CheckBox.IsTabable = false;
 
             m_Label = new LabelClickable(this);

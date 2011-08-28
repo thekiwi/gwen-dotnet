@@ -160,6 +160,16 @@ namespace Gwen.Renderer
             DrawFilledRect(new Rectangle(x, y, 1, 1));
         }
 
+        public virtual Color PixelColour(Texture texture, uint x, uint y)
+        {
+            return PixelColour(texture, x, y, Color.White);
+        }
+
+        public virtual Color PixelColour(Texture texture, uint x, uint y, Color defaultColor)
+        {
+            return defaultColor;
+        }
+
         public virtual void DrawShavedCornerRect(Rectangle rect, bool slight = false)
         {
             // Draw INSIDE the w/h.

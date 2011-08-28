@@ -13,7 +13,7 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawButton(this, m_bDepressed, IsHovered);
+            skin.DrawButton(this, m_bDepressed, IsHovered, IsDisabled);
         }
     }
 }

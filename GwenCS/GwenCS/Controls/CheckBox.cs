@@ -22,7 +22,7 @@ namespace Gwen.Controls
 
         public CheckBox(Base parent) : base(parent)
         {
-            SetSize(13, 13);
+            SetSize(15, 15);
             m_bChecked = true; // [omeg] why?!
             Toggle();
         }
@@ -65,7 +65,9 @@ namespace Gwen.Controls
 
         internal override void onPress()
         {
-            base.onPress();
+            if (IsDisabled)
+                return;
+            
             if (IsChecked && !AllowUncheck)
             {
                 return;

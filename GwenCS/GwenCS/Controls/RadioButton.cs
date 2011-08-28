@@ -11,7 +11,7 @@ namespace Gwen.Controls
 
         public RadioButton(Base parent) : base(parent)
         {
-            SetSize(11, 11);
+            SetSize(15, 15);
             MouseInputEnabled = true;
             IsTabable = false;
         }

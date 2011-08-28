@@ -24,10 +24,10 @@ namespace Gwen.ControlsInternal
 
         public TabButton(Base parent) : base(parent)
         {
-            Padding = new Padding(2, 2, 2, 2);
             DragAndDrop_SetPackage(true, "TabButtonMove");
             Alignment = Pos.Top | Pos.Left;
             TextPadding = new Padding(5, 3, 3, 3);
+            Padding = new Padding(2, 2, 2, 2);
         }
 
         public override void DragAndDrop_StartDragging(DragDrop.Package package, int x, int y)
@@ -47,7 +47,7 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawTabButton(this, IsActive);
+            skin.DrawTabButton(this, m_Control.CurrentButton == this, m_Control.TabStrip.Dock);
         }
 
         internal override bool onKeyDown(bool bDown)

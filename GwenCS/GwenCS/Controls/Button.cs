@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
@@ -79,7 +76,7 @@ namespace Gwen.Controls
 
                 bool bDrawHovered = IsHovered && ShouldDrawHover;
 
-                skin.DrawButton(this, bDrawDepressed, bDrawHovered);
+                skin.DrawButton(this, bDrawDepressed, bDrawHovered, IsDisabled);
             }
         }
 
@@ -135,14 +132,10 @@ namespace Gwen.Controls
 
             m_Image.ImageName = name;
             m_Image.SizeToContents( );
-            m_Image.SetPos(m_Padding.Left, 2);
+            m_Image.SetPos(Math.Max(m_Padding.Left, 2), 2);
             m_bCenterImage = center;
 
-            int IdealTextPadding = m_Image.Right + m_Padding.Left + 4;
-            if (m_rTextPadding.Left < IdealTextPadding)
-            {
-                m_rTextPadding.Left = IdealTextPadding;
-            }
+            m_rTextPadding.Left = m_Image.Right + 2;
         }
 
         public override void SizeToContents()

@@ -14,7 +14,7 @@ namespace Gwen.ControlsInternal
         protected override void Render(Skin.Base skin)
         {
             if (ShouldDrawBackground)
-                skin.DrawButton(this, true, false);
+                skin.DrawButton(this, true, false, IsDisabled);
         }
 
         protected override void Layout(Skin.Base skin)

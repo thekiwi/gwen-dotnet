@@ -17,18 +17,16 @@ namespace Gwen.Controls
         public bool AllowReorder { get { return m_TabStrip.AllowReorder; } set { m_TabStrip.AllowReorder = value; } }
         public TabButton CurrentButton { get { return m_pCurrentButton; } }
         public Pos TabStripPosition { get { return m_TabStrip.TabPosition; }set { m_TabStrip.TabPosition = value; } }
+        public TabStrip TabStrip { get { return m_TabStrip; } }
 
         public TabControl(Base parent)
             : base(parent)
         {
             m_pScroll = new ScrollBarButton[2];
-
             m_iScrollOffset = 0;
 
             m_TabStrip = new TabStrip(this);
-            m_TabStrip.Dock = Pos.Top;
-            m_TabStrip.Width = 100;
-            m_TabStrip.Height = 20;
+            m_TabStrip.TabPosition = Pos.Top;
 
             // Make this some special control?
             m_pScroll[0] = new ScrollBarButton(this);
@@ -43,6 +41,7 @@ namespace Gwen.Controls
 
             m_InnerPanel = new TabControlInner(this);
             m_InnerPanel.Dock = Pos.Fill;
+            m_InnerPanel.SendToBack();
 
             IsTabable = false;
         }
@@ -132,21 +131,6 @@ namespace Gwen.Controls
         {
             base.PostLayout(skin);
             HandleOverflow();
-
-            if (m_TabStrip.IsHidden)
-            {
-                (m_InnerPanel as TabControlInner).UpdateCurrentButton(Rectangle.Empty);
-            }
-            else if (m_pCurrentButton != null)
-            {
-                Rectangle rct;
-
-                Point p = m_pCurrentButton.LocalPosToCanvas(Point.Empty);
-                p = m_InnerPanel.CanvasPosToLocal(p);
-
-                rct = new Rectangle(p.X + 1, p.Y + 1, m_pCurrentButton.Width - 2, m_pCurrentButton.Height - 2);
-                (m_InnerPanel as TabControlInner).UpdateCurrentButton(rct);
-            }
         }
 
         internal virtual void onLoseTab(TabButton button)

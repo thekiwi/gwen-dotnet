@@ -12,8 +12,7 @@ namespace Gwen.ControlsInternal
 
         public ScrollBarButton(Base parent) : base(parent)
         {
-            m_iDirection = Pos.None;
-            SetBounds(0, 0, 0, 0);
+            SetDirectionUp();
         }
 
         public virtual void SetDirectionUp()
@@ -38,7 +37,7 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawScrollButton(this, m_iDirection, m_bDepressed);
+            skin.DrawScrollButton(this, m_iDirection, m_bDepressed, IsHovered, IsDisabled);
         }
     }
 }

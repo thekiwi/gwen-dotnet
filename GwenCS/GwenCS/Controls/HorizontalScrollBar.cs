@@ -16,6 +16,11 @@ namespace Gwen.Controls
             get { return m_Bar.X - Height; }
         }
 
+        public override bool IsHorizontal
+        {
+            get { return true; }
+        }
+
         public override int ButtonSize
         {
             get { return Height; }
