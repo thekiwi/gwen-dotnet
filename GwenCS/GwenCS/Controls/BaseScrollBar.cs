@@ -44,7 +44,8 @@ namespace Gwen.Controls
 
         public virtual bool SetScrollAmount(float value, bool forceUpdate = true)
         {
-            if (m_fScrollAmount == value) return false;
+            if (m_fScrollAmount == value && !forceUpdate)
+                return false;
             m_fScrollAmount = value;
             Invalidate();
             onBarMoved(this);

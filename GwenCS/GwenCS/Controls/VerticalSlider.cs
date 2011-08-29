@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
@@ -10,7 +7,7 @@ namespace Gwen.Controls
     {
         public VerticalSlider(Base parent) : base(parent)
         {
-            
+            m_SliderBar.IsHorizontal = false;
         }
 
         protected override float CalculateValue()
@@ -32,7 +29,7 @@ namespace Gwen.Controls
 
         protected override void Layout(Skin.Base skin)
         {
-            m_SliderBar.SetSize(Width, 10);
+            m_SliderBar.SetSize(Width, 15);
         }
 
         protected override void Render(Skin.Base skin)

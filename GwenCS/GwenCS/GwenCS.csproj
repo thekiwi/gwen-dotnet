@@ -101,8 +101,6 @@
     <Compile Include="Controls\RadioButtonController.cs" />
     <Compile Include="Controls\ScrollControl.cs" />
     <Compile Include="Controls\Slider.cs" />
-    <Compile Include="Controls\Symbol\Arrow.cs" />
-    <Compile Include="Controls\Symbol\Base.cs" />
     <Compile Include="Controls\TabControl.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\TextBoxNumeric.cs" />

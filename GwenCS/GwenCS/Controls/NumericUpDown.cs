@@ -8,12 +8,12 @@ namespace Gwen.Controls
         public NumericUpDownButton_Up(Base parent)
             : base(parent)
         {
-
+            SetSize(7, 7);
         }
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawNumericUpDownButton(this, m_bDepressed, true);
+            skin.DrawNumericUpDownButton(this, IsDepressed, true);
         }
     }
 
@@ -22,12 +22,12 @@ namespace Gwen.Controls
         public NumericUpDownButton_Down(Base parent)
             : base(parent)
         {
-
+            SetSize(7, 7);
         }
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawNumericUpDownButton(this, m_bDepressed, false);
+            skin.DrawNumericUpDownButton(this, IsDepressed, false);
         }
     }
 
@@ -51,13 +51,13 @@ namespace Gwen.Controls
             NumericUpDownButton_Up up = new NumericUpDownButton_Up(splitter);
             up.OnPress += onButtonUp;
             up.IsTabable = false;
-            splitter.SetPanel(0, up);
+            splitter.SetPanel(0, up, false);
 
             NumericUpDownButton_Down down = new NumericUpDownButton_Down(splitter);
             down.OnPress += onButtonDown;
             down.IsTabable = false;
             down.Padding = new Padding(0, 1, 1, 0);
-            splitter.SetPanel(1, down);
+            splitter.SetPanel(1, down, false);
 
             m_iMax = 100;
             m_iMin = 0;

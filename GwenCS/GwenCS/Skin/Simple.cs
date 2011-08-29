@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Skin
 {
@@ -465,7 +462,7 @@ namespace Gwen.Skin
             m_Render.DrawLinedRect(rect);
         }
 
-        public override void DrawListBoxLine(Controls.Base control, bool bSelected)
+        public override void DrawListBoxLine(Controls.Base control, bool bSelected, bool even)
         {
             Rectangle rect = control.RenderBounds;
 
@@ -504,7 +501,7 @@ namespace Gwen.Skin
             m_Render.DrawLinedRect(rect);
         }
 
-        public override void DrawComboBox(Controls.Base control)
+        public override void DrawComboBox(Controls.Base control, bool down, bool open)
         {
             DrawTextBox(control);
         }
@@ -583,7 +580,7 @@ namespace Gwen.Skin
             else DrawArrowRight(r);
         }
 
-        public override void DrawComboBoxButton(Controls.Base control, bool bDepressed)
+        public override void DrawComboBoxArrow(Controls.Base control, bool hovered, bool depressed, bool open, bool disabled)
         {
             //DrawButton( control.Width, control.Height, bDepressed, false, true );
 
@@ -735,6 +732,16 @@ namespace Gwen.Skin
             Renderer.DrawFilledRect(rect);
             Renderer.DrawColor = m_colControlDarker;
             Renderer.DrawLinedRect(rect);
+        }
+
+        public override void DrawMenuRightArrow(Controls.Base control)
+        {
+            DrawArrowRight(control.RenderBounds);
+        }
+
+        public override void DrawSliderButton(Controls.Base control, bool depressed, bool horizontal)
+        {
+            DrawButton(control, depressed, control.IsHovered, control.IsDisabled);
         }
     }
 }

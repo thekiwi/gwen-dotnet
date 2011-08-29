@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using Gwen.Controls;
 
 namespace Gwen.ControlsInternal
@@ -14,6 +11,7 @@ namespace Gwen.ControlsInternal
         protected Base m_pTarget;
 
         internal Base Target { get { return m_pTarget; } set { m_pTarget = value; } }
+        public bool IsDepressed { get { return m_bDepressed; } }
 
         public event ControlCallback OnDragged;
 

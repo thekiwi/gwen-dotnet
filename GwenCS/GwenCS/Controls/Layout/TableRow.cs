@@ -9,11 +9,13 @@ namespace Gwen.Controls.Layout
         public static int MaxColumns = 5;
 
         protected int m_ColumnCount;
+        protected bool m_bEvenRow;
         internal Label[] m_Columns = new Label[MaxColumns];
 
         public event ControlCallback OnRowSelected;
 
         public int ColumnCount { get { return m_ColumnCount; } set { SetColumnCount(value); } }
+        public bool EvenRow { get { return m_bEvenRow; } set { m_bEvenRow = value; } }
 
         public TableRow(Base parent)
             : base(parent)

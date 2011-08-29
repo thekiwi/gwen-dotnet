@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
@@ -215,11 +213,11 @@ namespace Gwen.Controls
 
         public virtual void ScrollToBottom()
         {
-            if (CanScrollV)
-            {
-                UpdateScrollBars();
-                m_VerticalScrollBar.ScrollToBottom();
-            }
+            if (!CanScrollV)
+                return;
+
+            UpdateScrollBars();
+            m_VerticalScrollBar.ScrollToBottom();
         }
 
         public virtual void ScrollToTop()

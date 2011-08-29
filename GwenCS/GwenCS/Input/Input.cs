@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -34,30 +33,30 @@ namespace Gwen.Input
         // Does copy, paste etc
         public static bool DoSpecialKeys(Base canvas, char chr)
         {
-            if (null==Global.KeyboardFocus) return false;
+            if (null == Global.KeyboardFocus) return false;
             if (Global.KeyboardFocus.GetCanvas() != canvas) return false;
             if (!Global.KeyboardFocus.IsVisible) return false;
             if (!IsControlDown) return false;
 
-            if (chr == 'C' || chr == 'c' )
+            if (chr == 'C' || chr == 'c')
             {
                 Global.KeyboardFocus.onCopy(null);
                 return true;
             }
 
-            if (chr == 'V' || chr == 'v' )
+            if (chr == 'V' || chr == 'v')
             {
                 Global.KeyboardFocus.onPaste(null);
                 return true;
             }
 
-            if (chr == 'X' || chr == 'x' )
+            if (chr == 'X' || chr == 'x')
             {
                 Global.KeyboardFocus.onCut(null);
                 return true;
             }
 
-            if (chr == 'A' || chr == 'a' )
+            if (chr == 'A' || chr == 'a')
             {
                 Global.KeyboardFocus.onSelectAll(null);
                 return true;
@@ -77,7 +76,7 @@ namespace Gwen.Input
             // [omeg] todo: alt?
 
             accelString.Append(chr);
-            String acc = accelString.ToString();
+            String acc = accelString.ToString().ToUpper();
 
             //Debug::Msg("Accelerator string :%S\n", accelString.c_str());)
 
@@ -104,13 +103,14 @@ namespace Gwen.Input
 
         public static void onCanvasThink(Base control)
         {
-            if (Global.MouseFocus!=null && !Global.MouseFocus.IsVisible)
+            if (Global.MouseFocus != null && !Global.MouseFocus.IsVisible)
                 Global.MouseFocus = null;
 
-            if (Global.KeyboardFocus!=null && (!Global.KeyboardFocus.IsVisible || !Global.KeyboardFocus.KeyboardInputEnabled))
+            if (Global.KeyboardFocus != null &&
+                (!Global.KeyboardFocus.IsVisible || !Global.KeyboardFocus.KeyboardInputEnabled))
                 Global.KeyboardFocus = null;
 
-            if (null==Global.KeyboardFocus) return;
+            if (null == Global.KeyboardFocus) return;
             if (Global.KeyboardFocus.GetCanvas() != control) return;
 
             float fTime = Platform.Windows.GetTimeInSeconds();
@@ -118,7 +118,7 @@ namespace Gwen.Input
             //
             // Simulate Key-Repeats
             //
-            for (int i = 0; i < (int)Key.Count; i++)
+            for (int i = 0; i < (int) Key.Count; i++)
             {
                 if (KeyData.KeyState[i] && KeyData.Target != Global.KeyboardFocus)
                 {
@@ -132,7 +132,7 @@ namespace Gwen.Input
 
                     if (Global.KeyboardFocus != null)
                     {
-                        Global.KeyboardFocus.onKeyPress((Key)i);
+                        Global.KeyboardFocus.onKeyPress((Key) i);
                     }
                 }
             }
@@ -228,7 +228,7 @@ namespace Gwen.Input
 
         public static bool onKeyEvent(Base canvas, Key key, bool down)
         {
-            if (null==Global.KeyboardFocus) return false;
+            if (null == Global.KeyboardFocus) return false;
             if (Global.KeyboardFocus.GetCanvas() != canvas) return false;
             if (!Global.KeyboardFocus.IsVisible) return false;
 
@@ -288,9 +288,9 @@ namespace Gwen.Input
             }
         }
 
-        private static void FindKeyboardFocus( Base pControl )
+        private static void FindKeyboardFocus(Base pControl)
         {
-            if (null==pControl) return;
+            if (null == pControl) return;
             if (pControl.KeyboardInputEnabled)
             {
                 //Make sure none of our children have keyboard focus first - todo recursive

@@ -59,6 +59,7 @@ namespace Gwen.Skin
         public virtual void DrawTabTitleBar(Controls.Base control) { }
 
         public virtual void DrawMenuItem(Controls.Base control, bool bSubmenuOpen, bool bChecked) { }
+        public virtual void DrawMenuRightArrow(Controls.Base control) { }
         public virtual void DrawMenuStrip(Controls.Base control) { }
         public virtual void DrawMenu(Controls.Base control, bool bPaddingDisabled) { }
         public virtual void DrawRadioButton(Controls.Base control, bool bSelected, bool bDepressed) { }
@@ -78,13 +79,14 @@ namespace Gwen.Skin
         public virtual void DrawProgressBar(Controls.Base control, bool isHorizontal, float progress) { }
 
         public virtual void DrawListBox(Controls.Base control) { }
-        public virtual void DrawListBoxLine(Controls.Base control, bool bSelected) { }
+        public virtual void DrawListBoxLine(Controls.Base control, bool bSelected, bool even) { }
 
         public virtual void DrawSlider(Controls.Base control, bool bIsHorizontal, int numNotches, int barSize) { }
-        public virtual void DrawComboBox(Controls.Base control) { }
-        public virtual void DrawComboBoxButton(Controls.Base control, bool bDepressed) { }
+        public virtual void DrawSliderButton(Controls.Base control, bool depressed, bool horizontal) { }
+
+        public virtual void DrawComboBox(Controls.Base control, bool isDown, bool isMenuOpen) { }
+        public virtual void DrawComboBoxArrow(Controls.Base control, bool hovered, bool depressed, bool open, bool disabled) { }
         public virtual void DrawKeyboardHighlight(Controls.Base control, Rectangle rect, int offset) { }
-        //public virtual void DrawComboBoxKeyboardHighlight( Controls.Base control );
         public virtual void DrawToolTip(Controls.Base control) { }
 
         public virtual void DrawNumericUpDownButton(Controls.Base control, bool bDepressed, bool bUp) { }

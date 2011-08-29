@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using Gwen.Controls.Layout;
 
 namespace Gwen.Controls
 {
-    public class ListBox : Base
+    public class ListBox : ScrollControl
     {
         protected Table m_Table;
         protected List<TableRow> m_SelectedRows;
-        protected ScrollControl m_ScrollControl;
 
         protected bool m_bMultiSelect;
 
@@ -19,7 +17,6 @@ namespace Gwen.Controls
         public TableRow SelectedRow { get { if (m_SelectedRows.Count == 0) return null;
             return m_SelectedRows[0];
         } }
-        public ScrollControl Scroller { get { return m_ScrollControl; } }
         public Table Table { get { return m_Table; } }
         public int ColumnCount { get { return m_Table.ColumnCount; } set { m_Table.ColumnCount = value; } }
 
@@ -30,24 +27,15 @@ namespace Gwen.Controls
         {
             m_SelectedRows = new List<TableRow>();
 
-            m_ScrollControl = new ScrollControl(this);
-            m_ScrollControl.Dock = Pos.Fill;
-            m_ScrollControl.SetScroll(false, true);
-            m_ScrollControl.AutoHideBars = true;
-            m_ScrollControl.Margin = new Margin(1, 1, 1, 1);
-
-            m_InnerPanel = m_ScrollControl;
+            SetScroll(false, true);
+            AutoHideBars = true;
+            Margin = new Margin(1, 1, 1, 1);
 
             m_Table = new Table(this);
             m_Table.Dock = Pos.Top;
             m_Table.ColumnCount = 1;
 
             m_bMultiSelect = false;
-        }
-
-        internal override void onChildBoundsChanged(Rectangle oldChildBounds, Base child)
-        {
-            m_ScrollControl.UpdateScrollBars();
         }
 
         public TableRow AddItem(String label)

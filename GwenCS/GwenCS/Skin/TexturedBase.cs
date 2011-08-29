@@ -15,6 +15,12 @@ namespace Gwen.Skin
             public Single Close_Disabled;
         }
 
+        public struct _ProgressBar
+        {
+            public Bordered Back;
+            public Bordered Front;
+        }
+
         public struct _Scroller
         {
             public Bordered TrackV;
@@ -39,8 +45,96 @@ namespace Gwen.Skin
             public _Button Button;
         }
 
+        public struct _Menu
+        {
+            public Single RightArrow;
+        }
+
+        public struct _Input
+        {
+            public struct _ComboBox
+            {
+                public Bordered Normal;
+                public Bordered Hover;
+                public Bordered Down;
+                public Bordered Disabled;
+
+                public struct _Button
+                {
+                    public Single Normal;
+                    public Single Hover;
+                    public Single Down;
+                    public Single Disabled;
+                }
+
+                public _Button Button;
+            }
+
+            public struct _Slider
+            {
+                public struct _H
+                {
+                    public Single Normal;
+                    public Single Hover;
+                    public Single Down;
+                    public Single Disabled;
+                }
+
+                public struct _V
+                {
+                    public Single Normal;
+                    public Single Hover;
+                    public Single Down;
+                    public Single Disabled;
+                }
+
+                public _H H;
+                public _V V;
+            }
+
+            public struct _ListBox
+            {
+                public Bordered Background;
+                public Bordered Hovered;
+                public Bordered EvenLine;
+                public Bordered OddLine;
+                public Bordered EvenLineSelected;
+                public Bordered OddLineSelected;
+            }
+
+            public struct _UpDown
+            {
+                public struct _Up
+                {
+                    public Single Normal;
+                    public Single Hover;
+                    public Single Down;
+                    public Single Disabled;
+                }
+
+                public struct _Down
+                {
+                    public Single Normal;
+                    public Single Hover;
+                    public Single Down;
+                    public Single Disabled;
+                }
+
+                public _Up Up;
+                public _Down Down;
+            }
+
+            public _ComboBox ComboBox;
+            public _Slider Slider;
+            public _ListBox ListBox;
+            public _UpDown UpDown;
+        }
+
         public _Window Window;
+        public _ProgressBar ProgressBar;
         public _Scroller Scroller;
+        public _Menu Menu;
+        public _Input Input;
     }
 
     public class TexturedBase : Skin.Base
@@ -60,6 +154,8 @@ namespace Gwen.Skin
         protected Color m_colModal;
 
         protected Texture m_Texture;
+
+        protected Bordered m_texGenericPanel;
 
         protected Bordered m_texButton;
         protected Bordered m_texButton_Hovered;
@@ -90,7 +186,8 @@ namespace Gwen.Skin
 
         protected Single m_TreeMinus, m_TreePlus;
 
-        public TexturedBase(Renderer.Base renderer, String TextureName) : base(renderer)
+        public TexturedBase(Renderer.Base renderer, String TextureName)
+            : base(renderer)
         {
             m_colBorderColor = Color.FromArgb(255, 80, 80, 80);
             m_colBG = Color.FromArgb(255, 248, 248, 248);
@@ -118,14 +215,15 @@ namespace Gwen.Skin
             Colors.Window.TitleInactive = Renderer.PixelColour(m_Texture, 12, 508, Color.Magenta);
 
             m_texWindow = new Bordered(m_Texture, 0, 0, 127, 127, new Margin(8, 32, 8, 8));
-            m_texWindow_Inactive= new Bordered(m_Texture, 128, 0, 127, 127, new Margin(8, 32, 8, 8));
-            m_texButton= new Bordered(m_Texture, 480, 0, 31, 31, new Margin(8, 8, 8, 8));
-            m_texButton_Hovered= new Bordered(m_Texture, 480, 32, 31, 31, new Margin(8, 8, 8, 8));
-            m_texButton_Dead= new Bordered(m_Texture, 480, 64, 31, 31, new Margin(8, 8, 8, 8));
-            m_texButton_Pressed= new Bordered(m_Texture, 480, 96, 31, 31, new Margin(8, 8, 8, 8));
-            m_texShadow= new Bordered(m_Texture, 448, 0, 31, 31, new Margin(8, 8, 8, 8));
-            m_texTreeBG= new Bordered(m_Texture, 256, 128, 127, 127, new Margin(16, 16, 16, 16));
-            m_Checkbox_Checked= new Single(m_Texture, 448, 32, 15, 15);
+            m_texWindow_Inactive = new Bordered(m_Texture, 128, 0, 127, 127, new Margin(8, 32, 8, 8));
+            m_texGenericPanel = new Bordered(m_Texture, 256, 0, 127, 127, new Margin(16, 16, 16, 16));
+            m_texButton = new Bordered(m_Texture, 480, 0, 31, 31, new Margin(8, 8, 8, 8));
+            m_texButton_Hovered = new Bordered(m_Texture, 480, 32, 31, 31, new Margin(8, 8, 8, 8));
+            m_texButton_Dead = new Bordered(m_Texture, 480, 64, 31, 31, new Margin(8, 8, 8, 8));
+            m_texButton_Pressed = new Bordered(m_Texture, 480, 96, 31, 31, new Margin(8, 8, 8, 8));
+            m_texShadow = new Bordered(m_Texture, 448, 0, 31, 31, new Margin(8, 8, 8, 8));
+            m_texTreeBG = new Bordered(m_Texture, 256, 128, 127, 127, new Margin(16, 16, 16, 16));
+            m_Checkbox_Checked = new Single(m_Texture, 448, 32, 15, 15);
             m_Checkbox = new Single(m_Texture, 464, 32, 15, 15);
             m_CheckboxD_Checked = new Single(m_Texture, 448, 48, 15, 15);
             m_CheckboxD = new Single(m_Texture, 464, 48, 15, 15);
@@ -135,25 +233,25 @@ namespace Gwen.Skin
             m_RadioButtonD = new Single(m_Texture, 464, 80, 15, 15);
             m_TreePlus = new Single(m_Texture, 448, 96, 15, 15);
             m_TreeMinus = new Single(m_Texture, 464, 96, 15, 15);
-            m_texMenu_Strip= new Bordered(m_Texture, 0, 128, 127, 21, new Margin(1, 1, 1, 1));
-            m_texTextBox= new Bordered(m_Texture, 0, 150, 127, 21, new Margin(4, 4, 4, 4));
-            m_texTextBox_Focus= new Bordered(m_Texture, 0, 172, 127, 21, new Margin(4, 4, 4, 4));
-            m_texTextBox_Disabled= new Bordered(m_Texture, 0, 193, 127, 21, new Margin(4, 4, 4, 4));
-            m_texMenuBG_Margin= new Bordered(m_Texture, 128, 128, 127, 63, new Margin(24, 8, 8, 8));
-            m_texMenuBG= new Bordered(m_Texture, 128, 192, 127, 63, new Margin(8, 8, 8, 8));
-            m_texMenuBG_Hover= new Bordered(m_Texture, 128, 256, 127, 31, new Margin(8, 8, 8, 8));
-            m_texMenuBG_Spacer= new Bordered(m_Texture, 128, 288, 127, 3, new Margin(8, 8, 8, 8)); // TODO!
+            m_texMenu_Strip = new Bordered(m_Texture, 0, 128, 127, 21, new Margin(1, 1, 1, 1));
+            m_texTextBox = new Bordered(m_Texture, 0, 150, 127, 21, new Margin(4, 4, 4, 4));
+            m_texTextBox_Focus = new Bordered(m_Texture, 0, 172, 127, 21, new Margin(4, 4, 4, 4));
+            m_texTextBox_Disabled = new Bordered(m_Texture, 0, 193, 127, 21, new Margin(4, 4, 4, 4));
+            m_texMenuBG_Margin = new Bordered(m_Texture, 128, 128, 127, 63, new Margin(24, 8, 8, 8));
+            m_texMenuBG = new Bordered(m_Texture, 128, 192, 127, 63, new Margin(8, 8, 8, 8));
+            m_texMenuBG_Hover = new Bordered(m_Texture, 128, 256, 127, 31, new Margin(8, 8, 8, 8));
+            m_texMenuBG_Spacer = new Bordered(m_Texture, 128, 288, 127, 3, new Margin(8, 8, 8, 8)); // TODO!
 
-            m_texTab_Control= new Bordered(m_Texture, 0, 256, 127, 127, new Margin(8, 8, 8, 8));
-            m_texTabB_Active= new Bordered(m_Texture, 0, 416, 63, 31, new Margin(8, 8, 8, 8));
-            m_texTabB_Inactive= new Bordered(m_Texture, 0 + 128, 416, 63, 31, new Margin(8, 8, 8, 8));
-            m_texTabT_Active= new Bordered(m_Texture, 0, 384, 63, 31, new Margin(8, 8, 8, 8));
-            m_texTabT_Inactive= new Bordered(m_Texture, 0 + 128, 384, 63, 31, new Margin(8, 8, 8, 8));
-            m_texTabL_Active= new Bordered(m_Texture, 64, 384, 31, 63, new Margin(8, 8, 8, 8));
-            m_texTabL_Inactive= new Bordered(m_Texture, 64 + 128, 384, 31, 63, new Margin(8, 8, 8, 8));
-            m_texTabR_Active= new Bordered(m_Texture, 96, 384, 31, 63, new Margin(8, 8, 8, 8));
-            m_texTabR_Inactive= new Bordered(m_Texture, 96 + 128, 384, 31, 63, new Margin(8, 8, 8, 8));
-            m_texTabBar= new Bordered(m_Texture, 128, 352, 127, 31, new Margin(4, 4, 4, 4));
+            m_texTab_Control = new Bordered(m_Texture, 0, 256, 127, 127, new Margin(8, 8, 8, 8));
+            m_texTabB_Active = new Bordered(m_Texture, 0, 416, 63, 31, new Margin(8, 8, 8, 8));
+            m_texTabB_Inactive = new Bordered(m_Texture, 0 + 128, 416, 63, 31, new Margin(8, 8, 8, 8));
+            m_texTabT_Active = new Bordered(m_Texture, 0, 384, 63, 31, new Margin(8, 8, 8, 8));
+            m_texTabT_Inactive = new Bordered(m_Texture, 0 + 128, 384, 63, 31, new Margin(8, 8, 8, 8));
+            m_texTabL_Active = new Bordered(m_Texture, 64, 384, 31, 63, new Margin(8, 8, 8, 8));
+            m_texTabL_Inactive = new Bordered(m_Texture, 64 + 128, 384, 31, 63, new Margin(8, 8, 8, 8));
+            m_texTabR_Active = new Bordered(m_Texture, 96, 384, 31, 63, new Margin(8, 8, 8, 8));
+            m_texTabR_Inactive = new Bordered(m_Texture, 96 + 128, 384, 31, 63, new Margin(8, 8, 8, 8));
+            m_texTabBar = new Bordered(m_Texture, 128, 352, 127, 31, new Margin(4, 4, 4, 4));
 
             m_CheckMark = new Single(m_Texture, 145, 97, 16, 16);
 
@@ -163,16 +261,16 @@ namespace Gwen.Skin
             Textures.Window.Close_Hover = new Single(m_Texture, 96, 224, 24, 24);
 
             Textures.Scroller.TrackV = new Bordered(m_Texture, 384, 208, 15, 127, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonV_Normal= new Bordered(m_Texture, 384 + 16, 208, 15, 127, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonV_Hover= new Bordered(m_Texture, 384 + 32, 208, 15, 127, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonV_Down= new Bordered(m_Texture, 384 + 48, 208, 15, 127, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonV_Disabled= new Bordered(m_Texture, 384 + 64, 208, 15, 127, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonV_Normal = new Bordered(m_Texture, 384 + 16, 208, 15, 127, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonV_Hover = new Bordered(m_Texture, 384 + 32, 208, 15, 127, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonV_Down = new Bordered(m_Texture, 384 + 48, 208, 15, 127, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonV_Disabled = new Bordered(m_Texture, 384 + 64, 208, 15, 127, new Margin(4, 4, 4, 4));
 
             Textures.Scroller.TrackH = new Bordered(m_Texture, 384, 128, 127, 15, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonH_Normal= new Bordered(m_Texture, 384, 128 + 16, 127, 15, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonH_Hover= new Bordered(m_Texture, 384, 128 + 32, 127, 15, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonH_Down= new Bordered(m_Texture, 384, 128 + 48, 127, 15, new Margin(4, 4, 4, 4));
-            Textures.Scroller.ButtonH_Disabled= new Bordered(m_Texture, 384, 128 + 64, 127, 15, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonH_Normal = new Bordered(m_Texture, 384, 128 + 16, 127, 15, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonH_Hover = new Bordered(m_Texture, 384, 128 + 32, 127, 15, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonH_Down = new Bordered(m_Texture, 384, 128 + 48, 127, 15, new Margin(4, 4, 4, 4));
+            Textures.Scroller.ButtonH_Disabled = new Bordered(m_Texture, 384, 128 + 64, 127, 15, new Margin(4, 4, 4, 4));
 
             Textures.Scroller.Button.Normal = new Bordered[4];
             Textures.Scroller.Button.Disabled = new Bordered[4];
@@ -181,11 +279,55 @@ namespace Gwen.Skin
 
             for (int i = 0; i < 4; i++)
             {
-                Textures.Scroller.Button.Normal[i] = new Bordered(m_Texture, 464 + 0, 208 + i * 16, 15, 15, new Margin(2, 2, 2, 2));
-                Textures.Scroller.Button.Hover[i] = new Bordered(m_Texture, 480, 208 + i * 16, 15, 15, new Margin(2, 2, 2, 2));
-                Textures.Scroller.Button.Down[i] = new Bordered(m_Texture, 464, 272 + i * 16, 15, 15, new Margin(2, 2, 2, 2));
-                Textures.Scroller.Button.Disabled[i] = new Bordered(m_Texture, 480 + 48, 272 + i * 16, 15, 15, new Margin(2, 2, 2, 2));
+                Textures.Scroller.Button.Normal[i] = new Bordered(m_Texture, 464 + 0, 208 + i*16, 15, 15,
+                                                                  new Margin(2, 2, 2, 2));
+                Textures.Scroller.Button.Hover[i] = new Bordered(m_Texture, 480, 208 + i*16, 15, 15,
+                                                                 new Margin(2, 2, 2, 2));
+                Textures.Scroller.Button.Down[i] = new Bordered(m_Texture, 464, 272 + i*16, 15, 15,
+                                                                new Margin(2, 2, 2, 2));
+                Textures.Scroller.Button.Disabled[i] = new Bordered(m_Texture, 480 + 48, 272 + i*16, 15, 15,
+                                                                    new Margin(2, 2, 2, 2));
             }
+
+            Textures.Menu.RightArrow = new Single(m_Texture, 464, 112, 15, 15);
+
+            Textures.Input.ListBox.Background = new Bordered(m_Texture, 256, 256, 63, 127, new Margin(8, 8, 8, 8));
+            Textures.Input.ListBox.Hovered = new Bordered(m_Texture, 320, 320, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.ListBox.EvenLine = new Bordered(m_Texture, 352, 256, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.ListBox.OddLine = new Bordered(m_Texture, 352, 288, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.ListBox.EvenLineSelected = new Bordered(m_Texture, 320, 270, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.ListBox.OddLineSelected = new Bordered(m_Texture, 320, 288, 31, 31, new Margin(8, 8, 8, 8));
+
+            Textures.Input.ComboBox.Normal = new Bordered(m_Texture, 384, 336, 127, 31, new Margin(8, 8, 32, 8));
+            Textures.Input.ComboBox.Hover = new Bordered(m_Texture, 384, 336 + 32, 127, 31, new Margin(8, 8, 32, 8));
+            Textures.Input.ComboBox.Down = new Bordered(m_Texture, 384, 336 + 64, 127, 31, new Margin(8, 8, 32, 8));
+            Textures.Input.ComboBox.Disabled = new Bordered(m_Texture, 384, 336 + 96, 127, 31, new Margin(8, 8, 32, 8));
+            Textures.Input.ComboBox.Button.Normal = new Single(m_Texture, 496, 272, 15, 15);
+            Textures.Input.ComboBox.Button.Hover = new Single(m_Texture, 496, 272 + 16, 15, 15);
+            Textures.Input.ComboBox.Button.Down = new Single(m_Texture, 496, 272 + 32, 15, 15);
+            Textures.Input.ComboBox.Button.Disabled = new Single(m_Texture, 496, 272 + 48, 15, 15);
+
+            Textures.Input.UpDown.Up.Normal = new Single(m_Texture, 384, 112, 7, 7);
+            Textures.Input.UpDown.Up.Hover = new Single(m_Texture, 384 + 8, 112, 7, 7);
+            Textures.Input.UpDown.Up.Down = new Single(m_Texture, 384 + 16, 112, 7, 7);
+            Textures.Input.UpDown.Up.Disabled = new Single(m_Texture, 384 + 24, 112, 7, 7);
+            Textures.Input.UpDown.Down.Normal = new Single(m_Texture, 384, 120, 7, 7);
+            Textures.Input.UpDown.Down.Hover = new Single(m_Texture, 384 + 8, 120, 7, 7);
+            Textures.Input.UpDown.Down.Down = new Single(m_Texture, 384 + 16, 120, 7, 7);
+            Textures.Input.UpDown.Down.Disabled = new Single(m_Texture, 384 + 24, 120, 7, 7);
+
+            Textures.ProgressBar.Back = new Bordered(m_Texture, 384, 0, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.ProgressBar.Front = new Bordered(m_Texture, 384 + 32, 0, 31, 31, new Margin(8, 8, 8, 8));
+
+            Textures.Input.Slider.H.Normal = new Single(m_Texture, 416, 32, 15, 15);
+            Textures.Input.Slider.H.Hover = new Single(m_Texture, 416, 32 + 16, 15, 15);
+            Textures.Input.Slider.H.Down = new Single(m_Texture, 416, 32 + 32, 15, 15);
+            Textures.Input.Slider.H.Disabled = new Single(m_Texture, 416, 32 + 48, 15, 15);
+
+            Textures.Input.Slider.V.Normal = new Single(m_Texture, 416 + 16, 32, 15, 15);
+            Textures.Input.Slider.V.Hover = new Single(m_Texture, 416 + 16, 32 + 16, 15, 15);
+            Textures.Input.Slider.V.Down = new Single(m_Texture, 416 + 16, 32 + 32, 15, 15);
+            Textures.Input.Slider.V.Disabled = new Single(m_Texture, 416 + 16, 32 + 48, 15, 15);
         }
 
         public override void DrawButton(Controls.Base control, bool bDepressed, bool bHovered, bool disabled)
@@ -199,6 +341,11 @@ namespace Gwen.Skin
                 else
                     m_texButton.Draw(Renderer, control.RenderBounds);
             }
+        }
+
+        public override void DrawMenuRightArrow(Controls.Base control)
+        {
+            Textures.Menu.RightArrow.Draw(Renderer, control.RenderBounds);
         }
 
         public override void DrawMenuItem(Controls.Base control, bool bSubmenuOpen, bool bChecked)
@@ -457,94 +604,117 @@ namespace Gwen.Skin
 
             if (isHorizontal)
             {
-                //Background
-                Renderer.DrawColor = m_colControlDark;
-                Renderer.DrawFilledRect(new Rectangle(1, 1, rect.Width - 2, rect.Height - 2));
-
-                //Right half
-                Renderer.DrawColor = FillColour;
-                Renderer.DrawFilledRect(new Rectangle(1, 1, Global.Trunc(rect.Width * progress - 2), rect.Height - 2));
-
-                Renderer.DrawColor = Color.FromArgb(150, 255, 255, 255);
-                Renderer.DrawFilledRect(new Rectangle(1, 1, rect.Width - 2, Global.Trunc(rect.Height * 0.45f)));
+                Textures.ProgressBar.Back.Draw(Renderer, rect);
+                rect.Width = (int)(rect.Width*progress);
+                Textures.ProgressBar.Front.Draw(Renderer, rect);
             }
             else
             {
-                //Background 
-                Renderer.DrawColor = m_colControlDark;
-                Renderer.DrawFilledRect(new Rectangle(1, 1, rect.Width - 2, rect.Height - 2));
-
-                //Top half
-                Renderer.DrawColor = FillColour;
-                Renderer.DrawFilledRect(Global.FloatRect(1, 1 + (rect.Height * (1 - progress)), rect.Width - 2, rect.Height * progress - 2));
-
-                Renderer.DrawColor = Color.FromArgb(150, 255, 255, 255);
-                Renderer.DrawFilledRect(new Rectangle(1, 1, Global.Trunc(rect.Width * 0.45f), rect.Height - 2));
+                Textures.ProgressBar.Back.Draw(Renderer, rect);
+                rect.Y = (int)(rect.Height*(1-progress));
+                rect.Width = (int)(rect.Width * progress);
+                Textures.ProgressBar.Front.Draw(Renderer, rect);
             }
-
-            Renderer.DrawColor = Color.FromArgb(150, 255, 255, 255);
-            Renderer.DrawShavedCornerRect(new Rectangle(1, 1, rect.Width - 2, rect.Height - 2));
-
-            Renderer.DrawColor = Color.FromArgb(70, 255, 255, 255);
-            Renderer.DrawShavedCornerRect(new Rectangle(2, 2, rect.Width - 4, rect.Height - 4));
-
-            Renderer.DrawColor = m_colBorderColor;
-            Renderer.DrawShavedCornerRect(rect);
         }
 
         public override void DrawListBox(Controls.Base control)
         {
-            Rectangle rect = control.RenderBounds;
-
-            Renderer.DrawColor = m_colControlBright;
-            Renderer.DrawFilledRect(rect);
-
-            Renderer.DrawColor = m_colBorderColor;
-            Renderer.DrawLinedRect(rect);
+            Textures.Input.ListBox.Background.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawListBoxLine(Controls.Base control, bool bSelected)
+        public override void DrawListBoxLine(Controls.Base control, bool bSelected, bool even)
         {
             Rectangle rect = control.RenderBounds;
 
             if (bSelected)
             {
-                Renderer.DrawColor = m_colHighlightBorder;
-                Renderer.DrawFilledRect(rect);
+                if (even)
+                {
+                    Textures.Input.ListBox.EvenLineSelected.Draw(Renderer, control.RenderBounds);
+                    return;
+                }
+                Textures.Input.ListBox.OddLineSelected.Draw(Renderer, control.RenderBounds);
+                return;
             }
-            else if (control.IsHovered)
+            
+            if (control.IsHovered)
             {
                 Renderer.DrawColor = m_colHighlightBG;
                 Renderer.DrawFilledRect(rect);
             }
+
+            if (even)
+            {
+                Textures.Input.ListBox.EvenLine.Draw(Renderer, control.RenderBounds);
+                return;
+            }
+
+            Textures.Input.ListBox.OddLine.Draw(Renderer, control.RenderBounds);
+        }
+
+        public void DrawSliderNotchesH(Rectangle rect, int numNotches, float dist)
+        {
+            if (numNotches == 0) return;
+
+            float iSpacing = rect.Width / (float)numNotches;
+            for (int i = 0; i < numNotches + 1; i++)
+                Renderer.DrawFilledRect(Global.FloatRect(rect.X + iSpacing * i, rect.Y + dist - 2, 1, 5));
+        }
+
+        public void DrawSliderNotchesV(Rectangle rect, int numNotches, float dist)
+        {
+            if (numNotches == 0) return;
+
+            float iSpacing = rect.Height / (float)numNotches;
+            for (int i = 0; i < numNotches + 1; i++)
+                Renderer.DrawFilledRect(Global.FloatRect(rect.X + dist - 2, rect.Y + iSpacing * i, 5, 1));
         }
 
         public override void DrawSlider(Controls.Base control, bool bIsHorizontal, int numNotches, int barSize)
         {
             Rectangle rect = control.RenderBounds;
-            Rectangle notchRect = rect;
+            Renderer.DrawColor = Color.FromArgb(100, 0, 0, 0);
 
             if (bIsHorizontal)
             {
-                rect.Y += Global.Trunc(rect.Height * 0.4f);
-                rect.Height -= Global.Trunc(rect.Height * 0.8f);
-            }
-            else
-            {
-                rect.X += Global.Trunc(rect.Width * 0.4f);
-                rect.Width -= Global.Trunc(rect.Width * 0.8f);
+                rect.X += (int) (barSize*0.5);
+                rect.Width -= barSize;
+                rect.Y += (int)(rect.Height * 0.5 - 1);
+                rect.Height = 1;
+                DrawSliderNotchesH(rect, numNotches, barSize*0.5f);
+                Renderer.DrawFilledRect(rect);
+                return;
             }
 
-            Renderer.DrawColor = m_colBGDark;
+            rect.Y += (int)(barSize * 0.5);
+            rect.Height -= barSize;
+            rect.X += (int)(rect.Width * 0.5 - 1);
+            rect.Width = 1;
+            DrawSliderNotchesV(rect, numNotches, barSize * 0.4f);
             Renderer.DrawFilledRect(rect);
-
-            Renderer.DrawColor = m_colControlDarker;
-            Renderer.DrawLinedRect(rect);
         }
 
-        public override void DrawComboBox(Controls.Base control)
+        public override void DrawComboBox(Controls.Base control, bool down, bool open)
         {
-            DrawTextBox(control);
+            if (control.IsDisabled)
+            {
+                Textures.Input.ComboBox.Disabled.Draw(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (down || open)
+            {
+                Textures.Input.ComboBox.Down.Draw(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (control.IsHovered)
+            {
+                Textures.Input.ComboBox.Down.Draw(Renderer, control.RenderBounds);
+                return;
+            }
+
+            Textures.Input.ComboBox.Normal.Draw(Renderer, control.RenderBounds);
         }
 
         public override void DrawKeyboardHighlight(Controls.Base control, Rectangle r, int iOffset)
@@ -626,24 +796,74 @@ namespace Gwen.Skin
             Textures.Scroller.Button.Normal[i].Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawComboBoxButton(Controls.Base control, bool bDepressed)
+        public override void DrawComboBoxArrow(Controls.Base control, bool hovered, bool down, bool open, bool disabled)
         {
-            m_Render.DrawColor = Color.FromArgb(240, 0, 0, 0);
+            if (disabled)
+            {
+                Textures.Input.ComboBox.Button.Disabled.Draw(Renderer, control.RenderBounds);
+                return;
+            }
 
-            Rectangle r = new Rectangle(control.Width / 2 - 2, control.Height / 2 - 2, 5, 5);
-            DrawArrowDown(r);
+            if (down || open)
+            {
+                Textures.Input.ComboBox.Button.Down.Draw(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (hovered)
+            {
+                Textures.Input.ComboBox.Button.Hover.Draw(Renderer, control.RenderBounds);
+                return;
+            }
+
+            Textures.Input.ComboBox.Button.Normal.Draw(Renderer, control.RenderBounds);
         }
 
         public override void DrawNumericUpDownButton(Controls.Base control, bool bDepressed, bool bUp)
         {
-            //	DrawButton( control.Widthidth(), control.Heighteight(), bDepressed, false, true );
+            if (bUp)
+            {
+                if (control.IsDisabled)
+                {
+                    Textures.Input.UpDown.Up.Disabled.DrawCenter(Renderer, control.RenderBounds);
+                    return;
+                }
 
-            m_Render.DrawColor = Color.FromArgb(240, 0, 0, 0);
+                if (bDepressed)
+                {
+                    Textures.Input.UpDown.Up.Down.DrawCenter(Renderer, control.RenderBounds);
+                    return;
+                }
 
-            Rectangle r = new Rectangle(control.Width / 2 - 2, control.Height / 2 - 2, 5, 5);
+                if (control.IsHovered)
+                {
+                    Textures.Input.UpDown.Up.Hover.DrawCenter(Renderer, control.RenderBounds);
+                    return;
+                }
 
-            if (bUp) DrawArrowUp(r);
-            else DrawArrowDown(r);
+                Textures.Input.UpDown.Up.Normal.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (control.IsDisabled)
+            {
+                Textures.Input.UpDown.Down.Disabled.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (bDepressed)
+            {
+                Textures.Input.UpDown.Down.Down.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (control.IsHovered)
+            {
+                Textures.Input.UpDown.Down.Hover.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            Textures.Input.UpDown.Down.Normal.DrawCenter(Renderer, control.RenderBounds);
         }
 
         public override void DrawStatusBar(Controls.Base control)
@@ -789,6 +1009,53 @@ namespace Gwen.Skin
             }
 
             Textures.Window.Close.Draw(Renderer, control.RenderBounds);
+        }
+
+        public override void DrawSliderButton(Controls.Base control, bool depressed, bool horizontal)
+        {
+            if (!horizontal)
+            {
+                if (control.IsDisabled)
+                {
+                    Textures.Input.Slider.V.Disabled.DrawCenter(Renderer, control.RenderBounds);
+                    return;
+                }
+                
+                if (depressed)
+                {
+                    Textures.Input.Slider.V.Down.DrawCenter(Renderer, control.RenderBounds);
+                    return;
+                }
+                
+                if (control.IsHovered)
+                {
+                    Textures.Input.Slider.V.Hover.DrawCenter(Renderer, control.RenderBounds);
+                    return;
+                }
+
+                Textures.Input.Slider.V.Normal.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (control.IsDisabled)
+            {
+                Textures.Input.Slider.H.Disabled.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (depressed)
+            {
+                Textures.Input.Slider.H.Down.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            if (control.IsHovered)
+            {
+                Textures.Input.Slider.H.Hover.DrawCenter(Renderer, control.RenderBounds);
+                return;
+            }
+
+            Textures.Input.Slider.H.Normal.DrawCenter(Renderer, control.RenderBounds);
         }
     }
 }

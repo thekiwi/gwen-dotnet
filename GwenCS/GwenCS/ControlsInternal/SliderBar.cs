@@ -5,6 +5,10 @@ namespace Gwen.ControlsInternal
 {
     public class SliderBar : Dragger
     {
+        protected bool m_bHorizontal;
+
+        public bool IsHorizontal { get { return m_bHorizontal; } set { m_bHorizontal = value; } }
+
         internal SliderBar(Base parent) : base(parent)
         {
             Target = this;
@@ -13,7 +17,7 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawButton(this, m_bDepressed, IsHovered, IsDisabled);
+            skin.DrawSliderButton(this, IsDepressed, IsHorizontal);
         }
     }
 }

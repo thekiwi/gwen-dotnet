@@ -3,13 +3,26 @@ using System.Drawing;
 
 namespace Gwen.Controls
 {
+    public class RightArrow : Base
+    {
+        public RightArrow(Base parent) : base(parent)
+        {
+            MouseInputEnabled = false;
+        }
+
+        protected override void Render(Skin.Base skin)
+        {
+            skin.DrawMenuRightArrow(this);
+        }
+    }
+
     public class MenuItem : Button
     {
         protected Menu m_Menu;
         protected bool m_bOnStrip;
         protected bool m_bCheckable;
         protected bool m_bChecked;
-        protected Symbol.Arrow m_SubmenuArrow;
+        protected Base m_SubmenuArrow;
 
         public bool IsOnStrip { get { return m_bOnStrip; } set { m_bOnStrip = value; } }
         public bool IsCheckable { get { return m_bCheckable; } set { m_bCheckable = value; } }
@@ -52,9 +65,8 @@ namespace Gwen.Controls
 
                     if (!m_bOnStrip)
                     {
-                        m_SubmenuArrow = new Symbol.Arrow(this);
-                        m_SubmenuArrow.Dock = Pos.Right;
-                        m_SubmenuArrow.SetSize(20, 20);
+                        m_SubmenuArrow = new RightArrow(this);
+                        m_SubmenuArrow.SetSize(15, 15);
                     }
 
                     Invalidate();
@@ -84,6 +96,10 @@ namespace Gwen.Controls
 
         protected override void Layout(Skin.Base skin)
         {
+            if (m_SubmenuArrow != null)
+            {
+                m_SubmenuArrow.Position(Pos.Right|Pos.CenterV, 4, 0);
+            }
             base.Layout(skin);
         }
 

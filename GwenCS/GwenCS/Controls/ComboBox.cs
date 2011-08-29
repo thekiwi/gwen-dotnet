@@ -1,30 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 
 namespace Gwen.Controls
 {
-    public class ComboBoxButton : Button
+    public class DownArrow : Base
     {
-        public ComboBoxButton(Base parent) : base(parent)
-        {}
+        protected ComboBox m_ComboBox;
+
+        public DownArrow(Base parent) : base(parent)
+        {
+            MouseInputEnabled = false;
+            SetSize(15, 15);
+        }
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawComboBoxButton(this, m_bDepressed);
+            skin.DrawComboBoxArrow(this, m_ComboBox.IsHovered, m_ComboBox.IsDepressed, m_ComboBox.IsMenuOpen, m_ComboBox.IsDisabled);
         }
+
+        internal ComboBox ComboBox { set { m_ComboBox = value; } }
     }
 
-    public class ComboBox : Base
+    public class ComboBox : Button
     {
         protected Menu m_Menu;
         protected MenuItem m_SelectedItem;
-        protected ComboBoxButton m_OpenButton;
-        protected Label m_SelectedText;
+        protected Base m_Button;
 
         public event ControlCallback OnSelection;
+
+        public bool IsMenuOpen { get { return m_Menu != null && !m_Menu.IsHidden; } }
 
         public ComboBox(Base parent) : base(parent)
         {
@@ -34,24 +39,23 @@ namespace Gwen.Controls
             m_Menu.IconMarginDisabled = true;
             m_Menu.IsTabable = false;
 
-            m_OpenButton = new ComboBoxButton(this);
-            m_OpenButton.OnPress += OpenButtonPressed;
-            m_OpenButton.Dock = Pos.Right;
-            m_OpenButton.Margin = new Margin(2, 2, 2, 2);
-            m_OpenButton.Width = 16;
-            m_OpenButton.IsTabable = false;
+            DownArrow arrow = new DownArrow(this);
+            arrow.ComboBox = this;
+            m_Button = arrow;
 
-            m_SelectedText = new Label(this);
-            m_SelectedText.Alignment = Pos.Left | Pos.CenterV;
-            //m_SelectedText.Text = string.Empty;
-            m_SelectedText.Margin = new Margin(3, 0, 0, 0);
-            m_SelectedText.Dock = Pos.Fill;
-            m_SelectedText.IsTabable = false;
+            Alignment = Pos.Left | Pos.CenterV;
+            Text = String.Empty;
+            Margin = new Margin(3, 0, 0, 0);
 
             IsTabable = true;
         }
 
         public Label SelectedItem { get { return m_SelectedItem; } }
+
+        public override bool IsMenuComponent
+        {
+            get { return true; }
+        }
 
         public virtual MenuItem AddItem(String label, String name, ControlCallback handler = null)
         {
@@ -59,7 +63,7 @@ namespace Gwen.Controls
             item.Name = name;
             item.OnMenuItemSelected += onItemSelected;
 
-            if (m_SelectedText != null)
+            if (m_SelectedItem != null)
                 onItemSelected(item);
 
             return item;
@@ -67,11 +71,17 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawComboBox(this);
+            skin.DrawComboBox(this, IsDepressed, IsMenuOpen);
         }
 
-        protected virtual void OpenButtonPressed(Base control)
+        internal override void onPress()
         {
+            if (IsMenuOpen)
+            {
+                GetCanvas().CloseMenus();
+                return;
+            }
+
             bool bWasMenuHidden = m_Menu.IsHidden;
 
             GetCanvas().CloseMenus();
@@ -95,7 +105,7 @@ namespace Gwen.Controls
             if (null==pItem) return;
 
             m_SelectedItem = pItem;
-            m_SelectedText.Text = m_SelectedItem.Text;
+            Text = m_SelectedItem.Text;
             m_Menu.IsHidden = true;
 
             if (OnSelection != null)
@@ -105,16 +115,21 @@ namespace Gwen.Controls
             Invalidate();
         }
 
+        protected override void Layout(Skin.Base skin)
+        {
+            m_Button.Position(Pos.Right|Pos.CenterV, 4, 0);
+            base.Layout(skin);
+        }
+
         internal override void onLostKeyboardFocus()
         {
-            m_SelectedText.TextColor = Color.Black;
+            TextColor = Color.Black;
         }
 
         internal override void onKeyboardFocus()
         {
             //Until we add the blue highlighting again
-            m_SelectedText.TextColor = Color.Black;
-            //m_SelectedText->SetTextColor( Color( 255, 255, 255, 255 ) );
+            TextColor = Color.Black;
         }
 
         public virtual void OpenList()
@@ -132,7 +147,10 @@ namespace Gwen.Controls
 
         public virtual void CloseList()
         {
-            
+            if (m_Menu == null) 
+                return;
+
+            m_Menu.Hide();
         }
 
         internal override bool onKeyDown(bool bDown)

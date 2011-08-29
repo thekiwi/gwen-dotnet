@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace Gwen.Controls.Layout
@@ -92,8 +91,11 @@ namespace Gwen.Controls.Layout
                 DoSizeToContents();
             }
 
+            bool even = false;
             foreach (TableRow row in Children.OfType<TableRow>())
             {
+                row.EvenRow = even;
+                even = !even;
                 for (int i = 0; i < TableRow.MaxColumns && i < m_iColumnCount; i++)
                 {
                     row.SetColumnWidth(i, m_ColumnWidth[i]);

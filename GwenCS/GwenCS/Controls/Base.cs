@@ -10,7 +10,7 @@ namespace Gwen.Controls
 {
     public class Base : IDisposable
     {
-        // [omeg] C# delegates/events instead of Gwen::Event
+        // [omeg] C# delegates/events instead of Gwen.Event
         public delegate void ControlCallback(Base control);
 
         // The logical parent
@@ -543,6 +543,27 @@ namespace Gwen.Controls
             return true;
         }
 
+        public virtual void Position(Pos pos, int xpadding = 0, int ypadding = 0)
+        {
+            int w = Parent.Width;
+            int h = Parent.Height;
+            Padding padding = Parent.Padding;
+
+            int x = X;
+            int y = Y;
+            if (pos.HasFlag(Pos.Left)) x = padding.Left + xpadding;
+            if (pos.HasFlag(Pos.Right)) x = w - Width - padding.Right - xpadding;
+            if (pos.HasFlag(Pos.CenterH))
+                x = (int)(padding.Left + xpadding + (w - Width - padding.Left - padding.Right) * 0.5);
+
+            if (pos.HasFlag(Pos.Top)) y = padding.Top + ypadding;
+            if (pos.HasFlag(Pos.Bottom)) y = h - Height - padding.Bottom - ypadding;
+            if (pos.HasFlag(Pos.CenterV))
+                y = (int)(padding.Top + ypadding + (h - Height - padding.Bottom - padding.Top) * 0.5);
+
+            SetPos(x, y);
+        }
+
         internal virtual void onBoundsChanged(Rectangle oldBounds)
         {
             //Anything that needs to update on size changes
@@ -678,6 +699,7 @@ namespace Gwen.Controls
 
             if (!render.ClipRegionVisible)
             {
+                render.RenderOffset = pOldRenderOffset;
                 render.ClipRegion = rOldRegion;
                 return;
             }

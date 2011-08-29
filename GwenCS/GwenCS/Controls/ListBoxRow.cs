@@ -36,7 +36,7 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawListBoxLine(this, IsSelected);
+            skin.DrawListBoxLine(this, IsSelected, EvenRow);
         }
 
         internal override void onMouseClickLeft(int x, int y, bool pressed)
