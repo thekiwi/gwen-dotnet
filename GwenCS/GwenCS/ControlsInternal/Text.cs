@@ -16,15 +16,17 @@ namespace Gwen.ControlsInternal
         }
         public Color TextColor { get; set; }
         public bool AutoSizeToContents { get; set; } // [omeg] added
-
         public int Length { get { return String.Length; } }
+
+        public Color TextColorOverride { get; set; }
 
         public Text(Base parent) : base(parent)
         {
             Font = Skin.DefaultFont;
             String = string.Empty;
-            TextColor = Color.Black; // TODO: From skin somehow..
+            TextColor = Skin.Colors.Label.Default;
             MouseInputEnabled = false;
+            TextColorOverride = Color.FromArgb(0, 255, 255, 255); // A==0, override disabled
         }
 
         protected override void Render(Skin.Base skin)
@@ -32,7 +34,10 @@ namespace Gwen.ControlsInternal
             base.Render(skin);
             if (Length == 0 || Font.FaceName == null) return;
 
-            skin.Renderer.DrawColor = TextColor;
+            if (TextColorOverride.A == 0)
+                skin.Renderer.DrawColor = TextColor;
+            else
+                skin.Renderer.DrawColor = TextColor;
             skin.Renderer.RenderText(ref Font, Point.Empty, String);
         }
 

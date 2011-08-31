@@ -12,7 +12,76 @@ namespace Gwen.Skin
             public Color TitleInactive;
         }
 
+        public struct _Button
+        {
+            public Color Normal;
+            public Color Hover;
+            public Color Down;
+            public Color Disabled;
+        }
+
+        public struct _Tab
+        {
+            public struct _Inactive
+            {
+                public Color Normal;
+                public Color Hover;
+                public Color Down;
+                public Color Disabled;
+            }
+
+            public struct _Active
+            {
+                public Color Normal;
+                public Color Hover;
+                public Color Down;
+                public Color Disabled;
+            }
+
+            public _Inactive Inactive;
+            public _Active Active;
+        }
+
+        public struct _Label
+        {
+            public Color Default;
+            public Color Bright;
+            public Color Dark;
+            public Color Highlight;
+        }
+
+        public struct _Tree
+        {
+            public Color Lines;
+            public Color Normal;
+            public Color Hover;
+            public Color Selected;
+        }
+
+        public struct _Properties
+        {
+            public Color Line_Normal;
+            public Color Line_Selected;
+            public Color Line_Hover;
+            public Color Column_Normal;
+            public Color Column_Selected;
+            public Color Column_Hover;
+            public Color Label_Normal;
+            public Color Label_Selected;
+            public Color Label_Hover;
+            public Color Border;
+            public Color Title;
+        }
+
+        public Color ModalBackground;
+        public Color TooltipText;
+
         public _Window Window;
+        public _Button Button;
+        public _Tab Tab;
+        public _Label Label;
+        public _Tree Tree;
+        public _Properties Properties;
     }
 
     public class Base : IDisposable
@@ -69,7 +138,6 @@ namespace Gwen.Skin
         public virtual void DrawWindow(Controls.Base control, int topHeight, bool inFocus) { }
         public virtual void DrawWindowCloseButton(Controls.Base control, bool depressed, bool hovered, bool disabled) { }
         public virtual void DrawHighlight(Controls.Base control) { }
-        public virtual void DrawBackground(Controls.Base control) { }
         public virtual void DrawStatusBar(Controls.Base control) { }
 
         public virtual void DrawShadow(Controls.Base control) { }
@@ -93,13 +161,58 @@ namespace Gwen.Skin
 
         public virtual void DrawTreeButton(Controls.Base control, bool bOpen) { }
         public virtual void DrawTreeControl(Controls.Base control) { }
-        public virtual void DrawTreeNode(Controls.Base ctrl, bool bOpen, bool bSelected, int iLabelHeight, int iLabelWidth, int iHalfWay, int iLastBranch, bool bIsRoot) { }
+        public virtual void DrawTreeNode(Controls.Base ctrl, bool bOpen, bool bSelected, int iLabelHeight, int iLabelWidth, int iHalfWay, int iLastBranch, bool bIsRoot)
+        {
+            Renderer.DrawColor = Colors.Tree.Lines;
 
-        public virtual void DrawPropertyRow(Controls.Base control, int iWidth, bool bBeingEdited) { }
-        public virtual void DrawPropertyTreeNode(Controls.Base control, int BorderLeft, int BorderTop) { }
+            if (!bIsRoot)
+                Renderer.DrawFilledRect(new Rectangle(8, iHalfWay, 16 - 9, 1));
+
+            if (!bOpen) return;
+
+            Renderer.DrawFilledRect(new Rectangle(14 + 7, iLabelHeight + 1, 1, iLastBranch + iHalfWay - iLabelHeight));
+        }
+
+        public virtual void DrawPropertyRow(Controls.Base control, int iWidth, bool bBeingEdited, bool hovered)
+        {
+            Rectangle rect = control.RenderBounds;
+
+            if (bBeingEdited)
+                m_Render.DrawColor = Colors.Properties.Column_Selected;
+            else if (hovered)
+                m_Render.DrawColor = Colors.Properties.Column_Hover;
+            else
+                m_Render.DrawColor = Colors.Properties.Column_Normal;
+
+            m_Render.DrawFilledRect(new Rectangle(0, rect.Y, iWidth, rect.Height));
+
+            if (bBeingEdited)
+                m_Render.DrawColor = Colors.Properties.Line_Selected;
+            else if (hovered)
+                m_Render.DrawColor = Colors.Properties.Line_Hover;
+            else
+                m_Render.DrawColor = Colors.Properties.Line_Normal;
+
+            m_Render.DrawFilledRect(new Rectangle(iWidth, rect.Y, 1, rect.Height));
+
+            rect.Y += rect.Height - 1;
+            rect.Height = 1;
+
+            m_Render.DrawFilledRect(rect);
+        }
+
         public virtual void DrawColorDisplay(Controls.Base control, Color color) { }
         public virtual void DrawModalControl(Controls.Base control) { }
         public virtual void DrawMenuDivider(Controls.Base control) { }
+        public virtual void DrawPropertyTreeNode(Controls.Base control, int BorderLeft, int BorderTop)
+        {
+            Rectangle rect = control.RenderBounds;
+
+            m_Render.DrawColor = Colors.Properties.Border;
+
+            m_Render.DrawFilledRect(new Rectangle(rect.X, rect.Y, BorderLeft, rect.Height));
+            m_Render.DrawFilledRect(new Rectangle(rect.X + BorderLeft, rect.Y, rect.Width - BorderLeft, BorderTop));
+        }
 
         /*
         Here we're drawing a few symbols such as the directional arrows and the checkbox check

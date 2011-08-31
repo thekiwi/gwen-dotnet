@@ -18,7 +18,16 @@ namespace Gwen.Controls
         public event ControlCallback OnToggleOn;
         public event ControlCallback OnToggleOff;
 
-        public bool IsDepressed { get { return m_bDepressed; } }
+        public bool IsDepressed
+        {
+            get { return m_bDepressed; }
+            set
+            {
+                if (m_bDepressed == value) return;
+                m_bDepressed = value; 
+                Redraw();
+            }
+        }
         public bool IsToggle { get { return m_bToggle; } set { m_bToggle = value; } }
         public bool ToggleState
         {
@@ -42,6 +51,8 @@ namespace Gwen.Controls
                     if (OnToggleOff != null)
                         OnToggleOff.Invoke(this);
                 }
+
+                Redraw();
             }
         }
 
@@ -85,7 +96,7 @@ namespace Gwen.Controls
             base.onMouseClickLeft(x, y, pressed);
             if (pressed)
             {
-                m_bDepressed = true;
+                IsDepressed = true;
                 Global.MouseFocus = this;
                 if (OnDown != null)
                     OnDown.Invoke(this);
@@ -97,7 +108,7 @@ namespace Gwen.Controls
                     onPress();
                 }
 
-                m_bDepressed = false;
+                IsDepressed = false;
                 Global.MouseFocus = null;
                 if (OnUp != null)
                     OnUp.Invoke(this);
@@ -153,14 +164,13 @@ namespace Gwen.Controls
 
         internal override bool onKeySpace(bool bDown)
         {
-            base.onKeySpace(bDown);
-            onMouseClickLeft(0, 0, bDown);
+            if (bDown)
+                onPress();
             return true;
         }
 
         protected override void AcceleratePressed()
         {
-            base.AcceleratePressed();
             onPress();
         }
 
@@ -174,6 +184,29 @@ namespace Gwen.Controls
                 if (m_bCenterImage)
                     Align.CenterHorizontally(m_Image);
             }
+        }
+
+        public override void UpdateColors()
+        {
+            if (IsDisabled)
+            {
+                TextColor = Skin.Colors.Button.Disabled;
+                return;
+            }
+
+            if (IsDepressed || ToggleState)
+            {
+                TextColor = Skin.Colors.Button.Down;
+                return;
+            }
+
+            if (IsHovered)
+            {
+                TextColor = Skin.Colors.Button.Hover;
+                return;
+            }
+
+            TextColor = Skin.Colors.Button.Normal;
         }
     }
 }

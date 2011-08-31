@@ -34,14 +34,21 @@ namespace Gwen.Skin.Texturing
 
         public void Draw(Renderer.Base render, Rectangle r, Color col)
         {
+            if (texture == null)
+                return;
+
             render.DrawColor = col;
             render.DrawTexturedRect(texture, r, uv[0], uv[1], uv[2], uv[3]);
         }
 
         public void DrawCenter(Renderer.Base render, Rectangle r)
         {
+            if (texture == null)
+                return;
+
             DrawCenter(render, r, Color.White);
         }
+
         public void DrawCenter(Renderer.Base render, Rectangle r, Color col)
         {
             r.X += (int)((r.Width - iWidth) * 0.5);

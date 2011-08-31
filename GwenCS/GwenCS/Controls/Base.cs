@@ -305,6 +305,8 @@ namespace Gwen.Controls
                 ToolTip.Dispose();
             Label tooltip = new Label(this);
             tooltip.SetText(text);
+            tooltip.TextColorOverride = Skin.Colors.TooltipText;
+            tooltip.Padding = new Padding(5, 3, 5, 3);
             tooltip.SizeToContents();
 
             ToolTip = tooltip;
@@ -794,6 +796,8 @@ namespace Gwen.Controls
                 Gwen.ToolTip.Enable(this);
             else if (Parent != null && Parent.ToolTip != null)
                 Gwen.ToolTip.Enable(Parent);
+
+            Redraw();
         }
 
         internal virtual void onMouseLeave()
@@ -802,7 +806,9 @@ namespace Gwen.Controls
                 OnHoverLeave.Invoke(this);
 
             if (ToolTip != null)
-                global::Gwen.ToolTip.Disable(this);
+                Gwen.ToolTip.Disable(this);
+
+            Redraw();
         }
 
         public virtual void Focus()
@@ -1185,9 +1191,15 @@ namespace Gwen.Controls
 
         public virtual void Redraw()
         {
+            UpdateColors();
             m_bCacheTextureDirty = true;
             if (m_Parent != null)
                 m_Parent.Redraw();
+        }
+
+        public virtual void UpdateColors()
+        {
+            
         }
 
         public void InvalidateParent()

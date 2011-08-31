@@ -228,20 +228,24 @@ namespace Gwen.Input
 
         public static bool onKeyEvent(Base canvas, Key key, bool down)
         {
-            if (null == Global.KeyboardFocus) return false;
-            if (Global.KeyboardFocus.GetCanvas() != canvas) return false;
-            if (!Global.KeyboardFocus.IsVisible) return false;
+            Base target = Global.KeyboardFocus;
+            if (null != target && target.GetCanvas() != null)
+                target = null;
+            if (target != null && !target.IsVisible)
+                target = null;
 
             int iKey = (int) key;
+
             if (down)
             {
                 if (!KeyData.KeyState[iKey])
                 {
                     KeyData.KeyState[iKey] = true;
                     KeyData.NextRepeat[iKey] = Platform.Windows.GetTimeInSeconds() + KeyRepeatDelay;
-                    KeyData.Target = Global.KeyboardFocus;
+                    KeyData.Target = target;
 
-                    return Global.KeyboardFocus.onKeyPress(key);
+                    if (target != null)
+                        return target.onKeyPress(key);
                 }
             }
             else
@@ -254,7 +258,8 @@ namespace Gwen.Input
                     // to not work. What is disabling it here breaking?
                     //KeyData.Target = NULL;
 
-                    return Global.KeyboardFocus.onKeyRelease(key);
+                    if (target != null)
+                        return target.onKeyRelease(key);
                 }
             }
 
@@ -265,25 +270,30 @@ namespace Gwen.Input
         {
             Base pHovered = pInCanvas.GetControlAt(MousePosition.X, MousePosition.Y);
 
-            if (Global.HoveredControl!=null && pHovered != Global.HoveredControl)
-            {
-                Global.HoveredControl.onMouseLeave();
-
-                pInCanvas.Redraw();
-            }
-
             if (pHovered != Global.HoveredControl)
             {
+                if (Global.HoveredControl != null)
+                {
+                    Base oldHover = Global.HoveredControl;
+                    Global.HoveredControl = null;
+                    oldHover.onMouseLeave();
+                }
+
                 Global.HoveredControl = pHovered;
 
                 if (Global.HoveredControl != null)
                     Global.HoveredControl.onMouseEnter();
-
-                pInCanvas.Redraw();
             }
 
             if (Global.MouseFocus!=null && Global.MouseFocus.GetCanvas() == pInCanvas)
             {
+                if (Global.HoveredControl != null)
+                {
+                    Base oldHover = Global.HoveredControl;
+                    Global.HoveredControl = null;
+                    oldHover.Redraw();
+                }
+
                 Global.HoveredControl = Global.MouseFocus;
             }
         }

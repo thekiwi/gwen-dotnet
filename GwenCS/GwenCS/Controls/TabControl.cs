@@ -116,6 +116,7 @@ namespace Gwen.Controls
                 {
                     page.IsHidden = true;
                 }
+                m_pCurrentButton.Redraw();
                 m_pCurrentButton = null;
             }
 

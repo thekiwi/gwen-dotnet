@@ -90,6 +90,9 @@ namespace Gwen.Skin.Texturing
 
         public void Draw(Renderer.Base render, Rectangle r, Color col)
         {
+            if (texture == null)
+                return;
+
             render.DrawColor = col;
 
             if (r.Width < width && r.Height < height)

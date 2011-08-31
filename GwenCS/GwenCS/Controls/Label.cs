@@ -10,10 +10,11 @@ namespace Gwen.Controls
         protected Pos m_iAlign;
         protected Padding m_rTextPadding;
 
-        public Pos Alignment { get { return m_iAlign; } set { m_iAlign = value; } }
+        public Pos Alignment { get { return m_iAlign; } set { m_iAlign = value; Invalidate(); } }
         public String Text { get { return m_Text.String; } set { SetText(value); } }
         public Font Font { get { return m_Text.Font; } set { m_Text.Font = value; } }
         public Color TextColor { get { return m_Text.TextColor; } set { m_Text.TextColor = value; } }
+        public Color TextColorOverride { get { return m_Text.TextColorOverride; } set { m_Text.TextColorOverride = value; } }
 
         public int TextWidth { get { return m_Text.Width; } }
         public int TextHeight { get { return m_Text.Height; } }
@@ -21,6 +22,10 @@ namespace Gwen.Controls
         public int TextY { get { return m_Text.Y; } }
         public int TextLength { get { return m_Text.Length; } }
         public int TextRight { get { return m_Text.Right; } }
+        public virtual void MakeColorNormal() { TextColor = Skin.Colors.Label.Default; }
+        public virtual void MakeColorBright() { TextColor = Skin.Colors.Label.Bright; }
+        public virtual void MakeColorDark() { TextColor = Skin.Colors.Label.Dark; }
+        public virtual void MakeColorHighlight() { TextColor = Skin.Colors.Label.Highlight; }
 
         public bool AutoSizeToContents { get { return m_Text.AutoSizeToContents; } set { m_Text.AutoSizeToContents = value; } }
 

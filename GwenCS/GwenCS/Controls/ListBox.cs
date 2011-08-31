@@ -14,9 +14,14 @@ namespace Gwen.Controls
 
         public bool AllowMultiSelect { get { return m_bMultiSelect; } set { m_bMultiSelect = value; } }
         public IList<TableRow> SelectedRows { get { return m_SelectedRows; } }
-        public TableRow SelectedRow { get { if (m_SelectedRows.Count == 0) return null;
-            return m_SelectedRows[0];
-        } }
+        public TableRow SelectedRow
+        {
+            get
+            {
+                if (m_SelectedRows.Count == 0) return null;
+                return m_SelectedRows[0];
+            }
+        }
         public Table Table { get { return m_Table; } }
         public int ColumnCount { get { return m_Table.ColumnCount; } set { m_Table.ColumnCount = value; } }
 
@@ -44,13 +49,33 @@ namespace Gwen.Controls
         }
 
         // [omeg] added
-        public void SelectRow(int index)
+        public void SelectRow(int index, bool clearOthers = false)
         {
             if (index < 0 || index >= m_Table.RowCount)
                 return;
-            if (!m_bMultiSelect)
+
+            SelectRow(m_Table.Children[index], clearOthers);
+        }
+
+        public void SelectRow(String rowText, bool clearOthers = false)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SelectRow(Base control, bool clearOthers = false)
+        {
+            if (!AllowMultiSelect || clearOthers)
                 UnselectAll();
-            (m_Table.Children[index] as ListBoxRow).IsSelected = true;
+
+            ListBoxRow row = control as ListBoxRow;
+            if (row == null)
+                return;
+
+            // TODO: make sure this is one of our rows!
+            row.IsSelected = true;
+            m_SelectedRows.Add(row);
+            if (OnRowSelected != null)
+                OnRowSelected.Invoke(this);
         }
 
         // [omeg] added
@@ -88,29 +113,23 @@ namespace Gwen.Controls
             m_SelectedRows.Clear();
         }
 
-        protected virtual void UpdateSelected()
+        public void UnselectRow(ListBoxRow row)
         {
-            m_SelectedRows.RemoveAll(row => !(row as ListBoxRow).IsSelected);
-        }
-
-        internal virtual void SelectRow(TableRow row)
-        {
-            m_SelectedRows.Add(row);
+            row.IsSelected = false;
+            m_SelectedRows.Remove(row);
         }
 
         protected virtual void onRowSelected(Base pControl)
         {
-            ListBoxRow pRow = pControl as ListBoxRow;
-            if (null == pRow) return;
-
-            if (!m_bMultiSelect)
-                UnselectAll();
+            // [omeg] changed default behavior
+            bool clear = false;// !Input.Input.IsShiftDown;
+            ListBoxRow row = pControl as ListBoxRow;
+            if (row == null)
+                return;
+            if (row.IsSelected)
+                UnselectRow(row);
             else
-                UpdateSelected();
-            SelectRow(pRow);
-            
-            if (OnRowSelected!=null)
-                OnRowSelected.Invoke(this);
+                SelectRow(pControl, clear);
         }
 
         public virtual void Clear()

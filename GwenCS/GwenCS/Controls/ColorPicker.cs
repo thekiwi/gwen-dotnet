@@ -163,11 +163,6 @@ namespace Gwen.Controls
             //UpdateControls(); // this spams events continuously every tick
         }
 
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawBackground(this);
-        }
-
         protected int GetColorByName(String colorName)
         {
             if (colorName == "Red")

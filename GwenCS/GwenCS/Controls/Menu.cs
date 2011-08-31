@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Linq;
 
 namespace Gwen.Controls
@@ -6,9 +7,11 @@ namespace Gwen.Controls
     public class Menu : ScrollControl
     {
         protected bool m_bDisableIconMargin;
+        protected bool m_bDeleteOnClose;
 
         public override bool IsMenuComponent { get { return true; } }
         public bool IconMarginDisabled { get { return m_bDisableIconMargin; } set { m_bDisableIconMargin = value; } }
+        public bool DeleteOnClose { get { return m_bDeleteOnClose; } set { m_bDeleteOnClose = value; } }
 
         protected virtual bool ShouldHoverOpenMenu { get { return true; } }
 
@@ -21,6 +24,7 @@ namespace Gwen.Controls
 
             AutoHideBars = true;
             SetScroll(false, true);
+            DeleteOnClose = false;
         }
 
         protected override void Render(Skin.Base skin)
@@ -32,6 +36,14 @@ namespace Gwen.Controls
         {
             base.RenderUnder(skin);
             skin.DrawShadow(this);
+        }
+
+        public void Open(uint pos)
+        {
+            IsHidden = false;
+            BringToFront();
+            Point mouse = Input.Input.MousePosition;
+            SetPos(mouse.X, mouse.Y);
         }
 
         protected override void Layout(Skin.Base skin)
@@ -113,6 +125,8 @@ namespace Gwen.Controls
         public virtual void Close()
         {
             IsHidden = true;
+            if (DeleteOnClose)
+                Dispose();
         }
 
         public override void CloseMenus()

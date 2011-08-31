@@ -29,7 +29,7 @@ namespace Gwen.Controls
         internal override bool onKeySpace(bool bDown)
         {
             base.onKeySpace(bDown);
-            if (bDown) 
+            if (!bDown) 
                 m_CheckBox.IsChecked = !m_CheckBox.IsChecked; 
             return true;
         }

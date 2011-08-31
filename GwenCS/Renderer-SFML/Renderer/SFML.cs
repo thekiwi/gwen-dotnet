@@ -30,7 +30,7 @@ namespace Gwen.Renderer
         {
             get
             {
-                return System.Drawing.Color.FromArgb(m_Color.A, m_Color.R, m_Color.G, m_Color.B); ;
+                return System.Drawing.Color.FromArgb(m_Color.A, m_Color.R, m_Color.G, m_Color.B);
             }
             set
             {
@@ -40,10 +40,10 @@ namespace Gwen.Renderer
 
         public override System.Drawing.Color PixelColour(Texture texture, uint x, uint y, System.Drawing.Color defaultColor)
         {
-            global::SFML.Graphics.Texture tex = texture.RendererData as global::SFML.Graphics.Texture;
+            Sprite tex = texture.RendererData as Sprite;
             if (tex == null)
                 return defaultColor;
-            var img = tex.CopyToImage();
+            var img = tex.Texture.CopyToImage();
             Color pixel = img.GetPixel(x, y);
             return System.Drawing.Color.FromArgb(pixel.A, pixel.R, pixel.G, pixel.B);
         }
@@ -230,18 +230,18 @@ namespace Gwen.Renderer
             pTexture.RendererData = sprite;
         }
 
-        // [omeg] added
-        public override void LoadTextureRaw(Texture pTexture, byte[] pixelData)
+        // [omeg] added, pixelData are in RGBA format
+        public override void LoadTextureRaw(Texture texture, byte[] pixelData)
         {
-            if (null == pTexture) return;
-            if (pTexture.RendererData != null) FreeTexture(pTexture);
+            if (null == texture) return;
+            if (texture.RendererData != null) FreeTexture(texture);
 
             global::SFML.Graphics.Texture tex;
             Sprite sprite;
 
             try
             {
-                var img = new Image((uint)pTexture.Width, (uint)pTexture.Height, pixelData);
+                var img = new Image((uint)texture.Width, (uint)texture.Height, pixelData); // SFML Image
                 tex = new global::SFML.Graphics.Texture(img);
                 tex.Smooth = true;
                 sprite = new Sprite(tex);
@@ -249,11 +249,11 @@ namespace Gwen.Renderer
             }
             catch (LoadingFailedException)
             {
-                pTexture.Failed = true;
+                texture.Failed = true;
                 return;
             }
 
-            pTexture.RendererData = sprite;
+            texture.RendererData = sprite;
         }
 
         public override void FreeTexture(Texture t)

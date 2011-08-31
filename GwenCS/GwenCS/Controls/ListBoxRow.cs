@@ -11,27 +11,21 @@ namespace Gwen.Controls
         public ListBoxRow(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
-            SetSelected(false);
+            IsSelected = false;
         }
 
         public bool IsSelected
         {
             get { return m_bSelected; }
-            set { SetSelected(value); }
-        }
-
-        protected override void SetSelected(bool b)
-        {
-            m_bSelected = b;
-            // TODO: Get these values from the skin.
-            if (b)
+            set
             {
-                //add to the listbox's selected list
-                ((ListBox)Parent.Parent).SelectRow(this);
-                SetTextColor(Color.White);
+                m_bSelected = value;             
+                // TODO: Get these values from the skin.
+                if (value)
+                    SetTextColor(Color.White);
+                else
+                    SetTextColor(Color.Black);
             }
-            else
-                SetTextColor(Color.Black);
         }
 
         protected override void Render(Skin.Base skin)
@@ -43,25 +37,8 @@ namespace Gwen.Controls
         {
             if (pressed)
             {
-                if (!m_bSelected)
-                {
-                    onRowSelected();
-
-                    if (!((ListBox)Parent.Parent).AllowMultiSelect)
-                    {
-                        m_bSelected = true;
-                        SetTextColor(Color.White);
-                    }
-                }
-
-                if (((ListBox)Parent.Parent).AllowMultiSelect)
-                {
-                    m_bSelected = !m_bSelected;
-                    if (m_bSelected)
-                        SetTextColor(Color.White);
-                    else
-                        SetTextColor(Color.Black);
-                }
+                //IsSelected = true; // [omeg] ListBox manages that
+                onRowSelected();
             }
         }
     }

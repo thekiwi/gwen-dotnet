@@ -46,7 +46,7 @@ namespace Gwen.Controls.Layout
                 }
                 else if (null != m_Columns[i])
                 {
-                    //m_Columns[i].DelayedDelete();
+                    m_Columns[i].Dispose();
                     m_Columns[i] = null;
                 }
 
@@ -56,7 +56,7 @@ namespace Gwen.Controls.Layout
 
         public void SetColumnWidth(int i, int iWidth)
         {
-            if (null==m_Columns[i]) return;
+            if (null == m_Columns[i]) return;
             if (m_Columns[i].Width == iWidth) return;
 
             m_Columns[i].Width = iWidth;
@@ -83,17 +83,17 @@ namespace Gwen.Controls.Layout
 
         protected void onRowSelected()
         {
-            if (OnRowSelected!=null)
+            if (OnRowSelected != null)
                 OnRowSelected.Invoke(this);
         }
-        
+
         public void SizeToContents()
         {
             int iHeight = 0;
 
             for (int i = 0; i < m_ColumnCount; i++)
             {
-                if (null==m_Columns[i]) continue;
+                if (null == m_Columns[i]) continue;
 
                 // Note, more than 1 child here, because the 
                 // label has a child built in ( The Text )
@@ -116,8 +116,8 @@ namespace Gwen.Controls.Layout
         {
             for (int i = 0; i < m_ColumnCount; i++)
             {
-                if (null==m_Columns[i]) continue;
-                m_Columns[i].TextColor=color;
+                if (null == m_Columns[i]) continue;
+                m_Columns[i].TextColor = color;
             }
         }
 
@@ -125,8 +125,5 @@ namespace Gwen.Controls.Layout
         {
             return m_Columns[i].Text;
         }
-
-        protected virtual void SetSelected( bool b ) 
-        {}
     }
 }

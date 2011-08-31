@@ -38,6 +38,7 @@ namespace Gwen.ControlsInternal
         public override void DragAndDrop_EndDragging(bool success, int x, int y)
         {
             IsHidden = false;
+            IsDepressed = false;
         }
 
         public override bool DragAndDrop_ShouldStartDrag()
@@ -47,7 +48,7 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawTabButton(this, m_Control.CurrentButton == this, m_Control.TabStrip.Dock);
+            skin.DrawTabButton(this, IsActive, m_Control.TabStrip.Dock);
         }
 
         internal override bool onKeyDown(bool bDown)
@@ -94,6 +95,48 @@ namespace Gwen.ControlsInternal
             }
 
             return true;
+        }
+
+        public override void UpdateColors()
+        {
+            if (IsActive)
+            {
+                if (IsDisabled)
+                {
+                    TextColor = Skin.Colors.Tab.Active.Disabled;
+                    return;
+                }
+                if (IsDepressed)
+                {
+                    TextColor = Skin.Colors.Tab.Active.Down;
+                    return;
+                }
+                if (IsHovered)
+                {
+                    TextColor = Skin.Colors.Tab.Active.Hover;
+                    return;
+                }
+
+                TextColor = Skin.Colors.Tab.Active.Normal;
+            }
+
+            if (IsDisabled)
+            {
+                TextColor = Skin.Colors.Tab.Inactive.Disabled;
+                return;
+            }
+            if (IsDepressed)
+            {
+                TextColor = Skin.Colors.Tab.Inactive.Down;
+                return;
+            }
+            if (IsHovered)
+            {
+                TextColor = Skin.Colors.Tab.Inactive.Hover;
+                return;
+            }
+
+            TextColor = Skin.Colors.Tab.Inactive.Normal;
         }
     }
 }

@@ -25,11 +25,12 @@ namespace Gwen.Controls
 
             m_LerpBox = new ColorLerpBox(this);
             m_LerpBox.OnSelectionChanged += ColorBoxChanged;
-            m_LerpBox.SetPos(5, 5);
+            m_LerpBox.Dock = Pos.Left;
 
             m_ColorSlider = new ColorSlider(this);
             m_ColorSlider.SetPos(m_LerpBox.Width + 15, 5);
             m_ColorSlider.OnSelectionChanged += ColorSliderChanged;
+            m_ColorSlider.Dock = Pos.Left;
 
             m_After = new ColorDisplay(this);
             m_After.SetSize(48, 24);
@@ -126,6 +127,8 @@ namespace Gwen.Controls
 
         protected void UpdateControls(Color color)
         {
+            // What in the FUCK
+
             TextBoxNumeric redBox = FindChildByName("RedBox", false) as TextBoxNumeric;
             if (redBox != null)
                 redBox.SetText(color.R.ToString(), false);

@@ -506,15 +506,6 @@ namespace Gwen.Skin
             DrawTextBox(control);
         }
 
-        public override void DrawBackground(Controls.Base control)
-        {
-            Rectangle rect = control.RenderBounds;
-            m_Render.DrawColor = m_colBGDark;
-            m_Render.DrawFilledRect(rect);
-            m_Render.DrawColor = m_colControlDarker;
-            m_Render.DrawLinedRect(rect);
-        }
-
         public override void DrawKeyboardHighlight(Controls.Base control, Rectangle r, int iOffset)
         {
             Rectangle rect = r;
@@ -639,57 +630,18 @@ namespace Gwen.Skin
         {
             if (bSelected)
             {
-                m_Render.DrawColor = Color.FromArgb(100, 0, 150, 255);
-                m_Render.DrawFilledRect(new Rectangle(17, 0, iLabelWidth + 2, iLabelHeight - 1));
-                m_Render.DrawColor = Color.FromArgb(200, 0, 150, 255);
-                m_Render.DrawLinedRect(new Rectangle(17, 0, iLabelWidth + 2, iLabelHeight - 1));
+                Renderer.DrawColor = Color.FromArgb(100, 0, 150, 255);
+                Renderer.DrawFilledRect(new Rectangle(17, 0, iLabelWidth + 2, iLabelHeight - 1));
+                Renderer.DrawColor = Color.FromArgb(200, 0, 150, 255);
+                Renderer.DrawLinedRect(new Rectangle(17, 0, iLabelWidth + 2, iLabelHeight - 1));
             }
 
-            m_Render.DrawColor = Color.FromArgb(50, 0, 0, 0);
-
-            if (!bIsRoot)
-                m_Render.DrawFilledRect(new Rectangle(9, iHalfWay, 16 - 9, 1));
-
-            if (!bOpen) return;
-
-            m_Render.DrawFilledRect(new Rectangle(14 + 8, iLabelHeight, 1, iLastBranch + iHalfWay - iLabelHeight));
+            base.DrawTreeNode(ctrl, bOpen, bSelected, iLabelHeight, iLabelWidth, iHalfWay, iLastBranch, bIsRoot);
         }
 
         public override void DrawStatusBar(Controls.Base control)
         {
-            DrawBackground(control);
-        }
-
-        public override void DrawPropertyRow(Controls.Base control, int iWidth, bool bBeingEdited)
-        {
-            Rectangle rect = control.RenderBounds;
-
-
-            if (bBeingEdited)
-            {
-                m_Render.DrawColor = m_colHighlightBG;
-                m_Render.DrawFilledRect(new Rectangle(0, rect.Y, iWidth, rect.Height));
-            }
-
-            m_Render.DrawColor = m_colControlOutlineLighter;
-
-            m_Render.DrawFilledRect(new Rectangle(iWidth, rect.Y, 1, rect.Height));
-
-            rect.Y += rect.Height - 1;
-            rect.Height = 1;
-
-
-            m_Render.DrawFilledRect(rect);
-        }
-
-        public override void DrawPropertyTreeNode(Controls.Base control, int BorderLeft, int BorderTop)
-        {
-            Rectangle rect = control.RenderBounds;
-
-            m_Render.DrawColor = m_colControlOutlineLighter;
-
-            m_Render.DrawFilledRect(new Rectangle(rect.X, rect.Y, BorderLeft, rect.Height));
-            m_Render.DrawFilledRect(new Rectangle(rect.X + BorderLeft, rect.Y, rect.Width - BorderLeft, BorderTop));
+            // todo
         }
 
         public override void DrawColorDisplay(Controls.Base control, Color color)

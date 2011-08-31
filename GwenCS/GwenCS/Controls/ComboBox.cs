@@ -48,6 +48,7 @@ namespace Gwen.Controls
             Margin = new Margin(3, 0, 0, 0);
 
             IsTabable = true;
+            KeyboardInputEnabled = true;
         }
 
         public Label SelectedItem { get { return m_SelectedItem; } }
