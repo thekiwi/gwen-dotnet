@@ -695,5 +695,15 @@ namespace Gwen.Skin
         {
             DrawButton(control, depressed, control.IsHovered, control.IsDisabled);
         }
+
+        public override void DrawCategoryHolder(Controls.Base control)
+        {
+            // todo
+        }
+
+        public override void DrawCategoryInner(Controls.Base control, bool collapsed)
+        {
+            // todo
+        }
     }
 }

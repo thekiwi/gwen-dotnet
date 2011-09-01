@@ -157,6 +157,8 @@ namespace Gwen.Controls
             }
         }
 
+        public virtual bool ShouldClip { get { return true; } }
+
         public Padding Padding
         {
             get { return m_Padding; }
@@ -697,16 +699,20 @@ namespace Gwen.Controls
             RenderUnder(skin);
 
             Rectangle rOldRegion = render.ClipRegion;
-            render.AddClipRegion(clipRect);
 
-            if (!render.ClipRegionVisible)
+            if (ShouldClip)
             {
-                render.RenderOffset = pOldRenderOffset;
-                render.ClipRegion = rOldRegion;
-                return;
-            }
+                render.AddClipRegion(clipRect);
 
-            render.StartClip();
+                if (!render.ClipRegionVisible)
+                {
+                    render.RenderOffset = pOldRenderOffset;
+                    render.ClipRegion = rOldRegion;
+                    return;
+                }
+
+                render.StartClip();
+            }
 
             //Render myself first
             Render(skin);
@@ -1141,6 +1147,8 @@ namespace Gwen.Controls
         public virtual bool SizeToChildren(bool w = true, bool h = true)
         {
             Point size = ChildrenSize();
+            size.X += Padding.Right;
+            size.Y += Padding.Bottom;
             return SetSize(w ? size.X : Width, h ? size.Y : Height);
         }
 

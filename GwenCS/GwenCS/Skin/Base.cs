@@ -73,6 +73,35 @@ namespace Gwen.Skin
             public Color Title;
         }
 
+        public struct _Category
+        {
+            public Color Header;
+            public Color Header_Closed;
+
+            public struct _Line
+            {
+                public Color Text;
+                public Color Text_Hover;
+                public Color Text_Selected;
+                public Color Button;
+                public Color Button_Hover;
+                public Color Button_Selected;
+            }
+
+            public struct _LineAlt
+            {
+                public Color Text;
+                public Color Text_Hover;
+                public Color Text_Selected;
+                public Color Button;
+                public Color Button_Hover;
+                public Color Button_Selected;
+            }
+
+            public _Line Line;
+            public _LineAlt LineAlt;
+        }
+
         public Color ModalBackground;
         public Color TooltipText;
 
@@ -82,6 +111,7 @@ namespace Gwen.Skin
         public _Label Label;
         public _Tree Tree;
         public _Properties Properties;
+        public _Category Category;
     }
 
     public class Base : IDisposable
@@ -204,6 +234,10 @@ namespace Gwen.Skin
         public virtual void DrawColorDisplay(Controls.Base control, Color color) { }
         public virtual void DrawModalControl(Controls.Base control) { }
         public virtual void DrawMenuDivider(Controls.Base control) { }
+
+        public virtual void DrawCategoryHolder(Controls.Base control) { }
+        public virtual void DrawCategoryInner(Controls.Base control, bool collapsed) { }
+
         public virtual void DrawPropertyTreeNode(Controls.Base control, int BorderLeft, int BorderTop)
         {
             Rectangle rect = control.RenderBounds;

@@ -12,6 +12,11 @@ namespace Gwen.ControlsInternal
 
         public bool AllowReorder { get { return m_bAllowReorder; } set { m_bAllowReorder = value; } }
 
+        public override bool ShouldClip
+        {
+            get { return false; }
+        }
+
         public TabStrip(Base parent) : base(parent)
         {
             m_bAllowReorder = false;

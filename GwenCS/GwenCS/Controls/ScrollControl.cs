@@ -161,8 +161,15 @@ namespace Gwen.Controls
             int childrenWidth = m_InnerPanel.Children.Count > 0 ? m_InnerPanel.Children.Max(x => x.Right) : 0;
             int childrenHeight = m_InnerPanel.Children.Count > 0 ? m_InnerPanel.Children.Max(x => x.Bottom) : 0;
 
-
-            m_InnerPanel.SetSize(Math.Max(Width, childrenWidth), Math.Max(Height, childrenHeight));
+            if (m_bCanScrollH)
+            {
+                m_InnerPanel.SetSize(Math.Max(Width, childrenWidth), Math.Max(Height, childrenHeight));  
+            }
+            else
+            {
+                m_InnerPanel.SetSize(Width - (m_VerticalScrollBar.IsHidden ? 0 : m_VerticalScrollBar.Width),
+                                     Math.Max(Height, childrenHeight));
+            }
 
             float wPercent = Width/
                              (float) (childrenWidth + (m_VerticalScrollBar.IsHidden ? 0 : m_VerticalScrollBar.Width));

@@ -57,11 +57,16 @@
     <Compile Include="Anim\Size\Height.cs" />
     <Compile Include="Anim\Size\Width.cs" />
     <Compile Include="Anim\TimedAnimation.cs" />
+    <Compile Include="ControlsInternal\CategoryButton.cs" />
+    <Compile Include="ControlsInternal\CategoryHeaderButton.cs" />
     <Compile Include="ControlsInternal\ColorDisplay.cs" />
     <Compile Include="ControlsInternal\SliderBar.cs" />
     <Compile Include="ControlsInternal\SplitterBar.cs" />
     <Compile Include="ControlsInternal\TabControlInner.cs" />
-    <Compile Include="ControlsInternal\TabStrip.cs" />
+    <Compile Include="Controls\CollapsibleCategory.cs" />
+    <Compile Include="Controls\CollapsibleList.cs" />
+    <Compile Include="Controls\Layout\Position.cs" />
+    <Compile Include="Controls\TabStrip.cs" />
     <Compile Include="Controls\TabButton.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
     <Compile Include="ControlsInternal\Dragger.cs" />

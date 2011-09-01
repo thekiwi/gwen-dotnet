@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using Gwen.Controls;
 using SFML.Graphics;
@@ -273,7 +272,7 @@ namespace Gwen.Sample
             spl.SetPanel(3, bbr);
 
             tab = new TabControl(canvas);
-            tab.SetBounds(420, 400, 200, 150);
+            tab.SetBounds(320, 400, 200, 150);
             
             var tabbtn1 = tab.AddPage("Controls");
             
@@ -290,6 +289,35 @@ namespace Gwen.Sample
             tab.AddPage("Blue");
 
             tab.AllowReorder = true;
+
+            CollapsibleList clist = new CollapsibleList(canvas);
+            clist.SetBounds(650, 250, 100, 200);
+            {
+                var cat = clist.Add("Category 1");
+                cat.Add("Hello");
+                cat.Add("zażółć");
+                cat.Add("gęślą");
+                cat.Add("jaźń");
+            }
+            {
+                var cat = clist.Add("Category 2");
+                cat.Add("Hello");
+                cat.Add("zażółć");
+                cat.Add("gęślą");
+                cat.Add("jaźń");
+                cat.Add("Hello");
+                cat.Add("zażółć");
+                cat.Add("gęślą");
+                cat.Add("jaźń");
+            }
+            {
+                var cat = clist.Add("Category 3");
+                cat.Add("Hello");
+                cat.Add("zażółć");
+                cat.Add("gęślą");
+                cat.Add("jaźń");
+            }
+
             /*
             gb1.ShouldCacheToTexture = true;
             n1.ShouldCacheToTexture = true;

@@ -243,6 +243,13 @@ namespace Gwen.Skin
             public Bordered HeaderBar;
         }
 
+        public struct _CategoryList
+        {
+            public Bordered Outer;
+            public Bordered Inner;
+            public Bordered Header;
+        }
+
         public _Panel Panel;
         public _Window Window;
         public _CheckBox CheckBox;
@@ -254,6 +261,7 @@ namespace Gwen.Skin
         public _Menu Menu;
         public _Input Input;
         public _Tab Tab;
+        public _CategoryList CategoryList;
     }
 
     public class TexturedBase : Skin.Base
@@ -313,8 +321,28 @@ namespace Gwen.Skin
             Colors.ModalBackground = Renderer.PixelColour(m_Texture, 4 + 8 * 18, 508, Color.Yellow);
             Colors.TooltipText     = Renderer.PixelColour(m_Texture, 4 + 8 * 19, 508, Color.Yellow);
 
-            Textures.Shadow  = new Bordered(m_Texture, 448, 0, 31, 31, new Margin(8, 8, 8, 8));
-            Textures.Tooltip = new Bordered(m_Texture, 128, 320, 127, 31, new Margin(8, 8, 8, 8));
+            Colors.Category.Header        = Renderer.PixelColour(m_Texture, 4 + 8 * 18, 500, Color.Yellow);
+            Colors.Category.Header_Closed = Renderer.PixelColour(m_Texture, 4 + 8 * 19, 500, Color.Yellow);
+
+            Colors.Category.Line.Text          = Renderer.PixelColour(m_Texture, 4 + 8 * 20, 508, Color.Yellow);
+            Colors.Category.Line.Text_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 21, 508, Color.Yellow);
+            Colors.Category.Line.Text_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 20, 500, Color.Yellow);
+            Colors.Category.Line.Button        = Renderer.PixelColour(m_Texture, 4 + 8 * 21, 500, Color.Yellow);
+
+            Colors.Category.Line.Button_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 22, 508, Color.Yellow);
+            Colors.Category.Line.Button_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 23, 508, Color.Yellow);
+            Colors.Category.LineAlt.Text         = Renderer.PixelColour(m_Texture, 4 + 8 * 22, 500, Color.Yellow);
+            Colors.Category.LineAlt.Text_Hover   = Renderer.PixelColour(m_Texture, 4 + 8 * 23, 500, Color.Yellow);
+
+            Colors.Category.LineAlt.Text_Selected   = Renderer.PixelColour(m_Texture, 4 + 8 * 24, 508, Color.Yellow);
+            Colors.Category.LineAlt.Button          = Renderer.PixelColour(m_Texture, 4 + 8 * 25, 508, Color.Yellow);
+            Colors.Category.LineAlt.Button_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 24, 500, Color.Yellow);
+            Colors.Category.LineAlt.Button_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 25, 500, Color.Yellow);
+
+            Textures.Shadow    = new Bordered(m_Texture, 448, 0, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Tooltip   = new Bordered(m_Texture, 128, 320, 127, 31, new Margin(8, 8, 8, 8));
+            Textures.StatusBar = new Bordered(m_Texture, 128, 288, 127, 31, new Margin(8, 8, 8, 8));
+            Textures.Selection = new Bordered(m_Texture, 384, 32, 31, 31, new Margin(4, 4, 4, 4));
 
             Textures.Panel.Normal    = new Bordered(m_Texture, 256, 0, 63, 63, new Margin(16, 16, 16, 16));
             Textures.Panel.Bright    = new Bordered(m_Texture, 256 + 64, 0, 63, 63, new Margin(16, 16, 16, 16));
@@ -379,14 +407,13 @@ namespace Gwen.Skin
             Textures.Scroller.Button.Down     = new Bordered[4];
 
             Textures.Tree.Background = new Bordered(m_Texture, 256, 128, 127, 127, new Margin(16, 16, 16, 16));
-            Textures.Tree.Plus = new Single(m_Texture, 448, 96, 15, 15);
-            Textures.Tree.Minus = new Single(m_Texture, 464, 96, 15, 15);
+            Textures.Tree.Plus       = new Single(m_Texture, 448, 96, 15, 15);
+            Textures.Tree.Minus      = new Single(m_Texture, 464, 96, 15, 15);
 
-
-            Textures.Input.Button.Normal = new Bordered(m_Texture, 480, 0, 31, 31, new Margin(8, 8, 8, 8));
-            Textures.Input.Button.Hovered = new Bordered(m_Texture, 480, 32, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.Button.Normal   = new Bordered(m_Texture, 480, 0, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.Button.Hovered  = new Bordered(m_Texture, 480, 32, 31, 31, new Margin(8, 8, 8, 8));
             Textures.Input.Button.Disabled = new Bordered(m_Texture, 480, 64, 31, 31, new Margin(8, 8, 8, 8));
-            Textures.Input.Button.Pressed = new Bordered(m_Texture, 480, 96, 31, 31, new Margin(8, 8, 8, 8));
+            Textures.Input.Button.Pressed  = new Bordered(m_Texture, 480, 96, 31, 31, new Margin(8, 8, 8, 8));
 
             for (int i = 0; i < 4; i++)
             {
@@ -411,6 +438,7 @@ namespace Gwen.Skin
             Textures.Input.ComboBox.Hover           = new Bordered(m_Texture, 384, 336 + 32, 127, 31, new Margin(8, 8, 32, 8));
             Textures.Input.ComboBox.Down            = new Bordered(m_Texture, 384, 336 + 64, 127, 31, new Margin(8, 8, 32, 8));
             Textures.Input.ComboBox.Disabled        = new Bordered(m_Texture, 384, 336 + 96, 127, 31, new Margin(8, 8, 32, 8));
+
             Textures.Input.ComboBox.Button.Normal   = new Single(m_Texture, 496, 272, 15, 15);
             Textures.Input.ComboBox.Button.Hover    = new Single(m_Texture, 496, 272 + 16, 15, 15);
             Textures.Input.ComboBox.Button.Down     = new Single(m_Texture, 496, 272 + 32, 15, 15);
@@ -438,9 +466,9 @@ namespace Gwen.Skin
             Textures.Input.Slider.V.Down     = new Single(m_Texture, 416 + 16, 32 + 32, 15, 15);
             Textures.Input.Slider.V.Disabled = new Single(m_Texture, 416 + 16, 32 + 48, 15, 15);
 
-            Textures.StatusBar = new Bordered(m_Texture, 128, 288, 127, 31, new Margin(8, 8, 8, 8));
-
-            Textures.Selection = new Bordered(m_Texture, 384, 32, 31, 31, new Margin(4, 4, 4, 4));
+            Textures.CategoryList.Outer = new Bordered(m_Texture, 256, 384, 63, 63, new Margin(8, 8, 8, 8));
+            Textures.CategoryList.Inner = new Bordered(m_Texture, 256 + 64, 384, 63, 63, new Margin(8, 21, 8, 8));
+            Textures.CategoryList.Header = new Bordered(m_Texture, 320, 352, 63, 31, new Margin(8, 8, 8, 8));
         }
 
         public override void DrawButton(Controls.Base control, bool bDepressed, bool bHovered, bool disabled)
@@ -614,7 +642,6 @@ namespace Gwen.Skin
 
         private void DrawActiveTabButton(Controls.Base control, Pos dir)
         {
-            Renderer.EndClip();
             if (dir == Pos.Top)
             {
                 Textures.Tab.Top.Active.Draw(Renderer, control.RenderBounds.Add(new Rectangle(0, 0, 0, 8)));
@@ -1114,6 +1141,19 @@ namespace Gwen.Skin
             }
 
             Textures.Input.Slider.H.Normal.DrawCenter(Renderer, control.RenderBounds);
+        }
+
+        public override void DrawCategoryHolder(Controls.Base control)
+        {
+            Textures.CategoryList.Outer.Draw(Renderer, control.RenderBounds);
+        }
+
+        public override void DrawCategoryInner(Controls.Base control, bool collapsed)
+        {
+            if (collapsed)
+                Textures.CategoryList.Header.Draw(Renderer, control.RenderBounds);
+            else
+                Textures.CategoryList.Inner.Draw(Renderer, control.RenderBounds);
         }
     }
 }

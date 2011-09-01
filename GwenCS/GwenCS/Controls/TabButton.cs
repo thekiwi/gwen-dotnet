@@ -20,7 +20,12 @@ namespace Gwen.ControlsInternal
                 m_Control = value;
             }
         }
+
         public Base Page { get { return m_Page; } set { m_Page = value; } }
+        public override bool ShouldClip
+        {
+            get { return false; }
+        }
 
         public TabButton(Base parent) : base(parent)
         {
