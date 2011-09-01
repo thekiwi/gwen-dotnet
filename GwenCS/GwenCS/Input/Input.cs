@@ -10,7 +10,7 @@ namespace Gwen.Input
     public static class Input
     {
         private static KeyData KeyData = new KeyData();
-        private static float [] g_fLastClickTime = new float[MaxMouseButtons];
+        private static float[] g_fLastClickTime = new float[MaxMouseButtons];
         private static Point g_pntLastClickPos;
 
         public static int MaxMouseButtons { get { return 5; } }
@@ -76,14 +76,14 @@ namespace Gwen.Input
             // [omeg] todo: alt?
 
             accelString.Append(chr);
-            String acc = accelString.ToString().ToUpper();
+            String acc = accelString.ToString();
 
             //Debug::Msg("Accelerator string :%S\n", accelString.c_str());)
 
-            if (Global.KeyboardFocus!=null && Global.KeyboardFocus.HandleAccelerator(acc))
+            if (Global.KeyboardFocus != null && Global.KeyboardFocus.HandleAccelerator(acc))
                 return true;
 
-            if (Global.MouseFocus!=null && Global.MouseFocus.HandleAccelerator(acc))
+            if (Global.MouseFocus != null && Global.MouseFocus.HandleAccelerator(acc))
                 return true;
 
             if (canvas.HandleAccelerator(acc))
@@ -106,8 +106,7 @@ namespace Gwen.Input
             if (Global.MouseFocus != null && !Global.MouseFocus.IsVisible)
                 Global.MouseFocus = null;
 
-            if (Global.KeyboardFocus != null &&
-                (!Global.KeyboardFocus.IsVisible || !Global.KeyboardFocus.KeyboardInputEnabled))
+            if (Global.KeyboardFocus != null && (!Global.KeyboardFocus.IsVisible || !Global.KeyboardFocus.KeyboardInputEnabled))
                 Global.KeyboardFocus = null;
 
             if (null == Global.KeyboardFocus) return;
@@ -118,7 +117,7 @@ namespace Gwen.Input
             //
             // Simulate Key-Repeats
             //
-            for (int i = 0; i < (int) Key.Count; i++)
+            for (int i = 0; i < (int)Key.Count; i++)
             {
                 if (KeyData.KeyState[i] && KeyData.Target != Global.KeyboardFocus)
                 {
@@ -132,7 +131,7 @@ namespace Gwen.Input
 
                     if (Global.KeyboardFocus != null)
                     {
-                        Global.KeyboardFocus.onKeyPress((Key) i);
+                        Global.KeyboardFocus.onKeyPress((Key)i);
                     }
                 }
             }
@@ -228,24 +227,20 @@ namespace Gwen.Input
 
         public static bool onKeyEvent(Base canvas, Key key, bool down)
         {
-            Base target = Global.KeyboardFocus;
-            if (null != target && target.GetCanvas() != null)
-                target = null;
-            if (target != null && !target.IsVisible)
-                target = null;
+            if (null == Global.KeyboardFocus) return false;
+            if (Global.KeyboardFocus.GetCanvas() != canvas) return false;
+            if (!Global.KeyboardFocus.IsVisible) return false;
 
-            int iKey = (int) key;
-
+            int iKey = (int)key;
             if (down)
             {
                 if (!KeyData.KeyState[iKey])
                 {
                     KeyData.KeyState[iKey] = true;
                     KeyData.NextRepeat[iKey] = Platform.Windows.GetTimeInSeconds() + KeyRepeatDelay;
-                    KeyData.Target = target;
+                    KeyData.Target = Global.KeyboardFocus;
 
-                    if (target != null)
-                        return target.onKeyPress(key);
+                    return Global.KeyboardFocus.onKeyPress(key);
                 }
             }
             else
@@ -258,8 +253,7 @@ namespace Gwen.Input
                     // to not work. What is disabling it here breaking?
                     //KeyData.Target = NULL;
 
-                    if (target != null)
-                        return target.onKeyRelease(key);
+                    return Global.KeyboardFocus.onKeyRelease(key);
                 }
             }
 
@@ -270,30 +264,25 @@ namespace Gwen.Input
         {
             Base pHovered = pInCanvas.GetControlAt(MousePosition.X, MousePosition.Y);
 
+            if (Global.HoveredControl != null && pHovered != Global.HoveredControl)
+            {
+                Global.HoveredControl.onMouseLeave();
+
+                pInCanvas.Redraw();
+            }
+
             if (pHovered != Global.HoveredControl)
             {
-                if (Global.HoveredControl != null)
-                {
-                    Base oldHover = Global.HoveredControl;
-                    Global.HoveredControl = null;
-                    oldHover.onMouseLeave();
-                }
-
                 Global.HoveredControl = pHovered;
 
                 if (Global.HoveredControl != null)
                     Global.HoveredControl.onMouseEnter();
+
+                pInCanvas.Redraw();
             }
 
-            if (Global.MouseFocus!=null && Global.MouseFocus.GetCanvas() == pInCanvas)
+            if (Global.MouseFocus != null && Global.MouseFocus.GetCanvas() == pInCanvas)
             {
-                if (Global.HoveredControl != null)
-                {
-                    Base oldHover = Global.HoveredControl;
-                    Global.HoveredControl = null;
-                    oldHover.Redraw();
-                }
-
                 Global.HoveredControl = Global.MouseFocus;
             }
         }

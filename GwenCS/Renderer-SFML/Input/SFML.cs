@@ -6,9 +6,9 @@ namespace Gwen.Input
 {
     public class SFML
     {
-        protected Canvas m_Canvas;
-        protected int m_MouseX;
-        protected int m_MouseY;
+        private Canvas m_Canvas;
+        private int m_MouseX;
+        private int m_MouseY;
         
         public SFML()
         {
@@ -22,7 +22,12 @@ namespace Gwen.Input
             m_Canvas = c;
         }
 
-        private Key TranslateKeyCode(Keyboard.Key sfKey)
+        /// <summary>
+        /// Translates control key's SFML key code to GWEN's code.
+        /// </summary>
+        /// <param name="sfKey">SFML key code.</param>
+        /// <returns>GWEN key code.</returns>
+        private static Key TranslateKeyCode(Keyboard.Key sfKey)
         {
             switch (sfKey)
             {
@@ -46,6 +51,72 @@ namespace Gwen.Input
                 case Keyboard.Key.RShift:		return Key.Shift;
             }
             return Key.Invalid;
+        }
+
+        /// <summary>
+        /// Translates alphanumeric SFML key code to character value.
+        /// </summary>
+        /// <param name="sfKey">SFML key code.</param>
+        /// <returns>Translated character.</returns>
+        private char TranslateChar(Keyboard.Key sfKey)
+        {
+            switch (sfKey)
+            {
+                case Keyboard.Key.A:
+                    return 'A';
+                case Keyboard.Key.B:
+                    return 'B';
+                case Keyboard.Key.C:
+                    return 'C';
+                case Keyboard.Key.D:
+                    return 'D';
+                case Keyboard.Key.E:
+                    return 'E';
+                case Keyboard.Key.F:
+                    return 'F';
+                case Keyboard.Key.G:
+                    return 'G';
+                case Keyboard.Key.H:
+                    return 'H';
+                case Keyboard.Key.I:
+                    return 'I';
+                case Keyboard.Key.J:
+                    return 'J';
+                case Keyboard.Key.K:
+                    return 'K';
+                case Keyboard.Key.L:
+                    return 'L';
+                case Keyboard.Key.M:
+                    return 'M';
+                case Keyboard.Key.N:
+                    return 'N';
+                case Keyboard.Key.O:
+                    return 'O';
+                case Keyboard.Key.P:
+                    return 'P';
+                case Keyboard.Key.Q:
+                    return 'Q';
+                case Keyboard.Key.R:
+                    return 'R';
+                case Keyboard.Key.S:
+                    return 'S';
+                case Keyboard.Key.T:
+                    return 'T';
+                case Keyboard.Key.U:
+                    return 'U';
+                case Keyboard.Key.V:
+                    return 'V';
+                case Keyboard.Key.W:
+                    return 'W';
+                case Keyboard.Key.X:
+                    return 'X';
+                case Keyboard.Key.Y:
+                    return 'Y';
+                case Keyboard.Key.Z:
+                    return 'Z';
+                default:
+                    return ' ';
+            }
         }
 
         public bool ProcessMessage(EventArgs args)
@@ -90,7 +161,8 @@ namespace Gwen.Input
                 if (ev.Control && ev.Alt && ev.Code == Keyboard.Key.LControl)
                     return false; // sfml bug: this is right alt
 
-                if (ev.Down && Input.DoSpecialKeys(m_Canvas, (char)ev.Code))
+                char ch = TranslateChar(ev.Code);
+                if (ev.Down && Input.DoSpecialKeys(m_Canvas, ch))
                     return false;
 
                 Key iKey = TranslateKeyCode(ev.Code);
