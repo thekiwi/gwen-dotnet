@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Drawing;
-using Gwen.Controls;
+using Gwen.ControlsInternal;
 using Gwen.DragDrop;
 
-namespace Gwen.ControlsInternal
+namespace Gwen.Controls
 {
     public class TabStrip : Base
     {

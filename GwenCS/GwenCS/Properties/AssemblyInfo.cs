@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("GwenCS")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Gwen.Net")]
+[assembly: AssemblyDescription("Gwen.Net")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("GwenCS")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Gwen.Net")]
+[assembly: AssemblyCopyright("Copyleft © 2011 Omega Red")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

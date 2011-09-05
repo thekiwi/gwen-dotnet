@@ -1,7 +1,6 @@
 ﻿using System;
-using Gwen.Controls;
 
-namespace Gwen.ControlsInternal
+namespace Gwen.Controls
 {
     public class TabButton : Button
     {
