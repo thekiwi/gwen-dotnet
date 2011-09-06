@@ -57,6 +57,16 @@ namespace Gwen.Controls
             m_iZoomedSection = -1;
         }
 
+        public override void Dispose()
+        {
+            m_VSplitter.Dispose();
+            m_HSplitter.Dispose();
+            m_CSplitter.Dispose();
+            for (int i = 0; i < 4; i++ )
+                m_Sections[i].Dispose();
+            base.Dispose();
+        }
+
         public void CenterPanels()
         {
             m_fHVal = 0.5f;

@@ -180,5 +180,12 @@ namespace Gwen.Controls
         {
             
         }
+
+        public override void Dispose()
+        {
+            m_Button.Dispose();
+            m_Menu.Dispose();
+            base.Dispose();
+        }
     }
 }

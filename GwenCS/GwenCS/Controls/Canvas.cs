@@ -12,6 +12,7 @@ namespace Gwen.Controls
 
         private Color m_BackgroundColor;
 
+        // [omeg] these are not created by us, so no disposing
         internal Base FirstTab;
         internal Base NextTab;
 
@@ -48,6 +49,16 @@ namespace Gwen.Controls
             Scale = 1.0f;
             BackgroundColor = Color.White;
             DrawBackground = false;
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            // kill everything since we're the top-level control
+            foreach (Base child in Children)
+            {
+                child.Dispose();
+            }
         }
         
         // Childpanels call parent->GetCanvas() until they get to 

@@ -17,6 +17,12 @@ namespace Gwen.Controls
             m_TitleBar.IsHidden = true;
         }
 
+        public override void Dispose()
+        {
+            m_TitleBar.Dispose();
+            base.Dispose();
+        }
+
         protected override void Layout(Skin.Base skin)
         {
             TabStrip.IsHidden = (TabCount <= 1);

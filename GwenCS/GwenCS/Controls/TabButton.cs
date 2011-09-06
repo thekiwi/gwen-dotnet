@@ -34,6 +34,12 @@ namespace Gwen.Controls
             Padding = new Padding(2, 2, 2, 2);
         }
 
+        public override void Dispose()
+        {
+            m_Page.Dispose(); // [omeg] it's not set by us, but this is the most convenient place for it
+            base.Dispose();
+        }
+
         public override void DragAndDrop_StartDragging(DragDrop.Package package, int x, int y)
         {
             IsHidden = true;

@@ -65,6 +65,8 @@ namespace Gwen.Controls
 
                     if (!m_bOnStrip)
                     {
+                        if (m_SubmenuArrow != null)
+                            m_SubmenuArrow.Dispose();
                         m_SubmenuArrow = new RightArrow(this);
                         m_SubmenuArrow.SetSize(15, 15);
                     }
@@ -87,6 +89,14 @@ namespace Gwen.Controls
             IsTabable = false;
             IsCheckable = false;
             Checked = false;
+        }
+
+        public override void Dispose()
+        {
+            if (m_SubmenuArrow != null)
+                m_SubmenuArrow.Dispose();
+            
+            base.Dispose();
         }
 
         protected override void Render(Skin.Base skin)

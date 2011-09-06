@@ -116,5 +116,11 @@ namespace Gwen.Controls
                 b = !b;
             }
         }
+
+        public override void Dispose()
+        {
+            m_pButton.Dispose();
+            base.Dispose();
+        }
     }
 }

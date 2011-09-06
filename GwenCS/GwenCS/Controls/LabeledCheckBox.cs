@@ -23,6 +23,13 @@ namespace Gwen.Controls
             IsTabable = false;
         }
 
+        public override void Dispose()
+        {
+            m_CheckBox.Dispose();
+            m_Label.Dispose();
+            base.Dispose();
+        }
+
         public CheckBox CheckBox { get { return m_CheckBox; } }
         public LabelClickable Label { get { return m_Label; } }
 

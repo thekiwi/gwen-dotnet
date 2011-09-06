@@ -13,7 +13,7 @@ namespace Gwen.Renderer
         public byte A;
     }
     */
-    public class Base
+    public class Base : IDisposable
     {
         //public Random rnd;
         protected Point m_RenderOffset;
@@ -31,12 +31,16 @@ namespace Gwen.Renderer
                 CTT.Initialize();
         }
         
-        ~Base()
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        /// <filterpriority>2</filterpriority>
+        public void Dispose()
         {
             if (CTT != null)
                 CTT.ShutDown();
         }
-        
+
         public virtual void Begin() 
         {}
 

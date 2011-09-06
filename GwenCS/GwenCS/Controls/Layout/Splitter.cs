@@ -67,5 +67,12 @@ namespace Gwen.Controls.Layout
         {
             throw new NotImplementedException();
         }
+
+        public override void Dispose()
+        {
+            m_Panel[0].Dispose();
+            m_Panel[1].Dispose();
+            base.Dispose();
+        }
     }
 }

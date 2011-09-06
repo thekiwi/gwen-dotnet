@@ -27,6 +27,12 @@ namespace Gwen.Controls
             DeleteOnClose = false;
         }
 
+        public override void Dispose()
+        {
+            ClearItems();
+            base.Dispose();
+        }
+
         protected override void Render(Skin.Base skin)
         {
             skin.DrawMenu(this, IconMarginDisabled);

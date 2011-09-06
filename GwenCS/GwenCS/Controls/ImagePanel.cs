@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace Gwen.Controls
 {
-    public class ImagePanel : Base, IDisposable
+    public class ImagePanel : Base
     {
         protected Texture m_Texture;
         protected float[] m_uv;

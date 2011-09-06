@@ -5,7 +5,7 @@ namespace Gwen.Controls
 {
     public class BaseScrollBar : Base
     {
-        protected ScrollBarButton[] m_ScrollButton = new ScrollBarButton[2];
+        protected ScrollBarButton[] m_ScrollButton;
         protected ScrollBarBar m_Bar;
 
         protected bool m_bDepressed;
@@ -27,6 +27,7 @@ namespace Gwen.Controls
 
         protected BaseScrollBar(Base parent) : base(parent)
         {
+            m_ScrollButton = new ScrollBarButton[2];
             m_ScrollButton[0] = new ScrollBarButton(this);
             m_ScrollButton[1] = new ScrollBarButton(this);
 
@@ -81,5 +82,13 @@ namespace Gwen.Controls
         public virtual void ScrollToRight() { }
         public virtual void ScrollToTop() { }
         public virtual void ScrollToBottom() { }
+
+        public override void Dispose()
+        {
+            m_Bar.Dispose();
+            m_ScrollButton[0].Dispose();
+            m_ScrollButton[1].Dispose();
+            base.Dispose();
+        }
     }
 }

@@ -22,6 +22,17 @@ namespace Gwen.Controls
             m_bAllowReorder = false;
         }
 
+        public override void Dispose()
+        {
+            foreach (var child in Children)
+            {
+                TabButton pButton = child as TabButton;
+                if (null == pButton) continue;
+                pButton.Dispose(); // this also disposes whole page
+            }
+            base.Dispose();
+        }
+
         public Pos TabPosition
         {
             get { return Dock; }
@@ -147,6 +158,7 @@ namespace Gwen.Controls
 
         public override void DragAndDrop_HoverLeave(Package p)
         {
+            m_TabDragControl.Dispose();
             m_TabDragControl = null;
         }
 

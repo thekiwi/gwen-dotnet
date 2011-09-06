@@ -141,5 +141,14 @@ namespace Gwen.Controls.Layout
 
             InvalidateParent();
         }
+
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                child.Dispose();
+            }
+            base.Dispose();
+        }
     }
 }

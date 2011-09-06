@@ -19,6 +19,15 @@ namespace Gwen.Controls
             KeyboardInputEnabled = false;
         }
 
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                child.Dispose(); // [omeg] todo: safe?
+            }
+            base.Dispose();
+        }
+
         public virtual LabeledRadioButton AddOption(String text)
         {
             return AddOption(text, String.Empty);

@@ -46,6 +46,14 @@ namespace Gwen.Controls
             IsTabable = false;
         }
 
+        public override void Dispose()
+        {
+            m_TabStrip.Dispose();
+            m_pScroll[0].Dispose();
+            m_pScroll[1].Dispose();
+            base.Dispose();
+        }
+
         public TabButton AddPage(String strText, Base pPage = null)
         {
             if (null == pPage)

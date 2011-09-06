@@ -10,7 +10,7 @@ namespace Gwen.Controls.Layout
 
         protected int m_ColumnCount;
         protected bool m_bEvenRow;
-        internal Label[] m_Columns = new Label[MaxColumns];
+        internal Label[] m_Columns;
 
         public event ControlCallback OnRowSelected;
 
@@ -20,9 +20,7 @@ namespace Gwen.Controls.Layout
         public TableRow(Base parent)
             : base(parent)
         {
-            for (int i = 0; i < MaxColumns; i++)
-                m_Columns[i] = null;
-
+            m_Columns = new Label[MaxColumns];
             m_ColumnCount = 0;
         }
 
@@ -124,6 +122,15 @@ namespace Gwen.Controls.Layout
         public String GetText(int i)
         {
             return m_Columns[i].Text;
+        }
+
+        public override void Dispose()
+        {
+            foreach (Label column in m_Columns)
+                if (column != null)
+                    column.Dispose();
+
+            base.Dispose();
         }
     }
 }

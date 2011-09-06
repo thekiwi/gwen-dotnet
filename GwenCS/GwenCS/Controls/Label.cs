@@ -43,6 +43,12 @@ namespace Gwen.Controls
             AutoSizeToContents = false;
         }
 
+        public override void Dispose()
+        {
+            m_Text.Dispose();
+            base.Dispose();
+        }
+
         protected virtual void onTextChanged()
         {}
 

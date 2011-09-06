@@ -208,5 +208,12 @@ namespace Gwen.Controls
 
             TextColor = Skin.Colors.Button.Normal;
         }
+
+        public override void Dispose()
+        {
+            if (m_Image != null)
+                m_Image.Dispose();
+            base.Dispose();
+        }
     }
 }

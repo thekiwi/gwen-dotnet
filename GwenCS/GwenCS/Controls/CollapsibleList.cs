@@ -80,5 +80,18 @@ namespace Gwen.Controls
 
             onSelection(cat, cat.Selected);
         }
+
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                CollapsibleCategory cat = child as CollapsibleCategory;
+                if (cat == null)
+                    continue;
+
+                cat.Dispose();
+            }
+            base.Dispose();
+        }
     }
 }

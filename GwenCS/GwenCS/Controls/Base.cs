@@ -187,13 +187,13 @@ namespace Gwen.Controls
             }
         }
 
-        public bool IsOnTop { get { return this == Parent.Children.First(); } }
+        public virtual bool IsOnTop { get { return this == Parent.Children.First(); } }
         public object UserData { get { return m_pUserData; } set { m_pUserData = value; } }
         public bool IsHovered { get { return Global.HoveredControl == this; } }
         public bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
         public bool HasFocus { get { return Global.KeyboardFocus == this; } }
         public bool IsDisabled { get { return m_bDisabled; } set { m_bDisabled = value; } }
-        public bool IsHidden { get { return m_bHidden; } set { if (value == m_bHidden) return; m_bHidden = value; Invalidate(); } }
+        public virtual bool IsHidden { get { return m_bHidden; } set { if (value == m_bHidden) return; m_bHidden = value; Invalidate(); } }
         public bool RestrictToParent { get { return m_bRestrictToParent; } set { m_bRestrictToParent = value; } }
         public bool MouseInputEnabled { get { return m_bMouseInputEnabled; } set { m_bMouseInputEnabled = value; } }
         public bool KeyboardInputEnabled { get { return m_bKeyboardInputEnabled; } set { m_bKeyboardInputEnabled = value; } }
@@ -208,11 +208,11 @@ namespace Gwen.Controls
         public Rectangle InnerBounds { get { return m_InnerBounds; } }
         public virtual bool AccelOnlyFocus { get { return false; } }
         public virtual bool NeedsInputChars { get { return false; } }
-        public Point MinimumSize { get { return m_MinimumSize; } }
-        public Point MaximumSize { get { return m_MaximumSize; } }
+        public Point MinimumSize { get { return m_MinimumSize; } set { m_MinimumSize = value; } }
+        public Point MaximumSize { get { return m_MaximumSize; } set { m_MaximumSize = value; } }
 
-        private static readonly Point m_MinimumSize = new Point(1, 1);
-        private static readonly Point m_MaximumSize = new Point(Global.MaxCoord, Global.MaxCoord);
+        private Point m_MinimumSize = new Point(1, 1);
+        private Point m_MaximumSize = new Point(Global.MaxCoord, Global.MaxCoord);
 
         // Returns false if this control or its parents are hidden
         public bool IsVisible
@@ -279,6 +279,12 @@ namespace Gwen.Controls
             DragAndDrop.ControlDeleted(this);
             Gwen.ToolTip.ControlDeleted(this);
             Animation.Cancel(this);
+
+            if (m_InnerPanel != null)
+                m_InnerPanel.Dispose();
+
+            if (m_ToolTip != null)
+                m_ToolTip.Dispose();
         }
 
         public void DefaultAccel(Base control)

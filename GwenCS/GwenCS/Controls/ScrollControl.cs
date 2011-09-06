@@ -42,6 +42,13 @@ namespace Gwen.Controls
             m_bAutoHideBars = false;
         }
 
+        public override void Dispose()
+        {
+            m_VerticalScrollBar.Dispose();
+            m_HorizontalScrollBar.Dispose();
+            base.Dispose();
+        }
+
         protected bool HScrollRequired
         {
             set

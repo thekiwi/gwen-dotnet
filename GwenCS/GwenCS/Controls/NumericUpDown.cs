@@ -36,6 +36,10 @@ namespace Gwen.Controls
         protected int m_iMax;
         protected int m_iMin;
 
+        private Splitter m_Splitter;
+        private NumericUpDownButton_Up m_Up;
+        private NumericUpDownButton_Down m_Down;
+
         public int Min { get { return m_iMin; } set { m_iMin = value; } }
         public int Max { get { return m_iMax; } set { m_iMax = value; } }
 
@@ -44,28 +48,36 @@ namespace Gwen.Controls
         {
             SetSize(100, 20);
 
-            Splitter splitter = new Splitter(this);
-            splitter.Dock = Pos.Right;
-            splitter.SetSize(13, 13);
+            m_Splitter = new Splitter(this);
+            m_Splitter.Dock = Pos.Right;
+            m_Splitter.SetSize(13, 13);
 
-            NumericUpDownButton_Up up = new NumericUpDownButton_Up(splitter);
-            up.OnPress += onButtonUp;
-            up.IsTabable = false;
-            splitter.SetPanel(0, up, false);
+            m_Up = new NumericUpDownButton_Up(m_Splitter);
+            m_Up.OnPress += onButtonUp;
+            m_Up.IsTabable = false;
+            m_Splitter.SetPanel(0, m_Up, false);
 
-            NumericUpDownButton_Down down = new NumericUpDownButton_Down(splitter);
-            down.OnPress += onButtonDown;
-            down.IsTabable = false;
-            down.Padding = new Padding(0, 1, 1, 0);
-            splitter.SetPanel(1, down, false);
+            m_Down = new NumericUpDownButton_Down(m_Splitter);
+            m_Down.OnPress += onButtonDown;
+            m_Down.IsTabable = false;
+            m_Down.Padding = new Padding(0, 1, 1, 0);
+            m_Splitter.SetPanel(1, m_Down, false);
 
             m_iMax = 100;
             m_iMin = 0;
             m_Value = 0f;
-            SetText("0");
+            Text = "0";
         }
 
         public event ControlCallback OnValueChanged;
+
+        public override void Dispose()
+        {
+            m_Splitter.Dispose();
+            m_Up.Dispose();
+            m_Down.Dispose();
+            base.Dispose();
+        }
 
         internal override bool onKeyUp(bool bDown)
         {

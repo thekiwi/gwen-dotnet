@@ -11,6 +11,7 @@ namespace Gwen.Controls
         private DockBase m_Right;
         private DockBase m_Top;
         private DockBase m_Bottom;
+        private Resizer m_Sizer;
 
         // Only CHILD dockpanels have a tabcontrol.
         private DockedTabControl m_DockedTabControl;
@@ -31,6 +32,15 @@ namespace Gwen.Controls
         {
             Padding = new Padding(1, 1, 1, 1);
             SetSize(200, 200);
+        }
+
+        public override void Dispose()
+        {
+            if (m_Sizer != null)
+                m_Sizer.Dispose();
+            if (m_DockedTabControl != null)
+                m_DockedTabControl.Dispose();
+            base.Dispose();
         }
 
         internal override bool onKeySpace(bool bDown)
@@ -56,11 +66,12 @@ namespace Gwen.Controls
             if (pos == Pos.Top) sizeDir = Pos.Bottom;
             if (pos == Pos.Bottom) sizeDir = Pos.Top;
 
-            Resizer sizer = new Resizer(this);
-            sizer.Dock = sizeDir;
-            sizer.SetResizeDir(sizeDir);
-            sizer.SetSize(2, 2);
-            sizer.Target = this;
+            if (m_Sizer != null)
+                m_Sizer.Dispose();
+            m_Sizer = new Resizer(this);
+            m_Sizer.Dock = sizeDir;
+            m_Sizer.ResizeDir = sizeDir;
+            m_Sizer.SetSize(2, 2);
         }
 
         protected override void Render(Skin.Base skin)

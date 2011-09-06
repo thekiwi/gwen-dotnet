@@ -60,15 +60,19 @@
     <Compile Include="ControlsInternal\CategoryButton.cs" />
     <Compile Include="ControlsInternal\CategoryHeaderButton.cs" />
     <Compile Include="ControlsInternal\ColorDisplay.cs" />
+    <Compile Include="ControlsInternal\Modal.cs" />
     <Compile Include="ControlsInternal\Resizer.cs" />
     <Compile Include="ControlsInternal\SliderBar.cs" />
     <Compile Include="ControlsInternal\SplitterBar.cs" />
     <Compile Include="ControlsInternal\TabControlInner.cs" />
+    <Compile Include="Controls\CloseButton.cs" />
     <Compile Include="Controls\CollapsibleCategory.cs" />
     <Compile Include="Controls\CollapsibleList.cs" />
     <Compile Include="Controls\DockBase.cs" />
     <Compile Include="Controls\DockedTabControl.cs" />
     <Compile Include="Controls\Layout\Position.cs" />
+    <Compile Include="Controls\ProgressBar.cs" />
+    <Compile Include="Controls\ResizableControl.cs" />
     <Compile Include="Controls\TabStrip.cs" />
     <Compile Include="Controls\TabButton.cs" />
     <Compile Include="Controls\ColorPicker.cs" />
@@ -115,6 +119,7 @@
     <Compile Include="Controls\TextBoxNumeric.cs" />
     <Compile Include="Controls\VerticalScrollBar.cs" />
     <Compile Include="Controls\VerticalSlider.cs" />
+    <Compile Include="Controls\WindowControl.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Input\Action.cs" />

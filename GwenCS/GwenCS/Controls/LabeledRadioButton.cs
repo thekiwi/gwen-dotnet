@@ -26,6 +26,13 @@ namespace Gwen.Controls
             m_Label.KeyboardInputEnabled = false;
         }
 
+        public override void Dispose()
+        {
+            m_RadioButton.Dispose();
+            m_Label.Dispose();
+            base.Dispose();
+        }
+
         protected override void RenderFocus(Skin.Base skin)
         {
             if (Global.KeyboardFocus != this) return;

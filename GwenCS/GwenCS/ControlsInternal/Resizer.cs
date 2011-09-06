@@ -16,6 +16,7 @@ namespace Gwen.ControlsInternal
             m_ResizeDir = Pos.Left;
             MouseInputEnabled = true;
             SetSize(6, 6);
+            Target = parent;
         }
 
         internal override void onMouseMoved(int x, int y, int dx, int dy)
@@ -102,27 +103,30 @@ namespace Gwen.ControlsInternal
                 OnResize.Invoke(this);
         }
 
-        public void SetResizeDir(Pos dir)
+        public Pos ResizeDir
         {
-            if ((dir.HasFlag(Pos.Left) && dir.HasFlag(Pos.Top)) || (dir.HasFlag(Pos.Right) && dir.HasFlag(Pos.Bottom)))
+            set
             {
-                Cursor = Cursors.SizeNWSE;
-                return;
-            }
-            if ((dir.HasFlag(Pos.Right) && dir.HasFlag(Pos.Top)) || (dir.HasFlag(Pos.Left) && dir.HasFlag(Pos.Bottom)))
-            {
-                Cursor = Cursors.SizeNESW;
-                return;
-            }
-            if (dir.HasFlag(Pos.Right) && dir.HasFlag(Pos.Left))
-            {
-                Cursor = Cursors.SizeWE;
-                return;
-            }
-            if (dir.HasFlag(Pos.Top) && dir.HasFlag(Pos.Bottom))
-            {
-                Cursor = Cursors.SizeNS;
-                return;
+                if ((value.HasFlag(Pos.Left) && value.HasFlag(Pos.Top)) || (value.HasFlag(Pos.Right) && value.HasFlag(Pos.Bottom)))
+                {
+                    Cursor = Cursors.SizeNWSE;
+                    return;
+                }
+                if ((value.HasFlag(Pos.Right) && value.HasFlag(Pos.Top)) || (value.HasFlag(Pos.Left) && value.HasFlag(Pos.Bottom)))
+                {
+                    Cursor = Cursors.SizeNESW;
+                    return;
+                }
+                if (value.HasFlag(Pos.Right) && value.HasFlag(Pos.Left))
+                {
+                    Cursor = Cursors.SizeWE;
+                    return;
+                }
+                if (value.HasFlag(Pos.Top) && value.HasFlag(Pos.Bottom))
+                {
+                    Cursor = Cursors.SizeNS;
+                    return;
+                }
             }
         }
     }

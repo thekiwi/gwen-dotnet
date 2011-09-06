@@ -46,6 +46,12 @@ namespace Gwen.Controls
             IsTabable = true;
         }
 
+        public override void Dispose()
+        {
+            m_SliderBar.Dispose();
+            base.Dispose();
+        }
+
         internal override bool onKeyRight(bool bDown)
         {
             if (bDown)

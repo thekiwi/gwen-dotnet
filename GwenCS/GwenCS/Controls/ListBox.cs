@@ -43,6 +43,12 @@ namespace Gwen.Controls
             m_bMultiSelect = false;
         }
 
+        public override void Dispose()
+        {
+            m_Table.Dispose();
+            base.Dispose();
+        }
+
         public TableRow AddItem(String label)
         {
             return AddItem(label, String.Empty);
@@ -106,7 +112,7 @@ namespace Gwen.Controls
 
         public virtual void UnselectAll()
         {
-            foreach (ListBoxRow row in m_SelectedRows.Select(selectedRow => selectedRow as ListBoxRow))
+            foreach (ListBoxRow row in m_SelectedRows)
             {
                 row.IsSelected = false;
             }

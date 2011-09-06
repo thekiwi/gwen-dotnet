@@ -14,6 +14,5 @@ namespace Gwen.Controls
         {
             // [omeg] no button look
         }
-        
     }
 }

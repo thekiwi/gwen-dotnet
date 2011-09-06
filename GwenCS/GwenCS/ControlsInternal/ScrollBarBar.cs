@@ -9,7 +9,6 @@ namespace Gwen.ControlsInternal
 
         public bool IsHorizontal { get { return m_bHorizontal; } set { m_bHorizontal = value; } }
         public bool IsVertical { get { return !m_bHorizontal; } set { m_bHorizontal = !value; } }
-        public bool IsDepressed { get { return m_bDepressed; } }
 
         public ScrollBarBar(Base parent) : base(parent)
         {

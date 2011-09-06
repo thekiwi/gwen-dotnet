@@ -17,7 +17,7 @@ namespace Gwen.ControlsInternal
         {
             if (m_bAlt)
             {
-                if (IsDepressed | ToggleState)
+                if (IsDepressed || ToggleState)
                     Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Selected;
                 else if (IsHovered)
                     Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Hover;
@@ -26,7 +26,7 @@ namespace Gwen.ControlsInternal
             }
             else
             {
-                if (IsDepressed | ToggleState)
+                if (IsDepressed || ToggleState)
                     Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button_Selected;
                 else if (IsHovered)
                     Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button_Hover;

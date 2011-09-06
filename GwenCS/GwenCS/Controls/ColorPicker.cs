@@ -207,5 +207,14 @@ namespace Gwen.Controls
             gb.IsHidden = !value;
             Invalidate();
         }
+
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                child.Dispose(); // [omeg] todo: safe?
+            }
+            base.Dispose();
+        }
     }
 }

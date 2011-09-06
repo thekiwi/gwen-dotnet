@@ -92,6 +92,16 @@ namespace Gwen.Controls
             SetColor(DefaultColor);
         }
 
+        public override void Dispose()
+        {
+            // [omeg] todo: safe?
+            foreach (Base child in Children)
+            {
+                child.Dispose();
+            }
+            base.Dispose();
+        }
+
         protected void NumericTyped(Base control)
         {
             TextBoxNumeric box = control as TextBoxNumeric;
