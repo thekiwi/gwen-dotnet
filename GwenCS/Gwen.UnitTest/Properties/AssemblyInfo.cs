@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Gwen.Net - Tao sample")]
-[assembly: AssemblyDescription("Gwen.Net - Tao sample")]
+[assembly: AssemblyTitle("Gwen.Net - UnitTest")]
+[assembly: AssemblyDescription("Gwen.Net - UnitTest")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Gwen.Net")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("c16cf507-1d62-462f-a8ef-7584bcfe69db")]
+[assembly: Guid("46abfdbd-cf1d-45ab-adf1-292305a81a82")]
 
 // Version information for an assembly consists of the following four values:
 //

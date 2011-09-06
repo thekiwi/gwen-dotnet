@@ -8,13 +8,13 @@
     <ProjectGuid>{3528E188-400A-4902-8050-FBAEAFC1F266}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sample</RootNamespace>
-    <AssemblyName>Sample</AssemblyName>
+    <RootNamespace>Gwen</RootNamespace>
+    <AssemblyName>Gwen.Sample.SFML</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>Gwen.Sample.Sample</StartupObject>
+    <StartupObject>Gwen.Sample.SFML.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -70,13 +70,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GwenCS\GwenCS.csproj">
+    <ProjectReference Include="..\GwenCS\Gwen.csproj">
       <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>
-      <Name>GwenCS</Name>
+      <Name>Gwen</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Renderer-SFML\Renderer-SFML.csproj">
+    <ProjectReference Include="..\Renderer-SFML\Gwen.Renderer.SFML.csproj">
       <Project>{D97B4F91-9FC8-46E0-A511-68D006662051}</Project>
-      <Name>Renderer-SFML</Name>
+      <Name>Gwen.Renderer.SFML</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

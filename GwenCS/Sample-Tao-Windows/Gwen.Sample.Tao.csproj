@@ -82,13 +82,13 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GwenCS\GwenCS.csproj">
+    <ProjectReference Include="..\GwenCS\Gwen.csproj">
       <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>
-      <Name>GwenCS</Name>
+      <Name>Gwen</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Renderer-Tao\Renderer-Tao.csproj">
+    <ProjectReference Include="..\Renderer-Tao\Gwen.Renderer.Tao.csproj">
       <Project>{92B77333-E5EA-47A5-A78D-C335ED4386D3}</Project>
-      <Name>Renderer-Tao</Name>
+      <Name>Gwen.Renderer.Tao</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

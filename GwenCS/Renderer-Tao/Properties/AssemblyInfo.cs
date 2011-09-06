@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Renderer-Tao")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Gwen.Net - Tao renderer")]
+[assembly: AssemblyDescription("Gwen.Net - Tao renderer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("Renderer-Tao")]
-[assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Gwen.Net")]
+[assembly: AssemblyCopyright("Copyleft © 2011 Omega Red")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

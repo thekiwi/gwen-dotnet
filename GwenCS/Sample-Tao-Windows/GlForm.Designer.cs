@@ -1,4 +1,4 @@
-﻿namespace Sample_Tao_Windows
+﻿namespace Gwen.Sample.Tao
 {
     partial class GlForm
     {
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.glControl = new Tao.Platform.Windows.SimpleOpenGlControl();
+            this.glControl = new global::Tao.Platform.Windows.SimpleOpenGlControl();
             this.SuspendLayout();
             // 
             // glControl
@@ -67,7 +67,7 @@
 
         #endregion
 
-        private Tao.Platform.Windows.SimpleOpenGlControl glControl;
+        private global::Tao.Platform.Windows.SimpleOpenGlControl glControl;
     }
 }
 

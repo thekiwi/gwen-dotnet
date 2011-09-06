@@ -24,9 +24,9 @@ using TabControl = Gwen.Controls.TabControl;
 using TextBox = Gwen.Controls.TextBox;
 using View = SFML.Graphics.View;
 
-namespace Gwen.Sample
+namespace Gwen.Sample.SFML
 {
-    public class Sample
+    public class Program
     {
         private static Input.SFML GwenInput;
         private static RenderWindow window;
@@ -456,7 +456,7 @@ namespace Gwen.Sample
 
             if (e.Code == Keyboard.Key.F12)
             {
-                SFML.Graphics.Texture t = new SFML.Graphics.Texture(window.Width, window.Height);
+                global::SFML.Graphics.Texture t = new global::SFML.Graphics.Texture(window.Width, window.Height);
                 t.Update(window);
                 t.CopyToImage().SaveToFile(string.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
                                            DateTime.Now.Second));

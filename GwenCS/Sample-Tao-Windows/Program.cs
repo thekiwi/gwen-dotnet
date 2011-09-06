@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Sample_Tao_Windows
+namespace Gwen.Sample.Tao
 {
     static class Program
     {

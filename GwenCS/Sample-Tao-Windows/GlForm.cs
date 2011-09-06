@@ -15,7 +15,7 @@ using NumericUpDown = Gwen.Controls.NumericUpDown;
 using TabControl = Gwen.Controls.TabControl;
 using TextBox = Gwen.Controls.TextBox;
 
-namespace Sample_Tao_Windows
+namespace Gwen.Sample.Tao
 {
     public partial class GlForm : Form
     {
