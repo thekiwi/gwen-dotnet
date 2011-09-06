@@ -8,8 +8,8 @@
     <ProjectGuid>{13045B09-2544-4084-868A-393F5F9196AF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Sample_Tao_Windows</RootNamespace>
-    <AssemblyName>Sample-Tao-Windows</AssemblyName>
+    <RootNamespace>Gwen</RootNamespace>
+    <AssemblyName>Gwen.Sample.Tao</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <TargetFrameworkProfile>
     </TargetFrameworkProfile>
@@ -20,7 +20,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\x86\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -30,7 +30,7 @@
     <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\x86\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -82,11 +82,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GwenCS\Gwen.csproj">
+    <ProjectReference Include="..\Gwen\Gwen.csproj">
       <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>
       <Name>Gwen</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Renderer-Tao\Gwen.Renderer.Tao.csproj">
+    <ProjectReference Include="..\Gwen.Renderer.Tao\Gwen.Renderer.Tao.csproj">
       <Project>{92B77333-E5EA-47A5-A78D-C335ED4386D3}</Project>
       <Name>Gwen.Renderer.Tao</Name>
     </ProjectReference>

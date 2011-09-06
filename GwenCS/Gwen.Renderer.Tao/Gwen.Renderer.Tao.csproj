@@ -61,7 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GwenCS\Gwen.csproj">
+    <ProjectReference Include="..\Gwen\Gwen.csproj">
       <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>
       <Name>Gwen</Name>
     </ProjectReference>
