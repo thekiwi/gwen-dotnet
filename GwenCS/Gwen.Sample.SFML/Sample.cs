@@ -57,7 +57,7 @@ namespace Gwen.Sample.SFML
             window.MouseWheelMoved += window_MouseWheelMoved;
             window.MouseMoved += window_MouseMoved;
             window.TextEntered += window_TextEntered;
-
+            /*
             int fps_frames = 50;
             List<int> ftime = new List<int>(fps_frames);
             float time = 0.0F;
@@ -73,7 +73,7 @@ namespace Gwen.Sample.SFML
             ri.Draw(btnText);
             ri.Display();
             vi.Dispose();
-
+            */
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
 
             // Create a GWEN skin
@@ -92,7 +92,7 @@ namespace Gwen.Sample.SFML
             canvas.DrawBackground = true;
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
             canvas.KeyboardInputEnabled = true;
-
+            /*
             fpsLabel = new Label(canvas);
             fpsLabel.SetPos(0, 40);
             fpsLabel.Dock = Pos.Left;
@@ -325,6 +325,9 @@ namespace Gwen.Sample.SFML
             label1.ShouldCacheToTexture = true;
             rb1.ShouldCacheToTexture = true;
             */
+
+            var ut = new UnitTest.UnitTest(canvas);
+
             // Create an input processor
             GwenInput = new Input.SFML();
             GwenInput.Initialize(canvas);
@@ -341,7 +344,7 @@ namespace Gwen.Sample.SFML
                 Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT|Gl.GL_COLOR_BUFFER_BIT);
                 
                 window.SaveGLStates();
-                
+                /*
                 ulong frametime = window.GetFrameTime();
                 time += frametime;
                 frame++;
@@ -364,7 +367,7 @@ namespace Gwen.Sample.SFML
                     w.Restart();
                 }
                 //t.DisplayedString = String.Format("FPS: {0:F2}", 1000f * frame / w.ElapsedMilliseconds);
-
+                */
                 canvas.RenderCanvas();
                 
                 window.RestoreGLStates();

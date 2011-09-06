@@ -49,7 +49,7 @@ namespace Gwen.Controls
 
         public void MoveTabsTo(DockedTabControl target)
         {
-            var children = TabStrip.Children;
+            var children = TabStrip.Children.ToArray(); // copy because collection will be modified
             foreach (Base child in children)
             {
                 TabButton button = child as TabButton;

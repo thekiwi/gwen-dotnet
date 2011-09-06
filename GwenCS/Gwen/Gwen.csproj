@@ -73,6 +73,7 @@
     <Compile Include="Controls\Layout\Position.cs" />
     <Compile Include="Controls\ProgressBar.cs" />
     <Compile Include="Controls\ResizableControl.cs" />
+    <Compile Include="Controls\StatusBar.cs" />
     <Compile Include="Controls\TabStrip.cs" />
     <Compile Include="Controls\TabButton.cs" />
     <Compile Include="Controls\ColorPicker.cs" />

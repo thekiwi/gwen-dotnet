@@ -144,11 +144,12 @@ namespace Gwen.Renderer
             Text sfText = new Text(text);
             sfText.Font = sfFont;
             sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
-            sfText.Color = m_Color; // [omeg] not needed?
+            //sfText.Color = m_Color; // [omeg] not needed?
 
             FloatRect fr = sfText.GetRect();
             sfText.Dispose();
-            return new Point(Global.Trunc(fr.Width), Global.Trunc(fr.Height));
+            // [omeg] what's going on here? GetRect() returns too small rect
+            return new Point((int)Math.Round(fr.Width)+2, (int)Math.Round(fr.Height)+2);
         }
 
         public override void DrawTexturedRect(Texture t, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)

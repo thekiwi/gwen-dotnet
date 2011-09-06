@@ -12,6 +12,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwen.Sample.Tao", "Gwen.Sam
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwen.UnitTest", "Gwen.UnitTest\Gwen.UnitTest.csproj", "{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwen.Sample.OpenTK", "Gwen.Sample.OpenTK\Gwen.Sample.OpenTK.csproj", "{B316F57F-6D02-4487-95AE-EA88B9C995CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gwen.Renderer.OpenTK", "Gwen.Renderer.OpenTK\Gwen.Renderer.OpenTK.csproj", "{41650C82-D630-4E5C-845A-F1513C8FDC99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x86 = Debug|x86
@@ -42,6 +46,14 @@ Global
 		{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}.Debug|x86.Build.0 = Debug|x86
 		{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}.Release|x86.ActiveCfg = Release|x86
 		{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}.Release|x86.Build.0 = Release|x86
+		{B316F57F-6D02-4487-95AE-EA88B9C995CE}.Debug|x86.ActiveCfg = Debug|x86
+		{B316F57F-6D02-4487-95AE-EA88B9C995CE}.Debug|x86.Build.0 = Debug|x86
+		{B316F57F-6D02-4487-95AE-EA88B9C995CE}.Release|x86.ActiveCfg = Release|x86
+		{B316F57F-6D02-4487-95AE-EA88B9C995CE}.Release|x86.Build.0 = Release|x86
+		{41650C82-D630-4E5C-845A-F1513C8FDC99}.Debug|x86.ActiveCfg = Debug|x86
+		{41650C82-D630-4E5C-845A-F1513C8FDC99}.Debug|x86.Build.0 = Debug|x86
+		{41650C82-D630-4E5C-845A-F1513C8FDC99}.Release|x86.ActiveCfg = Release|x86
+		{41650C82-D630-4E5C-845A-F1513C8FDC99}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
