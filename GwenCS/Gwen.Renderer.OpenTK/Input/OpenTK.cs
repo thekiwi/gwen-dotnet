@@ -74,7 +74,7 @@ namespace Gwen.Input
         private static char TranslateChar(global::OpenTK.Input.Key sfKey)
         {
             if (sfKey >= global::OpenTK.Input.Key.A && sfKey <= global::OpenTK.Input.Key.Z)
-                return (char)('A' + ((int)sfKey - global::OpenTK.Input.Key.A));
+                return (char)('A' + ((int)sfKey - (int) global::OpenTK.Input.Key.A));
             return ' ';
         }
 

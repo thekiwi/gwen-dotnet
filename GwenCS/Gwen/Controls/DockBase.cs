@@ -33,7 +33,7 @@ namespace Gwen.Controls
             Padding = new Padding(1, 1, 1, 1);
             SetSize(200, 200);
         }
-
+        
         public override void Dispose()
         {
             if (m_Sizer != null)
@@ -42,7 +42,7 @@ namespace Gwen.Controls
                 m_DockedTabControl.Dispose();
             base.Dispose();
         }
-
+        
         internal override bool onKeySpace(bool bDown)
         {
             // No action on space (default button action is to press)

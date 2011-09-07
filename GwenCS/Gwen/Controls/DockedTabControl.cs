@@ -16,13 +16,13 @@ namespace Gwen.Controls
             m_TitleBar.Dock = Pos.Top;
             m_TitleBar.IsHidden = true;
         }
-
+        
         public override void Dispose()
         {
             m_TitleBar.Dispose();
             base.Dispose();
         }
-
+        
         protected override void Layout(Skin.Base skin)
         {
             TabStrip.IsHidden = (TabCount <= 1);
@@ -57,6 +57,7 @@ namespace Gwen.Controls
                     continue;
                 target.AddPage(button);
             }
+            Invalidate();
         }
     }
 }

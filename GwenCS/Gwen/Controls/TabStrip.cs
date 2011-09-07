@@ -8,9 +8,9 @@ namespace Gwen.Controls
     public class TabStrip : Base
     {
         protected Base m_TabDragControl;
-        protected bool m_bAllowReorder;
+        protected bool m_AllowReorder;
 
-        public bool AllowReorder { get { return m_bAllowReorder; } set { m_bAllowReorder = value; } }
+        public bool AllowReorder { get { return m_AllowReorder; } set { m_AllowReorder = value; } }
 
         public override bool ShouldClip
         {
@@ -19,16 +19,16 @@ namespace Gwen.Controls
 
         public TabStrip(Base parent) : base(parent)
         {
-            m_bAllowReorder = false;
+            m_AllowReorder = false;
         }
 
         public override void Dispose()
         {
             foreach (var child in Children)
             {
-                TabButton pButton = child as TabButton;
-                if (null == pButton) continue;
-                pButton.Dispose(); // this also disposes whole page
+                TabButton button = child as TabButton;
+                if (null == button) continue;
+                button.Dispose(); // this also disposes whole page
             }
             base.Dispose();
         }
@@ -39,13 +39,13 @@ namespace Gwen.Controls
             set
             {
                 Dock = value;
-                if (m_iDock == Pos.Top)
+                if (m_Dock == Pos.Top)
                     Padding = new Padding(5, 0, 0, 0);
-                if (m_iDock == Pos.Left)
+                if (m_Dock == Pos.Left)
                     Padding = new Padding(0, 5, 0, 0);
-                if (m_iDock == Pos.Bottom)
+                if (m_Dock == Pos.Bottom)
                     Padding = new Padding(5, 0, 0, 0);
-                if (m_iDock == Pos.Right)
+                if (m_Dock == Pos.Right)
                     Padding = new Padding(0, 5, 0, 0);
             }
         }
@@ -54,22 +54,22 @@ namespace Gwen.Controls
         {
             Point LocalPos = CanvasPosToLocal(new Point(x, y));
 
-            TabButton pButton = DragAndDrop.SourceControl as TabButton;
-            TabControl pTabControl = Parent as TabControl;
-            if (pTabControl!=null && pButton!=null)
+            TabButton button = DragAndDrop.SourceControl as TabButton;
+            TabControl tabControl = Parent as TabControl;
+            if (tabControl != null && button != null)
             {
-                if (pButton.TabControl != pTabControl)
+                if (button.TabControl != tabControl)
                 {
                     // We've moved tab controls!
-                    pTabControl.AddPage(pButton);
+                    tabControl.AddPage(button);
                 }
             }
 
-            Base DroppedOn = GetControlAt(LocalPos.X, LocalPos.Y);
-            if (DroppedOn != null)
+            Base droppedOn = GetControlAt(LocalPos.X, LocalPos.Y);
+            if (droppedOn != null)
             {
-                Point DropPos = DroppedOn.CanvasPosToLocal(new Point(x, y));
-                DragAndDrop.SourceControl.BringNextToControl(DroppedOn, DropPos.X > DroppedOn.Width/2);
+                Point dropPos = droppedOn.CanvasPosToLocal(new Point(x, y));
+                DragAndDrop.SourceControl.BringNextToControl(droppedOn, dropPos.X > droppedOn.Width/2);
             }
             else
             {
@@ -80,7 +80,7 @@ namespace Gwen.Controls
 
         public override bool DragAndDrop_CanAcceptPackage(Package p)
         {
-            if (!m_bAllowReorder)
+            if (!m_AllowReorder)
                 return false;
 
             if (p.Name == "TabButtonMove")
@@ -91,55 +91,55 @@ namespace Gwen.Controls
 
         protected override void Layout(Skin.Base skin)
         {
-            Point pLargestTab = new Point(5, 5);
+            Point largestTab = new Point(5, 5);
 
-            int iNum = 0;
+            int num = 0;
             foreach (var child in Children)
             {
-                TabButton pButton = child as TabButton;
-                if (null == pButton) continue;
+                TabButton button = child as TabButton;
+                if (null == button) continue;
 
-                pButton.SizeToContents();
+                button.SizeToContents();
 
                 Margin m = new Margin();
-                int iNotFirst = iNum > 0 ? -1 : 0;
+                int notFirst = num > 0 ? -1 : 0;
 
-                if (m_iDock == Pos.Top)
+                if (m_Dock == Pos.Top)
                 {
-                    m.left = iNotFirst;
-                    pButton.Dock = Pos.Left;
+                    m.left = notFirst;
+                    button.Dock = Pos.Left;
                 }
 
-                if (m_iDock == Pos.Left)
+                if (m_Dock == Pos.Left)
                 {
-                    m.top = iNotFirst;
-                    pButton.Dock = Pos.Top;
+                    m.top = notFirst;
+                    button.Dock = Pos.Top;
                 }
 
-                if (m_iDock == Pos.Right)
+                if (m_Dock == Pos.Right)
                 {
-                    m.top = iNotFirst;
-                    pButton.Dock = Pos.Top;
+                    m.top = notFirst;
+                    button.Dock = Pos.Top;
                 }
 
-                if (m_iDock == Pos.Bottom)
+                if (m_Dock == Pos.Bottom)
                 {
-                    m.left = iNotFirst;
-                    pButton.Dock = Pos.Left;
+                    m.left = notFirst;
+                    button.Dock = Pos.Left;
                 }
 
-                pLargestTab.X = Math.Max(pLargestTab.X, pButton.Width);
-                pLargestTab.Y = Math.Max(pLargestTab.Y, pButton.Height);
+                largestTab.X = Math.Max(largestTab.X, button.Width);
+                largestTab.Y = Math.Max(largestTab.Y, button.Height);
 
-                pButton.Margin = m;
-                iNum++;
+                button.Margin = m;
+                num++;
             }
 
-            if (m_iDock == Pos.Top || m_iDock == Pos.Bottom)
-                SetSize(Width, pLargestTab.Y);
+            if (m_Dock == Pos.Top || m_Dock == Pos.Bottom)
+                SetSize(Width, largestTab.Y);
 
-            if (m_iDock == Pos.Left || m_iDock == Pos.Right)
-                SetSize(pLargestTab.X, Height);
+            if (m_Dock == Pos.Left || m_Dock == Pos.Right)
+                SetSize(largestTab.X, Height);
 
             base.Layout(skin);
         }
@@ -158,25 +158,29 @@ namespace Gwen.Controls
 
         public override void DragAndDrop_HoverLeave(Package p)
         {
-            m_TabDragControl.Dispose();
+            if (m_TabDragControl != null)
+            {
+                RemoveChild(m_TabDragControl); // [omeg] need to do that explicitely
+                m_TabDragControl.Dispose();
+            }
             m_TabDragControl = null;
         }
 
         public override void DragAndDrop_Hover(Package p, int x, int y)
         {
-            Point LocalPos = CanvasPosToLocal(new Point(x, y));
+            Point localPos = CanvasPosToLocal(new Point(x, y));
 
-            Base DroppedOn = GetControlAt(LocalPos.X, LocalPos.Y);
-            if (DroppedOn != null && DroppedOn != this)
+            Base droppedOn = GetControlAt(localPos.X, localPos.Y);
+            if (droppedOn != null && droppedOn != this)
             {
-                Point DropPos = DroppedOn.CanvasPosToLocal(new Point(x, y));
+                Point dropPos = droppedOn.CanvasPosToLocal(new Point(x, y));
                 m_TabDragControl.SetBounds(new Rectangle(0, 0, 3, Height));
                 m_TabDragControl.BringToFront();
-                m_TabDragControl.SetPos(DroppedOn.X - 1, 0);
+                m_TabDragControl.SetPos(droppedOn.X - 1, 0);
 
-                if (DropPos.X > DroppedOn.Width/2)
+                if (dropPos.X > droppedOn.Width/2)
                 {
-                    m_TabDragControl.MoveBy(DroppedOn.Width - 1, 0);
+                    m_TabDragControl.MoveBy(droppedOn.Width - 1, 0);
                 }
                 m_TabDragControl.Dock = Pos.None;
             }

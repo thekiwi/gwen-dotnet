@@ -52,7 +52,8 @@ namespace Gwen.ControlsInternal
 
             //m_pTarget->SetPosition( p.x, p.y );
             m_pTarget.MoveTo(p.X, p.Y);
-            OnDragged.Invoke(this);
+            if (OnDragged != null)
+                OnDragged.Invoke(this);
         }
 
         protected override void Render(Skin.Base skin)

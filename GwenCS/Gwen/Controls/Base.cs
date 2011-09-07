@@ -45,7 +45,7 @@ namespace Gwen.Controls
         protected bool m_bKeyboardInputEnabled;
         protected bool m_bDrawBackground;
 
-        protected Pos m_iDock;
+        protected Pos m_Dock;
 
         protected Cursor m_Cursor;
 
@@ -104,13 +104,13 @@ namespace Gwen.Controls
 
         public Pos Dock
         {
-            get { return m_iDock; }
+            get { return m_Dock; }
             set
             {
-                if (m_iDock == value)
+                if (m_Dock == value)
                     return;
 
-                m_iDock = value;
+                m_Dock = value;
 
                 Invalidate();
                 InvalidateParent();
@@ -255,7 +255,7 @@ namespace Gwen.Controls
 
             Invalidate();
             Cursor = Cursors.Default;
-            ToolTip = null;
+            //ToolTip = null;
             IsTabable = false;
             ShouldDrawBackground = true;
             m_bDisabled = false;
@@ -459,7 +459,6 @@ namespace Gwen.Controls
 
             Children.Remove(child);
             onChildRemoved(child);
-            child.Dispose();
         }
 
         public virtual void RemoveAllChildren()

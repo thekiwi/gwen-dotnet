@@ -20,6 +20,7 @@ namespace Gwen.UnitTest
             Dock = Pos.Fill;
             SetSize(1024, 768);
             m_List = new CollapsibleList(this);
+
             LeftDock.TabControl.AddPage("CollapsibleList", m_List);
             LeftDock.Width = 150;
 
