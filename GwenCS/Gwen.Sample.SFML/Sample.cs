@@ -3,28 +3,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Gwen.Controls;
 using SFML.Graphics;
 using SFML.Window;
 using Tao.OpenGl;
-using Button = Gwen.Controls.Button;
-using CheckBox = Gwen.Controls.CheckBox;
-using Color = SFML.Graphics.Color;
-using ComboBox = Gwen.Controls.ComboBox;
-using GroupBox = Gwen.Controls.GroupBox;
-using Image = SFML.Graphics.Image;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
-using Label = Gwen.Controls.Label;
-using ListBox = Gwen.Controls.ListBox;
-using Menu = Gwen.Controls.Menu;
-using MenuStrip = Gwen.Controls.MenuStrip;
-using NumericUpDown = Gwen.Controls.NumericUpDown;
-using TabControl = Gwen.Controls.TabControl;
-using TextBox = Gwen.Controls.TextBox;
-using View = SFML.Graphics.View;
 
 namespace Gwen.Sample.SFML
 {
@@ -34,11 +19,7 @@ namespace Gwen.Sample.SFML
         private static RenderWindow window;
 
         private static Canvas canvas;
-        private static Label fpsLabel;
-        private static RadioButtonController rbc2;
-        private static TabControl tab;
-
-        private static Label _ColorText;
+        private static UnitTest.UnitTest m_UnitTest;
 
         [STAThread]
         static void Main()
@@ -46,7 +27,7 @@ namespace Gwen.Sample.SFML
             int width = 800;
             int height = 600;
             // Create main window
-            window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.NET test",
+            window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net test",
                 Styles.Default, new ContextSettings(32, 0));
 
             // Setup event handlers
@@ -60,22 +41,9 @@ namespace Gwen.Sample.SFML
             window.MouseMoved += window_MouseMoved;
             window.TextEntered += window_TextEntered;
             
-            int fps_frames = 50;
+            const int fps_frames = 50;
             List<int> ftime = new List<int>(fps_frames);
-            float time = 0.0F;
-            long frame = 0;
 
-            Text btnText = new Text("Button pressed!");
-            btnText.Position = new Vector2f(0, 0);
-            btnText.Color = Color.White;
-
-            RenderTexture ri = new RenderTexture(100, 100);
-            View vi = new View(new FloatRect(0, 0, 100, 100));
-            ri.SetView(vi);
-            ri.Draw(btnText);
-            ri.Display();
-            vi.Dispose();
-            
             Renderer.SFML GwenRenderer = new Renderer.SFML(window);
 
             // Create a GWEN skin
@@ -95,10 +63,6 @@ namespace Gwen.Sample.SFML
             canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
             canvas.KeyboardInputEnabled = true;
             
-            fpsLabel = new Label(canvas);
-            fpsLabel.SetPos(0, 40);
-            fpsLabel.Dock = Pos.Left;
-
 #if !UNIT_TEST
             MenuStrip ms = new MenuStrip(canvas);
             ms.Dock = Pos.Top;
@@ -329,10 +293,10 @@ namespace Gwen.Sample.SFML
             rb1.ShouldCacheToTexture = true;
             */
 #else
-            var ut = new UnitTest.UnitTest(canvas);
+            m_UnitTest = new UnitTest.UnitTest(canvas);
 
             //WindowControl win = new WindowControl(canvas);
-            //win.Title = "dópa";
+            //win.Title = "window";
             //win.SetSize(200, 100);
 #endif
 
@@ -354,27 +318,18 @@ namespace Gwen.Sample.SFML
                 window.SaveGLStates();
                 
                 ulong frametime = window.GetFrameTime();
-                time += frametime;
-                frame++;
 
                 if (ftime.Count == fps_frames)
                     ftime.RemoveAt(0);
 
                 ftime.Add((int)frametime);
 
-                //window.Draw(new Sprite(ri.Image));
-
-                //if (button1.IsDepressed)
-                //    fpsLabel.TextColor = System.Drawing.Color.Red;
-                //else
-                //    fpsLabel.TextColor = System.Drawing.Color.Black;
 
                 if (w.ElapsedMilliseconds > 1000)
                 {
-                    fpsLabel.Text = String.Format("FPS: {0:F0}", 1000f * ftime.Count / ftime.Sum());
+                    m_UnitTest.Fps =  1000f * ftime.Count / ftime.Sum();
                     w.Restart();
                 }
-                //t.DisplayedString = String.Format("FPS: {0:F2}", 1000f * frame / w.ElapsedMilliseconds);
                 
                 canvas.RenderCanvas();
                 
@@ -382,25 +337,6 @@ namespace Gwen.Sample.SFML
                 
                 window.Display();
             }
-        }
-
-        static void rbc2_OnSelectionChange(Base control)
-        {
-            RadioButtonController rc = control as RadioButtonController;
-
-            if (rc.SelectedLabel == "Top") tab.TabStripPosition = Pos.Top;
-            if (rc.SelectedLabel == "Bottom") tab.TabStripPosition = Pos.Bottom;
-            if (rc.SelectedLabel == "Left") tab.TabStripPosition = Pos.Left;
-            if (rc.SelectedLabel == "Right") tab.TabStripPosition = Pos.Right;
-        }
-
-        static void OnColorChanged(Base control)
-        {
-            var picker = control as IColorPicker;
-            var c = picker.Color;
-            var hsv = c.ToHSV();
-            _ColorText.Text = String.Format("RGB: {0:X2}{1:X2}{2:X2} HSV: {3:F1} {4:F2} {5:F2}",
-                                            c.R, c.G, c.B, hsv.h, hsv.s, hsv.v);
         }
 
         static void Sample_OnMenuItemSelectedQuit(Base control)
@@ -421,10 +357,6 @@ namespace Gwen.Sample.SFML
         static void window_TextEntered(object sender, TextEventArgs e)
         {
             GwenInput.ProcessMessage(e);
-        }
-
-        static void button1_OnPress(Base control)
-        {
         }
 
         static void window_MouseMoved(object sender, MouseMoveEventArgs e)
@@ -481,7 +413,7 @@ namespace Gwen.Sample.SFML
         static void OnResized(object sender, SizeEventArgs e)
         {
             Gl.glViewport(0, 0, (int)e.Width, (int)e.Height);
-            // todo: gwen doesn't handle resizing well
+            // todo: gwen/sfml doesn't handle resizing well
             canvas.SetSize((int)e.Width, (int)e.Height);
             // window.ConvertCoords()
         }

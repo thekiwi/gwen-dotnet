@@ -58,7 +58,7 @@ namespace Gwen.Controls
             get { return true; }
         }
 
-        public virtual MenuItem AddItem(String label, String name, ControlCallback handler = null)
+        public virtual MenuItem AddItem(String label, String name = "", ControlCallback handler = null)
         {
             MenuItem item = m_Menu.AddItem(label, String.Empty, handler);
             item.Name = name;
