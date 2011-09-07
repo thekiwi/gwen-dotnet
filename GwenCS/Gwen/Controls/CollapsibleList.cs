@@ -12,12 +12,12 @@ namespace Gwen.Controls
             AutoHideBars = true;
         }
 
-        // todo: iterator, make this as function?
+        // todo: iterator, make this as function? check if works
         public Button Selected
         {
             get
             {
-                foreach (Base child in Children)
+                foreach (Base child in InnerChildren)
                 {
                     CollapsibleCategory cat = child as CollapsibleCategory;
                     if (cat == null)
@@ -57,7 +57,7 @@ namespace Gwen.Controls
 
         public virtual void UnselectAll()
         {
-            foreach (Base child in Children)
+            foreach (Base child in InnerChildren) // we are ScrollControl, content is in inner panel
             {
                 CollapsibleCategory cat = child as CollapsibleCategory;
                 if (cat == null)
@@ -83,7 +83,7 @@ namespace Gwen.Controls
 
         public override void Dispose()
         {
-            foreach (Base child in Children)
+            foreach (Base child in InnerChildren)
             {
                 CollapsibleCategory cat = child as CollapsibleCategory;
                 if (cat == null)

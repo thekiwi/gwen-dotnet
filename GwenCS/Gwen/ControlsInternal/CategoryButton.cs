@@ -52,7 +52,9 @@ namespace Gwen.ControlsInternal
                     return;
                 }
                 TextColor = Skin.Colors.Category.LineAlt.Text;
+                return;
             }
+
             if (IsDepressed || ToggleState)
             {
                 TextColor = Skin.Colors.Category.Line.Text_Selected;

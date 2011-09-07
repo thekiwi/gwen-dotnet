@@ -8,7 +8,7 @@ namespace Gwen.ControlsInternal
         public CategoryHeaderButton(Base parent) : base(parent)
         {
             ShouldDrawBackground = false;
-            IsToggle = false;
+            IsToggle = true;
             Alignment = Pos.Center;
         }
 
