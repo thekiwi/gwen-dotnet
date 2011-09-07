@@ -47,6 +47,15 @@ namespace Gwen.Controls
             Parent.IsHidden = true;
         }
 
+        public override void DragAndDrop_EndDragging(bool success, int x, int y)
+        {
+            IsHidden = false;
+            if (!success)
+            {
+                Parent.IsHidden = false;
+            }
+        }
+
         public void MoveTabsTo(DockedTabControl target)
         {
             var children = TabStrip.Children.ToArray(); // copy because collection will be modified
