@@ -6,10 +6,10 @@ namespace Gwen.Controls
 {
     public class ResizableControl : Base
     {
-        protected bool m_bClampMovement;
+        protected bool m_ClampMovement;
         protected Resizer[] m_Resizer;
 
-        public bool ClampMovement { get { return m_bClampMovement; } set { m_bClampMovement = value; } }
+        public bool ClampMovement { get { return m_ClampMovement; } set { m_ClampMovement = value; } }
 
         public event ControlCallback OnResized;
 
@@ -17,7 +17,7 @@ namespace Gwen.Controls
         {
             m_Resizer = new Resizer[10];
             MinimumSize = new Point(5, 5);
-            m_bClampMovement = false;
+            m_ClampMovement = false;
 
             m_Resizer[2] = new Resizer(this);
             m_Resizer[2].Dock = Pos.Bottom;
@@ -113,12 +113,12 @@ namespace Gwen.Controls
             if (h < minSize.Y) h = minSize.Y;
 
             // Clamp to parent's window
-            Base pParent = Parent;
-            if (pParent != null && m_bClampMovement)
+            Base parent = Parent;
+            if (parent != null && m_ClampMovement)
             {
-                if (x + w > pParent.Width) x = pParent.Width - w;
+                if (x + w > parent.Width) x = parent.Width - w;
                 if (x < 0) x = 0;
-                if (y + h > pParent.Height) y = pParent.Height - h;
+                if (y + h > parent.Height) y = parent.Height - h;
                 if (y < 0) y = 0;
             }
 

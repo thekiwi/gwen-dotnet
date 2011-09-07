@@ -99,7 +99,7 @@ namespace Gwen.Renderer
 
         public virtual void RenderText(ref Font font, Point pos, String text)
         {
-            float fSize = font.Size * Scale;
+            float size = font.Size * Scale;
 
             for ( int i=0; i<text.Length; i++ )
             {
@@ -108,7 +108,7 @@ namespace Gwen.Renderer
                 if ( chr == ' ' ) 
                     continue;
 
-                Rectangle r = Global.FloatRect(pos.X + i * fSize * 0.4f, pos.Y, fSize * 0.4f - 1, fSize);
+                Rectangle r = Global.FloatRect(pos.X + i * size * 0.4f, pos.Y, size * 0.4f - 1, size);
 
                 /*
                     This isn't important, it's just me messing around changing the
@@ -120,8 +120,8 @@ namespace Gwen.Renderer
                 }
                 else if ( chr >= 'a' && chr <= 'z' )
                 {
-                    r.Y += Global.Trunc(fSize * 0.5f);
-                    r.Height -= Global.Trunc(fSize * 0.4f);
+                    r.Y += Global.Trunc(size * 0.5f);
+                    r.Height -= Global.Trunc(size * 0.4f);
                 }
                 else if ( chr == '.' || chr == ',' )
                 {

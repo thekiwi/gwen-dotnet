@@ -7,10 +7,10 @@ namespace Gwen.Controls
     public class Label : Base
     {
         protected Text m_Text;
-        protected Pos m_iAlign;
-        protected Padding m_rTextPadding;
+        protected Pos m_Align;
+        protected Padding m_TextPadding;
 
-        public Pos Alignment { get { return m_iAlign; } set { m_iAlign = value; Invalidate(); } }
+        public Pos Alignment { get { return m_Align; } set { m_Align = value; Invalidate(); } }
         public String Text { get { return m_Text.String; } set { SetText(value); } }
         public Font Font
         {
@@ -39,7 +39,7 @@ namespace Gwen.Controls
 
         public bool AutoSizeToContents { get { return m_Text.AutoSizeToContents; } set { m_Text.AutoSizeToContents = value; } }
 
-        public Padding TextPadding { get { return m_rTextPadding; } set { m_rTextPadding = value; Invalidate(); InvalidateParent(); } }
+        public Padding TextPadding { get { return m_TextPadding; } set { m_TextPadding = value; Invalidate(); InvalidateParent(); } }
 
         public Label(Base parent) : base(parent)
         {
@@ -66,20 +66,20 @@ namespace Gwen.Controls
         {
             base.Layout(skin);
 
-            Pos iAlign = m_iAlign;
+            Pos align = m_Align;
 
-            int x = m_rTextPadding.Left + m_Padding.Left;
-            int y = m_rTextPadding.Top + m_Padding.Top;
+            int x = m_TextPadding.Left + m_Padding.Left;
+            int y = m_TextPadding.Top + m_Padding.Top;
 
-            if (iAlign.HasFlag(Pos.Right)) 
-                x = Width - m_Text.Width - m_rTextPadding.Right - m_Padding.Right;
-            if (iAlign.HasFlag(Pos.CenterH))
-                x = Global.Trunc((m_rTextPadding.Left + m_Padding.Left) + ((Width - m_Text.Width - m_rTextPadding.Left - m_Padding.Left - m_rTextPadding.Right - m_Padding.Right) * 0.5f));
+            if (align.HasFlag(Pos.Right)) 
+                x = Width - m_Text.Width - m_TextPadding.Right - m_Padding.Right;
+            if (align.HasFlag(Pos.CenterH))
+                x = Global.Trunc((m_TextPadding.Left + m_Padding.Left) + ((Width - m_Text.Width - m_TextPadding.Left - m_Padding.Left - m_TextPadding.Right - m_Padding.Right) * 0.5f));
 
-            if (iAlign.HasFlag(Pos.CenterV))
-                y = Global.Trunc((m_rTextPadding.Top + m_Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_rTextPadding.Bottom - m_Padding.Bottom);
-            if (iAlign.HasFlag(Pos.Bottom)) 
-                y = Height - m_Text.Height - m_rTextPadding.Bottom - m_Padding.Bottom;
+            if (align.HasFlag(Pos.CenterV))
+                y = Global.Trunc((m_TextPadding.Top + m_Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_TextPadding.Bottom - m_Padding.Bottom);
+            if (align.HasFlag(Pos.Bottom)) 
+                y = Height - m_Text.Height - m_TextPadding.Bottom - m_Padding.Bottom;
 
             m_Text.SetPos(x, y);
         }
@@ -100,11 +100,11 @@ namespace Gwen.Controls
 
         public virtual void SizeToContents()
         {
-            m_Text.SetPos(m_rTextPadding.Left + m_Padding.Left, m_rTextPadding.Top + m_Padding.Top);
+            m_Text.SetPos(m_TextPadding.Left + m_Padding.Left, m_TextPadding.Top + m_Padding.Top);
             m_Text.RefreshSize();
 
-            SetSize(m_Text.Width + m_Padding.Left + m_Padding.Right + m_rTextPadding.Left + m_rTextPadding.Right, 
-                m_Text.Height + m_Padding.Top + m_Padding.Bottom + m_rTextPadding.Top + m_rTextPadding.Bottom);
+            SetSize(m_Text.Width + m_Padding.Left + m_Padding.Right + m_TextPadding.Left + m_TextPadding.Right, 
+                m_Text.Height + m_Padding.Top + m_Padding.Bottom + m_TextPadding.Top + m_TextPadding.Bottom);
         }
 
         public virtual Point GetCharacterPosition(int index)

@@ -5,16 +5,16 @@ namespace Gwen.Controls
 {
     public class ScrollControl : Base
     {
-        protected bool m_bCanScrollH;
-        protected bool m_bCanScrollV;
-        protected bool m_bAutoHideBars;
+        protected bool m_CanScrollH;
+        protected bool m_CanScrollV;
+        protected bool m_AutoHideBars;
 
         protected BaseScrollBar m_VerticalScrollBar;
         protected BaseScrollBar m_HorizontalScrollBar;
 
-        public bool CanScrollH { get { return m_bCanScrollH; } }
-        public bool CanScrollV { get { return m_bCanScrollV; } }
-        public bool AutoHideBars { get { return m_bAutoHideBars; } set { m_bAutoHideBars = value; } }
+        public bool CanScrollH { get { return m_CanScrollH; } }
+        public bool CanScrollV { get { return m_CanScrollV; } }
+        public bool AutoHideBars { get { return m_AutoHideBars; } set { m_AutoHideBars = value; } }
 
         public ScrollControl(Base parent)
             : base(parent)
@@ -24,13 +24,13 @@ namespace Gwen.Controls
             m_VerticalScrollBar = new VerticalScrollBar(this);
             m_VerticalScrollBar.Dock = Pos.Right;
             m_VerticalScrollBar.OnBarMoved += VBarMoved;
-            m_bCanScrollV = true;
+            m_CanScrollV = true;
             m_VerticalScrollBar.NudgeAmount = 30;
 
             m_HorizontalScrollBar = new HorizontalScrollBar(this);
             m_HorizontalScrollBar.Dock = Pos.Bottom;
             m_HorizontalScrollBar.OnBarMoved += HBarMoved;
-            m_bCanScrollH = true;
+            m_CanScrollH = true;
             m_HorizontalScrollBar.NudgeAmount = 30;
 
             m_InnerPanel = new Base(this);
@@ -39,7 +39,7 @@ namespace Gwen.Controls
             m_InnerPanel.SendToBack();
             m_InnerPanel.MouseInputEnabled = false;
 
-            m_bAutoHideBars = false;
+            m_AutoHideBars = false;
         }
 
         public override void Dispose()
@@ -57,7 +57,7 @@ namespace Gwen.Controls
                 {
                     m_HorizontalScrollBar.SetScrollAmount(0, true);
                     m_HorizontalScrollBar.IsDisabled = true;
-                    if (m_bAutoHideBars)
+                    if (m_AutoHideBars)
                         m_HorizontalScrollBar.IsHidden = true;
                 }
                 else
@@ -76,7 +76,7 @@ namespace Gwen.Controls
                 {
                     m_VerticalScrollBar.SetScrollAmount(0, true);
                     m_VerticalScrollBar.IsDisabled = true;
-                    if (m_bAutoHideBars)
+                    if (m_AutoHideBars)
                         m_VerticalScrollBar.IsHidden = true;
                 }
                 else
@@ -89,10 +89,10 @@ namespace Gwen.Controls
 
         public virtual void SetScroll(bool h, bool v)
         {
-            m_bCanScrollV = v;
-            m_bCanScrollH = h;
-            m_VerticalScrollBar.IsHidden = !m_bCanScrollV;
-            m_HorizontalScrollBar.IsHidden = !m_bCanScrollH;
+            m_CanScrollV = v;
+            m_CanScrollH = h;
+            m_VerticalScrollBar.IsHidden = !m_CanScrollV;
+            m_HorizontalScrollBar.IsHidden = !m_CanScrollH;
         }
 
         protected virtual void SetInnerSize(int w, int h)
@@ -121,19 +121,19 @@ namespace Gwen.Controls
             base.Layout(skin);
         }
 
-        internal override bool onMouseWheeled(int iDelta)
+        internal override bool onMouseWheeled(int delta)
         {
             if (CanScrollV && m_VerticalScrollBar.IsVisible)
             {
                 if (m_VerticalScrollBar.SetScrollAmount(
-                    m_VerticalScrollBar.ScrollAmount - m_VerticalScrollBar.NudgeAmount * (iDelta / 60.0f), true))
+                    m_VerticalScrollBar.ScrollAmount - m_VerticalScrollBar.NudgeAmount * (delta / 60.0f), true))
                     return true;
             }
 
             if (CanScrollH && m_HorizontalScrollBar.IsVisible)
             {
                 if (m_HorizontalScrollBar.SetScrollAmount(
-                    m_HorizontalScrollBar.ScrollAmount - m_HorizontalScrollBar.NudgeAmount * (iDelta / 60.0f), true))
+                    m_HorizontalScrollBar.ScrollAmount - m_HorizontalScrollBar.NudgeAmount * (delta / 60.0f), true))
                     return true;
             }
 
@@ -159,7 +159,7 @@ namespace Gwen.Controls
 #endif
         }
 
-        internal virtual void UpdateScrollBars()
+        protected virtual void UpdateScrollBars()
         {
             if (null == m_InnerPanel)
                 return;
@@ -168,7 +168,7 @@ namespace Gwen.Controls
             int childrenWidth = m_InnerPanel.Children.Count > 0 ? m_InnerPanel.Children.Max(x => x.Right) : 0;
             int childrenHeight = m_InnerPanel.Children.Count > 0 ? m_InnerPanel.Children.Max(x => x.Bottom) : 0;
 
-            if (m_bCanScrollH)
+            if (m_CanScrollH)
             {
                 m_InnerPanel.SetSize(Math.Max(Width, childrenWidth), Math.Max(Height, childrenHeight));  
             }
@@ -184,12 +184,12 @@ namespace Gwen.Controls
                              (float)
                              (childrenHeight + (m_HorizontalScrollBar.IsHidden ? 0 : m_HorizontalScrollBar.Height));
 
-            if (m_bCanScrollV)
+            if (m_CanScrollV)
                 VScrollRequired = hPercent >= 1;
             else
                 m_VerticalScrollBar.IsHidden = true;
 
-            if (m_bCanScrollH)
+            if (m_CanScrollH)
                 HScrollRequired = wPercent >= 1;
             else
                 m_HorizontalScrollBar.IsHidden = true;

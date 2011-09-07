@@ -19,24 +19,24 @@ namespace Gwen.Controls
     public class MenuItem : Button
     {
         protected Menu m_Menu;
-        protected bool m_bOnStrip;
-        protected bool m_bCheckable;
-        protected bool m_bChecked;
+        protected bool m_OnStrip;
+        protected bool m_Checkable;
+        protected bool m_Checked;
         protected Base m_SubmenuArrow;
 
-        public bool IsOnStrip { get { return m_bOnStrip; } set { m_bOnStrip = value; } }
-        public bool IsCheckable { get { return m_bCheckable; } set { m_bCheckable = value; } }
+        public bool IsOnStrip { get { return m_OnStrip; } set { m_OnStrip = value; } }
+        public bool IsCheckable { get { return m_Checkable; } set { m_Checkable = value; } }
         public bool IsMenuOpen { get { if (m_Menu == null) return false; return !m_Menu.IsHidden; } }
         
         public bool Checked
         {
-            get { return m_bChecked; }
+            get { return m_Checked; }
             set
             {
-                if (value == m_bChecked)
+                if (value == m_Checked)
                     return;
 
-                m_bChecked = value;
+                m_Checked = value;
 
                 if (OnCheckChanged!=null)
                     OnCheckChanged.Invoke(this);
@@ -63,7 +63,7 @@ namespace Gwen.Controls
                     m_Menu = new Menu(GetCanvas());
                     m_Menu.IsHidden = true;
 
-                    if (!m_bOnStrip)
+                    if (!m_OnStrip)
                     {
                         if (m_SubmenuArrow != null)
                             m_SubmenuArrow.Dispose();
@@ -85,7 +85,7 @@ namespace Gwen.Controls
 
         public MenuItem(Base parent) : base(parent)
         {
-            m_bOnStrip = false;
+            m_OnStrip = false;
             IsTabable = false;
             IsCheckable = false;
             Checked = false;
@@ -101,7 +101,7 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawMenuItem(this, IsMenuOpen, m_bCheckable ? m_bChecked : false);
+            skin.DrawMenuItem(this, IsMenuOpen, m_Checkable ? m_Checked : false);
         }
 
         protected override void Layout(Skin.Base skin)
@@ -119,7 +119,7 @@ namespace Gwen.Controls
             {
                 ToggleMenu();
             }
-            else if (!m_bOnStrip)
+            else if (!m_OnStrip)
             {
                 Checked = !Checked;
                 if (OnMenuItemSelected!=null)
@@ -147,7 +147,7 @@ namespace Gwen.Controls
             Point p = LocalPosToCanvas(Point.Empty);
 
             // Strip menus open downwards
-            if (m_bOnStrip)
+            if (m_OnStrip)
             {
                 m_Menu.SetPos(p.X, p.Y + Height + 1);
             }

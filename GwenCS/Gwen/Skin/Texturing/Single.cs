@@ -5,25 +5,25 @@ namespace Gwen.Skin.Texturing
 {
     public struct Single
     {
-        private Texture texture;
-        private float[] uv;
-        private int iWidth, iHeight;
+        private Texture m_Texture;
+        private float[] m_uv;
+        private int m_Width, m_Height;
 
-        public Single(Texture pTexture, float x, float y, float w, float h )
+        public Single(Texture texture, float x, float y, float w, float h )
         {
-            texture = pTexture;
+            m_Texture = texture;
 
-            float texw = texture.Width;
-            float texh = texture.Height;
+            float texw = m_Texture.Width;
+            float texh = m_Texture.Height;
 
-            uv = new float[4];
-            uv[0] = x / texw;
-            uv[1] = y / texh;
-            uv[2] = (x + w) / texw;
-            uv[3] = (y + h) / texh;
+            m_uv = new float[4];
+            m_uv[0] = x / texw;
+            m_uv[1] = y / texh;
+            m_uv[2] = (x + w) / texw;
+            m_uv[3] = (y + h) / texh;
 
-            iWidth = (int) w;
-            iHeight = (int) h;
+            m_Width = (int) w;
+            m_Height = (int) h;
         }
 
         // can't have this as default param
@@ -34,16 +34,16 @@ namespace Gwen.Skin.Texturing
 
         public void Draw(Renderer.Base render, Rectangle r, Color col)
         {
-            if (texture == null)
+            if (m_Texture == null)
                 return;
 
             render.DrawColor = col;
-            render.DrawTexturedRect(texture, r, uv[0], uv[1], uv[2], uv[3]);
+            render.DrawTexturedRect(m_Texture, r, m_uv[0], m_uv[1], m_uv[2], m_uv[3]);
         }
 
         public void DrawCenter(Renderer.Base render, Rectangle r)
         {
-            if (texture == null)
+            if (m_Texture == null)
                 return;
 
             DrawCenter(render, r, Color.White);
@@ -51,10 +51,10 @@ namespace Gwen.Skin.Texturing
 
         public void DrawCenter(Renderer.Base render, Rectangle r, Color col)
         {
-            r.X += (int)((r.Width - iWidth) * 0.5);
-            r.Y += (int)((r.Height - iHeight) * 0.5);
-            r.Width = iWidth;
-            r.Height = iHeight;
+            r.X += (int)((r.Width - m_Width) * 0.5);
+            r.Y += (int)((r.Height - m_Height) * 0.5);
+            r.Width = m_Width;
+            r.Height = m_Height;
 
             Draw(render, r, col);
         }

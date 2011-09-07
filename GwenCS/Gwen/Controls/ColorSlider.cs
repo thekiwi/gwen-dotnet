@@ -5,8 +5,8 @@ namespace Gwen.Controls
 {
     public class ColorSlider : Base
     {
-        protected int m_iSelectedDist;
-        protected bool m_bDepressed;
+        protected int m_SelectedDist;
+        protected bool m_Depressed;
         protected Texture m_Texture; // [omeg] added
 
         public event ControlCallback OnSelectionChanged;
@@ -15,7 +15,7 @@ namespace Gwen.Controls
         {
             SetSize(32, 128);
             MouseInputEnabled=true;
-            m_bDepressed = false;
+            m_Depressed = false;
         }
 
         public override void Dispose()
@@ -59,7 +59,7 @@ namespace Gwen.Controls
 
             skin.Renderer.DrawTexturedRect(m_Texture, new Rectangle(5, 0, Width-10, Height));
             
-            int drawHeight = m_iSelectedDist - 3;
+            int drawHeight = m_SelectedDist - 3;
 
             //Draw our selectors
             skin.Renderer.DrawColor = Color.Black;
@@ -71,10 +71,10 @@ namespace Gwen.Controls
             skin.Renderer.DrawFilledRect(new Rectangle(Width - 4, drawHeight + 1, 3, 3));
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            m_bDepressed = pressed;
-            if (pressed)
+            m_Depressed = down;
+            if (down)
                 Global.MouseFocus = this;
             else
                 Global.MouseFocus = null;
@@ -84,7 +84,7 @@ namespace Gwen.Controls
 
         internal override void onMouseMoved(int x, int y, int dx, int dy)
         {
-            if (m_bDepressed)
+            if (m_Depressed)
             {
                 Point cursorPos = CanvasPosToLocal(new Point(x, y));
 
@@ -93,7 +93,7 @@ namespace Gwen.Controls
                 if (cursorPos.Y > Height)
                     cursorPos.Y = Height;
 
-                m_iSelectedDist = cursorPos.Y;
+                m_SelectedDist = cursorPos.Y;
                 if (OnSelectionChanged != null)
                     OnSelectionChanged.Invoke(this);
             }
@@ -109,12 +109,12 @@ namespace Gwen.Controls
         {
             HSV hsv = color.ToHSV();
 
-            m_iSelectedDist = Global.Trunc(hsv.h / 360 * Height);
+            m_SelectedDist = Global.Trunc(hsv.h / 360 * Height);
 
             if (OnSelectionChanged != null)
                 OnSelectionChanged.Invoke(this);
         }
 
-        public Color SelectedColor { get { return GetColorAtHeight(m_iSelectedDist); } }
+        public Color SelectedColor { get { return GetColorAtHeight(m_SelectedDist); } }
     }
 }

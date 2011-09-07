@@ -33,15 +33,15 @@ namespace Gwen.Controls
 
     public class NumericUpDown : TextBoxNumeric
     {
-        protected int m_iMax;
-        protected int m_iMin;
+        protected int m_Max;
+        protected int m_Min;
 
         private Splitter m_Splitter;
         private NumericUpDownButton_Up m_Up;
         private NumericUpDownButton_Down m_Down;
 
-        public int Min { get { return m_iMin; } set { m_iMin = value; } }
-        public int Max { get { return m_iMax; } set { m_iMax = value; } }
+        public int Min { get { return m_Min; } set { m_Min = value; } }
+        public int Max { get { return m_Max; } set { m_Max = value; } }
 
         public NumericUpDown(Base parent)
             : base(parent)
@@ -63,8 +63,8 @@ namespace Gwen.Controls
             m_Down.Padding = new Padding(0, 1, 1, 0);
             m_Splitter.SetPanel(1, m_Down, false);
 
-            m_iMax = 100;
-            m_iMin = 0;
+            m_Max = 100;
+            m_Min = 0;
             m_Value = 0f;
             Text = "0";
         }
@@ -79,15 +79,15 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
-        internal override bool onKeyUp(bool bDown)
+        internal override bool onKeyUp(bool down)
         {
-            if (bDown) onButtonUp(null);
+            if (down) onButtonUp(null);
             return true;
         }
 
-        internal override bool onKeyDown(bool bDown)
+        internal override bool onKeyDown(bool down)
         {
-            if (bDown) onButtonDown(null);
+            if (down) onButtonDown(null);
             return true;
         }
         
@@ -106,8 +106,8 @@ namespace Gwen.Controls
             float d;
             if (!float.TryParse(str, out d))
                 return false;
-            if (d < m_iMin) return false;
-            if (d > m_iMax) return false;
+            if (d < m_Min) return false;
+            if (d > m_Max) return false;
             return true;
         }
 
@@ -119,8 +119,8 @@ namespace Gwen.Controls
             }
             set
             {
-                if (value < m_iMin) value = m_iMin;
-                if (value > m_iMax) value = m_iMax;
+                if (value < m_Min) value = m_Min;
+                if (value > m_Max) value = m_Max;
                 if (value == m_Value) return;
 
                 base.Value = value;

@@ -3,38 +3,39 @@ using Gwen.Controls;
 
 namespace Gwen.ControlsInternal
 {
-    public class ScrollBarButton: Button
+    public class ScrollBarButton : Button
     {
-        protected Pos m_iDirection;
+        protected Pos m_Direction;
 
-        public ScrollBarButton(Base parent) : base(parent)
+        public ScrollBarButton(Base parent)
+            : base(parent)
         {
             SetDirectionUp();
         }
 
         public virtual void SetDirectionUp()
         {
-            m_iDirection = Pos.Top;
+            m_Direction = Pos.Top;
         }
 
         public virtual void SetDirectionDown()
         {
-            m_iDirection = Pos.Bottom;
+            m_Direction = Pos.Bottom;
         }
 
         public virtual void SetDirectionLeft()
         {
-            m_iDirection = Pos.Left;
+            m_Direction = Pos.Left;
         }
 
         public virtual void SetDirectionRight()
         {
-            m_iDirection = Pos.Right;
+            m_Direction = Pos.Right;
         }
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawScrollButton(this, m_iDirection, m_bDepressed, IsHovered, IsDisabled);
+            skin.DrawScrollButton(this, m_Direction, m_Depressed, IsHovered, IsDisabled);
         }
     }
 }

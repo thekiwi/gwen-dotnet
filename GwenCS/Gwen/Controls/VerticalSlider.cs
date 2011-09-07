@@ -17,13 +17,13 @@ namespace Gwen.Controls
 
         protected override void UpdateBarFromValue()
         {
-            m_SliderBar.MoveTo(m_SliderBar.X, (int)((Height - m_SliderBar.Height) * (1 - m_fValue)));
+            m_SliderBar.MoveTo(m_SliderBar.X, (int)((Height - m_SliderBar.Height) * (1 - m_Value)));
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
             m_SliderBar.MoveTo(m_SliderBar.X, (int) (CanvasPosToLocal(new Point(x, y)).Y - m_SliderBar.Height*0.5));
-            m_SliderBar.onMouseClickLeft(x, y, pressed);
+            m_SliderBar.onMouseClickLeft(x, y, down);
             onMoved(m_SliderBar);
         }
 
@@ -34,7 +34,7 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawSlider(this, false, m_bClampToNotches ? m_iNumNotches : 0, m_SliderBar.Height);
+            skin.DrawSlider(this, false, m_ClampToNotches ? m_NumNotches : 0, m_SliderBar.Height);
         }
     }
 }

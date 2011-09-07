@@ -10,7 +10,7 @@ namespace Gwen.Controls
         protected Dragger m_TitleBar;
         protected Label m_Title;
         protected CloseButton m_CloseButton;
-        protected bool m_bDeleteOnClose;
+        protected bool m_DeleteOnClose;
         protected Modal m_Modal;
 
         public String Title { get { return m_Title.Text; } set { m_Title.Text = value; } }
@@ -76,7 +76,7 @@ namespace Gwen.Controls
         {
             IsHidden = true;
 
-            if (m_bDeleteOnClose)
+            if (m_DeleteOnClose)
                 Dispose();
         }
 

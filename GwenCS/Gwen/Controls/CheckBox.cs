@@ -4,15 +4,15 @@ namespace Gwen.Controls
 {
     public class CheckBox : Button
     {
-        private bool m_bChecked;
+        private bool m_Checked;
 
         public bool IsChecked
         {
-            get { return m_bChecked; } 
+            get { return m_Checked; } 
             set
             {
-                if (m_bChecked == value) return;
-                m_bChecked = value;
+                if (m_Checked == value) return;
+                m_Checked = value;
                 onCheckStatusChanged();
             }
         }
@@ -20,7 +20,7 @@ namespace Gwen.Controls
         public CheckBox(Base parent) : base(parent)
         {
             SetSize(15, 15);
-            m_bChecked = true; // [omeg] why?!
+            m_Checked = true; // [omeg] why?!
             Toggle();
         }
         
@@ -57,7 +57,7 @@ namespace Gwen.Controls
         protected override void Render(Skin.Base skin)
         {
             base.Render(skin);
-            skin.DrawCheckBox(this, m_bChecked, IsDepressed);
+            skin.DrawCheckBox(this, m_Checked, IsDepressed);
         }
 
         internal override void onPress()

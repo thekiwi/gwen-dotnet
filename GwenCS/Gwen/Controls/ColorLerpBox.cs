@@ -5,8 +5,8 @@ namespace Gwen.Controls
 {
     public class ColorLerpBox : Base
     {
-        protected Point cursorPos;
-        protected bool m_bDepressed;
+        protected Point m_CursorPos;
+        protected bool m_Depressed;
         protected byte m_Hue;
         protected Texture m_Texture; // [omeg] added
 
@@ -17,7 +17,7 @@ namespace Gwen.Controls
             SetColor(Color.FromArgb(255, 255, 128, 0));
             SetSize(128, 128);
             MouseInputEnabled = true;
-            m_bDepressed = false;
+            m_Depressed = false;
 
             // texture initialized in Render() if null
         }
@@ -31,17 +31,17 @@ namespace Gwen.Controls
 
         public Color SelectedColor
         {
-            get { return GetColorAt(cursorPos.X, cursorPos.Y); }
+            get { return GetColorAt(m_CursorPos.X, m_CursorPos.Y); }
         }
 
-        public void SetColor(Color value, bool onlyHue=true)
+        public void SetColor(Color value, bool onlyHue = true)
         {
             HSV hsv = value.ToHSV();
-            m_Hue = (byte)(hsv.h);
+            m_Hue = (byte) (hsv.h);
             if (!onlyHue)
             {
-                cursorPos.X = Global.Trunc(hsv.s * Width);
-                cursorPos.Y = Global.Trunc((1 - hsv.v) * Height);
+                m_CursorPos.X = Global.Trunc(hsv.s*Width);
+                m_CursorPos.Y = Global.Trunc((1 - hsv.v)*Height);
             }
             Invalidate();
 
@@ -51,29 +51,29 @@ namespace Gwen.Controls
 
         internal override void onMouseMoved(int x, int y, int dx, int dy)
         {
-            if (m_bDepressed)
+            if (m_Depressed)
             {
-                cursorPos = CanvasPosToLocal(new Point(x, y));
+                m_CursorPos = CanvasPosToLocal(new Point(x, y));
                 //Do we have clamp?
-                if (cursorPos.X < 0)
-                    cursorPos.X = 0;
-                if (cursorPos.X > Width)
-                    cursorPos.X = Width;
+                if (m_CursorPos.X < 0)
+                    m_CursorPos.X = 0;
+                if (m_CursorPos.X > Width)
+                    m_CursorPos.X = Width;
 
-                if (cursorPos.Y < 0)
-                    cursorPos.Y = 0;
-                if (cursorPos.Y > Height)
-                    cursorPos.Y = Height;
+                if (m_CursorPos.Y < 0)
+                    m_CursorPos.Y = 0;
+                if (m_CursorPos.Y > Height)
+                    m_CursorPos.Y = Height;
 
                 if (OnSelectionChanged != null)
                     OnSelectionChanged.Invoke(this);
             }
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            m_bDepressed = pressed;
-            if (pressed)
+            m_Depressed = down;
+            if (down)
                 Global.MouseFocus = this;
             else
                 Global.MouseFocus = null;
@@ -145,7 +145,7 @@ namespace Gwen.Controls
             else
                 skin.Renderer.DrawColor = Color.Black;
 
-            Rectangle testRect = new Rectangle(cursorPos.X - 3, cursorPos.Y - 3, 6, 6);
+            Rectangle testRect = new Rectangle(m_CursorPos.X - 3, m_CursorPos.Y - 3, 6, 6);
 
             skin.Renderer.DrawShavedCornerRect(testRect);
         }

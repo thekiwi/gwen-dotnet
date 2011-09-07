@@ -5,17 +5,17 @@ namespace Gwen.ControlsInternal
 {
     public class CategoryButton : Button
     {
-        internal bool m_bAlt;
+        internal bool m_Alt;
 
         internal CategoryButton(Base parent) : base(parent)
         {
             Alignment = Pos.Left | Pos.CenterV;
-            m_bAlt = false;
+            m_Alt = false;
         }
 
         protected override void Render(Skin.Base skin)
         {
-            if (m_bAlt)
+            if (m_Alt)
             {
                 if (IsDepressed || ToggleState)
                     Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Selected;
@@ -39,7 +39,7 @@ namespace Gwen.ControlsInternal
 
         public override void UpdateColors()
         {
-            if (m_bAlt)
+            if (m_Alt)
             {
                 if (IsDepressed || ToggleState)
                 {

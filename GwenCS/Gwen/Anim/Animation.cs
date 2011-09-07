@@ -9,7 +9,7 @@ namespace Gwen.Anim
         protected Base m_Control;
 
         //private static List<Animation> g_AnimationsListed = new List<Animation>(); // unused
-        private static Dictionary<Base, List<Animation>> g_Animations = new Dictionary<Base, List<Animation>>();
+        private static Dictionary<Base, List<Animation>> m_Animations = new Dictionary<Base, List<Animation>>();
 
         protected virtual void Think()
         {
@@ -24,23 +24,23 @@ namespace Gwen.Anim
         public static void Add(Base control, Animation animation)
         {
             animation.m_Control = control;
-            if (!g_Animations.ContainsKey(control))
-                g_Animations[control] = new List<Animation>();
-            g_Animations[control].Add(animation);
+            if (!m_Animations.ContainsKey(control))
+                m_Animations[control] = new List<Animation>();
+            m_Animations[control].Add(animation);
         }
 
         public static void Cancel(Base control)
         {
-            if (g_Animations.ContainsKey(control))
+            if (m_Animations.ContainsKey(control))
             {
-                g_Animations[control].Clear();
-                g_Animations.Remove(control);
+                m_Animations[control].Clear();
+                m_Animations.Remove(control);
             }
         }
 
         internal static void GlobalThink()
         {
-            foreach (KeyValuePair<Base, List<Animation>> pair in g_Animations)
+            foreach (KeyValuePair<Base, List<Animation>> pair in m_Animations)
             {
                 var valCopy = pair.Value.FindAll(x =>true); // list copy so foreach won't break when we remove elements
                 foreach (Animation animation in valCopy)

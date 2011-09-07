@@ -38,12 +38,12 @@ namespace Gwen.Controls
 
         protected String m_Name;
 
-        protected bool m_bRestrictToParent;
-        protected bool m_bDisabled;
-        protected bool m_bHidden;
-        protected bool m_bMouseInputEnabled;
-        protected bool m_bKeyboardInputEnabled;
-        protected bool m_bDrawBackground;
+        protected bool m_RestrictToParent;
+        protected bool m_Disabled;
+        protected bool m_Hidden;
+        protected bool m_MouseInputEnabled;
+        protected bool m_KeyboardInputEnabled;
+        protected bool m_DrawBackground;
 
         protected Pos m_Dock;
 
@@ -51,13 +51,13 @@ namespace Gwen.Controls
 
         protected bool m_Tabable;
 
-        protected bool m_bNeedsLayout;
-        protected bool m_bCacheTextureDirty;
-        protected bool m_bCacheToTexture;
+        protected bool m_NeedsLayout;
+        protected bool m_CacheTextureDirty;
+        protected bool m_CacheToTexture;
 
         protected Package m_DragAndDrop_Package;
 
-        private object m_pUserData;
+        private object m_UserData;
 
         // Childrens List
         internal List<Base> Children;
@@ -188,22 +188,22 @@ namespace Gwen.Controls
         }
 
         public virtual bool IsOnTop { get { return this == Parent.Children.First(); } }
-        public object UserData { get { return m_pUserData; } set { m_pUserData = value; } }
+        public object UserData { get { return m_UserData; } set { m_UserData = value; } }
         public bool IsHovered { get { return Global.HoveredControl == this; } }
         public bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
         public bool HasFocus { get { return Global.KeyboardFocus == this; } }
-        public bool IsDisabled { get { return m_bDisabled; } set { m_bDisabled = value; } }
-        public virtual bool IsHidden { get { return m_bHidden; } set { if (value == m_bHidden) return; m_bHidden = value; Invalidate(); } }
-        public bool RestrictToParent { get { return m_bRestrictToParent; } set { m_bRestrictToParent = value; } }
-        public bool MouseInputEnabled { get { return m_bMouseInputEnabled; } set { m_bMouseInputEnabled = value; } }
-        public bool KeyboardInputEnabled { get { return m_bKeyboardInputEnabled; } set { m_bKeyboardInputEnabled = value; } }
+        public bool IsDisabled { get { return m_Disabled; } set { m_Disabled = value; } }
+        public virtual bool IsHidden { get { return m_Hidden; } set { if (value == m_Hidden) return; m_Hidden = value; Invalidate(); } }
+        public bool RestrictToParent { get { return m_RestrictToParent; } set { m_RestrictToParent = value; } }
+        public bool MouseInputEnabled { get { return m_MouseInputEnabled; } set { m_MouseInputEnabled = value; } }
+        public bool KeyboardInputEnabled { get { return m_KeyboardInputEnabled; } set { m_KeyboardInputEnabled = value; } }
         public Cursor Cursor { get { return m_Cursor; } set { m_Cursor = value; } }
         public bool IsTabable { get { return m_Tabable; } set { m_Tabable = value; } }
-        public bool ShouldDrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
-        public bool ShouldCacheToTexture { get { return m_bCacheToTexture; } set { m_bCacheToTexture = value; /*Children.ForEach(x => x.ShouldCacheToTexture=value);*/ } }
+        public bool ShouldDrawBackground { get { return m_DrawBackground; } set { m_DrawBackground = value; } }
+        public bool ShouldCacheToTexture { get { return m_CacheToTexture; } set { m_CacheToTexture = value; /*Children.ForEach(x => x.ShouldCacheToTexture=value);*/ } }
         public String Name { get { return m_Name; } set { m_Name = value; } }
         public Rectangle Bounds { get { return m_Bounds; } }
-        public bool NeedsLayout { get { return m_bNeedsLayout; } }
+        public bool NeedsLayout { get { return m_NeedsLayout; } }
         public Rectangle RenderBounds { get { return m_RenderBounds; } }
         public Rectangle InnerBounds { get { return m_InnerBounds; } }
         public virtual bool AccelOnlyFocus { get { return false; } }
@@ -233,8 +233,8 @@ namespace Gwen.Controls
         public int Y { get { return m_Bounds.Y; } set { SetPos(X, value); } }
         public int Width { get { return m_Bounds.Width; } set { SetSize(value, Height); } }
         public int Height { get { return m_Bounds.Height; } set { SetSize(Width, value); } }
-        public int Bottom { get { return m_Bounds.Bottom + m_Margin.bottom; } }
-        public int Right { get { return m_Bounds.Right + m_Margin.right; } }
+        public int Bottom { get { return m_Bounds.Bottom + m_Margin.Bottom; } }
+        public int Right { get { return m_Bounds.Right + m_Margin.Right; } }
 
         public Base(Base parent = null)
         {
@@ -243,7 +243,7 @@ namespace Gwen.Controls
 
             Parent = parent;
 
-            m_bHidden = false;
+            m_Hidden = false;
             m_Bounds = new Rectangle(0, 0, 10, 10);
             m_Padding = new Padding(0, 0, 0, 0);
             m_Margin = new Margin(0, 0, 0, 0);
@@ -258,9 +258,9 @@ namespace Gwen.Controls
             //ToolTip = null;
             IsTabable = false;
             ShouldDrawBackground = true;
-            m_bDisabled = false;
-            m_bCacheTextureDirty = true;
-            m_bCacheToTexture = false;
+            m_Disabled = false;
+            m_CacheTextureDirty = true;
+            m_CacheToTexture = false;
         }
 
         /// <summary>
@@ -342,8 +342,8 @@ namespace Gwen.Controls
 
         public virtual void Invalidate()
         {
-            m_bNeedsLayout = true;
-            m_bCacheTextureDirty = true;
+            m_NeedsLayout = true;
+            m_CacheTextureDirty = true;
         }
 
         public virtual void SendToBack()
@@ -490,17 +490,17 @@ namespace Gwen.Controls
 
         public virtual void MoveTo(int x, int y)
         {
-            if (m_bRestrictToParent && (Parent != null))
+            if (m_RestrictToParent && (Parent != null))
             {
                 Base parent = Parent;
-                if (x - Padding.Left < parent.Margin.left)
-                    x = parent.Margin.left + Padding.Left;
-                if (y - Padding.Top < parent.Margin.top)
-                    y = parent.Margin.top + Padding.Top;
-                if (x + Width + Padding.Right > parent.Width - parent.Margin.right)
-                    x = parent.Width - parent.Margin.right - Width - Padding.Right;
-                if (y + Height + Padding.Bottom > parent.Height - parent.Margin.bottom)
-                    y = parent.Height - parent.Margin.bottom - Height - Padding.Bottom;
+                if (x - Padding.Left < parent.Margin.Left)
+                    x = parent.Margin.Left + Padding.Left;
+                if (y - Padding.Top < parent.Margin.Top)
+                    y = parent.Margin.Top + Padding.Top;
+                if (x + Width + Padding.Right > parent.Width - parent.Margin.Right)
+                    x = parent.Width - parent.Margin.Right - Width - Padding.Right;
+                if (y + Height + Padding.Bottom > parent.Height - parent.Margin.Bottom)
+                    y = parent.Height - parent.Margin.Bottom - Height - Padding.Bottom;
             }
 
             SetBounds(x, y, Width, Height);
@@ -563,12 +563,12 @@ namespace Gwen.Controls
             if (pos.HasFlag(Pos.Left)) x = padding.Left + xpadding;
             if (pos.HasFlag(Pos.Right)) x = w - Width - padding.Right - xpadding;
             if (pos.HasFlag(Pos.CenterH))
-                x = (int)(padding.Left + xpadding + (w - Width - padding.Left - padding.Right) * 0.5);
+                x = (int)(padding.Left + xpadding + (w - Width - padding.Left - padding.Right) * 0.5f);
 
             if (pos.HasFlag(Pos.Top)) y = padding.Top + ypadding;
             if (pos.HasFlag(Pos.Bottom)) y = h - Height - padding.Bottom - ypadding;
             if (pos.HasFlag(Pos.CenterV))
-                y = (int)(padding.Top + ypadding + (h - Height - padding.Bottom - padding.Top) * 0.5);
+                y = (int)(padding.Top + ypadding + (h - Height - padding.Bottom - padding.Top) * 0.5f);
 
             SetPos(x, y);
         }
@@ -617,8 +617,8 @@ namespace Gwen.Controls
             if (cache == null)
                 return;
 
-            Point pOldRenderOffset = render.RenderOffset;
-            Rectangle rOldRegion = render.ClipRegion;
+            Point oldRenderOffset = render.RenderOffset;
+            Rectangle oldRegion = render.ClipRegion;
 
             if (this != master)
             {
@@ -631,7 +631,7 @@ namespace Gwen.Controls
                 render.ClipRegion = new Rectangle(0, 0, Width, Height);
             }
 
-            if (m_bCacheTextureDirty && render.ClipRegionVisible)
+            if (m_CacheTextureDirty && render.ClipRegionVisible)
             {
                 render.StartClip();
 
@@ -661,13 +661,13 @@ namespace Gwen.Controls
                 if (ShouldCacheToTexture)
                 {
                     cache.FinishCacheTexture(this);
-                    m_bCacheTextureDirty = false;
+                    m_CacheTextureDirty = false;
                 }
             }
 
-            render.ClipRegion = rOldRegion;
+            render.ClipRegion = oldRegion;
             render.StartClip();
-            render.RenderOffset = pOldRenderOffset;
+            render.RenderOffset = oldRenderOffset;
 
             if (ShouldCacheToTexture)
                 cache.DrawCachedControlTexture(this);
@@ -697,13 +697,13 @@ namespace Gwen.Controls
         protected virtual void RenderRecursive(Skin.Base skin, Rectangle clipRect)
         {
             Renderer.Base render = skin.Renderer;
-            Point pOldRenderOffset = render.RenderOffset;
+            Point oldRenderOffset = render.RenderOffset;
 
             render.AddRenderOffset(clipRect);
 
             RenderUnder(skin);
 
-            Rectangle rOldRegion = render.ClipRegion;
+            Rectangle oldRegion = render.ClipRegion;
 
             if (ShouldClip)
             {
@@ -711,8 +711,8 @@ namespace Gwen.Controls
 
                 if (!render.ClipRegionVisible)
                 {
-                    render.RenderOffset = pOldRenderOffset;
-                    render.ClipRegion = rOldRegion;
+                    render.RenderOffset = oldRenderOffset;
+                    render.ClipRegion = oldRegion;
                     return;
                 }
 
@@ -733,13 +733,13 @@ namespace Gwen.Controls
                 }
             }
 
-            render.ClipRegion = rOldRegion;
+            render.ClipRegion = oldRegion;
             render.StartClip();
             RenderOver(skin);
 
             RenderFocus(skin);
 
-            render.RenderOffset = pOldRenderOffset;
+            render.RenderOffset = oldRenderOffset;
         }
 
         public virtual void SetSkin(Skin.Base skin, bool doChildren = false)
@@ -765,10 +765,10 @@ namespace Gwen.Controls
 
         }
 
-        internal virtual bool onMouseWheeled(int iDelta)
+        internal virtual bool onMouseWheeled(int delta)
         {
             if (m_ActualParent != null)
-                return m_ActualParent.onMouseWheeled(iDelta);
+                return m_ActualParent.onMouseWheeled(delta);
 
             return false;
         }
@@ -778,12 +778,12 @@ namespace Gwen.Controls
 
         }
 
-        internal virtual void onMouseClickLeft(int x, int y, bool pressed)
+        internal virtual void onMouseClickLeft(int x, int y, bool down)
         {
 
         }
 
-        internal virtual void onMouseClickRight(int x, int y, bool pressed)
+        internal virtual void onMouseClickRight(int x, int y, bool down)
         {
 
         }
@@ -894,94 +894,94 @@ namespace Gwen.Controls
 
             if (NeedsLayout)
             {
-                m_bNeedsLayout = false;
+                m_NeedsLayout = false;
                 Layout(skin);
             }
 
-            Rectangle rBounds = RenderBounds;
+            Rectangle bounds = RenderBounds;
 
             // Adjust bounds for padding
-            rBounds.X += m_Padding.Left;
-            rBounds.Width -= m_Padding.Left + m_Padding.Right;
-            rBounds.Y += m_Padding.Top;
-            rBounds.Height -= m_Padding.Top + m_Padding.Bottom;
+            bounds.X += m_Padding.Left;
+            bounds.Width -= m_Padding.Left + m_Padding.Right;
+            bounds.Y += m_Padding.Top;
+            bounds.Height -= m_Padding.Top + m_Padding.Bottom;
 
             foreach (Base child in Children)
             {
                 if (child.IsHidden)
                     continue;
 
-                Pos iDock = child.Dock;
+                Pos dock = child.Dock;
 
-                if (iDock.HasFlag(Pos.Fill))
+                if (dock.HasFlag(Pos.Fill))
                     continue;
 
-                if (iDock.HasFlag(Pos.Top))
+                if (dock.HasFlag(Pos.Top))
                 {
                     Margin margin = child.Margin;
 
-                    child.SetBounds(rBounds.X + margin.left, rBounds.Y + margin.top,
-                                    rBounds.Width - margin.left - margin.right, child.Height);
+                    child.SetBounds(bounds.X + margin.Left, bounds.Y + margin.Top,
+                                    bounds.Width - margin.Left - margin.Right, child.Height);
 
-                    int iHeight = margin.top + margin.bottom + child.Height;
-                    rBounds.Y += iHeight;
-                    rBounds.Height -= iHeight;
+                    int height = margin.Top + margin.Bottom + child.Height;
+                    bounds.Y += height;
+                    bounds.Height -= height;
                 }
 
-                if (iDock.HasFlag(Pos.Left))
+                if (dock.HasFlag(Pos.Left))
                 {
                     Margin margin = child.Margin;
 
-                    child.SetBounds(rBounds.X + margin.left, rBounds.Y + margin.top, child.Width,
-                                      rBounds.Height - margin.top - margin.bottom);
+                    child.SetBounds(bounds.X + margin.Left, bounds.Y + margin.Top, child.Width,
+                                      bounds.Height - margin.Top - margin.Bottom);
 
-                    int iWidth = margin.left + margin.right + child.Width;
-                    rBounds.X += iWidth;
-                    rBounds.Width -= iWidth;
+                    int width = margin.Left + margin.Right + child.Width;
+                    bounds.X += width;
+                    bounds.Width -= width;
                 }
 
-                if (iDock.HasFlag(Pos.Right))
+                if (dock.HasFlag(Pos.Right))
                 {
                     // TODO: THIS MARGIN CODE MIGHT NOT BE FULLY FUNCTIONAL
                     Margin margin = child.Margin;
 
-                    child.SetBounds((rBounds.X + rBounds.Width) - child.Width - margin.right, rBounds.Y + margin.top,
-                                      child.Width, rBounds.Height - margin.top - margin.bottom);
+                    child.SetBounds((bounds.X + bounds.Width) - child.Width - margin.Right, bounds.Y + margin.Top,
+                                      child.Width, bounds.Height - margin.Top - margin.Bottom);
 
-                    int iWidth = margin.left + margin.right + child.Width;
-                    rBounds.Width -= iWidth;
+                    int width = margin.Left + margin.Right + child.Width;
+                    bounds.Width -= width;
                 }
 
-                if (iDock.HasFlag(Pos.Bottom))
+                if (dock.HasFlag(Pos.Bottom))
                 {
                     // TODO: THIS MARGIN CODE MIGHT NOT BE FULLY FUNCTIONAL
                     Margin margin = child.Margin;
 
-                    child.SetBounds(rBounds.X + margin.left,
-                                      (rBounds.Y + rBounds.Height) - child.Height - margin.bottom,
-                                      rBounds.Width - margin.left - margin.right, child.Height);
-                    rBounds.Height -= child.Height + margin.bottom + margin.top;
+                    child.SetBounds(bounds.X + margin.Left,
+                                      (bounds.Y + bounds.Height) - child.Height - margin.Bottom,
+                                      bounds.Width - margin.Left - margin.Right, child.Height);
+                    bounds.Height -= child.Height + margin.Bottom + margin.Top;
                 }
 
                 child.RecurseLayout(skin);
             }
 
-            m_InnerBounds = rBounds;
+            m_InnerBounds = bounds;
 
             //
             // Fill uses the left over space, so do that now.
             //
             foreach (Base child in Children)
             {
-                Pos iDock = child.Dock;
+                Pos dock = child.Dock;
 
-                if (!(iDock.HasFlag(Pos.Fill)))
+                if (!(dock.HasFlag(Pos.Fill)))
                     continue;
 
                 Margin margin = child.Margin;
 
-                child.SetBounds(rBounds.X + margin.left, rBounds.Y + margin.top,
-                                  rBounds.Width - margin.left - margin.right, rBounds.Height - margin.top - margin.bottom);
+                child.SetBounds(bounds.X + margin.Left, bounds.Y + margin.Top,
+                                  bounds.Width - margin.Left - margin.Right, bounds.Height - margin.Top - margin.Bottom);
                 child.RecurseLayout(skin);
             }
 
@@ -1205,7 +1205,7 @@ namespace Gwen.Controls
         public virtual void Redraw()
         {
             UpdateColors();
-            m_bCacheTextureDirty = true;
+            m_CacheTextureDirty = true;
             if (m_Parent != null)
                 m_Parent.Redraw();
         }
@@ -1268,17 +1268,17 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal virtual bool onKeySpace(bool bDown) { return false; }
-        internal virtual bool onKeyReturn(bool bDown) { return false; }
-        internal virtual bool onKeyBackspace(bool bDown) { return false; }
-        internal virtual bool onKeyDelete(bool bDown) { return false; }
-        internal virtual bool onKeyRight(bool bDown) { return false; }
-        internal virtual bool onKeyLeft(bool bDown) { return false; }
-        internal virtual bool onKeyHome(bool bDown) { return false; }
-        internal virtual bool onKeyEnd(bool bDown) { return false; }
-        internal virtual bool onKeyUp(bool bDown) { return false; }
-        internal virtual bool onKeyDown(bool bDown) { return false; }
-        internal virtual bool onKeyEscape(bool bDown) { return false; }
+        internal virtual bool onKeySpace(bool down) { return false; }
+        internal virtual bool onKeyReturn(bool down) { return false; }
+        internal virtual bool onKeyBackspace(bool down) { return false; }
+        internal virtual bool onKeyDelete(bool down) { return false; }
+        internal virtual bool onKeyRight(bool down) { return false; }
+        internal virtual bool onKeyLeft(bool down) { return false; }
+        internal virtual bool onKeyHome(bool down) { return false; }
+        internal virtual bool onKeyEnd(bool down) { return false; }
+        internal virtual bool onKeyUp(bool down) { return false; }
+        internal virtual bool onKeyDown(bool down) { return false; }
+        internal virtual bool onKeyEscape(bool down) { return false; }
 
         internal virtual void onPaste(Base from)
         {
@@ -1336,26 +1336,26 @@ namespace Gwen.Controls
             return false;
         }
 
-        public virtual void Anim_WidthIn(float fLength, float fDelay = 0.0f, float fEase = 1.0f)
+        public virtual void Anim_WidthIn(float length, float delay = 0.0f, float ease = 1.0f)
         {
-            Animation.Add(this, new Anim.Size.Width(0, Width, fLength, false, fDelay, fEase));
+            Animation.Add(this, new Anim.Size.Width(0, Width, length, false, delay, ease));
             Width = 0;
         }
 
-        public virtual void Anim_HeightIn(float fLength, float fDelay, float fEase)
+        public virtual void Anim_HeightIn(float length, float delay, float ease)
         {
-            Animation.Add(this, new Anim.Size.Height(0, Height, fLength, false, fDelay, fEase));
+            Animation.Add(this, new Anim.Size.Height(0, Height, length, false, delay, ease));
             Height = 0;
         }
 
-        public virtual void Anim_WidthOut(float fLength, bool bHide, float fDelay, float fEase)
+        public virtual void Anim_WidthOut(float length, bool hide, float delay, float ease)
         {
-            Animation.Add(this, new Anim.Size.Width(Width, 0, fLength, bHide, fDelay, fEase));
+            Animation.Add(this, new Anim.Size.Width(Width, 0, length, hide, delay, ease));
         }
 
-        public virtual void Anim_HeightOut(float fLength, bool bHide, float fDelay, float fEase)
+        public virtual void Anim_HeightOut(float length, bool hide, float delay, float ease)
         {
-            Animation.Add(this, new Anim.Size.Height(Height, 0, fLength, bHide, fDelay, fEase));
+            Animation.Add(this, new Anim.Size.Height(Height, 0, length, hide, delay, ease));
         }
     }
 }

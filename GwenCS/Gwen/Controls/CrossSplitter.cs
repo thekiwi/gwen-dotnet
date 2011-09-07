@@ -13,11 +13,11 @@ namespace Gwen.Controls
 
         Base[] m_Sections;
 
-        float m_fHVal;
-        float m_fVVal;
-        int m_fBarSize;
+        float m_HVal;
+        float m_VVal;
+        int m_BarSize;
 
-        int m_iZoomedSection;
+        int m_ZoomedSection;
 
         event ControlCallback OnZoomed;
         event ControlCallback OnUnZoomed;
@@ -43,8 +43,8 @@ namespace Gwen.Controls
             m_CSplitter.OnDragged += onCenterMoved;
             m_CSplitter.Cursor = Cursors.SizeAll;
 
-            m_fHVal = 0.5f;
-            m_fVVal = 0.5f;
+            m_HVal = 0.5f;
+            m_VVal = 0.5f;
 
             SetPanel(0, null);
             SetPanel(1, null);
@@ -54,7 +54,7 @@ namespace Gwen.Controls
             SplitterSize = 5;
             SplittersVisible = false;
 
-            m_iZoomedSection = -1;
+            m_ZoomedSection = -1;
         }
 
         public override void Dispose()
@@ -69,12 +69,12 @@ namespace Gwen.Controls
 
         public void CenterPanels()
         {
-            m_fHVal = 0.5f;
-            m_fVVal = 0.5f;
+            m_HVal = 0.5f;
+            m_VVal = 0.5f;
             Invalidate();
         }
 
-        public bool IsZoomed { get { return m_iZoomedSection != -1; } }
+        public bool IsZoomed { get { return m_ZoomedSection != -1; } }
 
         public bool SplittersVisible
         {
@@ -87,21 +87,21 @@ namespace Gwen.Controls
             }
         }
 
-        public int SplitterSize { get { return m_fBarSize; } set { m_fBarSize = value; } }
+        public int SplitterSize { get { return m_BarSize; } set { m_BarSize = value; } }
 
         protected void UpdateVSplitter()
         {
-            m_VSplitter.MoveTo(m_VSplitter.X, (Height - m_VSplitter.Height) * (m_fVVal));
+            m_VSplitter.MoveTo(m_VSplitter.X, (Height - m_VSplitter.Height) * (m_VVal));
         }
 
         protected void UpdateHSplitter()
         {
-            m_HSplitter.MoveTo( ( Width - m_HSplitter.Width ) * ( m_fHVal ), m_HSplitter.Y );
+            m_HSplitter.MoveTo( ( Width - m_HSplitter.Width ) * ( m_HVal ), m_HSplitter.Y );
         }
 
         protected void UpdateCSplitter()
         {
-            m_CSplitter.MoveTo((Width - m_CSplitter.Width) * (m_fHVal), (Height - m_CSplitter.Height) * (m_fVVal));
+            m_CSplitter.MoveTo((Width - m_CSplitter.Width) * (m_HVal), (Height - m_CSplitter.Height) * (m_VVal));
         }
 
         protected void onCenterMoved(Base control)
@@ -112,20 +112,20 @@ namespace Gwen.Controls
 
         protected void onVerticalMoved(Base control)
         {
-            m_fVVal = CalculateValueVertical();
+            m_VVal = CalculateValueVertical();
             Invalidate();
         }
 
         protected void onHorizontalMoved(Base control)
         {
-            m_fHVal = CalculateValueHorizontal();
+            m_HVal = CalculateValueHorizontal();
             Invalidate();
         }
 
         protected void CalculateValueCenter()
         {
-            m_fHVal = m_CSplitter.X / (float)(Width - m_CSplitter.Width);
-            m_fVVal = m_CSplitter.Y / (float)(Height - m_CSplitter.Height);
+            m_HVal = m_CSplitter.X / (float)(Width - m_CSplitter.Width);
+            m_VVal = m_CSplitter.Y / (float)(Height - m_CSplitter.Height);
         }
 
         protected float CalculateValueVertical()
@@ -140,45 +140,45 @@ namespace Gwen.Controls
 
         protected override void Layout(Skin.Base skin)
         {
-            m_VSplitter.SetSize(Width, m_fBarSize);
-            m_HSplitter.SetSize(m_fBarSize, Height);
-            m_CSplitter.SetSize(m_fBarSize, m_fBarSize);
+            m_VSplitter.SetSize(Width, m_BarSize);
+            m_HSplitter.SetSize(m_BarSize, Height);
+            m_CSplitter.SetSize(m_BarSize, m_BarSize);
 
             UpdateVSplitter();
             UpdateHSplitter();
             UpdateCSplitter();
 
-            if (m_iZoomedSection == -1)
+            if (m_ZoomedSection == -1)
             {
                 if (m_Sections[0] != null)
                     m_Sections[0].SetBounds(0, 0, m_HSplitter.X, m_VSplitter.Y);
 
                 if (m_Sections[1] != null)
-                    m_Sections[1].SetBounds(m_HSplitter.X + m_fBarSize, 0, Width - (m_HSplitter.X + m_fBarSize), m_VSplitter.Y);
+                    m_Sections[1].SetBounds(m_HSplitter.X + m_BarSize, 0, Width - (m_HSplitter.X + m_BarSize), m_VSplitter.Y);
 
                 if (m_Sections[2] != null)
-                    m_Sections[2].SetBounds(0, m_VSplitter.Y + m_fBarSize, m_HSplitter.X, Height - (m_VSplitter.Y + m_fBarSize));
+                    m_Sections[2].SetBounds(0, m_VSplitter.Y + m_BarSize, m_HSplitter.X, Height - (m_VSplitter.Y + m_BarSize));
 
                 if (m_Sections[3] != null)
-                    m_Sections[3].SetBounds(m_HSplitter.X + m_fBarSize, m_VSplitter.Y + m_fBarSize, Width - (m_HSplitter.X + m_fBarSize), Height - (m_VSplitter.Y + m_fBarSize));
+                    m_Sections[3].SetBounds(m_HSplitter.X + m_BarSize, m_VSplitter.Y + m_BarSize, Width - (m_HSplitter.X + m_BarSize), Height - (m_VSplitter.Y + m_BarSize));
             }
             else
             {
                 //This should probably use Fill docking instead
-                m_Sections[m_iZoomedSection].SetBounds(0, 0, Width, Height);
+                m_Sections[m_ZoomedSection].SetBounds(0, 0, Width, Height);
             }
         }
 
-        public void SetPanel(int index, Base pPanel)
+        public void SetPanel(int index, Base panel)
         {
             Debug.Assert(index >= 0 && index <= 3, "CrossSplitter::SetPanel out of range");
 
-            m_Sections[index] = pPanel;
+            m_Sections[index] = panel;
 
-            if (pPanel != null)
+            if (panel != null)
             {
-                pPanel.Dock = Pos.None;
-                pPanel.Parent = this;
+                panel.Dock = Pos.None;
+                panel.Parent = this;
             }
 
             Invalidate();
@@ -194,7 +194,7 @@ namespace Gwen.Controls
             if (OnZoomChange != null)
                 OnZoomChange.Invoke(this);
          
-            if (m_iZoomedSection == -1)
+            if (m_ZoomedSection == -1)
             {
                 if (OnUnZoomed != null)
                     OnUnZoomed.Invoke(this);
@@ -217,7 +217,7 @@ namespace Gwen.Controls
                     if (i != section && m_Sections[i] != null)
                         m_Sections[i].IsHidden = true;
                 }
-                m_iZoomedSection = section;
+                m_ZoomedSection = section;
 
                 Invalidate();
             }
@@ -226,7 +226,7 @@ namespace Gwen.Controls
 
         public void UnZoom()
         {
-            m_iZoomedSection = -1;
+            m_ZoomedSection = -1;
 
             for (int i = 0; i < 4; i++)
             {

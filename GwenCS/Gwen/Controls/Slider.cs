@@ -7,21 +7,21 @@ namespace Gwen.Controls
     public class Slider : Base
     {
         protected SliderBar m_SliderBar;
-        protected bool m_bClampToNotches;
-        protected int m_iNumNotches;
-        protected float m_fValue;
-        protected float m_fMin;
-        protected float m_fMax;
+        protected bool m_ClampToNotches;
+        protected int m_NumNotches;
+        protected float m_Value;
+        protected float m_Min;
+        protected float m_Max;
 
         public float Value
         {
-            get { return m_fMin + (m_fValue * (m_fMax - m_fMin)); }
+            get { return m_Min + (m_Value * (m_Max - m_Min)); }
             set
             {
-                if (value < m_fMin) value = m_fMin;
-                if (value > m_fMax) value = m_fMax;
+                if (value < m_Min) value = m_Min;
+                if (value > m_Max) value = m_Max;
                 // Normalize Value
-                value = (value - m_fMin) / (m_fMax - m_fMin);
+                value = (value - m_Min) / (m_Max - m_Min);
                 SetValueInternal(value);
                 Redraw();
             }
@@ -36,12 +36,12 @@ namespace Gwen.Controls
             m_SliderBar = new SliderBar(this);
             m_SliderBar.OnDragged += onMoved;
 
-            m_fMin = 0.0f;
-            m_fMax = 1.0f;
+            m_Min = 0.0f;
+            m_Max = 1.0f;
 
-            m_bClampToNotches = false;
-            m_iNumNotches = 5;
-            m_fValue = 0.0f;
+            m_ClampToNotches = false;
+            m_NumNotches = 5;
+            m_Value = 0.0f;
 
             IsTabable = true;
         }
@@ -52,51 +52,51 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
-        internal override bool onKeyRight(bool bDown)
+        internal override bool onKeyRight(bool down)
         {
-            if (bDown)
+            if (down)
                 Value = Value + 1;
             return true;
         }
 
-        internal override bool onKeyUp(bool bDown)
+        internal override bool onKeyUp(bool down)
         {
-            if (bDown)
+            if (down)
                 Value = Value + 1;
             return true;
         }
 
-        internal override bool onKeyLeft(bool bDown)
+        internal override bool onKeyLeft(bool down)
         {
-            if (bDown)
+            if (down)
                 Value = Value - 1;
             return true;
         }
 
-        internal override bool onKeyDown(bool bDown)
+        internal override bool onKeyDown(bool down)
         {
-            if (bDown)
+            if (down)
                 Value = Value - 1;
             return true;
         }
 
         // omeg
-        internal override bool onKeyHome(bool bDown)
+        internal override bool onKeyHome(bool down)
         {
-            if (bDown)
-                Value = m_fMin;
+            if (down)
+                Value = m_Min;
             return true;
         }
 
         // omeg
-        internal override bool onKeyEnd(bool bDown)
+        internal override bool onKeyEnd(bool down)
         {
-            if (bDown)
-                Value = m_fMax;
+            if (down)
+                Value = m_Max;
             return true;
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
             
         }
@@ -118,15 +118,15 @@ namespace Gwen.Controls
 
         protected virtual void SetValueInternal(float val)
         {
-            if (m_bClampToNotches)
+            if (m_ClampToNotches)
             {
-                val = (float)Math.Floor((val * m_iNumNotches) + 0.5f);
-                val /= m_iNumNotches;
+                val = (float)Math.Floor((val * m_NumNotches) + 0.5f);
+                val /= m_NumNotches;
             }
 
-            if (m_fValue != val)
+            if (m_Value != val)
             {
-                m_fValue = val;
+                m_Value = val;
                 if (OnValueChanged != null)
                     OnValueChanged.Invoke(this);
             }
@@ -136,8 +136,8 @@ namespace Gwen.Controls
 
         public void SetRange(float min, float max)
         {
-            m_fMin = min;
-            m_fMax = max;
+            m_Min = min;
+            m_Max = max;
         }
 
         protected override void RenderFocus(Skin.Base skin)

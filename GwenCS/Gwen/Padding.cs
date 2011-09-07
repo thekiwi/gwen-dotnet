@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Gwen
 {
     public struct Padding : IEquatable<Padding>
     {
-        // todo: add equality?
         public int Top;
         public int Bottom;
         public int Left;

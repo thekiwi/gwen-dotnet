@@ -33,10 +33,10 @@ namespace Gwen.Controls
         public CheckBox CheckBox { get { return m_CheckBox; } }
         public LabelClickable Label { get { return m_Label; } }
 
-        internal override bool onKeySpace(bool bDown)
+        internal override bool onKeySpace(bool down)
         {
-            base.onKeySpace(bDown);
-            if (!bDown) 
+            base.onKeySpace(down);
+            if (!down) 
                 m_CheckBox.IsChecked = !m_CheckBox.IsChecked; 
             return true;
         }

@@ -21,52 +21,50 @@ namespace Gwen.ControlsInternal
 
         internal override void onMouseMoved(int x, int y, int dx, int dy)
         {
-            if (null == m_pTarget) return;
-            if (!m_bDepressed) return;
+            if (null == m_Target) return;
+            if (!m_Depressed) return;
 
-            Rectangle oldBounds = m_pTarget.Bounds;
-            Rectangle pBounds = m_pTarget.Bounds;
+            Rectangle oldBounds = m_Target.Bounds;
+            Rectangle bounds = m_Target.Bounds;
 
-            Point pntMin = m_pTarget.MinimumSize;
+            Point min = m_Target.MinimumSize;
 
-            Point pCursorPos = m_pTarget.CanvasPosToLocal(new Point(x, y));
+            Point pCursorPos = m_Target.CanvasPosToLocal(new Point(x, y));
 
-            Point pDelta = m_pTarget.LocalPosToCanvas(m_HoldPos);
-            pDelta.X -= x;
-            pDelta.Y -= y;
+            Point delta = m_Target.LocalPosToCanvas(m_HoldPos);
+            delta.X -= x;
+            delta.Y -= y;
 
             if (m_ResizeDir.HasFlag(Pos.Left))
             {
-                pBounds.X -= pDelta.X;
-                pBounds.Width += pDelta.X;
+                bounds.X -= delta.X;
+                bounds.Width += delta.X;
 
                 // Conform to minimum size here so we don't
                 // go all weird when we snap it in the base conrt
 
-                if (pBounds.Width < pntMin.X)
+                if (bounds.Width < min.X)
                 {
-                    int diff = pntMin.X - pBounds.Width;
-                    pBounds.Width += diff;
-                    pBounds.X -= diff;
+                    int diff = min.X - bounds.Width;
+                    bounds.Width += diff;
+                    bounds.X -= diff;
                 }
-
             }
 
             if (m_ResizeDir.HasFlag(Pos.Top))
             {
-                pBounds.Y -= pDelta.Y;
-                pBounds.Height += pDelta.Y;
+                bounds.Y -= delta.Y;
+                bounds.Height += delta.Y;
 
                 // Conform to minimum size here so we don't
                 // go all weird when we snap it in the base conrt
 
-                if (pBounds.Height < pntMin.Y)
+                if (bounds.Height < min.Y)
                 {
-                    int diff = pntMin.Y - pBounds.Height;
-                    pBounds.Height += diff;
-                    pBounds.Y -= diff;
+                    int diff = min.Y - bounds.Height;
+                    bounds.Height += diff;
+                    bounds.Y -= diff;
                 }
-
             }
 
             if (m_ResizeDir.HasFlag(Pos.Right))
@@ -77,27 +75,27 @@ namespace Gwen.ControlsInternal
                 // I actually think this might be a big hack around the way this control works with regards
                 // to the holdpos being on the parent panel.
 
-                int woff = pBounds.Width - m_HoldPos.X;
-                int diff = pBounds.Width;
-                pBounds.Width = pCursorPos.X + woff;
-                if (pBounds.Width < pntMin.X) pBounds.Width = pntMin.X;
-                diff -= pBounds.Width;
+                int woff = bounds.Width - m_HoldPos.X;
+                int diff = bounds.Width;
+                bounds.Width = pCursorPos.X + woff;
+                if (bounds.Width < min.X) bounds.Width = min.X;
+                diff -= bounds.Width;
 
                 m_HoldPos.X -= diff;
             }
 
             if (m_ResizeDir.HasFlag(Pos.Bottom))
             {
-                int hoff = pBounds.Height - m_HoldPos.Y;
-                int diff = pBounds.Height;
-                pBounds.Height = pCursorPos.Y + hoff;
-                if (pBounds.Height < pntMin.Y) pBounds.Height = pntMin.Y;
-                diff -= pBounds.Height;
+                int hoff = bounds.Height - m_HoldPos.Y;
+                int diff = bounds.Height;
+                bounds.Height = pCursorPos.Y + hoff;
+                if (bounds.Height < min.Y) bounds.Height = min.Y;
+                diff -= bounds.Height;
 
                 m_HoldPos.Y -= diff;
             }
 
-            m_pTarget.SetBounds(pBounds);
+            m_Target.SetBounds(bounds);
 
             if (OnResize != null)
                 OnResize.Invoke(this);

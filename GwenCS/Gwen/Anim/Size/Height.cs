@@ -4,20 +4,20 @@ namespace Gwen.Anim.Size
 {
     class Height : TimedAnimation
     {
-        protected int m_iStartSize;
-        protected int m_iDelta;
-        protected bool m_bHide;
+        protected int m_StartSize;
+        protected int m_Delta;
+        protected bool m_Hide;
 
-        public Height(int iStartSize, int iEndSize, float fLength, bool bHide = false, float fDelay = 0.0f, float fEase = 1.0f) 
-            : base( fLength, fDelay, fEase )
+        public Height(int startSize, int endSize, float length, bool hide = false, float delay = 0.0f, float ease = 1.0f) 
+            : base( length, delay, ease )
         {
-            m_iStartSize = iStartSize;
-            m_iDelta = iEndSize - m_iStartSize;
-            m_bHide = bHide;
+            m_StartSize = startSize;
+            m_Delta = endSize - m_StartSize;
+            m_Hide = hide;
         }
 
-        protected override void onStart() { base.onStart(); m_Control.Height = m_iStartSize; }
-        protected override void Run(float delta) { base.Run(delta); m_Control.Height = Global.Trunc( m_iStartSize + (m_iDelta * delta)); }
-        protected override void onFinish() { base.onFinish(); m_Control.Height = m_iStartSize + m_iDelta; m_Control.IsHidden = m_bHide; }
+        protected override void onStart() { base.onStart(); m_Control.Height = m_StartSize; }
+        protected override void Run(float delta) { base.Run(delta); m_Control.Height = Global.Trunc( m_StartSize + (m_Delta * delta)); }
+        protected override void onFinish() { base.onFinish(); m_Control.Height = m_StartSize + m_Delta; m_Control.IsHidden = m_Hide; }
     }
 }

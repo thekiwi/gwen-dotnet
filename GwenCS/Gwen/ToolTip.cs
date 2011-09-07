@@ -7,25 +7,25 @@ namespace Gwen
     {
         private static Base g_ToolTip;
 
-        public static void Enable(Base pControl)
+        public static void Enable(Base control)
         {
-            if (null == pControl.ToolTip)
+            if (null == control.ToolTip)
                 return;
 
-            g_ToolTip = pControl;
+            g_ToolTip = control;
         }
 
-        public static void Disable(Base pControl)
+        public static void Disable(Base control)
         {
-            if (g_ToolTip == pControl)
+            if (g_ToolTip == control)
             {
                 g_ToolTip = null;
             }
         }
 
-        public static void ControlDeleted(Base pControl)
+        public static void ControlDeleted(Base control)
         {
-            Disable(pControl);
+            Disable(control);
         }
 
         public static void RenderToolTip(Skin.Base skin)
@@ -34,22 +34,22 @@ namespace Gwen
 
             Renderer.Base render = skin.Renderer;
 
-            Point pOldRenderOffset = render.RenderOffset;
-            Point MousePos = Input.Input.MousePosition;
-            Rectangle Bounds = g_ToolTip.ToolTip.Bounds;
+            Point oldRenderOffset = render.RenderOffset;
+            Point mousePos = Input.Input.MousePosition;
+            Rectangle bounds = g_ToolTip.ToolTip.Bounds;
 
-            Rectangle rOffset = Global.FloatRect(MousePos.X - Bounds.Width*0.5f, MousePos.Y - Bounds.Height - 10,
-                                                 Bounds.Width, Bounds.Height);
-            rOffset = Global.ClampRectToRect(rOffset, g_ToolTip.GetCanvas().Bounds);
+            Rectangle offset = Global.FloatRect(mousePos.X - bounds.Width*0.5f, mousePos.Y - bounds.Height - 10,
+                                                 bounds.Width, bounds.Height);
+            offset = Global.ClampRectToRect(offset, g_ToolTip.GetCanvas().Bounds);
 
             //Calculate offset on screen bounds
-            render.AddRenderOffset(rOffset);
+            render.AddRenderOffset(offset);
             render.EndClip();
 
             skin.DrawToolTip(g_ToolTip.ToolTip);
             g_ToolTip.ToolTip.DoRender(skin);
 
-            render.RenderOffset = pOldRenderOffset;
+            render.RenderOffset = oldRenderOffset;
         }
     }
 }

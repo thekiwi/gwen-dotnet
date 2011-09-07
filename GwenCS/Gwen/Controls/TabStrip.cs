@@ -106,25 +106,25 @@ namespace Gwen.Controls
 
                 if (m_Dock == Pos.Top)
                 {
-                    m.left = notFirst;
+                    m.Left = notFirst;
                     button.Dock = Pos.Left;
                 }
 
                 if (m_Dock == Pos.Left)
                 {
-                    m.top = notFirst;
+                    m.Top = notFirst;
                     button.Dock = Pos.Top;
                 }
 
                 if (m_Dock == Pos.Right)
                 {
-                    m.top = notFirst;
+                    m.Top = notFirst;
                     button.Dock = Pos.Top;
                 }
 
                 if (m_Dock == Pos.Bottom)
                 {
-                    m.left = notFirst;
+                    m.Left = notFirst;
                     button.Dock = Pos.Left;
                 }
 

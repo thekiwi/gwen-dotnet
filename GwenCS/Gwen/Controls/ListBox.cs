@@ -10,9 +10,9 @@ namespace Gwen.Controls
         protected Table m_Table;
         protected List<TableRow> m_SelectedRows;
 
-        protected bool m_bMultiSelect;
+        protected bool m_MultiSelect;
 
-        public bool AllowMultiSelect { get { return m_bMultiSelect; } set { m_bMultiSelect = value; } }
+        public bool AllowMultiSelect { get { return m_MultiSelect; } set { m_MultiSelect = value; } }
         public IList<TableRow> SelectedRows { get { return m_SelectedRows; } }
         public TableRow SelectedRow
         {
@@ -40,7 +40,7 @@ namespace Gwen.Controls
             m_Table.Dock = Pos.Top;
             m_Table.ColumnCount = 1;
 
-            m_bMultiSelect = false;
+            m_MultiSelect = false;
         }
 
         public override void Dispose()
@@ -92,17 +92,17 @@ namespace Gwen.Controls
 
         public TableRow AddItem(String label, String name)
         {
-            ListBoxRow pRow = new ListBoxRow(this);
-            m_Table.AddRow(pRow);
+            ListBoxRow row = new ListBoxRow(this);
+            m_Table.AddRow(row);
 
-            pRow.SetCellText(0, label);
-            pRow.Name = name;
+            row.SetCellText(0, label);
+            row.Name = name;
 
-            pRow.OnRowSelected += onRowSelected;
+            row.OnRowSelected += onRowSelected;
 
             m_Table.SizeToContents();
 
-            return pRow;
+            return row;
         }
 
         protected override void Render(Skin.Base skin)
@@ -125,17 +125,17 @@ namespace Gwen.Controls
             m_SelectedRows.Remove(row);
         }
 
-        protected virtual void onRowSelected(Base pControl)
+        protected virtual void onRowSelected(Base control)
         {
             // [omeg] changed default behavior
             bool clear = false;// !Input.Input.IsShiftDown;
-            ListBoxRow row = pControl as ListBoxRow;
+            ListBoxRow row = control as ListBoxRow;
             if (row == null)
                 return;
             if (row.IsSelected)
                 UnselectRow(row);
             else
-                SelectRow(pControl, clear);
+                SelectRow(control, clear);
         }
 
         public virtual void Clear()

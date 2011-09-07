@@ -471,19 +471,19 @@ namespace Gwen.Skin
             Textures.CategoryList.Header = new Bordered(m_Texture, 320, 352, 63, 31, new Margin(8, 8, 8, 8));
         }
 
-        public override void DrawButton(Controls.Base control, bool bDepressed, bool bHovered, bool disabled)
+        public override void DrawButton(Controls.Base control, bool depressed, bool hovered, bool disabled)
         {
             if (disabled)
             {
                 Textures.Input.Button.Disabled.Draw(Renderer, control.RenderBounds);
                 return;
             }
-            if (bDepressed)
+            if (depressed)
             {
                 Textures.Input.Button.Pressed.Draw(Renderer, control.RenderBounds);
                 return;
             }
-            if (bHovered)
+            if (hovered)
             {
                 Textures.Input.Button.Hovered.Draw(Renderer, control.RenderBounds);
                 return;
@@ -496,12 +496,12 @@ namespace Gwen.Skin
             Textures.Menu.RightArrow.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawMenuItem(Controls.Base control, bool bSubmenuOpen, bool bChecked)
+        public override void DrawMenuItem(Controls.Base control, bool submenuOpen, bool isChecked)
         {
-            if (bSubmenuOpen || control.IsHovered)
+            if (submenuOpen || control.IsHovered)
                 Textures.Menu.Hover.Draw(Renderer, control.RenderBounds);
 
-            if (bChecked)
+            if (isChecked)
                 Textures.Menu.Check.Draw(Renderer, new Rectangle(control.RenderBounds.X + 4, control.RenderBounds.Y + 3, 15, 15));
         }
 
@@ -510,9 +510,9 @@ namespace Gwen.Skin
             Textures.Menu.Strip.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawMenu(Controls.Base control, bool bPaddingDisabled)
+        public override void DrawMenu(Controls.Base control, bool paddingDisabled)
         {
-            if (!bPaddingDisabled)
+            if (!paddingDisabled)
             {
                 Textures.Menu.BackgroundWithMargin.Draw(Renderer, control.RenderBounds);
                 return;
@@ -531,9 +531,9 @@ namespace Gwen.Skin
             Textures.Shadow.Draw(Renderer, r);
         }
 
-        public override void DrawRadioButton(Controls.Base control, bool bSelected, bool bDepressed)
+        public override void DrawRadioButton(Controls.Base control, bool selected, bool depressed)
         {
-            if (bSelected)
+            if (selected)
             {
                 if (control.IsDisabled)
                     Textures.RadioButton.Disabled.Checked.Draw(Renderer, control.RenderBounds);
@@ -549,9 +549,9 @@ namespace Gwen.Skin
             }
         }
 
-        public override void DrawCheckBox(Controls.Base control, bool bSelected, bool bDepressed)
+        public override void DrawCheckBox(Controls.Base control, bool selected, bool depressed)
         {
-            if (bSelected)
+            if (selected)
             {
                 if (control.IsDisabled)
                     Textures.CheckBox.Disabled.Checked.Draw(Renderer, control.RenderBounds);
@@ -610,9 +610,9 @@ namespace Gwen.Skin
                 Textures.TextBox.Normal.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawTabButton(Controls.Base control, bool bActive, Pos dir)
+        public override void DrawTabButton(Controls.Base control, bool active, Pos dir)
         {
-            if (bActive)
+            if (active)
             {
                 DrawActiveTabButton(control, dir);
                 return;
@@ -689,17 +689,17 @@ namespace Gwen.Skin
             Renderer.DrawFilledRect(rect);
         }
 
-        public override void DrawScrollBar(Controls.Base control, bool isHorizontal, bool bDepressed)
+        public override void DrawScrollBar(Controls.Base control, bool horizontal, bool depressed)
         {
-            if (isHorizontal)
+            if (horizontal)
                 Textures.Scroller.TrackH.Draw(Renderer, control.RenderBounds);
             else
                 Textures.Scroller.TrackV.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawScrollBarBar(Controls.Base control, bool bDepressed, bool isHovered, bool isHorizontal)
+        public override void DrawScrollBarBar(Controls.Base control, bool depressed, bool hovered, bool horizontal)
         {
-            if (!isHorizontal)
+            if (!horizontal)
             {
                 if (control.IsDisabled)
                 {
@@ -707,13 +707,13 @@ namespace Gwen.Skin
                     return;
                 }
 
-                if (bDepressed)
+                if (depressed)
                 {
                     Textures.Scroller.ButtonV_Down.Draw(Renderer, control.RenderBounds);
                     return;
                 }
 
-                if (isHovered)
+                if (hovered)
                 {
                     Textures.Scroller.ButtonV_Hover.Draw(Renderer, control.RenderBounds);
                     return;
@@ -729,13 +729,13 @@ namespace Gwen.Skin
                 return;
             }
 
-            if (bDepressed)
+            if (depressed)
             {
                 Textures.Scroller.ButtonH_Down.Draw(Renderer, control.RenderBounds);
                 return;
             }
 
-            if (isHovered)
+            if (hovered)
             {
                 Textures.Scroller.ButtonH_Hover.Draw(Renderer, control.RenderBounds);
                 return;
@@ -744,12 +744,12 @@ namespace Gwen.Skin
             Textures.Scroller.ButtonH_Normal.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawProgressBar(Controls.Base control, bool isHorizontal, float progress)
+        public override void DrawProgressBar(Controls.Base control, bool horizontal, float progress)
         {
             Rectangle rect = control.RenderBounds;
             Color FillColour = Color.FromArgb(255, 0, 211, 40);
 
-            if (isHorizontal)
+            if (horizontal)
             {
                 Textures.ProgressBar.Back.Draw(Renderer, rect);
                 rect.Width = (int)(rect.Width*progress);
@@ -769,11 +769,11 @@ namespace Gwen.Skin
             Textures.Input.ListBox.Background.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawListBoxLine(Controls.Base control, bool bSelected, bool even)
+        public override void DrawListBoxLine(Controls.Base control, bool selected, bool even)
         {
             Rectangle rect = control.RenderBounds;
 
-            if (bSelected)
+            if (selected)
             {
                 if (even)
                 {
@@ -817,12 +817,12 @@ namespace Gwen.Skin
                 Renderer.DrawFilledRect(Global.FloatRect(rect.X + dist - 2, rect.Y + iSpacing * i, 5, 1));
         }
 
-        public override void DrawSlider(Controls.Base control, bool bIsHorizontal, int numNotches, int barSize)
+        public override void DrawSlider(Controls.Base control, bool horizontal, int numNotches, int barSize)
         {
             Rectangle rect = control.RenderBounds;
             Renderer.DrawColor = Color.FromArgb(100, 0, 0, 0);
 
-            if (bIsHorizontal)
+            if (horizontal)
             {
                 rect.X += (int) (barSize*0.5);
                 rect.Width -= barSize;
@@ -905,12 +905,12 @@ namespace Gwen.Skin
             Textures.Tooltip.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawScrollButton(Controls.Base control, Pos iDirection, bool bDepressed, bool hovered, bool disabled)
+        public override void DrawScrollButton(Controls.Base control, Pos direction, bool depressed, bool hovered, bool disabled)
         {
             int i = 0;
-            if (iDirection == Pos.Top) i = 1;
-            if (iDirection == Pos.Right) i = 2;
-            if (iDirection == Pos.Bottom) i = 3;
+            if (direction == Pos.Top) i = 1;
+            if (direction == Pos.Right) i = 2;
+            if (direction == Pos.Bottom) i = 3;
 
             if (disabled)
             {
@@ -918,7 +918,7 @@ namespace Gwen.Skin
                 return;
             }
 
-            if (bDepressed)
+            if (depressed)
             {
                 Textures.Scroller.Button.Down[i].Draw(Renderer, control.RenderBounds);
                 return;
@@ -956,9 +956,9 @@ namespace Gwen.Skin
             Textures.Input.ComboBox.Button.Normal.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawNumericUpDownButton(Controls.Base control, bool bDepressed, bool bUp)
+        public override void DrawNumericUpDownButton(Controls.Base control, bool depressed, bool up)
         {
-            if (bUp)
+            if (up)
             {
                 if (control.IsDisabled)
                 {
@@ -966,7 +966,7 @@ namespace Gwen.Skin
                     return;
                 }
 
-                if (bDepressed)
+                if (depressed)
                 {
                     Textures.Input.UpDown.Up.Down.DrawCenter(Renderer, control.RenderBounds);
                     return;
@@ -988,7 +988,7 @@ namespace Gwen.Skin
                 return;
             }
 
-            if (bDepressed)
+            if (depressed)
             {
                 Textures.Input.UpDown.Down.Down.DrawCenter(Renderer, control.RenderBounds);
                 return;
@@ -1008,11 +1008,11 @@ namespace Gwen.Skin
             Textures.StatusBar.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawTreeButton(Controls.Base control, bool bOpen)
+        public override void DrawTreeButton(Controls.Base control, bool open)
         {
             Rectangle rect = control.RenderBounds;
 
-            if (bOpen)
+            if (open)
                 Textures.Tree.Minus.Draw(Renderer, rect);
             else
                 Textures.Tree.Plus.Draw(Renderer, rect);
@@ -1023,14 +1023,14 @@ namespace Gwen.Skin
             Textures.Tree.Background.Draw(Renderer, control.RenderBounds);
         }
 
-        public override void DrawTreeNode(Controls.Base ctrl, bool bOpen, bool bSelected, int iLabelHeight, int iLabelWidth, int iHalfWay, int iLastBranch, bool bIsRoot)
+        public override void DrawTreeNode(Controls.Base ctrl, bool open, bool selected, int labelHeight, int labelWidth, int halfWay, int lastBranch, bool isRoot)
         {
-            if (bSelected)
+            if (selected)
             {
-                Textures.Selection.Draw(Renderer, new Rectangle(17, 0, iLabelWidth + 2, iLabelHeight - 1));
+                Textures.Selection.Draw(Renderer, new Rectangle(17, 0, labelWidth + 2, labelHeight - 1));
             }
 
-            base.DrawTreeNode(ctrl, bOpen, bSelected, iLabelHeight, iLabelWidth, iHalfWay, iLastBranch, bIsRoot);
+            base.DrawTreeNode(ctrl, open, selected, labelHeight, labelWidth, halfWay, lastBranch, isRoot);
         }
 
         public override void DrawColorDisplay(Controls.Base control, Color color)

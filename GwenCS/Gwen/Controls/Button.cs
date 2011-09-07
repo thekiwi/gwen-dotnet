@@ -4,10 +4,10 @@ namespace Gwen.Controls
 {
     public class Button : Label
     {
-        protected bool m_bDepressed;
-        protected bool m_bToggle;
-        protected bool m_bToggleStatus;
-        protected bool m_bCenterImage;
+        protected bool m_Depressed;
+        protected bool m_Toggle;
+        protected bool m_ToggleStatus;
+        protected bool m_CenterImage;
         protected ImagePanel m_Image;
 
         public event ControlCallback OnPress;
@@ -20,28 +20,28 @@ namespace Gwen.Controls
 
         public bool IsDepressed
         {
-            get { return m_bDepressed; }
+            get { return m_Depressed; }
             set
             {
-                if (m_bDepressed == value) return;
-                m_bDepressed = value; 
+                if (m_Depressed == value) return;
+                m_Depressed = value; 
                 Redraw();
             }
         }
-        public bool IsToggle { get { return m_bToggle; } set { m_bToggle = value; } }
+        public bool IsToggle { get { return m_Toggle; } set { m_Toggle = value; } }
         public bool ToggleState
         {
-            get { return m_bToggleStatus; }
+            get { return m_ToggleStatus; }
             set
             {
-                if (m_bToggleStatus == value) return;
+                if (m_ToggleStatus == value) return;
 
-                m_bToggleStatus = value;
+                m_ToggleStatus = value;
 
                 if (OnToggle != null)
                     OnToggle.Invoke(this);
 
-                if (m_bToggleStatus)
+                if (m_ToggleStatus)
                 {
                     if (OnToggleOn != null)
                         OnToggleOn.Invoke(this);
@@ -81,20 +81,20 @@ namespace Gwen.Controls
 
             if (ShouldDrawBackground)
             {
-                bool bDrawDepressed = IsDepressed && IsHovered;
+                bool drawDepressed = IsDepressed && IsHovered;
                 if (IsToggle)
-                    bDrawDepressed = bDrawDepressed || ToggleState;
+                    drawDepressed = drawDepressed || ToggleState;
 
                 bool bDrawHovered = IsHovered && ShouldDrawHover;
 
-                skin.DrawButton(this, bDrawDepressed, bDrawHovered, IsDisabled);
+                skin.DrawButton(this, drawDepressed, bDrawHovered, IsDisabled);
             }
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            base.onMouseClickLeft(x, y, pressed);
-            if (pressed)
+            base.onMouseClickLeft(x, y, down);
+            if (down)
             {
                 IsDepressed = true;
                 Global.MouseFocus = this;
@@ -103,7 +103,7 @@ namespace Gwen.Controls
             }
             else
             {
-                if (IsHovered && m_bDepressed)
+                if (IsHovered && m_Depressed)
                 {
                     onPress();
                 }
@@ -144,9 +144,9 @@ namespace Gwen.Controls
             m_Image.ImageName = name;
             m_Image.SizeToContents( );
             m_Image.SetPos(Math.Max(m_Padding.Left, 2), 2);
-            m_bCenterImage = center;
+            m_CenterImage = center;
 
-            m_rTextPadding.Left = m_Image.Right + 2;
+            m_TextPadding.Left = m_Image.Right + 2;
         }
 
         public override void SizeToContents()
@@ -162,9 +162,9 @@ namespace Gwen.Controls
             }
         }
 
-        internal override bool onKeySpace(bool bDown)
+        internal override bool onKeySpace(bool down)
         {
-            if (bDown)
+            if (down)
                 onPress();
             return true;
         }
@@ -181,7 +181,7 @@ namespace Gwen.Controls
             {
                 Align.CenterVertically(m_Image);
 
-                if (m_bCenterImage)
+                if (m_CenterImage)
                     Align.CenterHorizontally(m_Image);
             }
         }

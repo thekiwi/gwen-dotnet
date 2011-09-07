@@ -53,7 +53,7 @@ namespace Gwen.Controls
             m_Bar.Height = ButtonSize;
             m_Bar.Padding = new Padding(ButtonSize, 0, ButtonSize, 0);
 
-            float barWidth = (m_fViewableContentSize / m_fContentSize) * (Width - (ButtonSize * 2));
+            float barWidth = (m_ViewableContentSize / m_ContentSize) * (Width - (ButtonSize * 2));
 
             if (barWidth < ButtonSize * 0.5f)
                 barWidth = Global.Trunc(ButtonSize * 0.5f);
@@ -94,8 +94,8 @@ namespace Gwen.Controls
         {
             get
             {
-                if (m_bDepressed)
-                    return m_fViewableContentSize / m_fContentSize;
+                if (m_Depressed)
+                    return m_ViewableContentSize / m_ContentSize;
                 else
                     return base.NudgeAmount;
             }
@@ -105,11 +105,11 @@ namespace Gwen.Controls
             }
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            if (pressed)
+            if (down)
             {
-                m_bDepressed = true;
+                m_Depressed = true;
                 Global.MouseFocus = this;
             }
             else
@@ -121,7 +121,7 @@ namespace Gwen.Controls
                     if (clickPos.X > m_Bar.X + m_Bar.Width)
                         NudgeRight(this);
 
-                m_bDepressed = false;
+                m_Depressed = false;
                 Global.MouseFocus = null;
             }
         }
@@ -131,7 +131,7 @@ namespace Gwen.Controls
             return (float)(m_Bar.X - ButtonSize) / (Width - m_Bar.Width - (ButtonSize * 2));
         }
 
-        public override bool SetScrollAmount(float amount, bool forceUpdate)
+        public override bool SetScrollAmount(float amount, bool forceUpdate = true)
         {
             amount = Global.Clamp(amount, 0, 1);
 

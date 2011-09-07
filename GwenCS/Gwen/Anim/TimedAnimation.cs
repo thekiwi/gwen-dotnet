@@ -5,52 +5,52 @@ namespace Gwen.Anim
     // Timed animation. Provides a useful base for animations.
     public class TimedAnimation : Animation
     {
-        protected bool m_bStarted;
-        protected bool m_bFinished;
-        protected float m_fStart;
-        protected float m_fEnd;
-        protected float m_fEase;
+        protected bool m_Started;
+        protected bool m_Finished;
+        protected float m_Start;
+        protected float m_End;
+        protected float m_Ease;
 
-        public override bool Finished { get { return m_bFinished; } }
+        public override bool Finished { get { return m_Finished; } }
 
-        public TimedAnimation( float fLength, float fDelay = 0.0f, float fEase = 1.0f )
+        public TimedAnimation( float length, float delay = 0.0f, float ease = 1.0f )
         {
-            m_fStart = Platform.Windows.GetTimeInSeconds() + fDelay;
-            m_fEnd = m_fStart + fLength;
-            m_fEase = fEase;
-            m_bStarted = false;
-            m_bFinished = false;
+            m_Start = Platform.Windows.GetTimeInSeconds() + delay;
+            m_End = m_Start + length;
+            m_Ease = ease;
+            m_Started = false;
+            m_Finished = false;
         }
 
         protected override void Think()
         {
             base.Think();
 
-            if (m_bFinished) 
+            if (m_Finished) 
                 return;
 
             float fCurrent = Platform.Windows.GetTimeInSeconds();
-            float fSecondsIn = fCurrent - m_fStart;
+            float fSecondsIn = fCurrent - m_Start;
             if (fSecondsIn < 0.0) 
                 return;
 
-            if (!m_bStarted)
+            if (!m_Started)
             {
-                m_bStarted = true;
+                m_Started = true;
                 onStart();
             }
 
-            float fDelta = fSecondsIn/(m_fEnd - m_fStart);
+            float fDelta = fSecondsIn/(m_End - m_Start);
             if (fDelta < 0.0f) 
                 fDelta = 0.0f;
             if (fDelta > 1.0f) 
                 fDelta = 1.0f;
 
-            Run((float)Math.Pow(fDelta, m_fEase));
+            Run((float)Math.Pow(fDelta, m_Ease));
 
             if (fDelta == 1.0f)
             {
-                m_bFinished = true;
+                m_Finished = true;
                 onFinish();
             }
         }

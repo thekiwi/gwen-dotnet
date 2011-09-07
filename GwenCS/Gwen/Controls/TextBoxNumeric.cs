@@ -20,9 +20,9 @@ namespace Gwen.Controls
             return float.TryParse(str, out d);
         }
 
-        protected override bool IsTextAllowed(String str, int iPos)
+        protected override bool IsTextAllowed(String str, int pos)
         {
-            String newText = Text.Insert(iPos, str);
+            String newText = Text.Insert(pos, str);
             return IsTextAllowed(newText);
         }
 

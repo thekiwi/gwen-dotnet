@@ -5,51 +5,51 @@ namespace Gwen.Controls.Layout
 {
     public class Table : Base
     {
-        protected bool m_bSizeToContents;
-        protected int m_iColumnCount;
-        protected int m_iDefaultRowHeight;
+        protected bool m_SizeToContents;
+        protected int m_ColumnCount;
+        protected int m_DefaultRowHeight;
 
         protected int[] m_ColumnWidth = new int[TableRow.MaxColumns];
 
-        public int ColumnCount { get { return m_iColumnCount; } set {SetColumnCount(value);}}
+        public int ColumnCount { get { return m_ColumnCount; } set {SetColumnCount(value);}}
         public int RowCount { get { return Children.Count; } }
 
         public Table(Base parent) : base(parent)
         {
-            m_iColumnCount = 1;
-            m_iDefaultRowHeight = 22;
+            m_ColumnCount = 1;
+            m_DefaultRowHeight = 22;
 
             for (int i = 0; i < TableRow.MaxColumns; i++)
             {
                 m_ColumnWidth[i] = 20;
             }
 
-            m_bSizeToContents = false;
+            m_SizeToContents = false;
         }
 
         protected void SetColumnCount(int i)
         {
-            if (m_iColumnCount == i) return;
+            if (m_ColumnCount == i) return;
             foreach (TableRow row in Children.OfType<TableRow>())
             {
                 row.ColumnCount = i;
             }
 
-            m_iColumnCount = i;
+            m_ColumnCount = i;
         }
 
-        public void SetColumnWidth(int i, int iWidth)
+        public void SetColumnWidth(int i, int width)
         {
-            if (m_ColumnWidth[i] == iWidth) return;
-            m_ColumnWidth[i] = iWidth;
+            if (m_ColumnWidth[i] == width) return;
+            m_ColumnWidth[i] = width;
             Invalidate();
         }
 
         public TableRow AddRow()
         {
             TableRow row = new TableRow(this);
-            row.ColumnCount = m_iColumnCount;
-            row.Height = m_iDefaultRowHeight;
+            row.ColumnCount = m_ColumnCount;
+            row.Height = m_DefaultRowHeight;
             row.Dock = Pos.Top;
             return row;
         }
@@ -57,8 +57,8 @@ namespace Gwen.Controls.Layout
         public void AddRow(TableRow row)
         {
             row.Parent = this;
-            row.ColumnCount = m_iColumnCount;
-            row.Height = m_iDefaultRowHeight;
+            row.ColumnCount = m_ColumnCount;
+            row.Height = m_DefaultRowHeight;
             row.Dock = Pos.Top;
         }
 
@@ -86,7 +86,7 @@ namespace Gwen.Controls.Layout
         {
             base.Layout(skin);
          
-            if (m_bSizeToContents)
+            if (m_SizeToContents)
             {
                 DoSizeToContents();
             }
@@ -96,7 +96,7 @@ namespace Gwen.Controls.Layout
             {
                 row.EvenRow = even;
                 even = !even;
-                for (int i = 0; i < TableRow.MaxColumns && i < m_iColumnCount; i++)
+                for (int i = 0; i < TableRow.MaxColumns && i < m_ColumnCount; i++)
                 {
                     row.SetColumnWidth(i, m_ColumnWidth[i]);
                 }
@@ -105,16 +105,16 @@ namespace Gwen.Controls.Layout
 
         protected override void PostLayout(Skin.Base skin)
         {
-            if (m_bSizeToContents)
+            if (m_SizeToContents)
             {
                 SizeToChildren();
-                m_bSizeToContents = false;
+                m_SizeToContents = false;
             }
         }
 
         public void SizeToContents()
         {
-            m_bSizeToContents = true;
+            m_SizeToContents = true;
             Invalidate();
         }
 

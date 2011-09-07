@@ -154,9 +154,9 @@ namespace Gwen.Controls
             m_Menu.Hide();
         }
 
-        internal override bool onKeyDown(bool bDown)
+        internal override bool onKeyDown(bool down)
         {
-            if (bDown)
+            if (down)
             {
                 var it = m_Menu.InnerChildren.FindIndex(x => x == m_SelectedItem);
                 if (it + 1 < m_Menu.InnerChildren.Count)
@@ -165,9 +165,9 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyUp(bool bDown)
+        internal override bool onKeyUp(bool down)
         {
-            if (bDown)
+            if (down)
             {
                 var it = m_Menu.InnerChildren.FindLastIndex(x => x == m_SelectedItem);
                 if (it - 1 >= 0)

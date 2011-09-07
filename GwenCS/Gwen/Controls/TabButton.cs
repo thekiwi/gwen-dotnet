@@ -61,21 +61,21 @@ namespace Gwen.Controls
             skin.DrawTabButton(this, IsActive, m_Control.TabStrip.Dock);
         }
 
-        internal override bool onKeyDown(bool bDown)
+        internal override bool onKeyDown(bool down)
         {
-            onKeyRight(bDown);
+            onKeyRight(down);
             return true;
         }
 
-        internal override bool onKeyUp(bool bDown)
+        internal override bool onKeyUp(bool down)
         {
-            onKeyLeft(bDown);
+            onKeyLeft(down);
             return true;
         }
 
-        internal override bool onKeyRight(bool bDown)
+        internal override bool onKeyRight(bool down)
         {
-            if (bDown)
+            if (down)
             {
                 var count = Parent.ChildrenCount;
                 int me = Parent.Children.IndexOf(this);
@@ -90,9 +90,9 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyLeft(bool bDown)
+        internal override bool onKeyLeft(bool down)
         {
-            if (bDown)
+            if (down)
             {
                 var count = Parent.ChildrenCount;
                 int me = Parent.Children.IndexOf(this);

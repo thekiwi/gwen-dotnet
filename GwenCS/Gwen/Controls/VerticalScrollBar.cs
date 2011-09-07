@@ -48,7 +48,7 @@ namespace Gwen.Controls
             m_Bar.Width = ButtonSize;
             m_Bar.Padding = new Padding(0, ButtonSize, 0, ButtonSize);
 
-            float barHeight = (m_fViewableContentSize / m_fContentSize) * (Height - (ButtonSize * 2));
+            float barHeight = (m_ViewableContentSize / m_ContentSize) * (Height - (ButtonSize * 2));
 
             if (barHeight < ButtonSize * 0.5f)
                 barHeight = Global.Trunc(ButtonSize * 0.5f);
@@ -89,8 +89,8 @@ namespace Gwen.Controls
         {
             get
             {
-                if (m_bDepressed)
-                    return m_fViewableContentSize / m_fContentSize;
+                if (m_Depressed)
+                    return m_ViewableContentSize / m_ContentSize;
                 else
                     return base.NudgeAmount;
             }
@@ -100,11 +100,11 @@ namespace Gwen.Controls
             }
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            if (pressed)
+            if (down)
             {
-                m_bDepressed = true;
+                m_Depressed = true;
                 Global.MouseFocus = this;
             }
             else
@@ -115,7 +115,7 @@ namespace Gwen.Controls
                 else if (clickPos.Y > m_Bar.Y + m_Bar.Height)
                     NudgeDown(this);
 
-                m_bDepressed = false;
+                m_Depressed = false;
                 Global.MouseFocus = null;
             }
         }

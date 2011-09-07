@@ -1,29 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Gwen
 {
     public struct Margin : IEquatable<Margin>
     {
         // todo: add equality?
-        public int top;
-        public int bottom;
-        public int left;
-        public int right;
+        public int Top;
+        public int Bottom;
+        public int Left;
+        public int Right;
 
         public Margin(int l, int t, int r, int b)
         {
-            top = t;
-            bottom = b;
-            left = l;
-            right = r;
+            Top = t;
+            Bottom = b;
+            Left = l;
+            Right = r;
         }
 
         public bool Equals(Margin other)
         {
-            return (top == other.top && bottom == other.bottom && left == other.left && right == other.right);
+            return (Top == other.Top && Bottom == other.Bottom && Left == other.Left && Right == other.Right);
         }
 
         public static bool operator==(Margin lhs, Margin rhs)

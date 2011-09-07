@@ -9,77 +9,77 @@ namespace Gwen.Skin.Texturing
 
     public struct Bordered
     {
-        private Texture texture;
+        private Texture m_Texture;
 
-        private readonly SubRect[] rects;
+        private readonly SubRect[] m_Rects;
 
-        private Margin margin;
+        private Margin m_Margin;
 
-        private float width;
-        private float height;
+        private float m_Width;
+        private float m_Height;
 
-        public Bordered(Texture pTexture, float x, float y, float w, float h, Margin in_margin, float DrawMarginScale = 1.0f) : this()
+        public Bordered(Texture texture, float x, float y, float w, float h, Margin inMargin, float drawMarginScale = 1.0f) : this()
         {
-            rects = new SubRect[9];
-            for (int i = 0; i < rects.Length; i++)
+            m_Rects = new SubRect[9];
+            for (int i = 0; i < m_Rects.Length; i++)
             {
-                rects[i].uv = new float[4];
+                m_Rects[i].uv = new float[4];
             }
 
-            Init(pTexture, x, y, w, h, in_margin, DrawMarginScale);
+            Init(texture, x, y, w, h, inMargin, drawMarginScale);
         }
 
         void DrawRect(Renderer.Base render, int i, int x, int y, int w, int h)
         {
-            render.DrawTexturedRect(texture,
+            render.DrawTexturedRect(m_Texture,
                                     new Rectangle(x, y, w, h),
-                                    rects[i].uv[0], rects[i].uv[1], rects[i].uv[2], rects[i].uv[3]);
+                                    m_Rects[i].uv[0], m_Rects[i].uv[1], m_Rects[i].uv[2], m_Rects[i].uv[3]);
         }
 
-        void SetRect(int iNum, float x, float y, float w, float h)
+        void SetRect(int num, float x, float y, float w, float h)
         {
-            float texw = texture.Width;
-            float texh = texture.Height;
+            float texw = m_Texture.Width;
+            float texh = m_Texture.Height;
 
             //x -= 1.0f;
             //y -= 1.0f;
 
-            rects[iNum].uv[0] = x / texw;
-            rects[iNum].uv[1] = y / texh;
+            m_Rects[num].uv[0] = x / texw;
+            m_Rects[num].uv[1] = y / texh;
 
-            rects[iNum].uv[2] = (x + w) / texw;
-            rects[iNum].uv[3] = (y + h) / texh;
+            m_Rects[num].uv[2] = (x + w) / texw;
+            m_Rects[num].uv[3] = (y + h) / texh;
 
-            //	rects[iNum].uv[0] += 1.0f / texture->width;
-            //	rects[iNum].uv[1] += 1.0f / texture->width;
+            //	rects[num].uv[0] += 1.0f / m_Texture->width;
+            //	rects[num].uv[1] += 1.0f / m_Texture->width;
         }
 
-        void Init(Texture pTexture, float x, float y, float w, float h, Margin in_margin, float DrawMarginScale = 1.0f)
+        void Init(Texture texture, float x, float y, float w, float h, Margin inMargin, float drawMarginScale = 1.0f)
         {
-            texture = pTexture;
+            m_Texture = texture;
 
-            margin = in_margin;
+            m_Margin = inMargin;
 
-            SetRect(0, x, y, margin.left, margin.top);
-            SetRect(1, x + margin.left, y, w - margin.left - margin.right, margin.top);
-            SetRect(2, (x + w) - margin.right, y, margin.right, margin.top);
+            SetRect(0, x, y, m_Margin.Left, m_Margin.Top);
+            SetRect(1, x + m_Margin.Left, y, w - m_Margin.Left - m_Margin.Right, m_Margin.Top);
+            SetRect(2, (x + w) - m_Margin.Right, y, m_Margin.Right, m_Margin.Top);
 
-            SetRect(3, x, y + margin.top, margin.left, h - margin.top - margin.bottom);
-            SetRect(4, x + margin.left, y + margin.top, w - margin.left - margin.right,
-                    h - margin.top - margin.bottom);
-            SetRect(5, (x + w) - margin.right, y + margin.top, margin.right, h - margin.top - margin.bottom - 1);
+            SetRect(3, x, y + m_Margin.Top, m_Margin.Left, h - m_Margin.Top - m_Margin.Bottom);
+            SetRect(4, x + m_Margin.Left, y + m_Margin.Top, w - m_Margin.Left - m_Margin.Right,
+                    h - m_Margin.Top - m_Margin.Bottom);
+            SetRect(5, (x + w) - m_Margin.Right, y + m_Margin.Top, m_Margin.Right, h - m_Margin.Top - m_Margin.Bottom - 1);
 
-            SetRect(6, x, (y + h) - margin.bottom, margin.left, margin.bottom);
-            SetRect(7, x + margin.left, (y + h) - margin.bottom, w - margin.left - margin.right, margin.bottom);
-            SetRect(8, (x + w) - margin.right, (y + h) - margin.bottom, margin.right, margin.bottom);
+            SetRect(6, x, (y + h) - m_Margin.Bottom, m_Margin.Left, m_Margin.Bottom);
+            SetRect(7, x + m_Margin.Left, (y + h) - m_Margin.Bottom, w - m_Margin.Left - m_Margin.Right, m_Margin.Bottom);
+            SetRect(8, (x + w) - m_Margin.Right, (y + h) - m_Margin.Bottom, m_Margin.Right, m_Margin.Bottom);
 
-            margin.left = Global.Trunc(margin.left*DrawMarginScale);
-            margin.right = Global.Trunc(margin.right*DrawMarginScale);
-            margin.top = Global.Trunc(margin.top*DrawMarginScale);
-            margin.bottom = Global.Trunc(margin.bottom*DrawMarginScale);
+            m_Margin.Left = Global.Trunc(m_Margin.Left*drawMarginScale);
+            m_Margin.Right = Global.Trunc(m_Margin.Right*drawMarginScale);
+            m_Margin.Top = Global.Trunc(m_Margin.Top*drawMarginScale);
+            m_Margin.Bottom = Global.Trunc(m_Margin.Bottom*drawMarginScale);
 
-            width = w - x;
-            height = h - y;
+            m_Width = w - x;
+            m_Height = h - y;
         }
 
         // can't have this as default param
@@ -90,32 +90,32 @@ namespace Gwen.Skin.Texturing
 
         public void Draw(Renderer.Base render, Rectangle r, Color col)
         {
-            if (texture == null)
+            if (m_Texture == null)
                 return;
 
             render.DrawColor = col;
 
-            if (r.Width < width && r.Height < height)
+            if (r.Width < m_Width && r.Height < m_Height)
             {
-                render.DrawTexturedRect(texture, r, rects[0].uv[0], rects[0].uv[1], rects[8].uv[2], rects[8].uv[3]);
+                render.DrawTexturedRect(m_Texture, r, m_Rects[0].uv[0], m_Rects[0].uv[1], m_Rects[8].uv[2], m_Rects[8].uv[3]);
                 return;
             }
 
-            DrawRect(render, 0, r.X, r.Y, margin.left, margin.top);
-            DrawRect(render, 1, r.X + margin.left, r.Y, r.Width - margin.left - margin.right, margin.top);
-            DrawRect(render, 2, (r.X + r.Width) - margin.right, r.Y, margin.right, margin.top);
+            DrawRect(render, 0, r.X, r.Y, m_Margin.Left, m_Margin.Top);
+            DrawRect(render, 1, r.X + m_Margin.Left, r.Y, r.Width - m_Margin.Left - m_Margin.Right, m_Margin.Top);
+            DrawRect(render, 2, (r.X + r.Width) - m_Margin.Right, r.Y, m_Margin.Right, m_Margin.Top);
 
-            DrawRect(render, 3, r.X, r.Y + margin.top, margin.left, r.Height - margin.top - margin.bottom);
-            DrawRect(render, 4, r.X + margin.left, r.Y + margin.top, r.Width - margin.left - margin.right,
-                     r.Height - margin.top - margin.bottom);
-            DrawRect(render, 5, (r.X + r.Width) - margin.right, r.Y + margin.top, margin.right,
-                     r.Height - margin.top - margin.bottom);
+            DrawRect(render, 3, r.X, r.Y + m_Margin.Top, m_Margin.Left, r.Height - m_Margin.Top - m_Margin.Bottom);
+            DrawRect(render, 4, r.X + m_Margin.Left, r.Y + m_Margin.Top, r.Width - m_Margin.Left - m_Margin.Right,
+                     r.Height - m_Margin.Top - m_Margin.Bottom);
+            DrawRect(render, 5, (r.X + r.Width) - m_Margin.Right, r.Y + m_Margin.Top, m_Margin.Right,
+                     r.Height - m_Margin.Top - m_Margin.Bottom);
 
-            DrawRect(render, 6, r.X, (r.Y + r.Height) - margin.bottom, margin.left, margin.bottom);
-            DrawRect(render, 7, r.X + margin.left, (r.Y + r.Height) - margin.bottom,
-                     r.Width - margin.left - margin.right, margin.bottom);
-            DrawRect(render, 8, (r.X + r.Width) - margin.right, (r.Y + r.Height) - margin.bottom, margin.right,
-                     margin.bottom);
+            DrawRect(render, 6, r.X, (r.Y + r.Height) - m_Margin.Bottom, m_Margin.Left, m_Margin.Bottom);
+            DrawRect(render, 7, r.X + m_Margin.Left, (r.Y + r.Height) - m_Margin.Bottom,
+                     r.Width - m_Margin.Left - m_Margin.Right, m_Margin.Bottom);
+            DrawRect(render, 8, (r.X + r.Width) - m_Margin.Right, (r.Y + r.Height) - m_Margin.Bottom, m_Margin.Right,
+                     m_Margin.Bottom);
         }
     }
 }

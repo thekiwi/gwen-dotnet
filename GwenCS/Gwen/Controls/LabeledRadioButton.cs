@@ -44,9 +44,9 @@ namespace Gwen.Controls
         public RadioButton RadioButton { get { return m_RadioButton; } }
         public LabelClickable Label { get { return m_Label; } }
 
-        internal override bool onKeySpace(bool bDown)
+        internal override bool onKeySpace(bool down)
         {
-            if (bDown)
+            if (down)
                 m_RadioButton.IsChecked = !m_RadioButton.IsChecked;
             return true;
         }

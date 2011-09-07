@@ -7,8 +7,8 @@ namespace Gwen.Controls
 {
     public class Canvas : Base
     {
-        private bool m_bNeedsRedraw;
-        private float m_fScale;
+        private bool m_NeedsRedraw;
+        private float m_Scale;
 
         private Color m_BackgroundColor;
 
@@ -18,29 +18,29 @@ namespace Gwen.Controls
 
         public float Scale
         {
-            get { return m_fScale; }
+            get { return m_Scale; }
             set
             {
-                if (m_fScale == value)
+                if (m_Scale == value)
                     return;
 
-                m_fScale = value;
+                m_Scale = value;
 
                 if (m_Skin != null && m_Skin.Renderer != null)
-                    m_Skin.Renderer.Scale = m_fScale;
+                    m_Skin.Renderer.Scale = m_Scale;
 
                 onScaleChanged();
                 Redraw();
             }
         }
-        public bool DrawBackground { get { return m_bDrawBackground; } set { m_bDrawBackground = value; } }
+        public bool DrawBackground { get { return m_DrawBackground; } set { m_DrawBackground = value; } }
         public Color BackgroundColor { get { return m_BackgroundColor; } set { m_BackgroundColor = value; } }
 
         // In most situations you will be rendering the canvas
         // every frame. But in some situations you will only want
         // to render when there have been changes. You can do this
         // by checking NeedsRedraw().
-        public bool NeedsRedraw { get { return m_bNeedsRedraw; } set { m_bNeedsRedraw = value; } }
+        public bool NeedsRedraw { get { return m_NeedsRedraw; } set { m_NeedsRedraw = value; } }
 
         public Canvas(Skin.Base skin)
         {
@@ -90,7 +90,7 @@ namespace Gwen.Controls
             render.RenderOffset = Point.Empty;
             render.Scale = Scale;
 
-            if (m_bDrawBackground)
+            if (m_DrawBackground)
             {
                 render.DrawColor = m_BackgroundColor;
                 render.DrawFilledRect(RenderBounds);
@@ -112,7 +112,7 @@ namespace Gwen.Controls
         {
             //skin.Renderer.rnd = new Random(1);
             base.Render(skin);
-            m_bNeedsRedraw = false;
+            m_NeedsRedraw = false;
         }
 
         internal override void onBoundsChanged(Rectangle oldBounds)
@@ -167,20 +167,20 @@ namespace Gwen.Controls
             return true;
         }
 
-        public virtual bool InputMouseButton(int button, bool pressed)
+        public virtual bool InputMouseButton(int button, bool down)
         {
             if (IsHidden) return false;
 
-            return Input.Input.onMouseClicked(this, button, pressed);
+            return Input.Input.onMouseClicked(this, button, down);
         }
 
-        public virtual bool InputKey(Key key, bool pressed)
+        public virtual bool InputKey(Key key, bool down)
         {
             if (IsHidden) return false;
             if (key <= Key.Invalid) return false;
             if (key >= Key.Count) return false;
 
-            return Input.Input.onKeyEvent(this, key, pressed);
+            return Input.Input.onKeyEvent(this, key, down);
         }
 
         public virtual bool InputCharacter(char chr)

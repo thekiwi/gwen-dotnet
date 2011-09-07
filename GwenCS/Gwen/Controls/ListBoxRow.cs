@@ -6,7 +6,7 @@ namespace Gwen.Controls
 {
     public class ListBoxRow : TableRow
     {
-        protected bool m_bSelected;
+        protected bool m_Selected;
 
         public ListBoxRow(Base parent) : base(parent)
         {
@@ -16,10 +16,10 @@ namespace Gwen.Controls
 
         public bool IsSelected
         {
-            get { return m_bSelected; }
+            get { return m_Selected; }
             set
             {
-                m_bSelected = value;             
+                m_Selected = value;             
                 // TODO: Get these values from the skin.
                 if (value)
                     SetTextColor(Color.White);
@@ -33,9 +33,9 @@ namespace Gwen.Controls
             skin.DrawListBoxLine(this, IsSelected, EvenRow);
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            if (pressed)
+            if (down)
             {
                 //IsSelected = true; // [omeg] ListBox manages that
                 onRowSelected();

@@ -48,10 +48,10 @@ namespace Gwen.Controls
             return lrb;
         }
 
-        protected virtual void onRadioClicked(Base pFromPanel)
+        protected virtual void onRadioClicked(Base fromPanel)
         {
-            RadioButton pChecked = pFromPanel as RadioButton;
-            foreach (LabeledRadioButton rb in Children.OfType<LabeledRadioButton>())
+            RadioButton pChecked = fromPanel as RadioButton;
+            foreach (LabeledRadioButton rb in Children.OfType<LabeledRadioButton>()) // todo: optimize
             {
                 if (rb.RadioButton == pChecked)
                     m_Selected = rb;

@@ -4,14 +4,14 @@ namespace Gwen.Controls
 {
     public class ProgressBar : Label
     {
-        protected bool m_bHorizontal;
-        protected bool m_bAutoLabel;
-        protected float m_fProgress;
+        protected bool m_Horizontal;
+        protected bool m_AutoLabel;
+        protected float m_Progress;
 
-        public bool IsHorizontal { get { return m_bHorizontal; } set { m_bHorizontal = value; } }
+        public bool IsHorizontal { get { return m_Horizontal; } set { m_Horizontal = value; } }
         public float Value
         {
-            get { return m_fProgress; }
+            get { return m_Progress; }
             set
             {
                 if (value < 0)
@@ -19,15 +19,15 @@ namespace Gwen.Controls
                 if (value > 1)
                     value = 1;
 
-                m_fProgress = value;
-                if (m_bAutoLabel)
+                m_Progress = value;
+                if (m_AutoLabel)
                 {
-                    int displayVal = (int)(m_fProgress * 100);
+                    int displayVal = (int)(m_Progress * 100);
                     Text = displayVal.ToString() + "%";
                 }
             }
         }
-        public bool AutoLabel { get { return m_bAutoLabel; } set { m_bAutoLabel = value; } }
+        public bool AutoLabel { get { return m_AutoLabel; } set { m_AutoLabel = value; } }
 
         public ProgressBar(Base parent) : base(parent)
         {
@@ -37,13 +37,13 @@ namespace Gwen.Controls
             IsHorizontal = true;
 
             Alignment = Pos.Center;
-            m_fProgress = 0;
-            m_bAutoLabel = true;
+            m_Progress = 0;
+            m_AutoLabel = true;
         }
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawProgressBar(this, m_bHorizontal, m_fProgress);
+            skin.DrawProgressBar(this, m_Horizontal, m_Progress);
         }
     }
 }

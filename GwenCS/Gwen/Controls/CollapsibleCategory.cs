@@ -5,11 +5,11 @@ namespace Gwen.Controls
 {
     public class CollapsibleCategory : Base
     {
-        protected Button m_pButton;
-        protected CollapsibleList m_pList;
+        protected Button m_Button;
+        protected CollapsibleList m_List;
 
-        public CollapsibleList List { get { return m_pList; } set { m_pList = value; } }
-        public String Text { get { return m_pButton.Text; } set { m_pButton.Text = value; } }
+        public CollapsibleList List { get { return m_List; } set { m_List = value; } }
+        public String Text { get { return m_Button.Text; } set { m_Button.Text = value; } }
 
         public event ControlCallback OnSelection;
 
@@ -34,10 +34,10 @@ namespace Gwen.Controls
 
         public CollapsibleCategory(Base parent) : base(parent)
         {
-            m_pButton = new CategoryHeaderButton(this);
-            m_pButton.Text = "Category Title"; // [omeg] todo: i18n
-            m_pButton.Dock = Pos.Top;
-            m_pButton.Height = 20;
+            m_Button = new CategoryHeaderButton(this);
+            m_Button.Text = "Category Title"; // [omeg] todo: i18n
+            m_Button.Dock = Pos.Top;
+            m_Button.Height = 20;
 
             Padding = new Padding(1, 0, 1, 5);
             SetSize(512, 512);
@@ -48,9 +48,9 @@ namespace Gwen.Controls
             CategoryButton child = control as CategoryButton;
             if (child == null) return;
 
-            if (m_pList != null)
+            if (m_List != null)
             {
-                m_pList.UnselectAll();
+                m_List.UnselectAll();
             }
             else
             {
@@ -78,7 +78,7 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawCategoryInner(this, m_pButton.ToggleState);
+            skin.DrawCategoryInner(this, m_Button.ToggleState);
         }
 
         public void UnselectAll()
@@ -95,9 +95,9 @@ namespace Gwen.Controls
 
         protected override void PostLayout(Skin.Base skin)
         {
-            if (m_pButton.ToggleState)
+            if (m_Button.ToggleState)
             {
-                Height = m_pButton.Height;
+                Height = m_Button.Height;
             }
             else
             {
@@ -111,7 +111,7 @@ namespace Gwen.Controls
                 if (button == null)
                     continue;
 
-                button.m_bAlt = b;
+                button.m_Alt = b;
                 button.UpdateColors();
                 b = !b;
             }
@@ -119,7 +119,7 @@ namespace Gwen.Controls
 
         public override void Dispose()
         {
-            m_pButton.Dispose();
+            m_Button.Dispose();
             base.Dispose();
         }
     }

@@ -16,8 +16,8 @@ namespace Gwen.Controls
         // Only CHILD dockpanels have a tabcontrol.
         private DockedTabControl m_DockedTabControl;
 
-        private bool m_bDrawHover;
-        private bool m_bDropFar;
+        private bool m_DrawHover;
+        private bool m_DropFar;
         private Rectangle m_HoverRect;
 
         public virtual DockBase LeftDock { get { return GetChildDock(Pos.Left); } }
@@ -43,7 +43,7 @@ namespace Gwen.Controls
             base.Dispose();
         }
         
-        internal override bool onKeySpace(bool bDown)
+        internal override bool onKeySpace(bool down)
         {
             // No action on space (default button action is to press)
             return false;
@@ -138,7 +138,7 @@ namespace Gwen.Controls
             float bottom = (h - y) / (float)h;
             float minimum = Math.Min(Math.Min(Math.Min(top, left), right), bottom);
 
-            m_bDropFar = (minimum < 0.2f);
+            m_DropFar = (minimum < 0.2f);
 
             if (minimum > 0.3f)
                 return Pos.Fill;
@@ -170,42 +170,42 @@ namespace Gwen.Controls
 
         public override bool DragAndDrop_HandleDrop(Package p, int x, int y)
         {
-            Point pPos = CanvasPosToLocal(new Point(x, y));
-            Pos dir = GetDroppedTabDirection(pPos.X, pPos.Y);
+            Point pos = CanvasPosToLocal(new Point(x, y));
+            Pos dir = GetDroppedTabDirection(pos.X, pos.Y);
 
-            DockedTabControl pAddTo = m_DockedTabControl;
-            if (dir == Pos.Fill && pAddTo == null)
+            DockedTabControl addTo = m_DockedTabControl;
+            if (dir == Pos.Fill && addTo == null)
                 return false;
 
             if (dir != Pos.Fill)
             {
-                DockBase pDock = GetChildDock(dir);
-                pAddTo = pDock.m_DockedTabControl;
+                DockBase dock = GetChildDock(dir);
+                addTo = dock.m_DockedTabControl;
 
-                if (!m_bDropFar)
-                    pDock.BringToFront();
+                if (!m_DropFar)
+                    dock.BringToFront();
                 else
-                    pDock.SendToBack();
+                    dock.SendToBack();
             }
 
             if (p.Name == "TabButtonMove")
             {
-                TabButton pTabButton = DragAndDrop.SourceControl as TabButton;
-                if (null == pTabButton)
+                TabButton tabButton = DragAndDrop.SourceControl as TabButton;
+                if (null == tabButton)
                     return false;
 
-                pAddTo.AddPage(pTabButton);
+                addTo.AddPage(tabButton);
             }
 
             if (p.Name == "TabWindowMove")
             {
-                DockedTabControl pTabControl = DragAndDrop.SourceControl as DockedTabControl;
-                if (null == pTabControl)
+                DockedTabControl tabControl = DragAndDrop.SourceControl as DockedTabControl;
+                if (null == tabControl)
                     return false;
-                if (pTabControl == pAddTo)
+                if (tabControl == addTo)
                     return false;
 
-                pTabControl.MoveTabsTo(pAddTo);
+                tabControl.MoveTabsTo(addTo);
             }
 
             Invalidate();
@@ -284,18 +284,18 @@ namespace Gwen.Controls
 
         public override void DragAndDrop_HoverEnter(Package p, int x, int y)
         {
-            m_bDrawHover = true;
+            m_DrawHover = true;
         }
 
         public override void DragAndDrop_HoverLeave(Package p)
         {
-            m_bDrawHover = false;
+            m_DrawHover = false;
         }
 
         public override void DragAndDrop_Hover(Package p, int x, int y)
         {
-            Point pPos = CanvasPosToLocal(new Point(x, y));
-            Pos dir = GetDroppedTabDirection(pPos.X, pPos.Y);
+            Point pos = CanvasPosToLocal(new Point(x, y));
+            Pos dir = GetDroppedTabDirection(pos.X, pos.Y);
 
             if (dir == Pos.Fill)
             {
@@ -339,7 +339,7 @@ namespace Gwen.Controls
                 m_HoverRect.Height = HelpBarWidth;
             }
 
-            if ((dir == Pos.Top || dir == Pos.Bottom) && !m_bDropFar)
+            if ((dir == Pos.Top || dir == Pos.Bottom) && !m_DropFar)
             {
                 if (m_Left != null && m_Left.IsVisible)
                 {
@@ -353,7 +353,7 @@ namespace Gwen.Controls
                 }
             }
 
-            if ((dir == Pos.Left || dir == Pos.Right) && !m_bDropFar)
+            if ((dir == Pos.Left || dir == Pos.Right) && !m_DropFar)
             {
                 if (m_Top != null && m_Top.IsVisible)
                 {
@@ -370,7 +370,7 @@ namespace Gwen.Controls
 
         protected override void RenderOver(Skin.Base skin)
         {
-            if (!m_bDrawHover)
+            if (!m_DrawHover)
                 return;
 
             Renderer.Base render = skin.Renderer;

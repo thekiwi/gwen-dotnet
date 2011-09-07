@@ -6,34 +6,34 @@ namespace Gwen.ControlsInternal
 {
     public class Dragger : Base
     {
-        protected bool m_bDepressed;
+        protected bool m_Depressed;
         protected Point m_HoldPos;
-        protected Base m_pTarget;
+        protected Base m_Target;
 
-        internal Base Target { get { return m_pTarget; } set { m_pTarget = value; } }
-        public bool IsDepressed { get { return m_bDepressed; } }
+        internal Base Target { get { return m_Target; } set { m_Target = value; } }
+        public bool IsDepressed { get { return m_Depressed; } }
 
         public event ControlCallback OnDragged;
 
         public Dragger(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
-            m_bDepressed = false;
+            m_Depressed = false;
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool pressed)
+        internal override void onMouseClickLeft(int x, int y, bool down)
         {
-            if (null == m_pTarget) return;
+            if (null == m_Target) return;
 
-            if (pressed)
+            if (down)
             {
-                m_bDepressed = true;
-                m_HoldPos = m_pTarget.CanvasPosToLocal(new Point(x, y));
+                m_Depressed = true;
+                m_HoldPos = m_Target.CanvasPosToLocal(new Point(x, y));
                 Global.MouseFocus = this;
             }
             else
             {
-                m_bDepressed = false;
+                m_Depressed = false;
 
                 Global.MouseFocus = null;
             }
@@ -41,17 +41,17 @@ namespace Gwen.ControlsInternal
 
         internal override void onMouseMoved(int x, int y, int dx, int dy)
         {
-            if (null == m_pTarget) return;
-            if (!m_bDepressed) return;
+            if (null == m_Target) return;
+            if (!m_Depressed) return;
 
             Point p = new Point(x - m_HoldPos.X, y - m_HoldPos.Y);
 
             // Translate to parent
-            if (m_pTarget.Parent != null)
-                p = m_pTarget.Parent.CanvasPosToLocal(p);
+            if (m_Target.Parent != null)
+                p = m_Target.Parent.CanvasPosToLocal(p);
 
-            //m_pTarget->SetPosition( p.x, p.y );
-            m_pTarget.MoveTo(p.X, p.Y);
+            //m_Target->SetPosition( p.x, p.y );
+            m_Target.MoveTo(p.X, p.Y);
             if (OnDragged != null)
                 OnDragged.Invoke(this);
         }

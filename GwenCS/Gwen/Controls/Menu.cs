@@ -6,12 +6,12 @@ namespace Gwen.Controls
 {
     public class Menu : ScrollControl
     {
-        protected bool m_bDisableIconMargin;
-        protected bool m_bDeleteOnClose;
+        protected bool m_DisableIconMargin;
+        protected bool m_DeleteOnClose;
 
         public override bool IsMenuComponent { get { return true; } }
-        public bool IconMarginDisabled { get { return m_bDisableIconMargin; } set { m_bDisableIconMargin = value; } }
-        public bool DeleteOnClose { get { return m_bDeleteOnClose; } set { m_bDeleteOnClose = value; } }
+        public bool IconMarginDisabled { get { return m_DisableIconMargin; } set { m_DisableIconMargin = value; } }
+        public bool DeleteOnClose { get { return m_DeleteOnClose; } set { m_DeleteOnClose = value; } }
 
         protected virtual bool ShouldHoverOpenMenu { get { return true; } }
 
@@ -64,17 +64,17 @@ namespace Gwen.Controls
             base.Layout(skin);
         }
 
-        public virtual MenuItem AddItem(String strName, ControlCallback handler = null)
+        public virtual MenuItem AddItem(String name, ControlCallback handler = null)
         {
-            return AddItem(strName, String.Empty, handler);
+            return AddItem(name, String.Empty, handler);
         }
 
-        public virtual MenuItem AddItem(String strName, String strIconName, ControlCallback handler = null)
+        public virtual MenuItem AddItem(String name, String iconName, ControlCallback handler = null)
         {
             MenuItem item = new MenuItem(this);
             item.Padding = new Padding(4, 4, 4, 4);
-            item.SetText(strName);
-            item.SetImage(strIconName);
+            item.SetText(name);
+            item.SetImage(iconName);
 
             if (handler != null)
                 item.OnMenuItemSelected += handler;
@@ -116,16 +116,16 @@ namespace Gwen.Controls
             return m_InnerPanel.Children.Any(child => { if (child is MenuItem) return (child as MenuItem).IsMenuOpen; return false; });
         }
 
-        protected virtual void onHoverItem(Base pControl)
+        protected virtual void onHoverItem(Base control)
         {
             if (!ShouldHoverOpenMenu) return;
 
-            MenuItem pItem = pControl as MenuItem;
-            if (null == pItem) return;
-            if (pItem.IsMenuOpen) return;
+            MenuItem item = control as MenuItem;
+            if (null == item) return;
+            if (item.IsMenuOpen) return;
 
             CloseAll();
-            pItem.OpenMenu();
+            item.OpenMenu();
         }
 
         public virtual void Close()
