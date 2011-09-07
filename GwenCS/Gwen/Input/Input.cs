@@ -9,17 +9,17 @@ namespace Gwen.Input
 {
     public static class Input
     {
-        private static KeyData KeyData = new KeyData();
-        private static float[] g_fLastClickTime = new float[MaxMouseButtons];
-        private static Point g_pntLastClickPos;
+        private static KeyData m_KeyData = new KeyData();
+        private static float[] m_LastClickTime = new float[MaxMouseButtons];
+        private static Point m_LastClickPos;
 
         public static int MaxMouseButtons { get { return 5; } }
         public static float DoubleClickSpeed { get { return 0.5f; } }
         public static float KeyRepeatRate { get { return 0.03f; } }
         public static float KeyRepeatDelay { get { return 0.5f; } }
 
-        public static bool IsLeftMouseDown { get { return KeyData.LeftMouseDown; } }
-        public static bool IsRightMouseDown { get { return KeyData.RightMouseDown; } }
+        public static bool IsLeftMouseDown { get { return m_KeyData.LeftMouseDown; } }
+        public static bool IsRightMouseDown { get { return m_KeyData.RightMouseDown; } }
         public static Point MousePosition; // not property to allow modification of Point fields
         public static bool IsShiftDown { get { return IsKeyDown(Key.Shift); } }
         public static bool IsControlDown { get { return IsKeyDown(Key.Control); } }
@@ -27,7 +27,7 @@ namespace Gwen.Input
         // For use in panels
         public static bool IsKeyDown(Key key)
         {
-            return KeyData.KeyState[(int)key];
+            return m_KeyData.KeyState[(int)key];
         }
 
         // Does copy, paste etc
@@ -112,22 +112,22 @@ namespace Gwen.Input
             if (null == Global.KeyboardFocus) return;
             if (Global.KeyboardFocus.GetCanvas() != control) return;
 
-            float fTime = Platform.Windows.GetTimeInSeconds();
+            float time = Platform.Windows.GetTimeInSeconds();
 
             //
             // Simulate Key-Repeats
             //
             for (int i = 0; i < (int)Key.Count; i++)
             {
-                if (KeyData.KeyState[i] && KeyData.Target != Global.KeyboardFocus)
+                if (m_KeyData.KeyState[i] && m_KeyData.Target != Global.KeyboardFocus)
                 {
-                    KeyData.KeyState[i] = false;
+                    m_KeyData.KeyState[i] = false;
                     continue;
                 }
 
-                if (KeyData.KeyState[i] && fTime > KeyData.NextRepeat[i])
+                if (m_KeyData.KeyState[i] && time > m_KeyData.NextRepeat[i])
                 {
-                    KeyData.NextRepeat[i] = Gwen.Platform.Windows.GetTimeInSeconds() + KeyRepeatRate;
+                    m_KeyData.NextRepeat[i] = Platform.Windows.GetTimeInSeconds() + KeyRepeatRate;
 
                     if (Global.KeyboardFocus != null)
                     {
@@ -137,11 +137,11 @@ namespace Gwen.Input
             }
         }
 
-        public static bool onMouseClicked(Base canvas, int iMouseButton, bool bDown)
+        public static bool onMouseClicked(Base canvas, int mouseButton, bool down)
         {
             // If we click on a control that isn't a menu we want to close
             // all the open menus. Menus are children of the canvas.
-            if (bDown && (null == Global.HoveredControl || !Global.HoveredControl.IsMenuComponent))
+            if (down && (null == Global.HoveredControl || !Global.HoveredControl.IsMenuComponent))
             {
                 canvas.CloseMenus();
             }
@@ -151,31 +151,33 @@ namespace Gwen.Input
             if (!Global.HoveredControl.IsVisible) return false;
             if (Global.HoveredControl == canvas) return false;
 
-            if (iMouseButton > MaxMouseButtons)
+            if (mouseButton > MaxMouseButtons)
                 return false;
 
-            if (iMouseButton == 0) KeyData.LeftMouseDown = bDown;
-            else if (iMouseButton == 1) KeyData.RightMouseDown = bDown;
+            if (mouseButton == 0) 
+                m_KeyData.LeftMouseDown = down;
+            else if (mouseButton == 1) 
+                m_KeyData.RightMouseDown = down;
 
             // Double click.
             // Todo: Shouldn't double click if mouse has moved significantly
-            bool bIsDoubleClick = false;
+            bool isDoubleClick = false;
 
-            if (bDown &&
-                g_pntLastClickPos.X == MousePosition.X &&
-                g_pntLastClickPos.Y == MousePosition.Y &&
-                (Platform.Windows.GetTimeInSeconds() - g_fLastClickTime[iMouseButton]) < DoubleClickSpeed)
+            if (down &&
+                m_LastClickPos.X == MousePosition.X &&
+                m_LastClickPos.Y == MousePosition.Y &&
+                (Platform.Windows.GetTimeInSeconds() - m_LastClickTime[mouseButton]) < DoubleClickSpeed)
             {
-                bIsDoubleClick = true;
+                isDoubleClick = true;
             }
 
-            if (bDown && !bIsDoubleClick)
+            if (down && !isDoubleClick)
             {
-                g_fLastClickTime[iMouseButton] = Platform.Windows.GetTimeInSeconds();
-                g_pntLastClickPos = MousePosition;
+                m_LastClickTime[mouseButton] = Platform.Windows.GetTimeInSeconds();
+                m_LastClickPos = MousePosition;
             }
 
-            if (bDown)
+            if (down)
             {
                 FindKeyboardFocus(Global.HoveredControl);
             }
@@ -186,7 +188,7 @@ namespace Gwen.Input
             // in turn tells its parents, who tell their parents.
             // This is basically so that Windows can pop themselves
             // to the top when one of their children have been clicked.
-            if (bDown)
+            if (down)
                 Global.HoveredControl.Touch();
 
 #if GWEN_HOOKSYSTEM
@@ -198,26 +200,26 @@ namespace Gwen.Input
             }
 #endif
 
-            switch (iMouseButton)
+            switch (mouseButton)
             {
                 case 0:
                     {
-                        if (DragAndDrop.onMouseButton(Global.HoveredControl, MousePosition.X, MousePosition.Y, bDown))
+                        if (DragAndDrop.onMouseButton(Global.HoveredControl, MousePosition.X, MousePosition.Y, down))
                             return true;
 
-                        if (bIsDoubleClick)
+                        if (isDoubleClick)
                             Global.HoveredControl.onMouseDoubleClickLeft(MousePosition.X, MousePosition.Y);
                         else
-                            Global.HoveredControl.onMouseClickLeft(MousePosition.X, MousePosition.Y, bDown);
+                            Global.HoveredControl.onMouseClickLeft(MousePosition.X, MousePosition.Y, down);
                         return true;
                     }
 
                 case 1:
                     {
-                        if (bIsDoubleClick)
+                        if (isDoubleClick)
                             Global.HoveredControl.onMouseDoubleClickRight(MousePosition.X, MousePosition.Y);
                         else
-                            Global.HoveredControl.onMouseClickRight(MousePosition.X, MousePosition.Y, bDown);
+                            Global.HoveredControl.onMouseClickRight(MousePosition.X, MousePosition.Y, down);
                         return true;
                     }
             }
@@ -234,24 +236,24 @@ namespace Gwen.Input
             int iKey = (int)key;
             if (down)
             {
-                if (!KeyData.KeyState[iKey])
+                if (!m_KeyData.KeyState[iKey])
                 {
-                    KeyData.KeyState[iKey] = true;
-                    KeyData.NextRepeat[iKey] = Platform.Windows.GetTimeInSeconds() + KeyRepeatDelay;
-                    KeyData.Target = Global.KeyboardFocus;
+                    m_KeyData.KeyState[iKey] = true;
+                    m_KeyData.NextRepeat[iKey] = Platform.Windows.GetTimeInSeconds() + KeyRepeatDelay;
+                    m_KeyData.Target = Global.KeyboardFocus;
 
                     return Global.KeyboardFocus.onKeyPress(key);
                 }
             }
             else
             {
-                if (KeyData.KeyState[iKey])
+                if (m_KeyData.KeyState[iKey])
                 {
-                    KeyData.KeyState[iKey] = false;
+                    m_KeyData.KeyState[iKey] = false;
 
                     // BUG BUG. This causes shift left arrow in textboxes
                     // to not work. What is disabling it here breaking?
-                    //KeyData.Target = NULL;
+                    //m_KeyData.Target = NULL;
 
                     return Global.KeyboardFocus.onKeyRelease(key);
                 }
@@ -260,49 +262,55 @@ namespace Gwen.Input
             return false;
         }
 
-        private static void UpdateHoveredControl(Base pInCanvas)
+        private static void UpdateHoveredControl(Base inCanvas)
         {
-            Base pHovered = pInCanvas.GetControlAt(MousePosition.X, MousePosition.Y);
+            Base hovered = inCanvas.GetControlAt(MousePosition.X, MousePosition.Y);
 
-            if (Global.HoveredControl != null && pHovered != Global.HoveredControl)
+            if (hovered != Global.HoveredControl)
             {
-                Global.HoveredControl.onMouseLeave();
+                if (Global.HoveredControl != null)
+                {
+                    var oldHover = Global.HoveredControl;
+                    Global.HoveredControl = null;
+                    oldHover.onMouseLeave();
+                }
 
-                pInCanvas.Redraw();
-            }
-
-            if (pHovered != Global.HoveredControl)
-            {
-                Global.HoveredControl = pHovered;
+                Global.HoveredControl = hovered;
 
                 if (Global.HoveredControl != null)
+                {
                     Global.HoveredControl.onMouseEnter();
-
-                pInCanvas.Redraw();
+                }
             }
 
-            if (Global.MouseFocus != null && Global.MouseFocus.GetCanvas() == pInCanvas)
+            if (Global.MouseFocus != null && Global.MouseFocus.GetCanvas() == inCanvas)
             {
+                if (Global.HoveredControl != null)
+                {
+                    var oldHover = Global.HoveredControl;
+                    Global.HoveredControl = null;
+                    oldHover.Redraw();
+                }
                 Global.HoveredControl = Global.MouseFocus;
             }
         }
 
-        private static void FindKeyboardFocus(Base pControl)
+        private static void FindKeyboardFocus(Base control)
         {
-            if (null == pControl) return;
-            if (pControl.KeyboardInputEnabled)
+            if (null == control) return;
+            if (control.KeyboardInputEnabled)
             {
                 //Make sure none of our children have keyboard focus first - todo recursive
-                if (pControl.Children.Any(child => child == Global.KeyboardFocus))
+                if (control.Children.Any(child => child == Global.KeyboardFocus))
                 {
                     return;
                 }
 
-                pControl.Focus();
+                control.Focus();
                 return;
             }
 
-            FindKeyboardFocus(pControl.Parent);
+            FindKeyboardFocus(control.Parent);
             return;
         }
 

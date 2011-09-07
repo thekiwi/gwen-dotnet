@@ -12,7 +12,7 @@ namespace Gwen.ControlsInternal
         public String String
         {
             get { return m_String; } 
-            set { m_String = value; if (AutoSizeToContents) RefreshSize(); Invalidate(); InvalidateParent(); }
+            set { m_String = value; if (AutoSizeToContents) RefreshSize(); Invalidate(); /*InvalidateParent();*/ }
         }
         public Color TextColor { get; set; }
         public bool AutoSizeToContents { get; set; } // [omeg] added
@@ -31,25 +31,22 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            base.Render(skin);
             if (Length == 0 || Font.FaceName == null) return;
 
             if (TextColorOverride.A == 0)
                 skin.Renderer.DrawColor = TextColor;
             else
-                skin.Renderer.DrawColor = TextColor;
+                skin.Renderer.DrawColor = TextColorOverride;
             skin.Renderer.RenderText(ref Font, Point.Empty, String);
         }
 
         protected override void Layout(Skin.Base skin)
         {
-            base.Layout(skin);
             RefreshSize();
         }
 
         internal override void onScaleChanged()
         {
-            base.onScaleChanged();
             Invalidate();
         }
 
@@ -57,7 +54,7 @@ namespace Gwen.ControlsInternal
         {
             if (Font.FaceName == null)
             {
-                throw new NullReferenceException("Text.RefreshSize() - No Font!!\n");
+                throw new InvalidOperationException("Text.RefreshSize() - No Font!!\n");
             }
 
             Point p = new Point(1, Font.Size);
@@ -93,23 +90,22 @@ namespace Gwen.ControlsInternal
 
         public int GetClosestCharacter(Point p)
         {
-            int iDistance = Global.MaxCoord;
-            int iChar = 0;
+            int distance = Global.MaxCoord;
+            int c = 0;
 
             for (int i = 0; i < String.Length + 1; i++)
             {
                 Point cp = GetCharacterPosition(i);
-                int iDist = Math.Abs(cp.X - p.X) + Math.Abs(cp.Y - p.Y); // this isn't proper // [omeg] todo: sqrt
+                int dist = Math.Abs(cp.X - p.X) + Math.Abs(cp.Y - p.Y); // this isn't proper // [omeg] todo: sqrt
 
-                if (iDist > iDistance) 
+                if (dist > distance) 
                     continue;
 
-                iDistance = iDist;
-                iChar = i;
+                distance = dist;
+                c = i;
             }
 
-            return iChar;
+            return c;
         }
-
     }
 }
