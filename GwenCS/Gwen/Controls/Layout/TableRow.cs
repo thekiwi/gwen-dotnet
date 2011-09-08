@@ -23,6 +23,7 @@ namespace Gwen.Controls.Layout
         {
             m_Columns = new Label[MaxColumns];
             m_ColumnCount = 0;
+            KeyboardInputEnabled = true;
         }
 
         protected void SetColumnCount(int iCount)
@@ -137,6 +138,11 @@ namespace Gwen.Controls.Layout
                     column.Dispose();
 
             base.Dispose();
+        }
+
+        internal override void onCopy(Base from)
+        {
+            Platform.Windows.SetClipboardText(Text);
         }
     }
 }

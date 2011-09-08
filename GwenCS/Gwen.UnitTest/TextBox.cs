@@ -13,7 +13,7 @@ namespace Gwen.UnitTest
         {
             {
                 Controls.TextBox label = new Controls.TextBox(this);
-                label.SetText("");
+                label.SetText("Type something here");
                 label.SetPos(10, 10);
                 label.OnTextChanged += OnEdit;
                 label.OnReturnPressed += OnSubmit;
@@ -21,7 +21,7 @@ namespace Gwen.UnitTest
 
             {
                 Controls.TextBox label = new Controls.TextBox(this);
-                label.SetText("Normal Everyday Label");
+                label.SetText("Normal Everyday TextBox");
                 label.SetPos(10, 10 + 25);
             }
 
