@@ -48,22 +48,22 @@ namespace Gwen.UnitTest
 
         private void onButtonA(Base control)
         {
-            UnitPrint("Button Pressed (using 'OnPress' event)");
+            UnitPrint("Button: OnPress");
         }
 
         private void onToggle(Base control)
         {
-            UnitPrint("Button Pressed (using 'OnToggle' event)");
+            UnitPrint("Button: OnToggle");
         }
 
         private void onToggleOn(Base control)
         {
-            UnitPrint("Button Pressed (using 'OnToggleOn' event)");
+            UnitPrint("Button: OnToggleOn");
         }
 
         private void onToggleOff(Base control)
         {
-            UnitPrint("Button Pressed (using 'OnToggleOff' event)");
+            UnitPrint("Button: OnToggleOff");
         }
     }
 }

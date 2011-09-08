@@ -7,6 +7,8 @@ namespace Gwen.Controls
         protected RadioButton m_RadioButton;
         protected LabelClickable m_Label;
 
+        public String Text { get { return m_Label.Text; } }
+
         public LabeledRadioButton(Base parent) : base(parent)
         {
             SetSize(200, 19);

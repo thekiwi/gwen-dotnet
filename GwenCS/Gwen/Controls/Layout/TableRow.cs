@@ -16,6 +16,7 @@ namespace Gwen.Controls.Layout
 
         public int ColumnCount { get { return m_ColumnCount; } set { SetColumnCount(value); } }
         public bool EvenRow { get { return m_bEvenRow; } set { m_bEvenRow = value; } }
+        public String Text { get { return GetText(0); } } // text of 1st column
 
         public TableRow(Base parent)
             : base(parent)
@@ -119,7 +120,12 @@ namespace Gwen.Controls.Layout
             }
         }
 
-        public String GetText(int i)
+        /// <summary>
+        /// Returns text of a specified row cell (default first).
+        /// </summary>
+        /// <param name="i">Column index.</param>
+        /// <returns>Column cell text.</returns>
+        public String GetText(int i = 0)
         {
             return m_Columns[i].Text;
         }

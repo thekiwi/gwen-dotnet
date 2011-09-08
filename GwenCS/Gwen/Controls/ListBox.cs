@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
 using Gwen.Controls.Layout;
 
 namespace Gwen.Controls
@@ -26,6 +28,7 @@ namespace Gwen.Controls
         public int ColumnCount { get { return m_Table.ColumnCount; } set { m_Table.ColumnCount = value; } }
 
         public event ControlCallback OnRowSelected;
+        public event ControlCallback OnRowUnselected;
 
         public ListBox(Base parent)
             : base(parent)
@@ -63,9 +66,23 @@ namespace Gwen.Controls
             SelectRow(m_Table.Children[index], clearOthers);
         }
 
-        public void SelectRow(String rowText, bool clearOthers = false)
+        public void SelectRows(String rowText, bool clearOthers = false)
         {
-            throw new NotImplementedException();
+            var rows = m_Table.Children.OfType<ListBoxRow>().Where(x => x.Text == rowText);
+            foreach (ListBoxRow row in rows)
+            {
+                SelectRow(row, clearOthers);
+            }
+        }
+
+        // [omeg] added
+        public void SelectRowsByRegex(String pattern, RegexOptions regexOptions = RegexOptions.None,  bool clearOthers = false)
+        {
+            var rows = m_Table.Children.OfType<ListBoxRow>().Where(x => Regex.IsMatch(x.Text, pattern) );
+            foreach (ListBoxRow row in rows)
+            {
+                SelectRow(row, clearOthers);
+            }
         }
 
         public void SelectRow(Base control, bool clearOthers = false)
@@ -115,6 +132,8 @@ namespace Gwen.Controls
             foreach (ListBoxRow row in m_SelectedRows)
             {
                 row.IsSelected = false;
+                if (OnRowUnselected != null)
+                    OnRowUnselected.Invoke(this);
             }
             m_SelectedRows.Clear();
         }
@@ -123,6 +142,9 @@ namespace Gwen.Controls
         {
             row.IsSelected = false;
             m_SelectedRows.Remove(row);
+
+            if (OnRowUnselected != null)
+                OnRowUnselected.Invoke(this);
         }
 
         protected virtual void onRowSelected(Base control)

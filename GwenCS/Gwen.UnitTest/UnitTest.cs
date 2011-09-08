@@ -24,7 +24,7 @@ namespace Gwen.UnitTest
             LeftDock.TabControl.AddPage("CollapsibleList", m_List);
             LeftDock.Width = 150;
 
-            m_TextOutput = new ListBox(BottomDock);
+            m_TextOutput = new Controls.ListBox(BottomDock);
             m_Button = BottomDock.TabControl.AddPage("Output", m_TextOutput);
             BottomDock.Height = 200;
 
@@ -33,10 +33,10 @@ namespace Gwen.UnitTest
 
             Center center = new Center(this);
             center.Dock = Pos.Fill;
+            GUnit test;
 
             {
                 CollapsibleCategory cat = m_List.Add("Basic");
-                GUnit test;
                 {
                     test = new Button(center);
                     RegisterUnitTest("Button", cat, test);
@@ -47,7 +47,6 @@ namespace Gwen.UnitTest
 
             {
                 CollapsibleCategory cat = m_List.Add("Non-Interactive");
-                GUnit test;
                 {
                     test = new ProgressBar(center);
                     RegisterUnitTest("ProgressBar", cat, test);
@@ -62,12 +61,21 @@ namespace Gwen.UnitTest
 
             {
                 CollapsibleCategory cat = m_List.Add("Standard");
-                GUnit test;
                 {
                     test = new ComboBox(center);
                     RegisterUnitTest("ComboBox", cat, test);
                     test = new TextBox(center);
                     RegisterUnitTest("TextBox", cat, test);
+                    test = new RadioButton(center);
+                    RegisterUnitTest("RadioButton", cat, test);
+                    test = new CheckBox(center);
+                    RegisterUnitTest("CheckBox", cat, test);
+                    test = new ListBox(center);
+                    RegisterUnitTest("ListBox", cat, test);
+                    test = new CrossSplitter(center);
+                    RegisterUnitTest("CrossSplitter", cat, test);
+                    test = new NumericUpDown(center);
+                    RegisterUnitTest("NumericUpDown", cat, test);
                 }
             }
 

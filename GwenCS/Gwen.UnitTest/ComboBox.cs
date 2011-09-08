@@ -45,7 +45,7 @@ namespace Gwen.UnitTest
         void OnComboSelect(Base control)
         {
             Controls.ComboBox combo = control as Controls.ComboBox;
-            UnitPrint(String.Format("Combo changed: {0}", combo.SelectedItem.Text));
+            UnitPrint(String.Format("ComboBox: OnComboSelect: {0}", combo.SelectedItem.Text));
         }
     }
 }

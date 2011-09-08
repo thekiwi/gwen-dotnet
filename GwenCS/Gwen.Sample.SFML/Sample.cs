@@ -24,45 +24,47 @@ namespace Gwen.Sample.SFML
         [STAThread]
         static void Main()
         {
-            int width = 800;
-            int height = 600;
-            // Create main window
-            window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net test",
-                Styles.Default, new ContextSettings(32, 0));
+            try
+            {
+                int width = 800;
+                int height = 600;
+                // Create main window
+                window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net test",
+                                          Styles.Default, new ContextSettings(32, 0));
 
-            // Setup event handlers
-            window.Closed += OnClosed;
-            window.KeyPressed += OnKeyPressed;
-            window.Resized += OnResized;
-            window.KeyReleased += window_KeyReleased;
-            window.MouseButtonPressed += window_MouseButton;
-            window.MouseButtonReleased += window_MouseButton;
-            window.MouseWheelMoved += window_MouseWheelMoved;
-            window.MouseMoved += window_MouseMoved;
-            window.TextEntered += window_TextEntered;
-            
-            const int fps_frames = 50;
-            List<int> ftime = new List<int>(fps_frames);
+                // Setup event handlers
+                window.Closed += OnClosed;
+                window.KeyPressed += OnKeyPressed;
+                window.Resized += OnResized;
+                window.KeyReleased += window_KeyReleased;
+                window.MouseButtonPressed += window_MouseButton;
+                window.MouseButtonReleased += window_MouseButton;
+                window.MouseWheelMoved += window_MouseWheelMoved;
+                window.MouseMoved += window_MouseMoved;
+                window.TextEntered += window_TextEntered;
 
-            Renderer.SFML GwenRenderer = new Renderer.SFML(window);
+                const int fps_frames = 50;
+                List<int> ftime = new List<int>(fps_frames);
 
-            // Create a GWEN skin
-            //Skin.Simple skin = new Skin.Simple(GwenRenderer);
-            Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
+                Renderer.SFML GwenRenderer = new Renderer.SFML(window);
 
-            // The fonts work differently in SFML - it can't use
-            // system fonts. So force the skin to use a local one.
-            skin.SetDefaultFont("OpenSans.ttf", 10);
-            Font font2 = skin.DefaultFont;
-            font2.Size = 15;
+                // Create a GWEN skin
+                //Skin.Simple skin = new Skin.Simple(GwenRenderer);
+                Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
 
-            // Create a Canvas (it's root, on which all other GWEN panels are created)
-            canvas = new Canvas(skin);
-            canvas.SetSize(width, height);
-            canvas.DrawBackground = true;
-            canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
-            canvas.KeyboardInputEnabled = true;
-            
+                // The fonts work differently in SFML - it can't use
+                // system fonts. So force the skin to use a local one.
+                skin.SetDefaultFont("OpenSans.ttf", 10);
+                Font font2 = skin.DefaultFont;
+                font2.Size = 15;
+
+                // Create a Canvas (it's root, on which all other GWEN panels are created)
+                canvas = new Canvas(skin);
+                canvas.SetSize(width, height);
+                canvas.DrawBackground = true;
+                canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
+                canvas.KeyboardInputEnabled = true;
+
 #if !UNIT_TEST
             MenuStrip ms = new MenuStrip(canvas);
             ms.Dock = Pos.Top;
@@ -285,7 +287,7 @@ namespace Gwen.Sample.SFML
                 cat.Add("jaźń");
             }
 
-            /*
+                /*
             gb1.ShouldCacheToTexture = true;
             n1.ShouldCacheToTexture = true;
             button1.ShouldCacheToTexture = true;
@@ -293,49 +295,55 @@ namespace Gwen.Sample.SFML
             rb1.ShouldCacheToTexture = true;
             */
 #else
-            m_UnitTest = new UnitTest.UnitTest(canvas);
+                m_UnitTest = new UnitTest.UnitTest(canvas);
 
-            //WindowControl win = new WindowControl(canvas);
-            //win.Title = "window";
-            //win.SetSize(200, 100);
+                //WindowControl win = new WindowControl(canvas);
+                //win.Title = "window";
+                //win.SetSize(200, 100);
 #endif
 
-            // Create an input processor
-            GwenInput = new Input.SFML();
-            GwenInput.Initialize(canvas);
+                // Create an input processor
+                GwenInput = new Input.SFML();
+                GwenInput.Initialize(canvas);
 
-            Stopwatch w = new Stopwatch();
-            w.Start();
-            while (window.IsOpened())
-            {
-                window.SetActive();
-                window.DispatchEvents();
-                window.Clear();
-
-                // Clear depth buffer
-                Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT|Gl.GL_COLOR_BUFFER_BIT);
-                
-                window.SaveGLStates();
-                
-                ulong frametime = window.GetFrameTime();
-
-                if (ftime.Count == fps_frames)
-                    ftime.RemoveAt(0);
-
-                ftime.Add((int)frametime);
-
-
-                if (w.ElapsedMilliseconds > 1000)
+                Stopwatch w = new Stopwatch();
+                w.Start();
+                while (window.IsOpened())
                 {
-                    m_UnitTest.Fps =  1000f * ftime.Count / ftime.Sum();
-                    w.Restart();
+                    window.SetActive();
+                    window.DispatchEvents();
+                    window.Clear();
+
+                    // Clear depth buffer
+                    Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
+
+                    window.SaveGLStates();
+
+                    ulong frametime = window.GetFrameTime();
+
+                    if (ftime.Count == fps_frames)
+                        ftime.RemoveAt(0);
+
+                    ftime.Add((int)frametime);
+
+
+                    if (w.ElapsedMilliseconds > 1000)
+                    {
+                        m_UnitTest.Fps = 1000f * ftime.Count / ftime.Sum();
+                        w.Restart();
+                    }
+
+                    canvas.RenderCanvas();
+
+                    window.RestoreGLStates();
+
+                    window.Display();
                 }
-                
-                canvas.RenderCanvas();
-                
-                window.RestoreGLStates();
-                
-                window.Display();
+            }
+            catch (Exception e)
+            {
+                String msg = String.Format("Exception: {0}\n{1}", e.Message, e.StackTrace);
+                MessageBox.Show(msg);
             }
         }
 

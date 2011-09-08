@@ -126,5 +126,12 @@ namespace Gwen.Controls
                 base.Value = value;
             }
         }
+
+        protected override void onTextChanged()
+        {
+            base.onTextChanged();
+            if (OnValueChanged != null)
+                OnValueChanged.Invoke(this);
+        }
     }
 }
