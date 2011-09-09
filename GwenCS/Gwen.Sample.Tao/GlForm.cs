@@ -49,7 +49,7 @@ namespace Gwen.Sample.Tao
             //skin = new Gwen.Skin.Simple(renderer);
             canvas = new Canvas(skin);
             canvas.SetSize(glControl.Width, glControl.Height);
-            canvas.DrawBackground = true;
+            canvas.ShouldDrawBackground = true;
             canvas.BackgroundColor = Color.FromArgb(255, 150, 170, 170);
             //canvas.KeyboardInputEnabled = true;
 

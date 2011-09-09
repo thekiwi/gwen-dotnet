@@ -24,12 +24,12 @@ namespace Gwen.Controls
             //ShouldCacheToTexture = true;
 
             m_LerpBox = new ColorLerpBox(this);
-            m_LerpBox.OnSelectionChanged += ColorBoxChanged;
+            m_LerpBox.OnColorChanged += ColorBoxChanged;
             m_LerpBox.Dock = Pos.Left;
 
             m_ColorSlider = new ColorSlider(this);
             m_ColorSlider.SetPos(m_LerpBox.Width + 15, 5);
-            m_ColorSlider.OnSelectionChanged += ColorSliderChanged;
+            m_ColorSlider.OnColorChanged += ColorSliderChanged;
             m_ColorSlider.Dock = Pos.Left;
 
             m_After = new ColorDisplay(this);
@@ -164,7 +164,7 @@ namespace Gwen.Controls
             if (reset)
                 m_Before.Color = color;
 
-            m_ColorSlider.SetColor(color);
+            m_ColorSlider.SelectedColor = color;
             m_LerpBox.SetColor(color, onlyHue);
             m_After.Color = color;
         }

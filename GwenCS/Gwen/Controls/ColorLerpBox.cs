@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Linear-interpolated HSV color box.
+    /// </summary>
     public class ColorLerpBox : Base
     {
         protected Point m_CursorPos;
@@ -10,8 +13,15 @@ namespace Gwen.Controls
         protected byte m_Hue;
         protected Texture m_Texture; // [omeg] added
 
-        public event ControlCallback OnSelectionChanged;
+        /// <summary>
+        /// Invoked when the selected color has changed.
+        /// </summary>
+        public event ControlCallback OnColorChanged;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorLerpBox"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ColorLerpBox(Base parent) : base(parent)
         {
             SetColor(Color.FromArgb(255, 255, 128, 0));
@@ -19,7 +29,7 @@ namespace Gwen.Controls
             MouseInputEnabled = true;
             m_Depressed = false;
 
-            // texture initialized in Render() if null
+            // texture is initialized in Render() if null
         }
 
         public static Color Lerp(Color toColor, Color fromColor, float amount)
@@ -29,11 +39,19 @@ namespace Gwen.Controls
             return fromColor.Add(delta);
         }
 
+        /// <summary>
+        /// Selected color.
+        /// </summary>
         public Color SelectedColor
         {
             get { return GetColorAt(m_CursorPos.X, m_CursorPos.Y); }
         }
 
+        /// <summary>
+        /// Sets the selected color.
+        /// </summary>
+        /// <param name="value">Value to set.</param>
+        /// <param name="onlyHue">Deetrmines whether to only set H value (not SV).</param>
         public void SetColor(Color value, bool onlyHue = true)
         {
             HSV hsv = value.ToHSV();
@@ -45,10 +63,17 @@ namespace Gwen.Controls
             }
             Invalidate();
 
-            if (OnSelectionChanged != null)
-                OnSelectionChanged.Invoke(this);
+            if (OnColorChanged != null)
+                OnColorChanged.Invoke(this);
         }
 
+        /// <summary>
+        /// Internal handler invoked on mouse moved event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="dx">X change.</param>
+        /// <param name="dy">Y change.</param>
         internal override void onMouseMoved(int x, int y, int dx, int dy)
         {
             if (m_Depressed)
@@ -65,11 +90,17 @@ namespace Gwen.Controls
                 if (m_CursorPos.Y > Height)
                     m_CursorPos.Y = Height;
 
-                if (OnSelectionChanged != null)
-                    OnSelectionChanged.Invoke(this);
+                if (OnColorChanged != null)
+                    OnColorChanged.Invoke(this);
             }
         }
 
+        /// <summary>
+        /// Internal handler invoked on mouse click (left) event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="down">If set to <c>true</c> mouse button is down.</param>
         internal override void onMouseClickLeft(int x, int y, bool down)
         {
             m_Depressed = down;
@@ -81,7 +112,13 @@ namespace Gwen.Controls
             onMouseMoved(x, y, 0, 0);
         }
 
-        public Color GetColorAt(int x, int y)
+        /// <summary>
+        /// Gets the color froms pecified coordinates.
+        /// </summary>
+        /// <param name="x">X</param>
+        /// <param name="y">Y</param>
+        /// <returns>Color value.</returns>
+        private Color GetColorAt(int x, int y)
         {
             float xPercent = (x / (float)Width);
             float yPercent = 1 - (y / (float)Height);
@@ -91,7 +128,9 @@ namespace Gwen.Controls
             return result;
         }
 
-        // [omeg] added
+        /// <summary>
+        /// Invalidates the control.
+        /// </summary>
         public override void Invalidate()
         {
             if (m_Texture != null)
@@ -102,12 +141,19 @@ namespace Gwen.Controls
             base.Invalidate();
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             base.Dispose();
             m_Texture.Dispose();
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             base.Render(skin);

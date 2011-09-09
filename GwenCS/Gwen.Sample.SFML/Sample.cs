@@ -24,7 +24,7 @@ namespace Gwen.Sample.SFML
         [STAThread]
         static void Main()
         {
-            try
+            //try
             {
                 int width = 800;
                 int height = 600;
@@ -61,7 +61,7 @@ namespace Gwen.Sample.SFML
                 // Create a Canvas (it's root, on which all other GWEN panels are created)
                 canvas = new Canvas(skin);
                 canvas.SetSize(width, height);
-                canvas.DrawBackground = true;
+                canvas.ShouldDrawBackground = true;
                 canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
                 canvas.KeyboardInputEnabled = true;
 
@@ -340,11 +340,11 @@ namespace Gwen.Sample.SFML
                     window.Display();
                 }
             }
-            catch (Exception e)
-            {
-                String msg = String.Format("Exception: {0}\n{1}", e.Message, e.StackTrace);
-                MessageBox.Show(msg);
-            }
+            //catch (Exception e)
+            //{
+                //String msg = String.Format("Exception: {0}\n{1}", e.Message, e.StackTrace);
+                //MessageBox.Show(msg);
+            //}
         }
 
         static void Sample_OnMenuItemSelectedQuit(Base control)
@@ -407,12 +407,19 @@ namespace Gwen.Sample.SFML
 
             if (e.Code == Keyboard.Key.F12)
             {
-                global::SFML.Graphics.Texture t = new global::SFML.Graphics.Texture(window.Width, window.Height);
-                t.Update(window);
-                t.CopyToImage().SaveToFile(string.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
-                                           DateTime.Now.Second));
+                Image img = window.Capture();
+                if (img.Pixels == null)
+                {
+                    MessageBox.Show("Failed to capture window");
+                }
+                String path = String.Format("screenshot-{0:D2}{1:D2}{2:D2}.png", DateTime.Now.Hour, DateTime.Now.Minute,
+                                            DateTime.Now.Second);
+                if (!img.SaveToFile(path))
+                    MessageBox.Show(path, "Failed to save screenshot");
+                img.Dispose();
             }
-            GwenInput.ProcessMessage(e);
+            else
+                GwenInput.ProcessMessage(e);
         }
 
         /// <summary>

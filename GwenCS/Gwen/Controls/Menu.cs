@@ -9,7 +9,7 @@ namespace Gwen.Controls
         protected bool m_DisableIconMargin;
         protected bool m_DeleteOnClose;
 
-        public override bool IsMenuComponent { get { return true; } }
+        internal override bool IsMenuComponent { get { return true; } }
         public bool IconMarginDisabled { get { return m_DisableIconMargin; } set { m_DisableIconMargin = value; } }
         public bool DeleteOnClose { get { return m_DeleteOnClose; } set { m_DeleteOnClose = value; } }
 
@@ -102,6 +102,7 @@ namespace Gwen.Controls
         {
             foreach (Base child in m_InnerPanel.Children)
             {
+                m_InnerPanel.RemoveChild(child); // bug: this modifies collection
                 child.Dispose();
             }
         }

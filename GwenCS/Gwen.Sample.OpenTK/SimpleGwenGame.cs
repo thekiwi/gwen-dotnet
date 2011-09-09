@@ -133,7 +133,7 @@ namespace Gwen.Sample.OpenTKSample
             this.input.Initialize(canvas);
 
             canvas.SetSize(this.Width, this.Height);
-            canvas.DrawBackground = true;
+            canvas.ShouldDrawBackground = true;
             canvas.BackgroundColor = Color.FromArgb(255, 150, 170, 170);
             //canvas.KeyboardInputEnabled = true;
 

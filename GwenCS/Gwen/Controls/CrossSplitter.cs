@@ -5,23 +5,26 @@ using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Splitter control.
+    /// </summary>
     public class CrossSplitter : Base
     {
-        SplitterBar m_VSplitter;
-        SplitterBar m_HSplitter;
-        SplitterBar m_CSplitter;
+        private SplitterBar m_VSplitter;
+        private SplitterBar m_HSplitter;
+        private SplitterBar m_CSplitter;
 
-        Base[] m_Sections;
+        private Base[] m_Sections;
 
-        float m_HVal;
-        float m_VVal;
-        int m_BarSize;
+        private float m_HVal;
+        private float m_VVal;
+        private int m_BarSize;
 
-        int m_ZoomedSection;
+        private int m_ZoomedSection;
 
-        event ControlCallback OnZoomed;
-        event ControlCallback OnUnZoomed;
-        event ControlCallback OnZoomChange;
+        public event ControlCallback OnZoomed;
+        public event ControlCallback OnUnZoomed;
+        public event ControlCallback OnZoomChange;
 
         public CrossSplitter(Base parent)
             : base(parent)

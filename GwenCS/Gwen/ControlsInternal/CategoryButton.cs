@@ -11,6 +11,7 @@ namespace Gwen.ControlsInternal
         {
             Alignment = Pos.Left | Pos.CenterV;
             m_Alt = false;
+            IsToggle = true;
         }
 
         protected override void Render(Skin.Base skin)

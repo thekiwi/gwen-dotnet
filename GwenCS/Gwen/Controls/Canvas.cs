@@ -5,6 +5,9 @@ using Gwen.DragDrop;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Canvas control. It should be the root parent for all other controls.
+    /// </summary>
     public class Canvas : Base
     {
         private bool m_NeedsRedraw;
@@ -16,6 +19,9 @@ namespace Gwen.Controls
         internal Base FirstTab;
         internal Base NextTab;
 
+        /// <summary>
+        /// Scale for rendering.
+        /// </summary>
         public float Scale
         {
             get { return m_Scale; }
@@ -33,24 +39,35 @@ namespace Gwen.Controls
                 Redraw();
             }
         }
-        public bool DrawBackground { get { return m_DrawBackground; } set { m_DrawBackground = value; } }
+
+        /// <summary>
+        /// Background color.
+        /// </summary>
         public Color BackgroundColor { get { return m_BackgroundColor; } set { m_BackgroundColor = value; } }
 
-        // In most situations you will be rendering the canvas
-        // every frame. But in some situations you will only want
-        // to render when there have been changes. You can do this
-        // by checking NeedsRedraw().
+        /// <summary>
+        /// In most situations you will be rendering the canvas every frame. 
+        /// But in some situations you will only want to render when there have been changes. 
+        /// You can do this by checking NeedsRedraw.
+        /// </summary>
         public bool NeedsRedraw { get { return m_NeedsRedraw; } set { m_NeedsRedraw = value; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Canvas"/> class.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         public Canvas(Skin.Base skin)
         {
             SetBounds(0, 0, 10000, 10000);
             SetSkin(skin);
             Scale = 1.0f;
             BackgroundColor = Color.White;
-            DrawBackground = false;
+            ShouldDrawBackground = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             base.Dispose();
@@ -60,23 +77,35 @@ namespace Gwen.Controls
                 child.Dispose();
             }
         }
+
+        /// <summary>
+        /// Re-renders the control, invalidates cached texture.
+        /// </summary>
+        public override void Redraw()
+        {
+            NeedsRedraw = true;
+            base.Redraw();
+        }
         
-        // Childpanels call parent->GetCanvas() until they get to 
+        // Children call parent.GetCanvas() until they get to 
         // this top level function.
         public override Canvas GetCanvas()
         {
             return this;
         }
 
-        // For additional initialization 
-        // (which is sometimes not appropriate in the constructor)
-        protected virtual void Initialize()
+        /// <summary>
+        /// Additional initialization (which is sometimes not appropriate in the constructor)
+        /// </summary>
+        protected void Initialize()
         {
 
         }
 
-        // You should call this to render your canvas.
-        public virtual void RenderCanvas()
+        /// <summary>
+        /// Renders the canvas. Call in your rendering loop.
+        /// </summary>
+        public void RenderCanvas()
         {
             DoThink();
 
@@ -107,7 +136,10 @@ namespace Gwen.Controls
             render.End();
         }
 
-        // Internal. Do not call directly.
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             //skin.Renderer.rnd = new Random(1);
@@ -115,15 +147,20 @@ namespace Gwen.Controls
             m_NeedsRedraw = false;
         }
 
+        /// <summary>
+        /// Internal handler invoked when control's bounds change.
+        /// </summary>
+        /// <param name="oldBounds">Old bounds.</param>
         internal override void onBoundsChanged(Rectangle oldBounds)
         {
             base.onBoundsChanged(oldBounds);
             InvalidateChildren(true);
         }
 
-        // Call this whenever you want to process input. This
-        // is usually once a frame..
-        protected virtual void DoThink()
+        /// <summary>
+        /// Processes input and layout.
+        /// </summary>
+        public void DoThink()
         {
             if (IsHidden)
                 return;
@@ -145,8 +182,12 @@ namespace Gwen.Controls
 
             Input.Input.onCanvasThink(this);
         }
-        
-        public virtual bool InputMouseMoved(int x, int y, int dx, int dy)
+
+        /// <summary>
+        /// Handles mouse movement events. Called from Input subsystems.
+        /// </summary>
+        /// <returns>True if handled.</returns>
+        public bool InputMouseMoved(int x, int y, int dx, int dy)
         {
             if (IsHidden)
                 return false;
@@ -167,14 +208,22 @@ namespace Gwen.Controls
             return true;
         }
 
-        public virtual bool InputMouseButton(int button, bool down)
+        /// <summary>
+        /// Handles mouse button events. Called from Input subsystems.
+        /// </summary>
+        /// <returns>True if handled.</returns>
+        public bool InputMouseButton(int button, bool down)
         {
             if (IsHidden) return false;
 
             return Input.Input.onMouseClicked(this, button, down);
         }
 
-        public virtual bool InputKey(Key key, bool down)
+        /// <summary>
+        /// Handles keyboard events. Called from Input subsystems.
+        /// </summary>
+        /// <returns>True if handled.</returns>
+        public bool InputKey(Key key, bool down)
         {
             if (IsHidden) return false;
             if (key <= Key.Invalid) return false;
@@ -183,7 +232,11 @@ namespace Gwen.Controls
             return Input.Input.onKeyEvent(this, key, down);
         }
 
-        public virtual bool InputCharacter(char chr)
+        /// <summary>
+        /// Handles keyboard events. Called from Input subsystems.
+        /// </summary>
+        /// <returns>True if handled.</returns>
+        public bool InputCharacter(char chr)
         {
             if (IsHidden) return false;
             if (char.IsControl(chr)) return false;
@@ -201,7 +254,11 @@ namespace Gwen.Controls
             return Global.KeyboardFocus.onChar(chr);
         }
 
-        public virtual bool InputMouseWheel(int val)
+        /// <summary>
+        /// Handles the mouse wheel events. Called from Input subsystems.
+        /// </summary>
+        /// <returns>True if handled.</returns>
+        public bool InputMouseWheel(int val)
         {
             if (IsHidden) return false;
             if (Global.HoveredControl == null) return false;

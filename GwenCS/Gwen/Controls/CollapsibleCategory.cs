@@ -3,17 +3,33 @@ using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// CollapsibleCategory control. Used in CollapsibleList.
+    /// </summary>
     public class CollapsibleCategory : Base
     {
         protected Button m_Button;
         protected CollapsibleList m_List;
 
+        /// <summary>
+        /// Parent list.
+        /// </summary>
         public CollapsibleList List { get { return m_List; } set { m_List = value; } }
+
+        /// <summary>
+        /// Header text.
+        /// </summary>
         public String Text { get { return m_Button.Text; } set { m_Button.Text = value; } }
 
+        /// <summary>
+        /// Invoked when an entry is selected.
+        /// </summary>
         public event ControlCallback OnSelection;
 
         // todo: iterator, make this as function?
+        /// <summary>
+        /// Selected entry.
+        /// </summary>
         public Button Selected
         {
             get
@@ -32,6 +48,10 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CollapsibleCategory"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public CollapsibleCategory(Base parent) : base(parent)
         {
             m_Button = new CategoryHeaderButton(this);
@@ -43,7 +63,11 @@ namespace Gwen.Controls
             SetSize(512, 512);
         }
 
-        protected virtual void onSelection(Base control)
+        /// <summary>
+        /// Internal handler for OnSelection event.
+        /// </summary>
+        /// <param name="control">Event source.</param>
+        internal virtual void onSelection(Base control)
         {
             CategoryButton child = control as CategoryButton;
             if (child == null) return;
@@ -63,6 +87,11 @@ namespace Gwen.Controls
                 OnSelection.Invoke(this);
         }
 
+        /// <summary>
+        /// Adds an entry.
+        /// </summary>
+        /// <param name="name">Entry name (displayed).</param>
+        /// <returns>Newly created control.</returns>
         public Button Add(String name)
         {
             CategoryButton button = new CategoryButton(this);
@@ -76,11 +105,18 @@ namespace Gwen.Controls
             return button;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             skin.DrawCategoryInner(this, m_Button.ToggleState);
         }
 
+        /// <summary>
+        /// Unselects all entries.
+        /// </summary>
         public void UnselectAll()
         {
             foreach (Base child in Children)
@@ -93,6 +129,10 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Function invoked after layout.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void PostLayout(Skin.Base skin)
         {
             if (m_Button.ToggleState)
@@ -117,6 +157,9 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             m_Button.Dispose();

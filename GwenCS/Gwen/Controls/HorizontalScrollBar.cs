@@ -147,7 +147,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        protected override void onBarMoved(Base control)
+        internal override void onBarMoved(Base control)
         {
             if (m_Bar.IsDepressed)
             {

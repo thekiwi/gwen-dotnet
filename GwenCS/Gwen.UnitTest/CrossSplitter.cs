@@ -31,13 +31,13 @@ namespace Gwen.UnitTest
 
             {
                 Controls.Button testButton = new Controls.Button(m_Splitter);
-                testButton.SetText("BOTTOMRIGHT");
+                testButton.SetText("BOTTOMLEFT");
                 m_Splitter.SetPanel(2, testButton);
             }
 
             {
                 Controls.Button testButton = new Controls.Button(m_Splitter);
-                testButton.SetText("BOTTOMLEFT");
+                testButton.SetText("BOTTOMRIGHT");
                 m_Splitter.SetPanel(3, testButton);
             }
 

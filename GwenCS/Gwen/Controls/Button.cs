@@ -2,6 +2,9 @@
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Button control.
+    /// </summary>
     public class Button : Label
     {
         protected bool m_Depressed;
@@ -10,14 +13,39 @@ namespace Gwen.Controls
         protected bool m_CenterImage;
         protected ImagePanel m_Image;
 
+        /// <summary>
+        /// Invoked when the button is released.
+        /// </summary>
         public event ControlCallback OnPress;
+
+        /// <summary>
+        /// Invoked when the button is pressed down.
+        /// </summary>
         public event ControlCallback OnDown;
+
+        /// <summary>
+        /// Invoked when the button is released.
+        /// </summary>
         public event ControlCallback OnUp;
-        public event ControlCallback OnDoubleClick;
+
+        /// <summary>
+        /// Invoked when the button's toggle state has changed.
+        /// </summary>
         public event ControlCallback OnToggle;
+
+        /// <summary>
+        /// Invoked when the button's toggle state has changed to On.
+        /// </summary>
         public event ControlCallback OnToggleOn;
+
+        /// <summary>
+        /// Invoked when the button's toggle state has changed to Off.
+        /// </summary>
         public event ControlCallback OnToggleOff;
 
+        /// <summary>
+        /// Indicates whether the button is depressed.
+        /// </summary>
         public bool IsDepressed
         {
             get { return m_Depressed; }
@@ -28,12 +56,21 @@ namespace Gwen.Controls
                 Redraw();
             }
         }
+
+        /// <summary>
+        /// Indicates whether the button is toggleable.
+        /// </summary>
         public bool IsToggle { get { return m_Toggle; } set { m_Toggle = value; } }
+
+        /// <summary>
+        /// Determines the button's toggle state.
+        /// </summary>
         public bool ToggleState
         {
             get { return m_ToggleStatus; }
             set
             {
+                if (!m_Toggle) return;
                 if (m_ToggleStatus == value) return;
 
                 m_ToggleStatus = value;
@@ -56,6 +93,10 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Control constructor.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public Button(Base parent)
             : base(parent)
         {
@@ -65,16 +106,26 @@ namespace Gwen.Controls
             TextPadding = new Padding(3, 0, 3, 0);
         }
 
+        /// <summary>
+        /// Toggles the button.
+        /// </summary>
         public virtual void Toggle()
         {
             ToggleState = !ToggleState;
         }
 
-        public virtual void ReceiveEventPress(Base control)
+        /// <summary>
+        /// Presses the button.
+        /// </summary>
+        public virtual void Press(Base control = null)
         {
             onPress();
         }
 
+        /// <summary>
+        /// Renders the specified skin.
+        /// </summary>
+        /// <param name="skin">The skin.</param>
         protected override void Render(Skin.Base skin)
         {
             base.Render(skin);
@@ -91,6 +142,12 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Internal handler invoked on mouse click (left) event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="down">If set to <c>true</c> mouse button is down.</param>
         internal override void onMouseClickLeft(int x, int y, bool down)
         {
             base.onMouseClickLeft(x, y, down);
@@ -117,6 +174,9 @@ namespace Gwen.Controls
             Redraw();
         }
 
+        /// <summary>
+        /// Internal OnPress implementation.
+        /// </summary>
         internal virtual void onPress()
         {
             if (IsToggle)
@@ -128,9 +188,14 @@ namespace Gwen.Controls
                 OnPress.Invoke(this);
         }
         
-        public virtual void SetImage(String name, bool center = false)
+        /// <summary>
+        /// Sets the button's image.
+        /// </summary>
+        /// <param name="textureName">Texture name.</param>
+        /// <param name="center">Determines whether the image should be centered.</param>
+        public virtual void SetImage(String textureName, bool center = false)
         {
-            if (String.IsNullOrEmpty(name))
+            if (String.IsNullOrEmpty(textureName))
             {
                 m_Image = null;
                 return;
@@ -141,7 +206,7 @@ namespace Gwen.Controls
                 m_Image = new ImagePanel(this);
             }
 
-            m_Image.ImageName = name;
+            m_Image.ImageName = textureName;
             m_Image.SizeToContents( );
             m_Image.SetPos(Math.Max(m_Padding.Left, 2), 2);
             m_CenterImage = center;
@@ -149,6 +214,9 @@ namespace Gwen.Controls
             m_TextPadding.Left = m_Image.Right + 2;
         }
 
+        /// <summary>
+        /// Sizes to contents.
+        /// </summary>
         public override void SizeToContents()
         {
             base.SizeToContents();
@@ -162,6 +230,13 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Internal handler for Space keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
         internal override bool onKeySpace(bool down)
         {
             if (down)
@@ -169,11 +244,18 @@ namespace Gwen.Controls
             return true;
         }
 
+        /// <summary>
+        /// Default accelerator handler.
+        /// </summary>
         protected override void AcceleratePressed()
         {
             onPress();
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
@@ -186,6 +268,9 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Updates control colors.
+        /// </summary>
         public override void UpdateColors()
         {
             if (IsDisabled)
@@ -209,6 +294,9 @@ namespace Gwen.Controls
             TextColor = Skin.Colors.Button.Normal;
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
         public override void Dispose()
         {
             if (m_Image != null)

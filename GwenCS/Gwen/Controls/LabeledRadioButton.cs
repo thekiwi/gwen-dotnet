@@ -23,7 +23,7 @@ namespace Gwen.Controls
             m_Label.Alignment = Pos.CenterV | Pos.Left;
             m_Label.Text = "Radio Button";
             m_Label.Dock = Pos.Fill;
-            m_Label.OnPress += m_RadioButton.ReceiveEventPress;
+            m_Label.OnPress += m_RadioButton.Press;
             m_Label.IsTabable = false;
             m_Label.KeyboardInputEnabled = false;
         }

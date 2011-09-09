@@ -3,14 +3,24 @@ using System.Drawing;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// HSV hue selector.
+    /// </summary>
     public class ColorSlider : Base
     {
         protected int m_SelectedDist;
         protected bool m_Depressed;
         protected Texture m_Texture; // [omeg] added
 
-        public event ControlCallback OnSelectionChanged;
+        /// <summary>
+        /// Invoked when the selected color has changed.
+        /// </summary>
+        public event ControlCallback OnColorChanged;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorSlider"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ColorSlider(Base parent) : base(parent)
         {
             SetSize(32, 128);
@@ -18,12 +28,19 @@ namespace Gwen.Controls
             m_Depressed = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             base.Dispose();
             m_Texture.Dispose();
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             //Is there any way to move this into skin? Not for now, no idea how we'll "actually" render these
@@ -71,6 +88,12 @@ namespace Gwen.Controls
             skin.Renderer.DrawFilledRect(new Rectangle(Width - 4, drawHeight + 1, 3, 3));
         }
 
+        /// <summary>
+        /// Internal handler invoked on mouse click (left) event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="down">If set to <c>true</c> mouse button is down.</param>
         internal override void onMouseClickLeft(int x, int y, bool down)
         {
             m_Depressed = down;
@@ -82,6 +105,13 @@ namespace Gwen.Controls
             onMouseMoved(x, y, 0, 0);
         }
 
+        /// <summary>
+        /// Internal handler invoked on mouse moved event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="dx">X change.</param>
+        /// <param name="dy">Y change.</param>
         internal override void onMouseMoved(int x, int y, int dx, int dy)
         {
             if (m_Depressed)
@@ -94,27 +124,30 @@ namespace Gwen.Controls
                     cursorPos.Y = Height;
 
                 m_SelectedDist = cursorPos.Y;
-                if (OnSelectionChanged != null)
-                    OnSelectionChanged.Invoke(this);
+                if (OnColorChanged != null)
+                    OnColorChanged.Invoke(this);
             }
         }
 
-        public Color GetColorAtHeight(int y)
+        private Color GetColorAtHeight(int y)
         {
             float yPercent = y / (float)Height;
             return Global.HSVToColor(yPercent * 360, 1, 1);
         }
 
-        public void SetColor(Color color)
+        private void SetColor(Color color)
         {
             HSV hsv = color.ToHSV();
 
             m_SelectedDist = Global.Trunc(hsv.h / 360 * Height);
 
-            if (OnSelectionChanged != null)
-                OnSelectionChanged.Invoke(this);
+            if (OnColorChanged != null)
+                OnColorChanged.Invoke(this);
         }
 
-        public Color SelectedColor { get { return GetColorAtHeight(m_SelectedDist); } }
+        /// <summary>
+        /// Selected color.
+        /// </summary>
+        public Color SelectedColor { get { return GetColorAtHeight(m_SelectedDist); } set { SetColor(value); } }
     }
 }

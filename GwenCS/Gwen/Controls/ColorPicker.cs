@@ -4,18 +4,47 @@ using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// RGBA color picker.
+    /// </summary>
     public class ColorPicker : Base, IColorPicker
     {
         protected Color m_Color;
 
+        /// <summary>
+        /// Seelcted color.
+        /// </summary>
         public Color Color { get { return m_Color; } set { m_Color = value; UpdateControls(); } }
+
+        /// <summary>
+        /// Red value of the selected color.
+        /// </summary>
         public int R { get { return m_Color.R; } set { m_Color = Color.FromArgb(m_Color.A, value, m_Color.G, m_Color.B); } }
+
+        /// <summary>
+        /// Green value of the selected color.
+        /// </summary>
         public int G { get { return m_Color.G; } set { m_Color = Color.FromArgb(m_Color.A, m_Color.R, value, m_Color.B); } }
+
+        /// <summary>
+        /// Blue value of the selected color.
+        /// </summary>
         public int B { get { return m_Color.B; } set { m_Color = Color.FromArgb(m_Color.A, m_Color.R, m_Color.G, value); } }
+
+        /// <summary>
+        /// Alpha value of the selected color.
+        /// </summary>
         public int A { get { return m_Color.A; } set { m_Color = Color.FromArgb(value, m_Color.R, m_Color.G, m_Color.B); } }
 
+        /// <summary>
+        /// Invoked when the selected color has changed.
+        /// </summary>
         public event ControlCallback OnColorChanged;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ColorPicker"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ColorPicker(Base parent) : base(parent)
         {
             MouseInputEnabled = true;
@@ -149,6 +178,10 @@ namespace Gwen.Controls
             //SetColor( Gwen::Color( redSlider->GetValue(), greenSlider->GetValue(), blueSlider->GetValue(), alphaSlider->GetValue() ) );
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
@@ -176,7 +209,7 @@ namespace Gwen.Controls
             return 0;
         }
 
-        protected String GetColorFromName(String name)
+        protected static String GetColorFromName(String name)
         {
             if (name.Contains("Red"))
                 return "Red";
@@ -208,6 +241,9 @@ namespace Gwen.Controls
             Invalidate();
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             foreach (Base child in Children)

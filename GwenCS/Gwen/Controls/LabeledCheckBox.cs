@@ -17,7 +17,7 @@ namespace Gwen.Controls
 
             m_Label = new LabelClickable(this);
             m_Label.Dock = Pos.Fill;
-            m_Label.OnPress += m_CheckBox.ReceiveEventPress;
+            m_Label.OnPress += m_CheckBox.Press;
             m_Label.IsTabable = false;
 
             IsTabable = false;

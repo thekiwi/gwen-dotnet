@@ -196,13 +196,11 @@ namespace Gwen.Controls
 
 
             m_VerticalScrollBar.ContentSize = m_InnerPanel.Height;
-            m_VerticalScrollBar.ViewableContentSize = Height -
-                                                      (m_HorizontalScrollBar.IsHidden ? 0 : m_HorizontalScrollBar.Height);
+            m_VerticalScrollBar.ViewableContentSize = Height - (m_HorizontalScrollBar.IsHidden ? 0 : m_HorizontalScrollBar.Height);
 
 
             m_HorizontalScrollBar.ContentSize = m_InnerPanel.Width;
-            m_HorizontalScrollBar.ViewableContentSize = Width -
-                                                        (m_VerticalScrollBar.IsHidden ? 0 : m_VerticalScrollBar.Width);
+            m_HorizontalScrollBar.ViewableContentSize = Width - (m_VerticalScrollBar.IsHidden ? 0 : m_VerticalScrollBar.Width);
 
             int newInnerPanelPosX = 0;
             int newInnerPanelPosY = 0;

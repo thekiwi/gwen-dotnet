@@ -15,8 +15,8 @@ namespace Gwen.Controls
 
         protected float m_LastInputTime;
 
-        public override bool AccelOnlyFocus { get { return true; } }
-        public override bool NeedsInputChars { get { return true; } }
+        protected override bool AccelOnlyFocus { get { return true; } }
+        protected override bool NeedsInputChars { get { return true; } }
         public bool SelectAllOnFocus { get { return m_SelectAll; } set { m_SelectAll = value; if (value) onSelectAll(this); } }
         public bool HasSelection { get { return m_CursorPos != m_CursorEnd; } }
 
