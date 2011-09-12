@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Popup menu.
+    /// </summary>
     public class Menu : ScrollControl
     {
         protected bool m_DisableIconMargin;
@@ -11,10 +14,21 @@ namespace Gwen.Controls
 
         internal override bool IsMenuComponent { get { return true; } }
         public bool IconMarginDisabled { get { return m_DisableIconMargin; } set { m_DisableIconMargin = value; } }
+        
+        /// <summary>
+        /// Determines whether the menu should be disposed on close.
+        /// </summary>
         public bool DeleteOnClose { get { return m_DeleteOnClose; } set { m_DeleteOnClose = value; } }
 
+        /// <summary>
+        /// Determines whether the menu should open on mouse hover.
+        /// </summary>
         protected virtual bool ShouldHoverOpenMenu { get { return true; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Menu"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public Menu(Base parent)
             : base(parent)
         {
@@ -23,27 +37,42 @@ namespace Gwen.Controls
             IconMarginDisabled = false;
 
             AutoHideBars = true;
-            SetScroll(false, true);
+            EnableScroll(false, true);
             DeleteOnClose = false;
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
         public override void Dispose()
         {
             ClearItems();
             base.Dispose();
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             skin.DrawMenu(this, IconMarginDisabled);
         }
 
+        /// <summary>
+        /// Renders under the actual control (shadows etc).
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void RenderUnder(Skin.Base skin)
         {
             base.RenderUnder(skin);
             skin.DrawShadow(this);
         }
 
+        /// <summary>
+        ///  Opens the menu.
+        /// </summary>
+        /// <param name="pos">Unused.</param>
         public void Open(uint pos)
         {
             IsHidden = false;
@@ -52,6 +81,10 @@ namespace Gwen.Controls
             SetPos(mouse.X, mouse.Y);
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             int childrenHeight = m_InnerPanel.Children.Sum(child => child != null ? child.Height : 0);
@@ -64,16 +97,29 @@ namespace Gwen.Controls
             base.Layout(skin);
         }
 
-        public virtual MenuItem AddItem(String name, ControlCallback handler = null)
+        /// <summary>
+        /// Adds a new menu item.
+        /// </summary>
+        /// <param name="text">Item text.</param>
+        /// <param name="handler">Handler invoked on item selection.</param>
+        /// <returns>Newly created control.</returns>
+        public virtual MenuItem AddItem(String text, ControlCallback handler = null)
         {
-            return AddItem(name, String.Empty, handler);
+            return AddItem(text, String.Empty, handler);
         }
 
-        public virtual MenuItem AddItem(String name, String iconName, ControlCallback handler = null)
+        /// <summary>
+        /// Adds a new menu item.
+        /// </summary>
+        /// <param name="text">Item text.</param>
+        /// <param name="handler">Handler invoked on item selection.</param>
+        /// <param name="iconName">Icon texture name.</param>
+        /// <returns>Newly created control.</returns>
+        public virtual MenuItem AddItem(String text, String iconName, ControlCallback handler = null)
         {
             MenuItem item = new MenuItem(this);
             item.Padding = new Padding(4, 4, 4, 4);
-            item.SetText(name);
+            item.SetText(text);
             item.SetImage(iconName);
 
             if (handler != null)
@@ -84,6 +130,10 @@ namespace Gwen.Controls
             return item;
         }
 
+        /// <summary>
+        /// Add item handler.
+        /// </summary>
+        /// <param name="item">Item added.</param>
         protected virtual void onAddItem(MenuItem item)
         {
             item.TextPadding = new Padding(IconMarginDisabled ? 0 : 24, 0, 16, 0);
@@ -98,6 +148,9 @@ namespace Gwen.Controls
             SetSize(w, Height);
         }
 
+        /// <summary>
+        /// Removes all items.
+        /// </summary>
         public virtual void ClearItems()
         {
             foreach (Base child in m_InnerPanel.Children)
@@ -107,16 +160,27 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Closes all submenus.
+        /// </summary>
         public virtual void CloseAll()
         {
             m_InnerPanel.Children.ForEach(child => { if (child is MenuItem) (child as MenuItem).CloseMenu(); });
         }
 
+        /// <summary>
+        /// Indicates whether any (sub)menu is open.
+        /// </summary>
+        /// <returns></returns>
         public virtual bool IsMenuOpen()
         {
             return m_InnerPanel.Children.Any(child => { if (child is MenuItem) return (child as MenuItem).IsMenuOpen; return false; });
         }
 
+        /// <summary>
+        /// Mouse hover handler.
+        /// </summary>
+        /// <param name="control">Event source.</param>
         protected virtual void onHoverItem(Base control)
         {
             if (!ShouldHoverOpenMenu) return;
@@ -129,6 +193,9 @@ namespace Gwen.Controls
             item.OpenMenu();
         }
 
+        /// <summary>
+        /// Closes the current menu.
+        /// </summary>
         public virtual void Close()
         {
             IsHidden = true;
@@ -136,6 +203,9 @@ namespace Gwen.Controls
                 Dispose();
         }
 
+        /// <summary>
+        /// Closes all submenus and the current menu.
+        /// </summary>
         public override void CloseMenus()
         {
             base.CloseMenus();
@@ -143,6 +213,9 @@ namespace Gwen.Controls
             Close();
         }
 
+        /// <summary>
+        /// Adds a divider menu item.
+        /// </summary>
         public virtual void AddDivider()
         {
             MenuDivider divider = new MenuDivider(this);
@@ -151,13 +224,24 @@ namespace Gwen.Controls
         }
     }
 
+    /// <summary>
+    /// Divider menu item.
+    /// </summary>
     public class MenuDivider : Base
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuDivider"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public MenuDivider(Base parent) : base(parent)
         {
             Height = 1;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             skin.DrawMenuDivider(this);

@@ -19,7 +19,7 @@ namespace Gwen.UnitTest
         {
             Dock = Pos.Fill;
             SetSize(1024, 768);
-            m_List = new CollapsibleList(this);
+            m_List = new Controls.CollapsibleList(this);
 
             LeftDock.TabControl.AddPage("CollapsibleList", m_List);
             LeftDock.Width = 150;
@@ -36,22 +36,14 @@ namespace Gwen.UnitTest
             GUnit test;
 
             {
-                CollapsibleCategory cat = m_List.Add("Basic");
-                {
-                    test = new Button(center);
-                    RegisterUnitTest("Button", cat, test);
-                    test = new Label(center);
-                    RegisterUnitTest("Label", cat, test);
-                }
-            }
-
-            {
                 CollapsibleCategory cat = m_List.Add("Non-Interactive");
                 {
-                    test = new ProgressBar(center);
-                    RegisterUnitTest("ProgressBar", cat, test);
+                    test = new Label(center);
+                    RegisterUnitTest("Label", cat, test);
                     test = new GroupBox(center);
                     RegisterUnitTest("GroupBox", cat, test);
+                    test = new ProgressBar(center);
+                    RegisterUnitTest("ProgressBar", cat, test);
                     test = new ImagePanel(center);
                     RegisterUnitTest("ImagePanel", cat, test);
                     test = new StatusBar(center);
@@ -62,20 +54,50 @@ namespace Gwen.UnitTest
             {
                 CollapsibleCategory cat = m_List.Add("Standard");
                 {
-                    test = new ComboBox(center);
-                    RegisterUnitTest("ComboBox", cat, test);
+                    test = new Button(center);
+                    RegisterUnitTest("Button", cat, test);
                     test = new TextBox(center);
                     RegisterUnitTest("TextBox", cat, test);
-                    test = new RadioButton(center);
-                    RegisterUnitTest("RadioButton", cat, test);
                     test = new CheckBox(center);
                     RegisterUnitTest("CheckBox", cat, test);
+                    test = new RadioButton(center);
+                    RegisterUnitTest("RadioButton", cat, test);
+                    test = new ComboBox(center);
+                    RegisterUnitTest("ComboBox", cat, test);
                     test = new ListBox(center);
                     RegisterUnitTest("ListBox", cat, test);
-                    test = new CrossSplitter(center);
-                    RegisterUnitTest("CrossSplitter", cat, test);
                     test = new NumericUpDown(center);
                     RegisterUnitTest("NumericUpDown", cat, test);
+                    test = new Slider(center);
+                    RegisterUnitTest("Slider", cat, test);
+                    test = new MenuStrip(center);
+                    RegisterUnitTest("MenuStrip", cat, test);
+                    test = new CrossSplitter(center);
+                    RegisterUnitTest("CrossSplitter", cat, test);
+                }
+            }
+            
+            {
+                CollapsibleCategory cat = m_List.Add("Containers");
+                {
+                    test = new Window(center);
+                    RegisterUnitTest("Window", cat, test);
+                    test = new TreeControl(center);
+                    RegisterUnitTest("TreeControl", cat, test);
+                    test = new Properties(center);
+                    RegisterUnitTest("Properties", cat, test);
+                    test = new TabControl(center);
+                    RegisterUnitTest("TabControl", cat, test);
+                    test = new ScrollControl(center);
+                    RegisterUnitTest("ScrollControl", cat, test);
+                }
+            }
+            
+            {
+                CollapsibleCategory cat = m_List.Add("Non-standard");
+                {
+                    test = new CollapsibleList(center);
+                    RegisterUnitTest("CollapsibleList", cat, test);
                 }
             }
 

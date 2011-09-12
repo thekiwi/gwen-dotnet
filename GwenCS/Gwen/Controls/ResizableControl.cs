@@ -4,15 +4,28 @@ using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Base resizable control.
+    /// </summary>
     public class ResizableControl : Base
     {
         protected bool m_ClampMovement;
-        protected Resizer[] m_Resizer;
+        protected readonly Resizer[] m_Resizer;
 
+        /// <summary>
+        /// Determines whether control's position should be restricted to its parent bounds.
+        /// </summary>
         public bool ClampMovement { get { return m_ClampMovement; } set { m_ClampMovement = value; } }
 
+        /// <summary>
+        /// Invoked when the control has been resized.
+        /// </summary>
         public event ControlCallback OnResized;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ResizableControl"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ResizableControl(Base parent) : base(parent)
         {
             m_Resizer = new Resizer[10];
@@ -60,6 +73,9 @@ namespace Gwen.Controls
             m_Resizer[6].OnResize += onResized;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             foreach (Resizer resizer in m_Resizer)
@@ -70,17 +86,24 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
+        /// <summary>
+        /// Handler for the resized event.
+        /// </summary>
+        /// <param name="control">Event source.</param>
         protected virtual void onResized(Base control)
         {
             if (OnResized != null)
                 OnResized.Invoke(this);
         }
 
-        public Resizer GetResizer(int i)
+        protected Resizer GetResizer(int i)
         {
             return m_Resizer[i];
         }
 
+        /// <summary>
+        /// Disables resizing.
+        /// </summary>
         public void DisableResizing()
         {
             for (int i = 0; i < 10; i++)
@@ -93,6 +116,9 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Enables resizing.
+        /// </summary>
         public void EnableResizing()
         {
             for (int i = 0; i < 10; i++)
@@ -105,24 +131,34 @@ namespace Gwen.Controls
             }
         }
 
-        public override bool SetBounds(int x, int y, int w, int h)
+        /// <summary>
+        /// Sets the control bounds.
+        /// </summary>
+        /// <param name="x">X position.</param>
+        /// <param name="y">Y position.</param>
+        /// <param name="width">Width.</param>
+        /// <param name="height">Height.</param>
+        /// <returns>
+        /// True if bounds changed.
+        /// </returns>
+        public override bool SetBounds(int x, int y, int width, int height)
         {
             Point minSize = MinimumSize;
             // Clamp Minimum Size
-            if (w < minSize.X) w = minSize.X;
-            if (h < minSize.Y) h = minSize.Y;
+            if (width < minSize.X) width = minSize.X;
+            if (height < minSize.Y) height = minSize.Y;
 
             // Clamp to parent's window
             Base parent = Parent;
             if (parent != null && m_ClampMovement)
             {
-                if (x + w > parent.Width) x = parent.Width - w;
+                if (x + width > parent.Width) x = parent.Width - width;
                 if (x < 0) x = 0;
-                if (y + h > parent.Height) y = parent.Height - h;
+                if (y + height > parent.Height) y = parent.Height - height;
                 if (y < 0) y = 0;
             }
 
-            return base.SetBounds(x, y, w, h);
+            return base.SetBounds(x, y, width, height);
         }
     }
 }

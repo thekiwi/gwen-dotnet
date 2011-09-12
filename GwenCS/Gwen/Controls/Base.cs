@@ -778,8 +778,8 @@ namespace Gwen.Controls
         /// <summary>
         /// Sets the control bounds.
         /// </summary>
-        /// <param name="x">X.</param>
-        /// <param name="y">Y.</param>
+        /// <param name="x">X position.</param>
+        /// <param name="y">Y position.</param>
         /// <param name="width">Width.</param>
         /// <param name="height">Height.</param>
         /// <returns>

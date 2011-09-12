@@ -8,18 +8,28 @@ namespace Gwen.Controls
     /// </summary>
     public class CollapsibleCategory : Base
     {
-        protected readonly Button m_Button;
+        protected readonly Button m_HeaderButton;
         protected readonly CollapsibleList m_List;
 
         /// <summary>
         /// Header text.
         /// </summary>
-        public String Text { get { return m_Button.Text; } set { m_Button.Text = value; } }
+        public String Text { get { return m_HeaderButton.Text; } set { m_HeaderButton.Text = value; } }
+
+        /// <summary>
+        /// Determines whether the category is collapsed (closed).
+        /// </summary>
+        public bool IsCollapsed { get { return m_HeaderButton.ToggleState; } set { m_HeaderButton.ToggleState = value; } }
 
         /// <summary>
         /// Invoked when an entry is selected.
         /// </summary>
         public event ControlCallback OnSelection;
+
+        /// <summary>
+        /// Invoked when the category collapsed state changes (header button is pressed).
+        /// </summary>
+        public event ControlCallback OnCollapsed;
 
         // todo: iterator, make this as function?
         /// <summary>
@@ -49,10 +59,11 @@ namespace Gwen.Controls
         /// <param name="parent">Parent control.</param>
         public CollapsibleCategory(CollapsibleList parent) : base(parent)
         {
-            m_Button = new CategoryHeaderButton(this);
-            m_Button.Text = "Category Title"; // [omeg] todo: i18n
-            m_Button.Dock = Pos.Top;
-            m_Button.Height = 20;
+            m_HeaderButton = new CategoryHeaderButton(this);
+            m_HeaderButton.Text = "Category Title"; // [omeg] todo: i18n
+            m_HeaderButton.Dock = Pos.Top;
+            m_HeaderButton.Height = 20;
+            m_HeaderButton.OnToggle += onHeaderToggle;
 
             m_List = parent;
 
@@ -65,8 +76,18 @@ namespace Gwen.Controls
         /// </summary>
         public override void Dispose()
         {
-            m_Button.Dispose();
+            m_HeaderButton.Dispose();
             base.Dispose();
+        }
+
+        /// <summary>
+        /// Handler for header button toggle event.
+        /// </summary>
+        /// <param name="control">Source control.</param>
+        protected virtual void onHeaderToggle(Base control)
+        {
+            if (OnCollapsed != null)
+                OnCollapsed.Invoke(this);
         }
 
         /// <summary>
@@ -117,7 +138,7 @@ namespace Gwen.Controls
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawCategoryInner(this, m_Button.ToggleState);
+            skin.DrawCategoryInner(this, m_HeaderButton.ToggleState);
         }
 
         /// <summary>
@@ -141,15 +162,16 @@ namespace Gwen.Controls
         /// <param name="skin">Skin to use.</param>
         protected override void PostLayout(Skin.Base skin)
         {
-            if (m_Button.ToggleState)
+            if (IsCollapsed)
             {
-                Height = m_Button.Height;
+                Height = m_HeaderButton.Height;
             }
             else
             {
                 SizeToChildren(false, true);
             }
 
+            // alternate row coloring
             bool b = true;
             foreach (Base child in Children)
             {

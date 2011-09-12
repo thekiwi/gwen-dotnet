@@ -10,11 +10,29 @@ namespace Gwen.Controls
         private readonly CheckBox m_CheckBox;
         private readonly LabelClickable m_Label;
 
+        /// <summary>
+        /// Invoked when the control is checked.
+        /// </summary>
         public event ControlCallback OnChecked;
+
+        /// <summary>
+        /// Invoked when the control is unchecked.
+        /// </summary>
         public event ControlCallback OnUnChecked;
+
+        /// <summary>
+        /// Invoked when the control's check is changed.
+        /// </summary>
         public event ControlCallback OnCheckChanged;
 
+        /// <summary>
+        /// Indicates whether the control is checked.
+        /// </summary>
         public bool IsChecked { get { return m_CheckBox.IsChecked; } set { m_CheckBox.IsChecked = value; } }
+
+        /// <summary>
+        /// Label text.
+        /// </summary>
         public String Text { get { return m_Label.Text; } set { m_Label.Text = value; } }
 
         /// <summary>

@@ -10,6 +10,9 @@ namespace Gwen.Controls
         protected readonly RadioButton m_RadioButton;
         protected readonly LabelClickable m_Label;
 
+        /// <summary>
+        /// Label text.
+        /// </summary>
         public String Text { get { return m_Label.Text; } set { m_Label.Text = value; } }
 
         /// <summary>

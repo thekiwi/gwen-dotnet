@@ -9,13 +9,28 @@ namespace Gwen.Controls
         protected bool m_CanScrollV;
         protected bool m_AutoHideBars;
 
-        protected BaseScrollBar m_VerticalScrollBar;
-        protected BaseScrollBar m_HorizontalScrollBar;
+        protected readonly BaseScrollBar m_VerticalScrollBar;
+        protected readonly BaseScrollBar m_HorizontalScrollBar;
 
+        /// <summary>
+        /// Indicates whether the control can scroll horizontally.
+        /// </summary>
         public bool CanScrollH { get { return m_CanScrollH; } }
+
+        /// <summary>
+        /// Indicates whether the control can scroll vertically.
+        /// </summary>
         public bool CanScrollV { get { return m_CanScrollV; } }
+
+        /// <summary>
+        /// Determines whether the scroll bars should be hidden if not needed.
+        /// </summary>
         public bool AutoHideBars { get { return m_AutoHideBars; } set { m_AutoHideBars = value; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScrollControl"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ScrollControl(Base parent)
             : base(parent)
         {
@@ -42,6 +57,9 @@ namespace Gwen.Controls
             m_AutoHideBars = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             m_VerticalScrollBar.Dispose();
@@ -87,7 +105,7 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual void SetScroll(bool h, bool v)
+        public virtual void EnableScroll(bool h, bool v)
         {
             m_CanScrollV = v;
             m_CanScrollH = h;

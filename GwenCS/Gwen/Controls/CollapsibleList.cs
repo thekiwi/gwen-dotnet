@@ -13,12 +13,17 @@ namespace Gwen.Controls
         public event ControlCallback OnSelection;
 
         /// <summary>
+        /// Invoked when the category collapsed state changes (header button is pressed).
+        /// </summary>
+        public event ControlCallback OnCollapsed;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="CollapsibleList"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
         public CollapsibleList(Base parent) : base(parent)
         {
-            SetScroll(false, true);
+            EnableScroll(false, true);
             AutoHideBars = true;
         }
 
@@ -71,7 +76,8 @@ namespace Gwen.Controls
             category.Parent = this;
             category.Dock = Pos.Top;
             category.Margin = new Margin(1, 0, 1, 1);
-            category.OnSelection += onSelectionEvent;
+            category.OnSelection += onCategorySelect;
+            category.OnCollapsed += onCategoryCollapse;
             // this relies on fact that category.m_List is set to its parent
         }
 
@@ -115,14 +121,27 @@ namespace Gwen.Controls
         /// <summary>
         /// Handler for OnSelection event.
         /// </summary>
-        /// <param name="control">Event source.</param>
-        protected virtual void onSelectionEvent(Base control)
+        /// <param name="control">Event source: <see cref="CollapsibleList"/>.</param>
+        protected virtual void onCategorySelect(Base control)
         {
             CollapsibleCategory cat = control as CollapsibleCategory;
             if (cat == null) return;
 
             if (OnSelection != null)
                 OnSelection.Invoke(this);
+        }
+
+        /// <summary>
+        /// Handler for category collapsed event.
+        /// </summary>
+        /// <param name="control">Event source: <see cref="CollapsibleCategory"/>.</param>
+        protected virtual void onCategoryCollapse(Base control)
+        {
+            CollapsibleCategory cat = control as CollapsibleCategory;
+            if (cat == null) return;
+
+            if (OnCollapsed != null)
+                OnCollapsed.Invoke(control);
         }
     }
 }

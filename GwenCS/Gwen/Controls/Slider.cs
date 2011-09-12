@@ -8,10 +8,15 @@ namespace Gwen.Controls
     {
         protected SliderBar m_SliderBar;
         protected bool m_ClampToNotches;
-        protected int m_NumNotches;
+        protected int m_NotchCount;
         protected float m_Value;
         protected float m_Min;
         protected float m_Max;
+
+        public int NotchCount { get { return m_NotchCount; } set { m_NotchCount = value; } }
+        public bool ClampToNotches { get { return m_ClampToNotches; } set { m_ClampToNotches = value; } }
+        public float Min { get { return m_Min; } set { SetRange(value, m_Max); } }
+        public float Max { get { return m_Max; } set { SetRange(m_Min, value); } }
 
         public float Value
         {
@@ -40,7 +45,7 @@ namespace Gwen.Controls
             m_Max = 1.0f;
 
             m_ClampToNotches = false;
-            m_NumNotches = 5;
+            m_NotchCount = 5;
             m_Value = 0.0f;
 
             IsTabable = true;
@@ -118,8 +123,8 @@ namespace Gwen.Controls
         {
             if (m_ClampToNotches)
             {
-                val = (float)Math.Floor((val * m_NumNotches) + 0.5f);
-                val /= m_NumNotches;
+                val = (float)Math.Floor((val * m_NotchCount) + 0.5f);
+                val /= m_NotchCount;
             }
 
             if (m_Value != val)

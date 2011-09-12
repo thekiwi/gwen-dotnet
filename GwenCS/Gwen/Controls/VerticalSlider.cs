@@ -34,7 +34,7 @@ namespace Gwen.Controls
 
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawSlider(this, false, m_ClampToNotches ? m_NumNotches : 0, m_SliderBar.Height);
+            skin.DrawSlider(this, false, m_ClampToNotches ? m_NotchCount : 0, m_SliderBar.Height);
         }
     }
 }
