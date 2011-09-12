@@ -20,10 +20,10 @@ namespace Gwen.Controls
             m_SliderBar.MoveTo(m_SliderBar.X, (int)((Height - m_SliderBar.Height) * (1 - m_Value)));
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             m_SliderBar.MoveTo(m_SliderBar.X, (int) (CanvasPosToLocal(new Point(x, y)).Y - m_SliderBar.Height*0.5));
-            m_SliderBar.onMouseClickLeft(x, y, down);
+            m_SliderBar.InputMouseClickLeft(x, y, down);
             onMoved(m_SliderBar);
         }
 

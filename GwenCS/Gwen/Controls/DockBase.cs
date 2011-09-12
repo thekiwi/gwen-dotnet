@@ -5,6 +5,9 @@ using Gwen.DragDrop;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Base for dockable containers.
+    /// </summary>
     public class DockBase : Base
     {
         private DockBase m_Left;
@@ -20,20 +23,42 @@ namespace Gwen.Controls
         private bool m_DropFar;
         private Rectangle m_HoverRect;
 
-        public virtual DockBase LeftDock { get { return GetChildDock(Pos.Left); } }
-        public virtual DockBase RightDock { get { return GetChildDock(Pos.Right); } }
-        public virtual DockBase TopDock { get { return GetChildDock(Pos.Top); } }
-        public virtual DockBase BottomDock { get { return GetChildDock(Pos.Bottom); } }
+        /// <summary>
+        /// Control docked on the left side.
+        /// </summary>
+        public DockBase LeftDock { get { return GetChildDock(Pos.Left); } }
+
+        /// <summary>
+        /// Control docked on the right side.
+        /// </summary>
+        public DockBase RightDock { get { return GetChildDock(Pos.Right); } }
+
+        /// <summary>
+        /// Control docked on the top side.
+        /// </summary>
+        public DockBase TopDock { get { return GetChildDock(Pos.Top); } }
+
+        /// <summary>
+        /// Control docked on the bottom side.
+        /// </summary>
+        public DockBase BottomDock { get { return GetChildDock(Pos.Bottom); } }
 
         public TabControl TabControl { get { return m_DockedTabControl; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DockBase"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public DockBase(Base parent)
             : base(parent)
         {
             Padding = new Padding(1, 1, 1, 1);
             SetSize(200, 200);
         }
-        
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             if (m_Sizer != null)
@@ -42,13 +67,24 @@ namespace Gwen.Controls
                 m_DockedTabControl.Dispose();
             base.Dispose();
         }
-        
-        internal override bool onKeySpace(bool down)
+
+        /// <summary>
+        /// Handler for Space keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool onKeySpace(bool down)
         {
             // No action on space (default button action is to press)
             return false;
         }
 
+        /// <summary>
+        /// Initializes an inner docked control for the specified position.
+        /// </summary>
+        /// <param name="pos">Dock position.</param>
         protected virtual void SetupChildDock(Pos pos)
         {
             if (m_DockedTabControl == null)
@@ -61,10 +97,12 @@ namespace Gwen.Controls
 
             Dock = pos;
 
-            Pos sizeDir = Pos.Left;
-            if (pos == Pos.Left) sizeDir = Pos.Right;
-            if (pos == Pos.Top) sizeDir = Pos.Bottom;
-            if (pos == Pos.Bottom) sizeDir = Pos.Top;
+            Pos sizeDir;
+            if (pos == Pos.Right) sizeDir = Pos.Left;
+            else if (pos == Pos.Left) sizeDir = Pos.Right;
+            else if (pos == Pos.Top) sizeDir = Pos.Bottom;
+            else if (pos == Pos.Bottom) sizeDir = Pos.Top;
+            else throw new ArgumentException("Invalid dock", "pos");
 
             if (m_Sizer != null)
                 m_Sizer.Dispose();
@@ -74,11 +112,20 @@ namespace Gwen.Controls
             m_Sizer.SetSize(2, 2);
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
 
         }
 
+        /// <summary>
+        /// Gets an inner docked control for the specified position.
+        /// </summary>
+        /// <param name="pos"></param>
+        /// <returns></returns>
         protected virtual DockBase GetChildDock(Pos pos)
         {
             // todo: verify
@@ -128,6 +175,12 @@ namespace Gwen.Controls
             return dock;
         }
 
+        /// <summary>
+        /// Calculates dock direction from dragdrop coordinates.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <returns>Dock direction.</returns>
         protected virtual Pos GetDroppedTabDirection(int x, int y)
         {
             int w = Width;
@@ -213,6 +266,9 @@ namespace Gwen.Controls
             return true;
         }
 
+        /// <summary>
+        /// Indicates whether the control contains any docked children.
+        /// </summary>
         public virtual bool IsEmpty
         {
             get
@@ -368,6 +424,10 @@ namespace Gwen.Controls
             }
         }
 
+        /// <summary>
+        /// Renders over the actual control (overlays).
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void RenderOver(Skin.Base skin)
         {
             if (!m_DrawHover)

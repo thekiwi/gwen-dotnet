@@ -8,8 +8,8 @@ namespace Gwen.Controls
     /// </summary>
     public class BaseScrollBar : Base
     {
-        protected ScrollBarButton[] m_ScrollButton;
-        protected ScrollBarBar m_Bar;
+        protected readonly ScrollBarButton[] m_ScrollButton;
+        protected readonly ScrollBarBar m_Bar;
 
         protected bool m_Depressed;
         protected float m_ScrollAmount;
@@ -69,6 +69,23 @@ namespace Gwen.Controls
             NudgeAmount = 20;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            m_Bar.Dispose();
+            m_ScrollButton[0].Dispose();
+            m_ScrollButton[1].Dispose();
+            base.Dispose();
+        }
+
+        /// <summary>
+        /// Sets the scroll amount (in pixels).
+        /// </summary>
+        /// <param name="value">Scroll amount.</param>
+        /// <param name="forceUpdate">Determines whether the control should be updated.</param>
+        /// <returns>True if control state changed.</returns>
         public virtual bool SetScrollAmount(float value, bool forceUpdate = true)
         {
             if (m_ScrollAmount == value && !forceUpdate)
@@ -80,12 +97,12 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse click (left) event.
+        /// Handler invoked on mouse click (left) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
 
         }
@@ -100,10 +117,10 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for the OnBarMoved event.
+        /// Handler for the OnBarMoved event.
         /// </summary>
         /// <param name="control">The control.</param>
-        internal virtual void onBarMoved(Base control)
+        protected virtual void onBarMoved(Base control)
         {
             if (OnBarMoved != null)
                 OnBarMoved.Invoke(this);
@@ -123,16 +140,5 @@ namespace Gwen.Controls
         public virtual void ScrollToRight() { }
         public virtual void ScrollToTop() { }
         public virtual void ScrollToBottom() { }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Bar.Dispose();
-            m_ScrollButton[0].Dispose();
-            m_ScrollButton[1].Dispose();
-            base.Dispose();
-        }
     }
 }

@@ -2,13 +2,20 @@
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// RadioButton with label.
+    /// </summary>
     public class LabeledRadioButton : Base
     {
-        protected RadioButton m_RadioButton;
-        protected LabelClickable m_Label;
+        protected readonly RadioButton m_RadioButton;
+        protected readonly LabelClickable m_Label;
 
-        public String Text { get { return m_Label.Text; } }
+        public String Text { get { return m_Label.Text; } set { m_Label.Text = value; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabeledRadioButton"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public LabeledRadioButton(Base parent) : base(parent)
         {
             SetSize(200, 19);
@@ -28,6 +35,9 @@ namespace Gwen.Controls
             m_Label.KeyboardInputEnabled = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             m_RadioButton.Dispose();
@@ -35,6 +45,10 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
+        /// <summary>
+        /// Renders the focus overlay.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void RenderFocus(Skin.Base skin)
         {
             if (Global.KeyboardFocus != this) return;
@@ -43,16 +57,25 @@ namespace Gwen.Controls
             skin.DrawKeyboardHighlight(this, RenderBounds, 0);
         }
 
-        public RadioButton RadioButton { get { return m_RadioButton; } }
-        public LabelClickable Label { get { return m_Label; } }
+        internal RadioButton RadioButton { get { return m_RadioButton; } }
 
-        internal override bool onKeySpace(bool down)
+        /// <summary>
+        /// Handler for Space keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool onKeySpace(bool down)
         {
             if (down)
                 m_RadioButton.IsChecked = !m_RadioButton.IsChecked;
             return true;
         }
 
+        /// <summary>
+        /// Selects the radio button.
+        /// </summary>
         public virtual void Select()
         {
             m_RadioButton.IsChecked = true;

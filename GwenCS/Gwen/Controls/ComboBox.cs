@@ -8,16 +8,18 @@ namespace Gwen.Controls
     /// </summary>
     public class DownArrow : Base
     {
-        protected ComboBox m_ComboBox;
+        private readonly ComboBox m_ComboBox;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DownArrow"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public DownArrow(Base parent) : base(parent)
+        public DownArrow(ComboBox parent) : base(parent) // or Base?
         {
             MouseInputEnabled = false;
             SetSize(15, 15);
+
+            m_ComboBox = parent;
         }
 
         /// <summary>
@@ -28,11 +30,6 @@ namespace Gwen.Controls
         {
             skin.DrawComboBoxArrow(this, m_ComboBox.IsHovered, m_ComboBox.IsDepressed, m_ComboBox.IsMenuOpen, m_ComboBox.IsDisabled);
         }
-
-        /// <summary>
-        /// Parent ComboBox.
-        /// </summary>
-        internal ComboBox ComboBox { set { m_ComboBox = value; } }
     }
 
     /// <summary>
@@ -40,9 +37,9 @@ namespace Gwen.Controls
     /// </summary>
     public class ComboBox : Button
     {
-        protected Menu m_Menu;
+        protected readonly Menu m_Menu;
         protected MenuItem m_SelectedItem;
-        protected Base m_Button;
+        protected readonly Base m_Button;
 
         /// <summary>
         /// Invoked when the selected item has changed.
@@ -67,7 +64,6 @@ namespace Gwen.Controls
             m_Menu.IsTabable = false;
 
             DownArrow arrow = new DownArrow(this);
-            arrow.ComboBox = this;
             m_Button = arrow;
 
             Alignment = Pos.Left | Pos.CenterV;
@@ -76,6 +72,16 @@ namespace Gwen.Controls
 
             IsTabable = true;
             KeyboardInputEnabled = true;
+        }
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        public override void Dispose()
+        {
+            m_Button.Dispose();
+            m_Menu.Dispose();
+            base.Dispose();
         }
 
         /// <summary>
@@ -89,7 +95,7 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Adds new item.
+        /// Adds a new item.
         /// </summary>
         /// <param name="label">Item label (displayed).</param>
         /// <param name="name">Item name.</param>
@@ -119,7 +125,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Internal OnPress implementation.
         /// </summary>
-        internal override void onPress()
+        protected override void onPress()
         {
             if (IsMenuOpen)
             {
@@ -150,7 +156,7 @@ namespace Gwen.Controls
         /// Internal handler for item selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        internal virtual void onItemSelected(Base control)
+        protected virtual void onItemSelected(Base control)
         {
             //Convert selected to a menu item
             MenuItem pItem = control as MenuItem;
@@ -178,17 +184,17 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for losing keyboard focus.
+        /// Handler for losing keyboard focus.
         /// </summary>
-        internal override void onLostKeyboardFocus()
+        protected override void onLostKeyboardFocus()
         {
             TextColor = Color.Black;
         }
 
         /// <summary>
-        /// Internal handler for gaining keyboard focus.
+        /// Handler for gaining keyboard focus.
         /// </summary>
-        internal override void onKeyboardFocus()
+        protected override void onKeyboardFocus()
         {
             //Until we add the blue highlighting again
             TextColor = Color.Black;
@@ -222,13 +228,13 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for Down Arrow keyboard event.
+        /// Handler for Down Arrow keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>
         /// True if handled.
         /// </returns>
-        internal override bool onKeyDown(bool down)
+        protected override bool onKeyDown(bool down)
         {
             if (down)
             {
@@ -240,13 +246,13 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for Up Arrow keyboard event.
+        /// Handler for Up Arrow keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>
         /// True if handled.
         /// </returns>
-        internal override bool onKeyUp(bool down)
+        protected override bool onKeyUp(bool down)
         {
             if (down)
             {
@@ -264,16 +270,6 @@ namespace Gwen.Controls
         protected override void RenderFocus(Skin.Base skin)
         {
             
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Button.Dispose();
-            m_Menu.Dispose();
-            base.Dispose();
         }
     }
 }

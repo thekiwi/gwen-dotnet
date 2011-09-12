@@ -2,12 +2,22 @@
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Docked tab control.
+    /// </summary>
     public class DockedTabControl : TabControl
     {
-        private TabTitleBar m_TitleBar;
+        private readonly TabTitleBar m_TitleBar;
 
+        /// <summary>
+        /// Determines whether the title bar is visible.
+        /// </summary>
         public bool TitleBarVisible { get { return !m_TitleBar.IsHidden; } set { m_TitleBar.IsHidden = !value; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DockedTabControl"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public DockedTabControl(Base parent) : base(parent)
         {
             Dock = Pos.Fill;
@@ -16,13 +26,20 @@ namespace Gwen.Controls
             m_TitleBar.Dock = Pos.Top;
             m_TitleBar.IsHidden = true;
         }
-        
+
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
         public override void Dispose()
         {
             m_TitleBar.Dispose();
             base.Dispose();
         }
-        
+
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             TabStrip.IsHidden = (TabCount <= 1);
@@ -30,7 +47,7 @@ namespace Gwen.Controls
             base.Layout(skin);
         }
 
-        protected void UpdateTitleBar()
+        private void UpdateTitleBar()
         {
             if (CurrentButton == null)
                 return;

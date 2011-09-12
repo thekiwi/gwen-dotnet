@@ -69,7 +69,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Real list of children.
         /// </summary>
-        internal List<Base> Children;
+        internal readonly List<Base> Children;
 
         /// <summary>
         /// Invoked when mouse pointer enters the control.
@@ -84,7 +84,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Accelerator map.
         /// </summary>
-        protected Dictionary<String, ControlCallback> m_Accelerators;
+        protected readonly Dictionary<String, ControlCallback> m_Accelerators;
 
         /// <summary>
         /// Logical list of children. If InnerPanel is not null, returns InnerPanel's children.
@@ -160,7 +160,7 @@ namespace Gwen.Controls
                 if (m_Parent != null)
                     return m_Parent.Skin;
 
-                throw new Exception("GetSkin: null");
+                throw new InvalidOperationException("GetSkin: null");
                 return null;
             }
         }
@@ -198,7 +198,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Determines whether the control should be clipped to its bounds while rendering.
         /// </summary>
-        public virtual bool ShouldClip { get { return true; } }
+        protected virtual bool ShouldClip { get { return true; } }
 
         /// <summary>
         /// Current padding - inner spacing.
@@ -248,11 +248,6 @@ namespace Gwen.Controls
         /// Indicates whether the control is hovered by mouse pointer.
         /// </summary>
         public bool IsHovered { get { return Global.HoveredControl == this; } }
-
-        /// <summary>
-        /// Determines whether hover should be drawn during rendering.
-        /// </summary>
-        public bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
 
         /// <summary>
         /// Indicates whether the control has focus.
@@ -324,9 +319,6 @@ namespace Gwen.Controls
         /// </summary>
         public Rectangle InnerBounds { get { return m_InnerBounds; } }
 
-        protected virtual bool AccelOnlyFocus { get { return false; } }
-        protected virtual bool NeedsInputChars { get { return false; } }
-
         /// <summary>
         /// Size restriction.
         /// </summary>
@@ -339,6 +331,14 @@ namespace Gwen.Controls
 
         private Point m_MinimumSize = new Point(1, 1);
         private Point m_MaximumSize = new Point(Global.MaxCoord, Global.MaxCoord);
+
+        /// <summary>
+        /// Determines whether hover should be drawn during rendering.
+        /// </summary>
+        protected bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
+
+        protected virtual bool AccelOnlyFocus { get { return false; } }
+        protected virtual bool NeedsInputChars { get { return false; } }
 
         /// <summary>
         /// Indicates whether the control and its parents are visible.
@@ -419,6 +419,19 @@ namespace Gwen.Controls
         }
 
         /// <summary>
+        /// Gets the canvas (root parent) of the control.
+        /// </summary>
+        /// <returns></returns>
+        public virtual Canvas GetCanvas()
+        {
+            Base canvas = m_Parent;
+            if (canvas == null)
+                return null;
+
+            return canvas.GetCanvas();
+        }
+
+        /// <summary>
         /// Default accelerator handler.
         /// </summary>
         /// <param name="control">Event source.</param>
@@ -472,7 +485,7 @@ namespace Gwen.Controls
         /// Invalidates the control's children.
         /// </summary>
         /// <param name="recursive">Determines whether the operation should be carried recursively.</param>
-        public virtual void InvalidateChildren(bool recursive = false)
+        protected virtual void InvalidateChildren(bool recursive = false)
         {
             foreach (Base child in Children)
             {
@@ -536,19 +549,6 @@ namespace Gwen.Controls
             m_ActualParent.Children.Add(this);
             InvalidateParent();
             Redraw();
-        }
-
-        /// <summary>
-        /// Gets the canvas (root parent) of the control.
-        /// </summary>
-        /// <returns></returns>
-        public virtual Canvas GetCanvas()
-        {
-            Base canvas = m_Parent;
-            if (canvas == null)
-                return null;
-
-            return canvas.GetCanvas();
         }
 
         public virtual void BringNextToControl(Base child, bool behind)
@@ -662,7 +662,7 @@ namespace Gwen.Controls
         /// Handler invoked when a child is added.
         /// </summary>
         /// <param name="child">Child added.</param>
-        internal virtual void onChildAdded(Base child)
+        protected virtual void onChildAdded(Base child)
         {
             Invalidate();
         }
@@ -671,7 +671,7 @@ namespace Gwen.Controls
         /// Handler invoked when a child is removed.
         /// </summary>
         /// <param name="child">Child removed.</param>
-        internal virtual void onChildRemoved(Base child)
+        protected virtual void onChildRemoved(Base child)
         {
             Invalidate();
         }
@@ -744,7 +744,7 @@ namespace Gwen.Controls
         /// </summary>
         /// <param name="width">New width.</param>
         /// <param name="height">New height.</param>
-        /// <returns></returns>
+        /// <returns>True if bounds changed.</returns>
         public virtual bool SetSize(int width, int height)
         {
             return SetBounds(X, Y, width, height);
@@ -834,10 +834,10 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked when control's bounds change.
+        /// Handler invoked when control's bounds change.
         /// </summary>
         /// <param name="oldBounds">Old bounds.</param>
-        internal virtual void onBoundsChanged(Rectangle oldBounds)
+        protected virtual void onBoundsChanged(Rectangle oldBounds)
         {
             //Anything that needs to update on size changes
             //Iterate my children and tell them I've changed
@@ -856,9 +856,9 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked when control's scale changes.
+        /// Handler invoked when control's scale changes.
         /// </summary>
-        internal virtual void onScaleChanged()
+        protected virtual void onScaleChanged()
         {
             foreach (Base child in Children)
             {
@@ -867,9 +867,9 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked when control children's bounds change.
+        /// Handler invoked when control children's bounds change.
         /// </summary>
-        internal virtual void onChildBoundsChanged(Rectangle oldChildBounds, Base child)
+        protected virtual void onChildBoundsChanged(Rectangle oldChildBounds, Base child)
         {
 
         }
@@ -1054,19 +1054,19 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked when control's skin changes.
+        /// Handler invoked when control's skin changes.
         /// </summary>
         /// <param name="newSkin">New skin.</param>
-        internal virtual void onSkinChanged(Skin.Base newSkin)
+        protected virtual void onSkinChanged(Skin.Base newSkin)
         {
 
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse wheel event.
+        /// Handler invoked on mouse wheel event.
         /// </summary>
         /// <param name="delta">Scroll delta.</param>
-        internal virtual bool onMouseWheeled(int delta)
+        protected virtual bool onMouseWheeled(int delta)
         {
             if (m_ActualParent != null)
                 return m_ActualParent.onMouseWheeled(delta);
@@ -1075,63 +1075,111 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse moved event.
+        /// Invokes mouse wheeled event (used by input system).
+        /// </summary>
+        internal bool InputMouseWheeled(int delta)
+        {
+            return onMouseWheeled(delta);
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse moved event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        internal virtual void onMouseMoved(int x, int y, int dx, int dy)
+        protected virtual void onMouseMoved(int x, int y, int dx, int dy)
         {
 
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse click (left) event.
+        /// Invokes mouse moved event (used by input system).
+        /// </summary>
+        internal void InputMouseMoved(int x, int y, int dx, int dy)
+        {
+            onMouseMoved(x, y, dx,  dy);
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse click (left) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        internal virtual void onMouseClickLeft(int x, int y, bool down)
+        protected virtual void onMouseClickLeft(int x, int y, bool down)
         {
 
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse click (right) event.
+        /// Invokes left mouse click event (used by input system).
+        /// </summary>
+        internal void InputMouseClickLeft(int x, int y, bool down)
+        {
+            onMouseClickLeft(x, y, down);
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse click (right) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        internal virtual void onMouseClickRight(int x, int y, bool down)
+        protected virtual void onMouseClickRight(int x, int y, bool down)
         {
 
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse double click (left) event.
+        /// Invokes right mouse click event (used by input system).
+        /// </summary>
+        internal void InputMouseClickRight(int x, int y, bool down)
+        {
+            onMouseClickRight(x, y, down);
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse double click (left) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
-        internal virtual void onMouseDoubleClickLeft(int x, int y)
+        protected virtual void onMouseDoubleClickLeft(int x, int y)
         {
             onMouseClickLeft(x, y, true); // [omeg] should this be called?
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse double click (right) event.
+        /// Invokes left double mouse click event (used by input system).
+        /// </summary>
+        internal void InputMouseDoubleClickLeft(int x, int y)
+        {
+            onMouseDoubleClickLeft(x, y);
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse double click (right) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
-        internal virtual void onMouseDoubleClickRight(int x, int y)
+        protected virtual void onMouseDoubleClickRight(int x, int y)
         {
             onMouseClickRight(x, y, true); // [omeg] should this be called?
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse cursor entering control's bounds.
+        /// Invokes right double mouse click event (used by input system).
         /// </summary>
-        internal virtual void onMouseEnter()
+        internal void InputMouseDoubleClickRight(int x, int y)
+        {
+            onMouseDoubleClickRight(x, y);
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse cursor entering control's bounds.
+        /// </summary>
+        protected virtual void onMouseEnter()
         {
             if (OnHoverEnter != null)
                 OnHoverEnter.Invoke(this);
@@ -1145,9 +1193,17 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse cursor leaving control's bounds.
+        /// Invokes mouse enter event (used by input system).
         /// </summary>
-        internal virtual void onMouseLeave()
+        internal void InputMouseEnter()
+        {
+            onMouseEnter();
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse cursor leaving control's bounds.
+        /// </summary>
+        protected virtual void onMouseLeave()
         {
             if (OnHoverLeave != null)
                 OnHoverLeave.Invoke(this);
@@ -1156,6 +1212,14 @@ namespace Gwen.Controls
                 Gwen.ToolTip.Disable(this);
 
             Redraw();
+        }
+
+        /// <summary>
+        /// Invokes mouse leave event (used by input system).
+        /// </summary>
+        internal void InputMouseLeave()
+        {
+            onMouseLeave();
         }
 
         /// <summary>
@@ -1193,7 +1257,7 @@ namespace Gwen.Controls
                 Parent.onChildRemoved(this);
         }
 
-        internal virtual void onChildTouched(Base control)
+        protected virtual void onChildTouched(Base control)
         {
             Touch();
         }
@@ -1362,7 +1426,7 @@ namespace Gwen.Controls
         /// </summary>
         /// <param name="child">Control to examine.</param>
         /// <returns>True if the control is out child.</returns>
-        public virtual bool IsChild(Base child)
+        public bool IsChild(Base child)
         {
             return Children.Contains(child);
         }
@@ -1534,7 +1598,7 @@ namespace Gwen.Controls
         /// </summary>
         /// <param name="width">Determines whether to change control's width.</param>
         /// <param name="height">Determines whether to change control's height.</param>
-        /// <returns></returns>
+        /// <returns>True if bounds changed.</returns>
         public virtual bool SizeToChildren(bool width = true, bool height = true)
         {
             Point size = ChildrenSize();
@@ -1644,12 +1708,12 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for keyboard events.
+        /// Handler for keyboard events.
         /// </summary>
         /// <param name="key">Key pressed.</param>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyPress(Key key, bool down = true)
+        protected virtual bool onKeyPress(Key key, bool down = true)
         {
             bool handled = false;
             switch (key)
@@ -1676,21 +1740,29 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for keyboard events.
+        /// Invokes key press event (used by input system).
+        /// </summary>
+        internal bool InputKeyPress(Key key, bool down = true)
+        {
+            return onKeyPress(key, down);
+        }
+
+        /// <summary>
+        /// Handler for keyboard events.
         /// </summary>
         /// <param name="key">Key pressed.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyRelease(Key key)
+        protected virtual bool onKeyRelease(Key key)
         {
             return onKeyPress(key, false);
         }
 
         /// <summary>
-        /// Internal handler for Tab keyboard event.
+        /// Handler for Tab keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyTab(bool down)
+        protected virtual bool onKeyTab(bool down)
         {
             if (!down)
                 return true;
@@ -1705,112 +1777,132 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for Space keyboard event.
+        /// Handler for Space keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeySpace(bool down) { return false; }
+        protected virtual bool onKeySpace(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Return keyboard event.
+        /// Handler for Return keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyReturn(bool down) { return false; }
+        protected virtual bool onKeyReturn(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Backspace keyboard event.
+        /// Handler for Backspace keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyBackspace(bool down) { return false; }
+        protected virtual bool onKeyBackspace(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Delete keyboard event.
+        /// Handler for Delete keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyDelete(bool down) { return false; }
+        protected virtual bool onKeyDelete(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Right Arrow keyboard event.
+        /// Handler for Right Arrow keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyRight(bool down) { return false; }
+        protected virtual bool onKeyRight(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Left Arrow keyboard event.
+        /// Handler for Left Arrow keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyLeft(bool down) { return false; }
+        protected virtual bool onKeyLeft(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Home keyboard event.
+        /// Handler for Home keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyHome(bool down) { return false; }
+        protected virtual bool onKeyHome(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for End keyboard event.
+        /// Handler for End keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyEnd(bool down) { return false; }
+        protected virtual bool onKeyEnd(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Up Arrow keyboard event.
+        /// Handler for Up Arrow keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyUp(bool down) { return false; }
+        protected virtual bool onKeyUp(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Down Arrow keyboard event.
+        /// Handler for Down Arrow keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyDown(bool down) { return false; }
+        protected virtual bool onKeyDown(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Escape keyboard event.
+        /// Handler for Escape keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onKeyEscape(bool down) { return false; }
+        protected virtual bool onKeyEscape(bool down) { return false; }
 
         /// <summary>
-        /// Internal handler for Paste event.
+        /// Handler for Paste event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        internal virtual void onPaste(Base from)
+        protected virtual void onPaste(Base from)
         {
         }
 
         /// <summary>
-        /// Internal handler for Copy event.
+        /// Handler for Copy event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        internal virtual void onCopy(Base from)
+        protected virtual void onCopy(Base from)
         {
         }
 
         /// <summary>
-        /// Internal handler for Cut event.
+        /// Handler for Cut event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        internal virtual void onCut(Base from)
+        protected virtual void onCut(Base from)
         {
         }
 
         /// <summary>
-        /// Internal handler for Select All event.
+        /// Handler for Select All event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        internal virtual void onSelectAll(Base from)
+        protected virtual void onSelectAll(Base from)
         {
+        }
+
+        internal void InputCopy(Base from)
+        {
+            onCopy(from);
+        }
+
+        internal void InputPaste(Base from)
+        {
+            onPaste(from);
+        }
+
+        internal void InputCut(Base from)
+        {
+            onCut(from);
+        }
+
+        internal void InputSelectAll(Base from)
+        {
+            onSelectAll(from);
         }
 
         /// <summary>
@@ -1854,29 +1946,34 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for gaining keyboard focus.
+        /// Handler for gaining keyboard focus.
         /// </summary>
-        internal virtual void onKeyboardFocus()
+        protected virtual void onKeyboardFocus()
         {
 
         }
 
         /// <summary>
-        /// Internal handler for losing keyboard focus.
+        /// Handler for losing keyboard focus.
         /// </summary>
-        internal virtual void onLostKeyboardFocus()
+        protected virtual void onLostKeyboardFocus()
         {
 
         }
 
         /// <summary>
-        /// Internal handler for character input event.
+        /// Handler for character input event.
         /// </summary>
         /// <param name="chr">Character typed.</param>
         /// <returns>True if handled.</returns>
-        internal virtual bool onChar(Char chr)
+        protected virtual bool onChar(Char chr)
         {
             return false;
+        }
+
+        internal bool InputChar(Char chr)
+        {
+            return onChar(chr);
         }
 
         public virtual void Anim_WidthIn(float length, float delay = 0.0f, float ease = 1.0f)

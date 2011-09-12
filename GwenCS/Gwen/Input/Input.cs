@@ -40,25 +40,25 @@ namespace Gwen.Input
 
             if (chr == 'C' || chr == 'c')
             {
-                Global.KeyboardFocus.onCopy(null);
+                Global.KeyboardFocus.InputCopy(null);
                 return true;
             }
 
             if (chr == 'V' || chr == 'v')
             {
-                Global.KeyboardFocus.onPaste(null);
+                Global.KeyboardFocus.InputPaste(null);
                 return true;
             }
 
             if (chr == 'X' || chr == 'x')
             {
-                Global.KeyboardFocus.onCut(null);
+                Global.KeyboardFocus.InputCut(null);
                 return true;
             }
 
             if (chr == 'A' || chr == 'a')
             {
-                Global.KeyboardFocus.onSelectAll(null);
+                Global.KeyboardFocus.InputSelectAll(null);
                 return true;
             }
 
@@ -131,7 +131,7 @@ namespace Gwen.Input
 
                     if (Global.KeyboardFocus != null)
                     {
-                        Global.KeyboardFocus.onKeyPress((Key)i);
+                        Global.KeyboardFocus.InputKeyPress((Key)i);
                     }
                 }
             }
@@ -208,18 +208,18 @@ namespace Gwen.Input
                             return true;
 
                         if (isDoubleClick)
-                            Global.HoveredControl.onMouseDoubleClickLeft(MousePosition.X, MousePosition.Y);
+                            Global.HoveredControl.InputMouseDoubleClickLeft(MousePosition.X, MousePosition.Y);
                         else
-                            Global.HoveredControl.onMouseClickLeft(MousePosition.X, MousePosition.Y, down);
+                            Global.HoveredControl.InputMouseClickLeft(MousePosition.X, MousePosition.Y, down);
                         return true;
                     }
 
                 case 1:
                     {
                         if (isDoubleClick)
-                            Global.HoveredControl.onMouseDoubleClickRight(MousePosition.X, MousePosition.Y);
+                            Global.HoveredControl.InputMouseDoubleClickRight(MousePosition.X, MousePosition.Y);
                         else
-                            Global.HoveredControl.onMouseClickRight(MousePosition.X, MousePosition.Y, down);
+                            Global.HoveredControl.InputMouseClickRight(MousePosition.X, MousePosition.Y, down);
                         return true;
                     }
             }
@@ -242,7 +242,7 @@ namespace Gwen.Input
                     m_KeyData.NextRepeat[iKey] = Platform.Windows.GetTimeInSeconds() + KeyRepeatDelay;
                     m_KeyData.Target = Global.KeyboardFocus;
 
-                    return Global.KeyboardFocus.onKeyPress(key);
+                    return Global.KeyboardFocus.InputKeyPress(key);
                 }
             }
             else
@@ -255,7 +255,7 @@ namespace Gwen.Input
                     // to not work. What is disabling it here breaking?
                     //m_KeyData.Target = NULL;
 
-                    return Global.KeyboardFocus.onKeyRelease(key);
+                    return Global.KeyboardFocus.InputKeyPress(key, false);
                 }
             }
 
@@ -272,14 +272,14 @@ namespace Gwen.Input
                 {
                     var oldHover = Global.HoveredControl;
                     Global.HoveredControl = null;
-                    oldHover.onMouseLeave();
+                    oldHover.InputMouseLeave();
                 }
 
                 Global.HoveredControl = hovered;
 
                 if (Global.HoveredControl != null)
                 {
-                    Global.HoveredControl.onMouseEnter();
+                    Global.HoveredControl.InputMouseEnter();
                 }
             }
 

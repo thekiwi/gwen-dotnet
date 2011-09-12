@@ -93,7 +93,7 @@ namespace Gwen.Controls
 
             if (null == m_CurrentButton)
             {
-                button.onPress();
+                button.Press();
             }
 
             if (OnAddTab != null)

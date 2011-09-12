@@ -91,19 +91,19 @@ namespace Gwen.Input
                 m_MouseX = ev.X;
                 m_MouseY = ev.Y;
 
-                return m_Canvas.InputMouseMoved(m_MouseX, m_MouseY, dx, dy);
+                return m_Canvas.Input_MouseMoved(m_MouseX, m_MouseY, dx, dy);
             }
 
             if (args is MouseButtonEventArgs)
             {
                 MouseButtonEventArgs ev = args as MouseButtonEventArgs;
-                return m_Canvas.InputMouseButton((int) ev.Button, ev.IsPressed);
+                return m_Canvas.Input_MouseButton((int) ev.Button, ev.IsPressed);
             }
 
             if (args is MouseWheelEventArgs)
             {
                 MouseWheelEventArgs ev = args as MouseWheelEventArgs;
-                return m_Canvas.InputMouseWheel(ev.Delta*60);
+                return m_Canvas.Input_MouseWheel(ev.Delta*60);
             }
 
             return false;
@@ -120,12 +120,12 @@ namespace Gwen.Input
 
             if (ch != ' ')
             {
-                m_Canvas.InputCharacter(ch);
+                m_Canvas.Input_Character(ch);
             }
 
             Key iKey = TranslateKeyCode(ev.Key);
 
-            return m_Canvas.InputKey(iKey, true);
+            return m_Canvas.Input_Key(iKey, true);
         }
 
 
@@ -139,7 +139,7 @@ namespace Gwen.Input
 
             Key iKey = TranslateKeyCode(ev.Key);
 
-            return m_Canvas.InputKey(iKey, false);
+            return m_Canvas.Input_Key(iKey, false);
         }
 
 

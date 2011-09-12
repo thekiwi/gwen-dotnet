@@ -45,7 +45,7 @@ namespace Gwen.ControlsInternal
             RefreshSize();
         }
 
-        internal override void onScaleChanged()
+        protected override void onScaleChanged()
         {
             Invalidate();
         }

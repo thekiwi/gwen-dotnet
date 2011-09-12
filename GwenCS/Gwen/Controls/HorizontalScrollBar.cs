@@ -3,29 +3,48 @@ using System.Drawing;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Horizontal scrollbar.
+    /// </summary>
     public class HorizontalScrollBar : BaseScrollBar
     {
+        /// <summary>
+        /// Bar size (in pixels).
+        /// </summary>
         public override int BarSize
         {
             get { return m_Bar.Width; }
             set { m_Bar.Width = value; }
         }
 
+        /// <summary>
+        /// Bar position (in pixels).
+        /// </summary>
         public override int BarPos
         {
             get { return m_Bar.X - Height; }
         }
 
+        /// <summary>
+        /// Indicates whether the bar is horizontal.
+        /// </summary>
         public override bool IsHorizontal
         {
             get { return true; }
         }
 
+        /// <summary>
+        /// Button size (in pixels).
+        /// </summary>
         public override int ButtonSize
         {
             get { return Height; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HorizontalScrollBar"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public HorizontalScrollBar(Base parent)
             : base(parent)
         {
@@ -40,6 +59,10 @@ namespace Gwen.Controls
             m_Bar.OnDragged += onBarMoved;
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
@@ -68,13 +91,13 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual void NudgeLeft(Base control)
+        public void NudgeLeft(Base control)
         {
             if (!IsDisabled)
                 SetScrollAmount(ScrollAmount - NudgeAmount, true);
         }
 
-        public virtual void NudgeRight(Base control)
+        public void NudgeRight(Base control)
         {
             if (!IsDisabled)
                 SetScrollAmount(ScrollAmount + NudgeAmount, true);
@@ -105,7 +128,13 @@ namespace Gwen.Controls
             }
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        /// <summary>
+        /// Handler invoked on mouse click (left) event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="down">If set to <c>true</c> mouse button is down.</param>
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             if (down)
             {
@@ -147,7 +176,11 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override void onBarMoved(Base control)
+        /// <summary>
+        /// Handler for the OnBarMoved event.
+        /// </summary>
+        /// <param name="control">Event source.</param>
+        protected override void onBarMoved(Base control)
         {
             if (m_Bar.IsDepressed)
             {

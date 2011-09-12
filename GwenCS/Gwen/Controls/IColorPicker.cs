@@ -5,6 +5,6 @@ namespace Gwen.Controls
 {
     public interface IColorPicker
     {
-        Color Color { get; }
+        Color SelectedColor { get; }
     }
 }

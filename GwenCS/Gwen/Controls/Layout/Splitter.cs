@@ -2,11 +2,18 @@
 
 namespace Gwen.Controls.Layout
 {
+    /// <summary>
+    /// Base splitter class.
+    /// </summary>
     public class Splitter : Base
     {
-        protected Base[] m_Panel;
-        protected bool[] m_Scale;
+        private readonly Base[] m_Panel;
+        private readonly bool[] m_Scale;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Splitter"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public Splitter(Base parent) : base(parent)
         {
             m_Panel = new Base[2];
@@ -15,25 +22,52 @@ namespace Gwen.Controls.Layout
             m_Scale[1] = true;
         }
 
-        public void SetPanel(int i, Base panel, bool noScale = false)
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
         {
-            if (i < 0 || i > 1) return;
+            m_Panel[0].Dispose();
+            m_Panel[1].Dispose();
+            base.Dispose();
+        }
 
-            m_Panel[i] = panel;
-            m_Scale[i] = !noScale;
+        /// <summary>
+        /// Sets the contents of a splitter panel.
+        /// </summary>
+        /// <param name="panelIndex">Panel index (0-1).</param>
+        /// <param name="panel">Panel contents.</param>
+        /// <param name="noScale">Determines whether the content is to be scaled.</param>
+        public void SetPanel(int panelIndex, Base panel, bool noScale = false)
+        {
+            if (panelIndex < 0 || panelIndex > 1)
+                throw new ArgumentException("Invalid panel index", "panelIndex");
 
-            if (null!=m_Panel[i])
+            m_Panel[panelIndex] = panel;
+            m_Scale[panelIndex] = !noScale;
+
+            if (null != m_Panel[panelIndex])
             {
-                m_Panel[i].Parent = this;
+                m_Panel[panelIndex].Parent = this;
             }
         }
 
-        Base GetPanel(int i)
+        /// <summary>
+        /// Gets the contents of a secific panel.
+        /// </summary>
+        /// <param name="panelIndex">Panel index (0-1).</param>
+        /// <returns></returns>
+        Base GetPanel(int panelIndex)
         {
-            if (i < 0 || i > 1) return null;
-            return m_Panel[i];
+            if (panelIndex < 0 || panelIndex > 1)
+                throw new ArgumentException("Invalid panel index", "panelIndex");
+            return m_Panel[panelIndex];
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             LayoutVertical(skin);
@@ -66,13 +100,6 @@ namespace Gwen.Controls.Layout
         protected virtual void LayoutHorizontal(Skin.Base skin)
         {
             throw new NotImplementedException();
-        }
-
-        public override void Dispose()
-        {
-            m_Panel[0].Dispose();
-            m_Panel[1].Dispose();
-            base.Dispose();
         }
     }
 }

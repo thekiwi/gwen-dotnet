@@ -52,51 +52,49 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
-        internal override bool onKeyRight(bool down)
+        protected override bool onKeyRight(bool down)
         {
             if (down)
                 Value = Value + 1;
             return true;
         }
 
-        internal override bool onKeyUp(bool down)
+        protected override bool onKeyUp(bool down)
         {
             if (down)
                 Value = Value + 1;
             return true;
         }
 
-        internal override bool onKeyLeft(bool down)
+        protected override bool onKeyLeft(bool down)
         {
             if (down)
                 Value = Value - 1;
             return true;
         }
 
-        internal override bool onKeyDown(bool down)
+        protected override bool onKeyDown(bool down)
         {
             if (down)
                 Value = Value - 1;
             return true;
         }
 
-        // omeg
-        internal override bool onKeyHome(bool down)
+        protected override bool onKeyHome(bool down)
         {
             if (down)
                 Value = m_Min;
             return true;
         }
 
-        // omeg
-        internal override bool onKeyEnd(bool down)
+        protected override bool onKeyEnd(bool down)
         {
             if (down)
                 Value = m_Max;
             return true;
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             
         }

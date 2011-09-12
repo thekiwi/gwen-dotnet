@@ -3,17 +3,31 @@ using System.Linq;
 
 namespace Gwen.Controls.Layout
 {
+    /// <summary>
+    /// Base class for multi-column tables.
+    /// </summary>
     public class Table : Base
     {
         protected bool m_SizeToContents;
         protected int m_ColumnCount;
-        protected int m_DefaultRowHeight;
+        protected readonly int m_DefaultRowHeight;
 
         protected int[] m_ColumnWidth = new int[TableRow.MaxColumns];
 
-        public int ColumnCount { get { return m_ColumnCount; } set {SetColumnCount(value);}}
+        /// <summary>
+        /// Column count (default 1).
+        /// </summary>
+        public int ColumnCount { get { return m_ColumnCount; } set { SetColumnCount(value); } }
+
+        /// <summary>
+        /// Row count.
+        /// </summary>
         public int RowCount { get { return Children.Count; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Table"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public Table(Base parent) : base(parent)
         {
             m_ColumnCount = 1;
@@ -27,7 +41,23 @@ namespace Gwen.Controls.Layout
             m_SizeToContents = false;
         }
 
-        protected void SetColumnCount(int i)
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                child.Dispose();
+            }
+            base.Dispose();
+        }
+
+        /// <summary>
+        /// Sets the number of columns.
+        /// </summary>
+        /// <param name="i">Number of columns.</param>
+        public void SetColumnCount(int i)
         {
             if (m_ColumnCount == i) return;
             foreach (TableRow row in Children.OfType<TableRow>())
@@ -38,13 +68,32 @@ namespace Gwen.Controls.Layout
             m_ColumnCount = i;
         }
 
-        public void SetColumnWidth(int i, int width)
+        /// <summary>
+        /// Sets the column width (in pixels).
+        /// </summary>
+        /// <param name="column">Column index.</param>
+        /// <param name="width">Column width.</param>
+        public void SetColumnWidth(int column, int width)
         {
-            if (m_ColumnWidth[i] == width) return;
-            m_ColumnWidth[i] = width;
+            if (m_ColumnWidth[column] == width) return;
+            m_ColumnWidth[column] = width;
             Invalidate();
         }
 
+        /// <summary>
+        /// Gets the column width (in pixels).
+        /// </summary>
+        /// <param name="column">Column index.</param>
+        /// <returns>Column width.</returns>
+        public int SetColumnWidth(int column)
+        {
+            return m_ColumnWidth[column];
+        }
+
+        /// <summary>
+        /// Adds a new empty row.
+        /// </summary>
+        /// <returns>Newly created row.</returns>
         public TableRow AddRow()
         {
             TableRow row = new TableRow(this);
@@ -54,6 +103,10 @@ namespace Gwen.Controls.Layout
             return row;
         }
 
+        /// <summary>
+        /// Adds a new row.
+        /// </summary>
+        /// <param name="row">Row to add.</param>
         public void AddRow(TableRow row)
         {
             row.Parent = this;
@@ -62,18 +115,29 @@ namespace Gwen.Controls.Layout
             row.Dock = Pos.Top;
         }
 
+        /// <summary>
+        /// Removes a row by reference.
+        /// </summary>
+        /// <param name="row">Row to remove.</param>
         public void RemoveRow(TableRow row)
         {
             Children.Remove(row);
             row.Dispose();
         }
 
+        /// <summary>
+        /// Removes a row by index.
+        /// </summary>
+        /// <param name="idx">Row index.</param>
         public void RemoveRow(int idx)
         {
             var row = Children[idx];
             RemoveRow(row as TableRow);
         }
 
+        /// <summary>
+        /// Removes all rows.
+        /// </summary>
         public void Clear()
         {
             foreach (TableRow child in Children.OfType<TableRow>())
@@ -82,6 +146,10 @@ namespace Gwen.Controls.Layout
             }
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
@@ -103,6 +171,10 @@ namespace Gwen.Controls.Layout
             }
         }
 
+        /// <summary>
+        /// Function invoked after layout.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void PostLayout(Skin.Base skin)
         {
             if (m_SizeToContents)
@@ -112,6 +184,9 @@ namespace Gwen.Controls.Layout
             }
         }
 
+        /// <summary>
+        /// Sizes to fit contents.
+        /// </summary>
         public void SizeToContents()
         {
             m_SizeToContents = true;
@@ -140,15 +215,6 @@ namespace Gwen.Controls.Layout
             }
 
             InvalidateParent();
-        }
-
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                child.Dispose();
-            }
-            base.Dispose();
         }
     }
 }

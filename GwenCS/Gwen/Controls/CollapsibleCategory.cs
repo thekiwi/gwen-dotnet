@@ -8,13 +8,8 @@ namespace Gwen.Controls
     /// </summary>
     public class CollapsibleCategory : Base
     {
-        protected Button m_Button;
-        protected CollapsibleList m_List;
-
-        /// <summary>
-        /// Parent list.
-        /// </summary>
-        public CollapsibleList List { get { return m_List; } set { m_List = value; } }
+        protected readonly Button m_Button;
+        protected readonly CollapsibleList m_List;
 
         /// <summary>
         /// Header text.
@@ -52,22 +47,33 @@ namespace Gwen.Controls
         /// Initializes a new instance of the <see cref="CollapsibleCategory"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CollapsibleCategory(Base parent) : base(parent)
+        public CollapsibleCategory(CollapsibleList parent) : base(parent)
         {
             m_Button = new CategoryHeaderButton(this);
             m_Button.Text = "Category Title"; // [omeg] todo: i18n
             m_Button.Dock = Pos.Top;
             m_Button.Height = 20;
 
+            m_List = parent;
+
             Padding = new Padding(1, 0, 1, 5);
             SetSize(512, 512);
         }
 
         /// <summary>
-        /// Internal handler for OnSelection event.
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            m_Button.Dispose();
+            base.Dispose();
+        }
+
+        /// <summary>
+        /// Handler for OnSelection event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        internal virtual void onSelection(Base control)
+        protected virtual void onSelection(Base control)
         {
             CategoryButton child = control as CategoryButton;
             if (child == null) return;
@@ -88,7 +94,7 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Adds an entry.
+        /// Adds a new entry.
         /// </summary>
         /// <param name="name">Entry name (displayed).</param>
         /// <returns>Newly created control.</returns>
@@ -155,15 +161,6 @@ namespace Gwen.Controls
                 button.UpdateColors();
                 b = !b;
             }
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Button.Dispose();
-            base.Dispose();
         }
     }
 }

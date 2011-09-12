@@ -22,7 +22,7 @@ namespace Gwen.ControlsInternal
             base.Render(skin);
         }
 
-        internal override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void onMouseMoved(int x, int y, int dx, int dy)
         {
             base.onMouseMoved(x, y, dx, dy);
             if (!m_Depressed)
@@ -31,7 +31,7 @@ namespace Gwen.ControlsInternal
             InvalidateParent();
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             base.onMouseClickLeft(x, y, down);
             InvalidateParent();

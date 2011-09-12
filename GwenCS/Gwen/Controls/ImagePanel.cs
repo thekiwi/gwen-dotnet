@@ -3,12 +3,19 @@ using System.Drawing;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Image container.
+    /// </summary>
     public class ImagePanel : Base
     {
-        protected Texture m_Texture;
-        protected float[] m_uv;
+        protected readonly Texture m_Texture;
+        protected readonly float[] m_uv;
         protected Color m_DrawColor;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ImagePanel"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ImagePanel(Base parent) : base(parent)
         {
             m_uv = new float[4];
@@ -21,13 +28,15 @@ namespace Gwen.Controls
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
         public override void Dispose()
         {
             base.Dispose();
             m_Texture.Dispose();
         }
 
+        /// <summary>
+        /// Sets the texture coordinates of the image.
+        /// </summary>
         public virtual void SetUV(float u1, float v1, float u2, float v2)
         {
             m_uv[0] = u1;
@@ -36,12 +45,20 @@ namespace Gwen.Controls
             m_uv[3] = v2;
         }
 
+        /// <summary>
+        /// Texture name.
+        /// </summary>
         public String ImageName { get { return m_Texture.Name; } set { m_Texture.Load(value); } }
-        public virtual void SetDrawColor(Color c)
+
+        public void SetDrawColor(Color c)
         {
             m_DrawColor = c;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             base.Render(skin);

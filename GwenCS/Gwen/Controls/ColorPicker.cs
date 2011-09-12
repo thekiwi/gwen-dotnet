@@ -9,12 +9,12 @@ namespace Gwen.Controls
     /// </summary>
     public class ColorPicker : Base, IColorPicker
     {
-        protected Color m_Color;
+        private Color m_Color;
 
         /// <summary>
-        /// Seelcted color.
+        /// Selected color.
         /// </summary>
-        public Color Color { get { return m_Color; } set { m_Color = value; UpdateControls(); } }
+        public Color SelectedColor { get { return m_Color; } set { m_Color = value; UpdateControls(); } }
 
         /// <summary>
         /// Red value of the selected color.
@@ -51,10 +51,10 @@ namespace Gwen.Controls
 
             SetSize(256, 150);
             CreateControls();
-            Color = Color.FromArgb(255, 50, 60, 70);
+            SelectedColor = Color.FromArgb(255, 50, 60, 70);
         }
 
-        protected virtual void CreateColorControl(String name, int y)
+        private void CreateColorControl(String name, int y)
         {
             int colorSize = 12;
 
@@ -83,7 +83,19 @@ namespace Gwen.Controls
             slider.OnValueChanged += SlidersMoved;
         }
 
-        protected virtual void NumericTyped(Base control)
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                child.Dispose(); // [omeg] todo: safe?
+            }
+            base.Dispose();
+        }
+
+        private void NumericTyped(Base control)
         {
             TextBoxNumeric box = control as TextBoxNumeric;
             if (null==box)
@@ -111,7 +123,7 @@ namespace Gwen.Controls
             UpdateControls();
         }
 
-        protected virtual void CreateControls()
+        private void CreateControls()
         {
             int startY = 5;
             int height = 35;
@@ -135,7 +147,7 @@ namespace Gwen.Controls
             //UpdateControls();
         }
 
-        protected virtual void UpdateColorControls(String name, Color col, int sliderVal)
+        private void UpdateColorControls(String name, Color col, int sliderVal)
         {
             ColorDisplay disp = FindChildByName(name, true) as ColorDisplay;
             disp.Color = col;
@@ -147,21 +159,21 @@ namespace Gwen.Controls
             box.Value = sliderVal;
         }
 
-        protected virtual void UpdateControls()
+        private void UpdateControls()
         {	//This is a little weird, but whatever for now
-            UpdateColorControls("Red", Color.FromArgb(255, Color.R, 0, 0), Color.R);
-            UpdateColorControls("Green", Color.FromArgb(255, 0, Color.G, 0), Color.G);
-            UpdateColorControls("Blue", Color.FromArgb(255, 0, 0, Color.B), Color.B);
-            UpdateColorControls("Alpha", Color.FromArgb(Color.A, 255, 255, 255), Color.A);
+            UpdateColorControls("Red", Color.FromArgb(255, SelectedColor.R, 0, 0), SelectedColor.R);
+            UpdateColorControls("Green", Color.FromArgb(255, 0, SelectedColor.G, 0), SelectedColor.G);
+            UpdateColorControls("Blue", Color.FromArgb(255, 0, 0, SelectedColor.B), SelectedColor.B);
+            UpdateColorControls("Alpha", Color.FromArgb(SelectedColor.A, 255, 255, 255), SelectedColor.A);
 
             ColorDisplay disp = FindChildByName("Result", true) as ColorDisplay;
-            disp.Color = Color;
+            disp.Color = SelectedColor;
 
             if (OnColorChanged != null)
                 OnColorChanged.Invoke(this);
         }
 
-        protected virtual void SlidersMoved(Base control)
+        private void SlidersMoved(Base control)
         {
             /*
             HorizontalSlider* redSlider		= gwen_cast<HorizontalSlider>(	FindChildByName( "RedSlider",   true ) );
@@ -196,20 +208,20 @@ namespace Gwen.Controls
             //UpdateControls(); // this spams events continuously every tick
         }
 
-        protected int GetColorByName(String colorName)
+        private int GetColorByName(String colorName)
         {
             if (colorName == "Red")
-                return Color.R;
+                return SelectedColor.R;
             if (colorName == "Green")
-                return Color.G;
+                return SelectedColor.G;
             if (colorName == "Blue")
-                return Color.B;
+                return SelectedColor.B;
             if (colorName == "Alpha")
-                return Color.A;
+                return SelectedColor.A;
             return 0;
         }
 
-        protected static String GetColorFromName(String name)
+        private static String GetColorFromName(String name)
         {
             if (name.Contains("Red"))
                 return "Red";
@@ -222,7 +234,7 @@ namespace Gwen.Controls
             return String.Empty;
         }
 
-        protected void SetColorByName(String colorName, int colorValue)
+        private void SetColorByName(String colorName, int colorValue)
         {
             if (colorName == "Red")
                 R = colorValue;
@@ -234,23 +246,22 @@ namespace Gwen.Controls
                 A = colorValue;
         }
 
-        public void SetAlphaVisible(bool value)
-        {
-            GroupBox gb = FindChildByName("Alphagroupbox", true) as GroupBox;
-            gb.IsHidden = !value;
-            Invalidate();
-        }
-
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// Determines whether the Alpha control is visible.
         /// </summary>
-        public override void Dispose()
+        public bool AlphaVisible
         {
-            foreach (Base child in Children)
+            get
             {
-                child.Dispose(); // [omeg] todo: safe?
+                GroupBox gb = FindChildByName("Alphagroupbox", true) as GroupBox;
+                return !gb.IsHidden;
             }
-            base.Dispose();
+            set
+            {
+                GroupBox gb = FindChildByName("Alphagroupbox", true) as GroupBox;
+                gb.IsHidden = !value;
+                Invalidate();
+            }
         }
     }
 }

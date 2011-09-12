@@ -13,12 +13,12 @@ namespace Gwen.Anim
 
         protected virtual void Think()
         {
-            throw new Exception("Pure virtual function call");
+            throw new InvalidOperationException("Pure virtual function call");
         }
 
         public virtual bool Finished
         {
-            get { throw new Exception("Pure virtual function call"); }
+            get { throw new InvalidOperationException("Pure virtual function call"); }
         }
 
         public static void Add(Base control, Animation animation)

@@ -4,14 +4,28 @@ using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// Static label.
+    /// </summary>
     public class Label : Base
     {
-        protected Text m_Text;
+        protected readonly Text m_Text;
         protected Pos m_Align;
         protected Padding m_TextPadding;
 
+        /// <summary>
+        /// Text alignment.
+        /// </summary>
         public Pos Alignment { get { return m_Align; } set { m_Align = value; Invalidate(); } }
+
+        /// <summary>
+        /// Text.
+        /// </summary>
         public String Text { get { return m_Text.String; } set { SetText(value); } }
+
+        /// <summary>
+        /// Font.
+        /// </summary>
         public Font Font
         {
             get { return m_Text.Font; }
@@ -23,13 +37,33 @@ namespace Gwen.Controls
                 Redraw();
             }
         }
+        
+        /// <summary>
+        /// Text color.
+        /// </summary>
         public Color TextColor { get { return m_Text.TextColor; } set { m_Text.TextColor = value; } }
+
+        /// <summary>
+        /// Override text color (used by tooltips).
+        /// </summary>
         public Color TextColorOverride { get { return m_Text.TextColorOverride; } set { m_Text.TextColorOverride = value; } }
 
+        /// <summary>
+        /// Width of the text (in pixels).
+        /// </summary>
         public int TextWidth { get { return m_Text.Width; } }
+
+        /// <summary>
+        /// Height of the text (in pixels).
+        /// </summary>
         public int TextHeight { get { return m_Text.Height; } }
+
         public int TextX { get { return m_Text.X; } }
         public int TextY { get { return m_Text.Y; } }
+
+        /// <summary>
+        /// Text length (in characters).
+        /// </summary>
         public int TextLength { get { return m_Text.Length; } }
         public int TextRight { get { return m_Text.Right; } }
         public virtual void MakeColorNormal() { TextColor = Skin.Colors.Label.Default; }
@@ -37,10 +71,20 @@ namespace Gwen.Controls
         public virtual void MakeColorDark() { TextColor = Skin.Colors.Label.Dark; }
         public virtual void MakeColorHighlight() { TextColor = Skin.Colors.Label.Highlight; }
 
+        /// <summary>
+        /// Determines if the control should autosize to it's text.
+        /// </summary>
         public bool AutoSizeToContents { get { return m_Text.AutoSizeToContents; } set { m_Text.AutoSizeToContents = value; } }
 
+        /// <summary>
+        /// Text padding.
+        /// </summary>
         public Padding TextPadding { get { return m_TextPadding; } set { m_TextPadding = value; Invalidate(); InvalidateParent(); } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Label"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public Label(Base parent) : base(parent)
         {
             m_Text = new Text(this);
@@ -53,15 +97,25 @@ namespace Gwen.Controls
             AutoSizeToContents = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             m_Text.Dispose();
             base.Dispose();
         }
 
+        /// <summary>
+        /// Handler for text changed event.
+        /// </summary>
         protected virtual void onTextChanged()
         {}
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
@@ -84,6 +138,11 @@ namespace Gwen.Controls
             m_Text.SetPos(x, y);
         }
 
+        /// <summary>
+        /// Sets the label text.
+        /// </summary>
+        /// <param name="str">Text to set.</param>
+        /// <param name="doEvents">Determines whether to invoke "text changed" event.</param>
         public virtual void SetText(String str, bool doEvents = true)
         {
             if (Text == str)
@@ -107,12 +166,21 @@ namespace Gwen.Controls
                 m_Text.Height + m_Padding.Top + m_Padding.Bottom + m_TextPadding.Top + m_TextPadding.Bottom);
         }
 
+        /// <summary>
+        /// Gets the coordinates of specified character.
+        /// </summary>
+        /// <param name="index">Character index.</param>
+        /// <returns>Character coordinates (local).</returns>
         public virtual Point GetCharacterPosition(int index)
         {
             Point p = m_Text.GetCharacterPosition(index);
             return new Point(p.X + m_Text.X, p.Y + m_Text.Y);
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
         }

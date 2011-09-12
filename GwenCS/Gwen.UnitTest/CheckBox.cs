@@ -17,10 +17,10 @@ namespace Gwen.UnitTest
 
                 Controls.LabeledCheckBox labeled = new Controls.LabeledCheckBox(this);
                 labeled.SetPos(10, 30);
-                labeled.Label.SetText("Labeled CheckBox");
-                labeled.CheckBox.OnChecked += OnChecked;
-                labeled.CheckBox.OnUnChecked += OnUnchecked;
-                labeled.CheckBox.OnCheckChanged += OnCheckChanged;
+                labeled.Text = "Labeled CheckBox";
+                labeled.OnChecked += OnChecked;
+                labeled.OnUnChecked += OnUnchecked;
+                labeled.OnCheckChanged += OnCheckChanged;
             }
 
             {

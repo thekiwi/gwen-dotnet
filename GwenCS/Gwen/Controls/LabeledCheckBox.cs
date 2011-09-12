@@ -2,11 +2,25 @@
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// CheckBox with label.
+    /// </summary>
     public class LabeledCheckBox : Base
     {
-        private CheckBox m_CheckBox;
-        private LabelClickable m_Label;
+        private readonly CheckBox m_CheckBox;
+        private readonly LabelClickable m_Label;
 
+        public event ControlCallback OnChecked;
+        public event ControlCallback OnUnChecked;
+        public event ControlCallback OnCheckChanged;
+
+        public bool IsChecked { get { return m_CheckBox.IsChecked; } set { m_CheckBox.IsChecked = value; } }
+        public String Text { get { return m_Label.Text; } set { m_Label.Text = value; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LabeledCheckBox"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public LabeledCheckBox(Base parent) : base(parent)
         {
             SetSize(200, 19);
@@ -14,6 +28,7 @@ namespace Gwen.Controls
             m_CheckBox.Dock = Pos.Left;
             m_CheckBox.Margin = new Margin(0, 2, 2, 2);
             m_CheckBox.IsTabable = false;
+            m_CheckBox.OnCheckChanged += onCheckChanged;
 
             m_Label = new LabelClickable(this);
             m_Label.Dock = Pos.Fill;
@@ -23,6 +38,9 @@ namespace Gwen.Controls
             IsTabable = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             m_CheckBox.Dispose();
@@ -30,10 +48,34 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
-        public CheckBox CheckBox { get { return m_CheckBox; } }
-        public LabelClickable Label { get { return m_Label; } }
+        /// <summary>
+        /// Handler for OnCheckChanged event.
+        /// </summary>
+        protected virtual void onCheckChanged(Base control)
+        {
+            if (m_CheckBox.IsChecked)
+            {
+                if (OnChecked != null)
+                    OnChecked.Invoke(this);
+            }
+            else
+            {
+                if (OnUnChecked != null)
+                    OnUnChecked.Invoke(this);
+            }
 
-        internal override bool onKeySpace(bool down)
+            if (OnCheckChanged != null)
+                OnCheckChanged.Invoke(this);
+        }
+
+        /// <summary>
+        /// Handler for Space keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool onKeySpace(bool down)
         {
             base.onKeySpace(down);
             if (!down) 

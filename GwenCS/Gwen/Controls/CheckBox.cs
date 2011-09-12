@@ -35,7 +35,7 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Toggles the button.
+        /// Toggles the checkbox.
         /// </summary>
         public override void Toggle()
         {
@@ -64,9 +64,9 @@ namespace Gwen.Controls
         protected virtual bool AllowUncheck { get { return true; } }
 
         /// <summary>
-        /// Internal handler for OnCheckChanged event.
+        /// Handler for OnCheckChanged event.
         /// </summary>
-        internal void onCheckChanged()
+        protected virtual void onCheckChanged()
         {
             if (IsChecked)
             { 
@@ -96,7 +96,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Internal OnPress implementation.
         /// </summary>
-        internal override void onPress()
+        protected override void onPress()
         {
             if (IsDisabled)
                 return;

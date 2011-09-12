@@ -100,7 +100,7 @@ namespace Gwen.Controls
             }
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             if (down)
             {
@@ -141,7 +141,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override void onBarMoved(Base control)
+        protected override void onBarMoved(Base control)
         {
             if (m_Bar.IsDepressed)
             {

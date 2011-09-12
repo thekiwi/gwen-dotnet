@@ -148,10 +148,10 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked when control's bounds change.
+        /// Handler invoked when control's bounds change.
         /// </summary>
         /// <param name="oldBounds">Old bounds.</param>
-        internal override void onBoundsChanged(Rectangle oldBounds)
+        protected override void onBoundsChanged(Rectangle oldBounds)
         {
             base.onBoundsChanged(oldBounds);
             InvalidateChildren(true);
@@ -160,7 +160,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Processes input and layout.
         /// </summary>
-        public void DoThink()
+        private void DoThink()
         {
             if (IsHidden)
                 return;
@@ -187,7 +187,7 @@ namespace Gwen.Controls
         /// Handles mouse movement events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool InputMouseMoved(int x, int y, int dx, int dy)
+        public bool Input_MouseMoved(int x, int y, int dx, int dy)
         {
             if (IsHidden)
                 return false;
@@ -201,7 +201,7 @@ namespace Gwen.Controls
             if (Global.HoveredControl == this) return false;
             if (Global.HoveredControl.GetCanvas() != this) return false;
 
-            Global.HoveredControl.onMouseMoved(x, y, dx, dy);
+            Global.HoveredControl.InputMouseMoved(x, y, dx, dy);
             Global.HoveredControl.UpdateCursor();
 
             DragAndDrop.onMouseMoved(Global.HoveredControl, x, y);
@@ -212,7 +212,7 @@ namespace Gwen.Controls
         /// Handles mouse button events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool InputMouseButton(int button, bool down)
+        public bool Input_MouseButton(int button, bool down)
         {
             if (IsHidden) return false;
 
@@ -223,7 +223,7 @@ namespace Gwen.Controls
         /// Handles keyboard events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool InputKey(Key key, bool down)
+        public bool Input_Key(Key key, bool down)
         {
             if (IsHidden) return false;
             if (key <= Key.Invalid) return false;
@@ -236,7 +236,7 @@ namespace Gwen.Controls
         /// Handles keyboard events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool InputCharacter(char chr)
+        public bool Input_Character(char chr)
         {
             if (IsHidden) return false;
             if (char.IsControl(chr)) return false;
@@ -251,21 +251,21 @@ namespace Gwen.Controls
             if (!Global.KeyboardFocus.IsVisible) return false;
             if (Input.Input.IsControlDown) return false;
 
-            return Global.KeyboardFocus.onChar(chr);
+            return Global.KeyboardFocus.InputChar(chr);
         }
 
         /// <summary>
         /// Handles the mouse wheel events. Called from Input subsystems.
         /// </summary>
         /// <returns>True if handled.</returns>
-        public bool InputMouseWheel(int val)
+        public bool Input_MouseWheel(int val)
         {
             if (IsHidden) return false;
             if (Global.HoveredControl == null) return false;
             if (Global.HoveredControl == this) return false;
             if (Global.HoveredControl.GetCanvas() != this) return false;
 
-            return Global.HoveredControl.onMouseWheeled(val);
+            return Global.HoveredControl.InputMouseWheeled(val);
         }
     }
 }

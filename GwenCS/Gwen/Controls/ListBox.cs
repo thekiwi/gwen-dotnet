@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Gwen.Controls.Layout;
 
@@ -9,8 +8,8 @@ namespace Gwen.Controls
 {
     public class ListBox : ScrollControl
     {
-        protected Table m_Table;
-        protected List<TableRow> m_SelectedRows;
+        protected readonly Table m_Table;
+        protected readonly List<TableRow> m_SelectedRows;
 
         protected bool m_MultiSelect;
 

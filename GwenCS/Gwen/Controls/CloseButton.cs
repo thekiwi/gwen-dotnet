@@ -7,7 +7,7 @@ namespace Gwen.Controls
     /// </summary>
     public class CloseButton : Button
     {
-        protected WindowControl m_Window; // [omeg] not ours, no disposing
+        private WindowControl m_Window; // [omeg] not ours, no disposing
 
         /// <summary>
         /// Window that owns this control.

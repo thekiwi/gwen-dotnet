@@ -9,7 +9,7 @@ namespace Gwen.Controls
 
         public LabeledRadioButton Selected { get { return m_Selected; } }
         public String SelectedName { get { return m_Selected.Name; } }
-        public String SelectedLabel { get { return m_Selected.Label.Text; } }
+        public String SelectedLabel { get { return m_Selected.Text; } }
 
         public event ControlCallback OnSelectionChange;
 
@@ -37,7 +37,7 @@ namespace Gwen.Controls
         {
             LabeledRadioButton lrb = new LabeledRadioButton(this);
             lrb.Name = optionName;
-            lrb.Label.Text = text;
+            lrb.Text = text;
             lrb.RadioButton.OnChecked += onRadioClicked;
             lrb.Dock = Pos.Top;
             lrb.Margin = new Margin(0, 1, 0, 1);
@@ -79,7 +79,7 @@ namespace Gwen.Controls
             if (index < 0 || index >= Children.Count)
                 return;
 
-            (Children[index] as LabeledRadioButton).RadioButton.onPress();
+            (Children[index] as LabeledRadioButton).RadioButton.Press();
         }
     }
 }

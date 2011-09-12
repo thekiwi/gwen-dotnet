@@ -110,7 +110,7 @@ namespace Gwen.Controls
             Invalidate();
         }
 
-        internal override void onChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
+        protected override void onChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
         {
             UpdateScrollBars();
         }
@@ -121,7 +121,7 @@ namespace Gwen.Controls
             base.Layout(skin);
         }
 
-        internal override bool onMouseWheeled(int delta)
+        protected override bool onMouseWheeled(int delta)
         {
             if (CanScrollV && m_VerticalScrollBar.IsVisible)
             {

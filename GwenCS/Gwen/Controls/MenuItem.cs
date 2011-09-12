@@ -113,7 +113,7 @@ namespace Gwen.Controls
             base.Layout(skin);
         }
 
-        internal override void onPress()
+        protected override void onPress()
         {
             if (m_Menu != null)
             {

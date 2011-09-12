@@ -12,7 +12,7 @@ namespace Gwen.Controls
 
         public bool AllowReorder { get { return m_AllowReorder; } set { m_AllowReorder = value; } }
 
-        public override bool ShouldClip
+        protected override bool ShouldClip
         {
             get { return false; }
         }

@@ -19,7 +19,7 @@ namespace Gwen.ControlsInternal
             Target = parent;
         }
 
-        internal override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void onMouseMoved(int x, int y, int dx, int dy)
         {
             if (null == m_Target) return;
             if (!m_Depressed) return;

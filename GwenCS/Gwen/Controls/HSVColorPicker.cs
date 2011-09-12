@@ -4,18 +4,35 @@ using Gwen.ControlsInternal;
 
 namespace Gwen.Controls
 {
+    /// <summary>
+    /// HSV color picker with "before" and "after" color boxes.
+    /// </summary>
     public class HSVColorPicker : Base, IColorPicker
     {
-        protected ColorLerpBox m_LerpBox;
-        protected ColorSlider m_ColorSlider;
-        protected ColorDisplay m_Before;
-        protected ColorDisplay m_After;
+        private readonly ColorLerpBox m_LerpBox;
+        private readonly ColorSlider m_ColorSlider;
+        private readonly ColorDisplay m_Before;
+        private readonly ColorDisplay m_After;
 
+        /// <summary>
+        /// Invoked when the selected color has changed.
+        /// </summary>
         public event ControlCallback OnColorChanged;
 
-        public Color DefaultColor { get { return m_Before.Color; } }
-        public Color Color { get { return m_LerpBox.SelectedColor; } }
+        /// <summary>
+        /// The "before" color.
+        /// </summary>
+        public Color DefaultColor { get { return m_Before.Color; } set { m_Before.Color = value; } }
 
+        /// <summary>
+        /// Selected color.
+        /// </summary>
+        public Color SelectedColor { get { return m_LerpBox.SelectedColor; } }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="HSVColorPicker"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public HSVColorPicker(Base parent)
             : base(parent)
         {
@@ -92,6 +109,9 @@ namespace Gwen.Controls
             SetColor(DefaultColor);
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             // [omeg] todo: safe?
@@ -102,7 +122,7 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
-        protected void NumericTyped(Base control)
+        private void NumericTyped(Base control)
         {
             TextBoxNumeric box = control as TextBoxNumeric;
             if (null == box) return;
@@ -113,29 +133,29 @@ namespace Gwen.Controls
             if (textValue < 0) textValue = 0;
             if (textValue > 255) textValue = 255;
 
-            Color newColor = Color;
+            Color newColor = SelectedColor;
 
             if (box.Name.Contains("Red"))
             {
-                newColor = Color.FromArgb(Color.A, textValue, Color.G, Color.B);
+                newColor = Color.FromArgb(SelectedColor.A, textValue, SelectedColor.G, SelectedColor.B);
             }
             else if (box.Name.Contains("Green"))
             {
-                newColor = Color.FromArgb(Color.A, Color.R, textValue, Color.B);
+                newColor = Color.FromArgb(SelectedColor.A, SelectedColor.R, textValue, SelectedColor.B);
             }
             else if (box.Name.Contains("Blue"))
             {
-                newColor = Color.FromArgb(Color.A, Color.R, Color.G, textValue);
+                newColor = Color.FromArgb(SelectedColor.A, SelectedColor.R, SelectedColor.G, textValue);
             }
             else if (box.Name.Contains("Alpha"))
             {
-                newColor = Color.FromArgb(textValue, Color.R, Color.G, Color.B);
+                newColor = Color.FromArgb(textValue, SelectedColor.R, SelectedColor.G, SelectedColor.B);
             }
 
             SetColor(newColor);
         }
 
-        protected void UpdateControls(Color color)
+        private void UpdateControls(Color color)
         {
             // What in the FUCK
 
@@ -157,6 +177,12 @@ namespace Gwen.Controls
                 OnColorChanged.Invoke(this);
         }
 
+        /// <summary>
+        /// Sets the selected color.
+        /// </summary>
+        /// <param name="color">Color to set.</param>
+        /// <param name="onlyHue">Determines whether only the hue should be set.</param>
+        /// <param name="reset">Determines whether the "before" color should be set as well.</param>
         public void SetColor(Color color, bool onlyHue = false, bool reset = false)
         {
             UpdateControls(color);
@@ -169,13 +195,13 @@ namespace Gwen.Controls
             m_After.Color = color;
         }
 
-        protected void ColorBoxChanged(Base control)
+        private void ColorBoxChanged(Base control)
         {
-            UpdateControls(Color);
+            UpdateControls(SelectedColor);
             Invalidate();
         }
 
-        protected void ColorSliderChanged(Base control)
+        private void ColorSliderChanged(Base control)
         {
             if (m_LerpBox != null)
                 m_LerpBox.SetColor(m_ColorSlider.SelectedColor, true);

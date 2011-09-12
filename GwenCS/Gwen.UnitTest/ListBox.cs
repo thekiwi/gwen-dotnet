@@ -40,7 +40,7 @@ namespace Gwen.UnitTest
                 ctrl.ColumnCount = 3;
                 ctrl.AllowMultiSelect = true;
                 ctrl.OnRowSelected += RowSelected;
-
+                ctrl.OnRowUnselected += RowUnSelected;
 
                 {
                     Controls.Layout.TableRow pRow = ctrl.AddItem("Baked Beans");

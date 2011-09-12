@@ -21,7 +21,8 @@ namespace Gwen.Controls
         }
 
         public Base Page { get { return m_Page; } set { m_Page = value; } }
-        public override bool ShouldClip
+
+        protected override bool ShouldClip
         {
             get { return false; }
         }
@@ -61,19 +62,19 @@ namespace Gwen.Controls
             skin.DrawTabButton(this, IsActive, m_Control.TabStrip.Dock);
         }
 
-        internal override bool onKeyDown(bool down)
+        protected override bool onKeyDown(bool down)
         {
             onKeyRight(down);
             return true;
         }
 
-        internal override bool onKeyUp(bool down)
+        protected override bool onKeyUp(bool down)
         {
             onKeyLeft(down);
             return true;
         }
 
-        internal override bool onKeyRight(bool down)
+        protected override bool onKeyRight(bool down)
         {
             if (down)
             {
@@ -90,7 +91,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyLeft(bool down)
+        protected override bool onKeyLeft(bool down)
         {
             if (down)
             {

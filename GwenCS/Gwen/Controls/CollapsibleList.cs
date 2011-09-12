@@ -22,6 +22,22 @@ namespace Gwen.Controls
             AutoHideBars = true;
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        public override void Dispose()
+        {
+            foreach (Base child in InnerChildren)
+            {
+                CollapsibleCategory cat = child as CollapsibleCategory;
+                if (cat == null)
+                    continue;
+
+                cat.Dispose();
+            }
+            base.Dispose();
+        }
+
         // todo: iterator, make this as function? check if works
         /// <summary>
         /// Selected entry.
@@ -47,16 +63,16 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Adds a new category to the list.
+        /// Adds a category to the list.
         /// </summary>
         /// <param name="category">Category control to add.</param>
-        public virtual void Add(CollapsibleCategory category)
+        protected virtual void Add(CollapsibleCategory category)
         {
             category.Parent = this;
             category.Dock = Pos.Top;
             category.Margin = new Margin(1, 0, 1, 1);
-            category.List = this;
             category.OnSelection += onSelectionEvent;
+            // this relies on fact that category.m_List is set to its parent
         }
 
         /// <summary>
@@ -97,7 +113,7 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for OnSelection event.
+        /// Handler for OnSelection event.
         /// </summary>
         /// <param name="control">Event source.</param>
         protected virtual void onSelectionEvent(Base control)
@@ -107,22 +123,6 @@ namespace Gwen.Controls
 
             if (OnSelection != null)
                 OnSelection.Invoke(this);
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in InnerChildren)
-            {
-                CollapsibleCategory cat = child as CollapsibleCategory;
-                if (cat == null)
-                    continue;
-
-                cat.Dispose();
-            }
-            base.Dispose();
         }
     }
 }

@@ -93,7 +93,7 @@ namespace Gwen.Controls
                 OnTextChanged.Invoke(this);
         }
 
-        internal override bool onChar(char chr)
+        protected override bool onChar(char chr)
         {
             base.onChar(chr);
 
@@ -175,13 +175,13 @@ namespace Gwen.Controls
             Redraw();
         }
 
-        internal override void onPaste(Base from)
+        protected override void onPaste(Base from)
         {
             base.onPaste(from);
             InsertText(Platform.Windows.GetClipboardText());
         }
 
-        internal override void onCopy(Base from)
+        protected override void onCopy(Base from)
         {
             if (!HasSelection) return;
             base.onCopy(from);
@@ -189,7 +189,7 @@ namespace Gwen.Controls
             Platform.Windows.SetClipboardText(GetSelection());
         }
 
-        internal override void onCut(Base from)
+        protected override void onCut(Base from)
         {
             if (!HasSelection) return;
             base.onCut(from);
@@ -198,7 +198,7 @@ namespace Gwen.Controls
             EraseSelection();
         }
 
-        internal override void onSelectAll(Base from)
+        protected override void onSelectAll(Base from)
         {
             //base.onSelectAll(from);
             m_CursorEnd = 0;
@@ -207,13 +207,13 @@ namespace Gwen.Controls
             RefreshCursorBounds();
         }
 
-        internal override void onMouseDoubleClickLeft(int x, int y)
+        protected override void onMouseDoubleClickLeft(int x, int y)
         {
             //base.onMouseDoubleClickLeft(x, y);
             onSelectAll(this);
         }
 
-        internal override bool onKeyReturn(bool down)
+        protected override bool onKeyReturn(bool down)
         {
             base.onKeyReturn(down);
             if (down) return true;
@@ -232,7 +232,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyBackspace(bool down)
+        protected override bool onKeyBackspace(bool down)
         {
             base.onKeyBackspace(down);
 
@@ -250,7 +250,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyDelete(bool down)
+        protected override bool onKeyDelete(bool down)
         {
             base.onKeyDelete(down);
             if (!down) return true;
@@ -267,7 +267,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyLeft(bool down)
+        protected override bool onKeyLeft(bool down)
         {
             base.onKeyLeft(down);
             if (!down) return true;
@@ -284,7 +284,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyRight(bool down)
+        protected override bool onKeyRight(bool down)
         {
             base.onKeyRight(down);
             if (!down) return true;
@@ -301,7 +301,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyHome(bool down)
+        protected override bool onKeyHome(bool down)
         {
             base.onKeyHome(down);
             if (!down) return true;
@@ -316,7 +316,7 @@ namespace Gwen.Controls
             return true;
         }
 
-        internal override bool onKeyEnd(bool down)
+        protected override bool onKeyEnd(bool down)
         {
             base.onKeyEnd(down);
             m_CursorPos = TextLength;
@@ -368,7 +368,7 @@ namespace Gwen.Controls
             m_CursorEnd = start;
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             base.onMouseClickLeft(x, y, down);
             if (m_SelectAll)
@@ -399,7 +399,7 @@ namespace Gwen.Controls
             }
         }
 
-        internal override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void onMouseMoved(int x, int y, int dx, int dy)
         {
             base.onMouseMoved(x, y, dx, dy);
             if (Global.MouseFocus != this) return;

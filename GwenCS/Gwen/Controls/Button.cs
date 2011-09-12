@@ -107,6 +107,16 @@ namespace Gwen.Controls
         }
 
         /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        public override void Dispose()
+        {
+            if (m_Image != null)
+                m_Image.Dispose();
+            base.Dispose();
+        }
+
+        /// <summary>
         /// Toggles the button.
         /// </summary>
         public virtual void Toggle()
@@ -123,9 +133,9 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Renders the specified skin.
+        /// Renders the control using specified skin.
         /// </summary>
-        /// <param name="skin">The skin.</param>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             base.Render(skin);
@@ -143,12 +153,12 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse click (left) event.
+        /// Handler invoked on mouse click (left) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             base.onMouseClickLeft(x, y, down);
             if (down)
@@ -177,7 +187,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Internal OnPress implementation.
         /// </summary>
-        internal virtual void onPress()
+        protected virtual void onPress()
         {
             if (IsToggle)
             {
@@ -191,7 +201,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Sets the button's image.
         /// </summary>
-        /// <param name="textureName">Texture name.</param>
+        /// <param name="textureName">Texture name. Null to remove.</param>
         /// <param name="center">Determines whether the image should be centered.</param>
         public virtual void SetImage(String textureName, bool center = false)
         {
@@ -231,13 +241,13 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler for Space keyboard event.
+        /// Handler for Space keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
         /// <returns>
         /// True if handled.
         /// </returns>
-        internal override bool onKeySpace(bool down)
+        protected override bool onKeySpace(bool down)
         {
             if (down)
                 onPress();
@@ -292,16 +302,6 @@ namespace Gwen.Controls
             }
 
             TextColor = Skin.Colors.Button.Normal;
-        }
-
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            if (m_Image != null)
-                m_Image.Dispose();
-            base.Dispose();
         }
     }
 }

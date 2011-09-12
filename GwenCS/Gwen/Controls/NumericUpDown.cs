@@ -79,13 +79,13 @@ namespace Gwen.Controls
             base.Dispose();
         }
 
-        internal override bool onKeyUp(bool down)
+        protected override bool onKeyUp(bool down)
         {
             if (down) onButtonUp(null);
             return true;
         }
 
-        internal override bool onKeyDown(bool down)
+        protected override bool onKeyDown(bool down)
         {
             if (down) onButtonDown(null);
             return true;

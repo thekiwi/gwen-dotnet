@@ -128,16 +128,16 @@ namespace Gwen.Sample.Tao
             cb1.SetPos(10, 140);
             cb1.IsTabable = true;
             cb1.KeyboardInputEnabled = true;
-            cb1.Label.Text = "Sample checkbox 1";
-            cb1.Label.SetToolTipText("trololo 1");
-            cb1.CheckBox.IsChecked = true;
+            cb1.Text = "Sample checkbox 1";
+            cb1.SetToolTipText("trololo 1");
+            cb1.IsChecked = true;
 
             LabeledCheckBox cb2 = new LabeledCheckBox(canvas);
             cb2.SetPos(200, 140);
             cb2.IsTabable = true;
             cb2.KeyboardInputEnabled = true;
-            cb2.Label.Text = "Sample checkbox 2";
-            cb2.Label.SetToolTipText("trololo 2");
+            cb2.Text = "Sample checkbox 2";
+            cb2.SetToolTipText("trololo 2");
 
             TextBox tb1 = new TextBox(canvas);
             tb1.SetPos(10, 180);
@@ -280,7 +280,7 @@ namespace Gwen.Sample.Tao
         void OnColorChanged(Base control)
         {
             var picker = control as IColorPicker;
-            var c = picker.Color;
+            var c = picker.SelectedColor;
             var hsv = c.ToHSV();
             _ColorText.Text = String.Format("RGB: {0:X2}{1:X2}{2:X2} HSV: {3:F1} {4:F2} {5:F2}",
                                             c.R, c.G, c.B, hsv.h, hsv.s, hsv.v);

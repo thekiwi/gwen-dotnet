@@ -3,6 +3,9 @@ using System.Drawing;
 
 namespace Gwen.Controls.Layout
 {
+    /// <summary>
+    /// Single table row.
+    /// </summary>
     public class TableRow : Base
     {
         // [omeg] todo: get rid of this
@@ -10,14 +13,32 @@ namespace Gwen.Controls.Layout
 
         protected int m_ColumnCount;
         protected bool m_bEvenRow;
-        internal Label[] m_Columns;
+        internal readonly Label[] m_Columns;
 
+        /// <summary>
+        /// Invoked when the row is selected.
+        /// </summary>
         public event ControlCallback OnRowSelected;
 
+        /// <summary>
+        /// Column count.
+        /// </summary>
         public int ColumnCount { get { return m_ColumnCount; } set { SetColumnCount(value); } }
+
+        /// <summary>
+        /// Indicates whether the row is even or odd (used for alternate coloring).
+        /// </summary>
         public bool EvenRow { get { return m_bEvenRow; } set { m_bEvenRow = value; } }
+
+        /// <summary>
+        /// Text of the first column.
+        /// </summary>
         public String Text { get { return GetText(0); } } // text of 1st column
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TableRow"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public TableRow(Base parent)
             : base(parent)
         {
@@ -26,16 +47,32 @@ namespace Gwen.Controls.Layout
             KeyboardInputEnabled = true;
         }
 
-        protected void SetColumnCount(int iCount)
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
         {
-            if (iCount == m_ColumnCount) return;
+            foreach (Label column in m_Columns)
+                if (column != null)
+                    column.Dispose();
 
-            if (iCount >= MaxColumns)
-                m_ColumnCount = MaxColumns;
+            base.Dispose();
+        }
+
+        /// <summary>
+        /// Sets the number of columns.
+        /// </summary>
+        /// <param name="columnCount">Number of columns.</param>
+        protected void SetColumnCount(int columnCount)
+        {
+            if (columnCount == m_ColumnCount) return;
+
+            if (columnCount >= MaxColumns)
+                throw new ArgumentException("Invalid column count", "columnCount");
 
             for (int i = 0; i < MaxColumns; i++)
             {
-                if (i < iCount)
+                if (i < columnCount)
                 {
                     if (null == m_Columns[i])
                     {
@@ -50,35 +87,56 @@ namespace Gwen.Controls.Layout
                     m_Columns[i] = null;
                 }
 
-                m_ColumnCount = iCount;
+                m_ColumnCount = columnCount;
             }
         }
 
-        public void SetColumnWidth(int i, int iWidth)
+        /// <summary>
+        /// Sets the column width (in pixels).
+        /// </summary>
+        /// <param name="column">Column index.</param>
+        /// <param name="width">Column width.</param>
+        public void SetColumnWidth(int column, int width)
         {
-            if (null == m_Columns[i]) return;
-            if (m_Columns[i].Width == iWidth) return;
+            if (null == m_Columns[column]) return;
+            if (m_Columns[column].Width == width) return;
 
-            m_Columns[i].Width = iWidth;
+            m_Columns[column].Width = width;
         }
 
-        public void SetCellText(int i, String text)
+        /// <summary>
+        /// Sets the text of a specified cell.
+        /// </summary>
+        /// <param name="column">Column number.</param>
+        /// <param name="text">Text to set.</param>
+        public void SetCellText(int column, String text)
         {
-            if (null == m_Columns[i]) return;
-            m_Columns[i].Text = text;
+            if (null == m_Columns[column]) return;
+            m_Columns[column].Text = text;
         }
 
-        public void SetCellContents(int i, Base pControl, bool bEnableMouseInput = false)
+        /// <summary>
+        /// Sets the contents of a specified cell.
+        /// </summary>
+        /// <param name="column">Column number.</param>
+        /// <param name="control">Cell contents.</param>
+        /// <param name="enableMouseInput">Determines whether mouse input should be enabled for the cell.</param>
+        public void SetCellContents(int column, Base control, bool enableMouseInput = false)
         {
-            if (null == m_Columns[i]) return;
-            pControl.Parent = m_Columns[i];
+            if (null == m_Columns[column]) return;
+            control.Parent = m_Columns[column];
 
-            m_Columns[i].MouseInputEnabled = bEnableMouseInput;
+            m_Columns[column].MouseInputEnabled = enableMouseInput;
         }
 
-        public Base GetCellContents(int i)
+        /// <summary>
+        /// Gets the contents of a specified cell.
+        /// </summary>
+        /// <param name="column">Column number.</param>
+        /// <returns>Control embedded in the cell.</returns>
+        public Base GetCellContents(int column)
         {
-            return m_Columns[i];
+            return m_Columns[column];
         }
 
         protected void onRowSelected()
@@ -87,9 +145,12 @@ namespace Gwen.Controls.Layout
                 OnRowSelected.Invoke(this);
         }
 
+        /// <summary>
+        /// Sizes all cells to fit contents.
+        /// </summary>
         public void SizeToContents()
         {
-            int iHeight = 0;
+            int height = 0;
 
             for (int i = 0; i < m_ColumnCount; i++)
             {
@@ -106,12 +167,16 @@ namespace Gwen.Controls.Layout
                     m_Columns[i].SizeToContents();
                 }
 
-                iHeight = Math.Max(iHeight, m_Columns[i].Height);
+                height = Math.Max(height, m_Columns[i].Height);
             }
 
-            Height = iHeight;
+            Height = height;
         }
 
+        /// <summary>
+        /// Sets the text color for all cells.
+        /// </summary>
+        /// <param name="color">Text color.</param>
         public void SetTextColor(Color color)
         {
             for (int i = 0; i < m_ColumnCount; i++)
@@ -124,23 +189,18 @@ namespace Gwen.Controls.Layout
         /// <summary>
         /// Returns text of a specified row cell (default first).
         /// </summary>
-        /// <param name="i">Column index.</param>
+        /// <param name="column">Column index.</param>
         /// <returns>Column cell text.</returns>
-        public String GetText(int i = 0)
+        public String GetText(int column = 0)
         {
-            return m_Columns[i].Text;
+            return m_Columns[column].Text;
         }
 
-        public override void Dispose()
-        {
-            foreach (Label column in m_Columns)
-                if (column != null)
-                    column.Dispose();
-
-            base.Dispose();
-        }
-
-        internal override void onCopy(Base from)
+        /// <summary>
+        /// Handler for Copy event.
+        /// </summary>
+        /// <param name="from">Source control.</param>
+        protected override void onCopy(Base from)
         {
             Platform.Windows.SetClipboardText(Text);
         }

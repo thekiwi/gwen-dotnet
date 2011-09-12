@@ -21,7 +21,7 @@ namespace Gwen.ControlsInternal
             m_Depressed = false;
         }
 
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             if (null == m_Target) return;
 
@@ -39,7 +39,7 @@ namespace Gwen.ControlsInternal
             }
         }
 
-        internal override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void onMouseMoved(int x, int y, int dx, int dy)
         {
             if (null == m_Target) return;
             if (!m_Depressed) return;

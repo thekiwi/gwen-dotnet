@@ -32,6 +32,18 @@ namespace Gwen.Controls
             // texture is initialized in Render() if null
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            base.Dispose();
+            m_Texture.Dispose();
+        }
+
+        /// <summary>
+        /// Linear color interpolation.
+        /// </summary>
         public static Color Lerp(Color toColor, Color fromColor, float amount)
         {
             Color delta = toColor.Subtract(fromColor);
@@ -68,13 +80,13 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse moved event.
+        /// Handler invoked on mouse moved event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        internal override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void onMouseMoved(int x, int y, int dx, int dy)
         {
             if (m_Depressed)
             {
@@ -96,12 +108,12 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Internal handler invoked on mouse click (left) event.
+        /// Handler invoked on mouse click (left) event.
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        internal override void onMouseClickLeft(int x, int y, bool down)
+        protected override void onMouseClickLeft(int x, int y, bool down)
         {
             m_Depressed = down;
             if (down)
@@ -113,7 +125,7 @@ namespace Gwen.Controls
         }
 
         /// <summary>
-        /// Gets the color froms pecified coordinates.
+        /// Gets the color from specified coordinates.
         /// </summary>
         /// <param name="x">X</param>
         /// <param name="y">Y</param>
@@ -139,15 +151,6 @@ namespace Gwen.Controls
                 m_Texture = null;
             }
             base.Invalidate();
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            base.Dispose();
-            m_Texture.Dispose();
         }
 
         /// <summary>

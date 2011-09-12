@@ -78,26 +78,26 @@ namespace Gwen.Input
                 m_MouseX = ev.X;
                 m_MouseY = ev.Y;
 
-                return m_Canvas.InputMouseMoved(m_MouseX, m_MouseY, dx, dy);
+                return m_Canvas.Input_MouseMoved(m_MouseX, m_MouseY, dx, dy);
             }
 
             if (args is MouseButtonEventArgs)
             {
                 MouseButtonEventArgs ev = args as MouseButtonEventArgs;
-                return m_Canvas.InputMouseButton((int) ev.Button, ev.Down);
+                return m_Canvas.Input_MouseButton((int) ev.Button, ev.Down);
             }
 
             if (args is MouseWheelEventArgs)
             {
                 MouseWheelEventArgs ev = args as MouseWheelEventArgs;
-                return m_Canvas.InputMouseWheel(ev.Delta*60);
+                return m_Canvas.Input_MouseWheel(ev.Delta*60);
             }
 
             if (args is TextEventArgs)
             {
                 TextEventArgs ev = args as TextEventArgs;
                 // [omeg] following may not fit in 1 char in theory
-                return m_Canvas.InputCharacter(ev.Unicode[0]);
+                return m_Canvas.Input_Character(ev.Unicode[0]);
             }
 
             if (args is KeyEventArgs)
@@ -113,7 +113,7 @@ namespace Gwen.Input
 
                 Key iKey = TranslateKeyCode(ev.Code);
 
-                return m_Canvas.InputKey(iKey, ev.Down);
+                return m_Canvas.Input_Key(iKey, ev.Down);
             }
 
             return false;
