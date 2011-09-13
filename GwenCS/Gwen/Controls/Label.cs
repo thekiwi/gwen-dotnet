@@ -128,10 +128,10 @@ namespace Gwen.Controls
             if (align.HasFlag(Pos.Right)) 
                 x = Width - m_Text.Width - m_TextPadding.Right - m_Padding.Right;
             if (align.HasFlag(Pos.CenterH))
-                x = Global.Trunc((m_TextPadding.Left + m_Padding.Left) + ((Width - m_Text.Width - m_TextPadding.Left - m_Padding.Left - m_TextPadding.Right - m_Padding.Right) * 0.5f));
+                x = (int)((m_TextPadding.Left + m_Padding.Left) + ((Width - m_Text.Width - m_TextPadding.Left - m_Padding.Left - m_TextPadding.Right - m_Padding.Right) * 0.5f));
 
             if (align.HasFlag(Pos.CenterV))
-                y = Global.Trunc((m_TextPadding.Top + m_Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_TextPadding.Bottom - m_Padding.Bottom);
+                y = (int)((m_TextPadding.Top + m_Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_TextPadding.Bottom - m_Padding.Bottom);
             if (align.HasFlag(Pos.Bottom)) 
                 y = Height - m_Text.Height - m_TextPadding.Bottom - m_Padding.Bottom;
 

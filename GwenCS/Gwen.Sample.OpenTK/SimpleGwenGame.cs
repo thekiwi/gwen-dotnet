@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using OpenTK;
-using OpenTK.Graphics;
 using OpenTK.Input;
-using Key = OpenTK.Input.Key;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
 using Gwen.Controls;
@@ -422,7 +417,7 @@ namespace Gwen.Sample.OpenTKSample
 
         void Sample_OnMenuItemSelectedLoad(Base control)
         {
-            Gwen.Platform.Windows.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
+            Gwen.Platform.Neutral.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
         }
 
         static void OnFileOpen(String file)

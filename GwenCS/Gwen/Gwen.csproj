@@ -130,10 +130,10 @@
     <Compile Include="Margin.cs" />
     <Compile Include="Padding.cs" />
     <Compile Include="Key.cs" />
+    <Compile Include="Platform\Windows.cs" />
     <Compile Include="Pos.cs" />
-    <Compile Include="Platform\Platform.cs" />
+    <Compile Include="Platform\Neutral.cs" />
     <Compile Include="Skin\Simple.cs" />
-    <Compile Include="Skin\Symbol.cs" />
     <Compile Include="Skin\TexturedBase.cs" />
     <Compile Include="Skin\Texturing\Bordered.cs" />
     <Compile Include="Skin\Texturing\Single.cs" />
@@ -146,6 +146,7 @@
     <Compile Include="Renderer\Base.cs" />
     <Compile Include="Renderer\ICacheToTexture.cs" />
     <Compile Include="Skin\Base.cs" />
+    <Compile Include="Util.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

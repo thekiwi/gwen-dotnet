@@ -51,9 +51,9 @@ namespace Gwen.Controls
             float barHeight = (m_ViewableContentSize / m_ContentSize) * (Height - (ButtonSize * 2));
 
             if (barHeight < ButtonSize * 0.5f)
-                barHeight = Global.Trunc(ButtonSize * 0.5f);
+                barHeight = (int)(ButtonSize * 0.5f);
 
-            m_Bar.Height = Global.Trunc(barHeight);
+            m_Bar.Height = (int)(barHeight);
             m_Bar.IsHidden = Height - (ButtonSize * 2) <= barHeight;
 
             //Based on our last scroll amount, produce a position for the bar
@@ -127,14 +127,14 @@ namespace Gwen.Controls
 
         public override bool SetScrollAmount(float amount, bool forceUpdate)
         {
-            amount = Global.Clamp(amount, 0, 1);
+            amount = Util.Clamp(amount, 0, 1);
 
             if (!base.SetScrollAmount(amount, forceUpdate))
                 return false;
 
             if (forceUpdate)
             {
-                int newY = Global.Trunc(ButtonSize + (amount * ((Height - m_Bar.Height) - (ButtonSize * 2))));
+                int newY = (int)(ButtonSize + (amount * ((Height - m_Bar.Height) - (ButtonSize * 2))));
                 m_Bar.MoveTo(m_Bar.X, newY);
             }
 

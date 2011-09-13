@@ -2,7 +2,7 @@
 
 namespace Gwen
 {
-    public struct Font
+    public class Font
     {
         public String FaceName;
         public int Size;
@@ -17,11 +17,16 @@ namespace Gwen
         // This is the real font size, after it's
         // been scaled by Render->Scale()
         public float RealSize;
-        /*
-        public Font()
+        
+        public Font() : this("Arial", 10)
         {
-            FaceName = "Arial";
-            Size = 10;
+
+        }
+
+        public Font(String faceName, int size = 10)
+        {
+            FaceName = faceName;
+            Size = size;
             DropShadow = false;
             Bold = false;
         }
@@ -34,10 +39,9 @@ namespace Gwen
             f.RealSize = RealSize;
             f.Bold = Bold;
             f.DropShadow = DropShadow;
-            f.RendererData = RendererData;
+            f.RendererData = null; // must be reinitialized
 
             return f;
         }
-         */
     }
 }

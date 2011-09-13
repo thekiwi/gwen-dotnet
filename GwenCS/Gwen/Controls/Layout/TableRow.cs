@@ -202,7 +202,7 @@ namespace Gwen.Controls.Layout
         /// <param name="from">Source control.</param>
         protected override void onCopy(Base from)
         {
-            Platform.Windows.SetClipboardText(Text);
+            Platform.Neutral.SetClipboardText(Text);
         }
     }
 }

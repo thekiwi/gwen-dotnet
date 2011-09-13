@@ -7,11 +7,11 @@ namespace Gwen.UnitTest
     public class UnitTest : DockBase
     {
         private Controls.Base m_LastControl;
-        private Controls.StatusBar m_StatusBar;
-        private Controls.ListBox m_TextOutput;
+        private readonly Controls.StatusBar m_StatusBar;
+        private readonly Controls.ListBox m_TextOutput;
         private Controls.TabControl m_TabControl;
         private Controls.TabButton m_Button;
-        private Controls.CollapsibleList m_List;
+        private readonly Controls.CollapsibleList m_List;
 
         public double Fps; // set this in your rendering loop
 
@@ -21,7 +21,7 @@ namespace Gwen.UnitTest
             SetSize(1024, 768);
             m_List = new Controls.CollapsibleList(this);
 
-            LeftDock.TabControl.AddPage("CollapsibleList", m_List);
+            LeftDock.TabControl.AddPage("Unit tests", m_List);
             LeftDock.Width = 150;
 
             m_TextOutput = new Controls.ListBox(BottomDock);

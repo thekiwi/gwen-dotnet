@@ -145,7 +145,7 @@ namespace Gwen.Controls
             }
 
             // Draw caret
-            if (Math.IEEERemainder(Platform.Windows.GetTimeInSeconds() - m_LastInputTime, 1.0f) > 0.5f) // todo: ok?
+            if (Math.IEEERemainder(Platform.Neutral.GetTimeInSeconds() - m_LastInputTime, 1.0f) > 0.5f) // todo: ok?
                 skin.Renderer.DrawColor = Color.White;
             else
                 skin.Renderer.DrawColor = Color.Black;
@@ -155,7 +155,7 @@ namespace Gwen.Controls
 
         protected virtual void RefreshCursorBounds()
         {
-            m_LastInputTime = Platform.Windows.GetTimeInSeconds();
+            m_LastInputTime = Platform.Neutral.GetTimeInSeconds();
 
             MakeCaretVisible();
 
@@ -178,7 +178,7 @@ namespace Gwen.Controls
         protected override void onPaste(Base from)
         {
             base.onPaste(from);
-            InsertText(Platform.Windows.GetClipboardText());
+            InsertText(Platform.Neutral.GetClipboardText());
         }
 
         protected override void onCopy(Base from)
@@ -186,7 +186,7 @@ namespace Gwen.Controls
             if (!HasSelection) return;
             base.onCopy(from);
 
-            Platform.Windows.SetClipboardText(GetSelection());
+            Platform.Neutral.SetClipboardText(GetSelection());
         }
 
         protected override void onCut(Base from)
@@ -194,7 +194,7 @@ namespace Gwen.Controls
             if (!HasSelection) return;
             base.onCut(from);
 
-            Platform.Windows.SetClipboardText(GetSelection());
+            Platform.Neutral.SetClipboardText(GetSelection());
             EraseSelection();
         }
 
@@ -421,7 +421,7 @@ namespace Gwen.Controls
             }
 
             // The ideal position is for the carat to be right in the middle
-            int idealx = Global.Trunc(-caretPos + Width * 0.5f);
+            int idealx = (int)(-caretPos + Width * 0.5f);
 
             // Don't show too much whitespace to the right
             if (idealx + m_Text.Width < Width - m_TextPadding.Right)

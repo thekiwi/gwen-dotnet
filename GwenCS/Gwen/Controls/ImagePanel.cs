@@ -48,7 +48,11 @@ namespace Gwen.Controls
         /// <summary>
         /// Texture name.
         /// </summary>
-        public String ImageName { get { return m_Texture.Name; } set { m_Texture.Load(value); } }
+        public String ImageName
+        {
+            get { return m_Texture.Name; }
+            set { m_Texture.Load(value); }
+        }
 
         public void SetDrawColor(Color c)
         {

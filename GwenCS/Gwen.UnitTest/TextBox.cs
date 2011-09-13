@@ -47,8 +47,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                m_Font.FaceName = "Impact";
-                m_Font.Size = 50;
+                m_Font = new Font("Impact", 50);
 
                 Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("Different Font");

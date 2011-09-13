@@ -105,10 +105,10 @@ namespace Gwen.Controls
             }
         }
 
-        public virtual void EnableScroll(bool h, bool v)
+        public virtual void EnableScroll(bool horizontal, bool vertical)
         {
-            m_CanScrollV = v;
-            m_CanScrollH = h;
+            m_CanScrollV = vertical;
+            m_CanScrollH = horizontal;
             m_VerticalScrollBar.IsHidden = !m_CanScrollV;
             m_HorizontalScrollBar.IsHidden = !m_CanScrollH;
         }
@@ -226,14 +226,14 @@ namespace Gwen.Controls
             if (CanScrollV && !m_VerticalScrollBar.IsHidden)
             {
                 newInnerPanelPosY =
-                    Global.Trunc(
+                    (int)(
                         -((m_InnerPanel.Height) - Height + (m_HorizontalScrollBar.IsHidden ? 0 : m_HorizontalScrollBar.Height))*
                         m_VerticalScrollBar.ScrollAmount);
             }
             if (CanScrollH && !m_HorizontalScrollBar.IsHidden)
             {
                 newInnerPanelPosX =
-                    Global.Trunc(
+                    (int)(
                         -((m_InnerPanel.Width) - Width + (m_VerticalScrollBar.IsHidden ? 0 : m_VerticalScrollBar.Width))*
                         m_HorizontalScrollBar.ScrollAmount);
             }

@@ -4,7 +4,7 @@ using System.Windows.Forms;
 
 namespace Gwen.Platform
 {
-    public static class Windows
+    public static class Neutral
     {
         private static DateTime m_LastTime;
         private static float m_CurrentTime;

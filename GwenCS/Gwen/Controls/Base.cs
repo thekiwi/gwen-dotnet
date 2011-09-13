@@ -473,10 +473,11 @@ namespace Gwen.Controls
             if (ToolTip != null)
                 ToolTip.Dispose();
             Label tooltip = new Label(this);
+            tooltip.AutoSizeToContents = true;
             tooltip.SetText(text);
             tooltip.TextColorOverride = Skin.Colors.TooltipText;
             tooltip.Padding = new Padding(5, 3, 5, 3);
-            tooltip.SizeToContents();
+            //tooltip.SizeToContents();
 
             ToolTip = tooltip;
         }
@@ -1514,7 +1515,7 @@ namespace Gwen.Controls
         /// </summary>
         public virtual void UpdateCursor()
         {
-            Platform.Windows.SetCursor(m_Cursor);
+            Platform.Neutral.SetCursor(m_Cursor);
         }
 
         // giver

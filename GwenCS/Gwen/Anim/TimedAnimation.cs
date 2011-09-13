@@ -15,7 +15,7 @@ namespace Gwen.Anim
 
         public TimedAnimation( float length, float delay = 0.0f, float ease = 1.0f )
         {
-            m_Start = Platform.Windows.GetTimeInSeconds() + delay;
+            m_Start = Platform.Neutral.GetTimeInSeconds() + delay;
             m_End = m_Start + length;
             m_Ease = ease;
             m_Started = false;
@@ -29,7 +29,7 @@ namespace Gwen.Anim
             if (m_Finished) 
                 return;
 
-            float fCurrent = Platform.Windows.GetTimeInSeconds();
+            float fCurrent = Platform.Neutral.GetTimeInSeconds();
             float fSecondsIn = fCurrent - m_Start;
             if (fSecondsIn < 0.0) 
                 return;

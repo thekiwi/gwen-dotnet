@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Windows.Forms;
-using Gwen;
 using Gwen.Controls;
 using Tao.OpenGl;
 using Button = Gwen.Controls.Button;
@@ -265,7 +263,7 @@ namespace Gwen.Sample.Tao
 
         void Sample_OnMenuItemSelectedLoad(Base control)
         {
-            Gwen.Platform.Windows.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
+            Gwen.Platform.Neutral.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
         }
 
         static void OnFileOpen(String file)

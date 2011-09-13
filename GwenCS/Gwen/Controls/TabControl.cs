@@ -173,7 +173,7 @@ namespace Gwen.Controls
 
             if (!needed) return;
 
-            m_ScrollOffset = Global.Clamp(m_ScrollOffset, 0, TabsSize.X - Width + 32);
+            m_ScrollOffset = Util.Clamp(m_ScrollOffset, 0, TabsSize.X - Width + 32);
 
 #if false
     //

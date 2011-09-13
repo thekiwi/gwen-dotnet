@@ -125,14 +125,14 @@ namespace Gwen.Controls
         private Color GetColorAtHeight(int y)
         {
             float yPercent = y / (float)Height;
-            return Global.HSVToColor(yPercent * 360, 1, 1);
+            return Util.HSVToColor(yPercent * 360, 1, 1);
         }
 
         private void SetColor(Color color)
         {
             HSV hsv = color.ToHSV();
 
-            m_SelectedDist = Global.Trunc(hsv.h / 360 * Height);
+            m_SelectedDist = (int)(hsv.h / 360 * Height);
 
             if (OnColorChanged != null)
                 OnColorChanged.Invoke(this);

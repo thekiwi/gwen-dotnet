@@ -70,8 +70,8 @@ namespace Gwen.Controls
             m_Hue = (byte) (hsv.h);
             if (!onlyHue)
             {
-                m_CursorPos.X = Global.Trunc(hsv.s*Width);
-                m_CursorPos.Y = Global.Trunc((1 - hsv.v)*Height);
+                m_CursorPos.X = (int)(hsv.s * Width);
+                m_CursorPos.Y = (int)((1 - hsv.v) * Height);
             }
             Invalidate();
 
@@ -135,7 +135,7 @@ namespace Gwen.Controls
             float xPercent = (x / (float)Width);
             float yPercent = 1 - (y / (float)Height);
 
-            Color result = Global.HSVToColor(m_Hue, xPercent, yPercent);
+            Color result = Util.HSVToColor(m_Hue, xPercent, yPercent);
 
             return result;
         }

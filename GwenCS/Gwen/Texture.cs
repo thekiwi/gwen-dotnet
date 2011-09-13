@@ -4,11 +4,11 @@ namespace Gwen
 {
     public class Texture : IDisposable
     {
-        public String Name { get; set; }
-        public object RendererData { get; set; }
-        public bool Failed { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
+        public String Name;
+        public object RendererData;
+        public bool Failed;
+        public int Width;
+        public int Height;
 
         private Renderer.Base m_Renderer;
 
@@ -18,6 +18,8 @@ namespace Gwen
             Width = 4;
             Height = 4;
             Failed = false;
+            Name = null;
+            RendererData = null;
         }
 
         public void Load(String name)
@@ -34,8 +36,6 @@ namespace Gwen
             m_Renderer.LoadTextureRaw(this, pixelData);
         }
 
-        #region Implementation of IDisposable
-
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -44,7 +44,5 @@ namespace Gwen
         {
             m_Renderer.FreeTexture(this);
         }
-
-        #endregion
     }
 }

@@ -6,14 +6,14 @@ namespace Gwen.UnitTest
 {
     public class Label : GUnit
     {
-        private Font font;
+        private Font font1, font2;
 
         public Label(Base parent) : base(parent)
         {
             {
                 Controls.Label label = new Controls.Label(this);
                 label.AutoSizeToContents = true;
-                label.Text = "Garry's Normal Label";
+                label.Text = "Standard label";
                 label.SetPos(10, 10);
             }
             {
@@ -49,8 +49,11 @@ namespace Gwen.UnitTest
             {
                 Controls.Label label = new Controls.Label(this);
                 label.AutoSizeToContents = true;
-                label.Text = "Wow, Coloured Text";
+                label.MouseInputEnabled = true; // needed for tooltip
+                label.Text = "Wow, Coloured Text (and tooltip)";
                 label.TextColor = Color.Blue;
+                label.SetToolTipText("I'm a tooltip");
+                ((Controls.Label)label.ToolTip).Font = new Font("Motorwerk", 20);
                 label.SetPos(10, 130);
             }
             {
@@ -63,15 +66,24 @@ namespace Gwen.UnitTest
             {
                 // Note that when using a custom font, this font object has to stick around
                 // for the lifetime of the label. Rethink, or is that ideal?
-                font = new Font();
-                font.FaceName = "Comic Sans MS";
-                font.Size = 25;
+                font1 = new Font();
+                font1.FaceName = "Comic Sans MS";
+                font1.Size = 25;
 
                 Controls.Label label = new Controls.Label(this);
                 label.AutoSizeToContents = true;
                 label.Text = "Custom Font (Comic Sans 25)";
                 label.SetPos(10, 170);
-                label.Font = font;
+                label.Font = font1;
+            }
+            {
+                font2 = new Font("French Script MT", 35);
+
+                Controls.Label label = new Controls.Label(this);
+                label.AutoSizeToContents = true;
+                label.Font = font2;
+                label.SetPos(10, 210);
+                label.Text = "Custom Font (French Script MT 35)";
             }
         }
     }

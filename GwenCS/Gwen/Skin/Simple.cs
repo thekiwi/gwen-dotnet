@@ -44,9 +44,6 @@ namespace Gwen.Skin
             m_colToolTipBorder = Color.FromArgb(255, 0, 0, 0);
 
             m_colModal = Color.FromArgb(150, 25, 25, 25);
-
-            m_DefaultFont.FaceName = "Microsoft Sans Serif";
-            m_DefaultFont.Size = 11;
         }
 
         public override void DrawButton(Controls.Base control, bool depressed, bool hovered, bool disabled)
@@ -88,8 +85,8 @@ namespace Gwen.Skin
 
             m_Render.DrawColor = Color.FromArgb(150, 218, 224, 241);
 
-            m_Render.DrawFilledRect(Global.FloatRect(0, h * 0.4f, w, h * 0.6f));
-            m_Render.DrawFilledRect(Global.FloatRect(0, h * 0.5f, w, h * 0.5f));
+            m_Render.DrawFilledRect(Util.FloatRect(0, h * 0.4f, w, h * 0.6f));
+            m_Render.DrawFilledRect(Util.FloatRect(0, h * 0.5f, w, h * 0.5f));
         }
 
         public override void DrawMenu(Controls.Base control, bool paddingDisabled)
@@ -139,7 +136,7 @@ namespace Gwen.Skin
             else if (bHovered) m_Render.DrawColor = m_colControl;
             else m_Render.DrawColor = m_colControlDark;
 
-            m_Render.DrawFilledRect(Global.FloatRect(1, h * 0.5f, w - 2, h * 0.5f - 2));
+            m_Render.DrawFilledRect(Util.FloatRect(1, h * 0.5f, w - 2, h * 0.5f - 2));
 
             if (!depressed)
             {
@@ -174,8 +171,8 @@ namespace Gwen.Skin
 
             m_Render.DrawColor = Color.FromArgb(15, 0, 50, 60);
             m_Render.DrawFilledRect(new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + 2, rect.Y + 2, rect.Width * 0.3f, rect.Height - 4));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height * 0.3f));
+            m_Render.DrawFilledRect(Util.FloatRect(rect.X + 2, rect.Y + 2, rect.Width * 0.3f, rect.Height - 4));
+            m_Render.DrawFilledRect(Util.FloatRect(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height * 0.3f));
 
             if (control.IsHovered) m_Render.DrawColor = Color.FromArgb(255, 121, 198, 249);
             else m_Render.DrawColor = Color.FromArgb(50, 0, 50, 60);
@@ -209,8 +206,8 @@ namespace Gwen.Skin
 
             m_Render.DrawColor = Color.FromArgb(15, 0, 50, 60);
             m_Render.DrawFilledRect(new Rectangle(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height - 4));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + 2, rect.Y + 2, rect.Width * 0.3f, rect.Height - 4));
-            m_Render.DrawFilledRect(Global.FloatRect(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height * 0.3f));
+            m_Render.DrawFilledRect(Util.FloatRect(rect.X + 2, rect.Y + 2, rect.Width * 0.3f, rect.Height - 4));
+            m_Render.DrawFilledRect(Util.FloatRect(rect.X + 2, rect.Y + 2, rect.Width - 4, rect.Height * 0.3f));
 
             if (control.IsHovered) m_Render.DrawColor = Color.FromArgb(255, 121, 198, 249);
             else m_Render.DrawColor = Color.FromArgb(50, 0, 50, 60);
@@ -236,8 +233,8 @@ namespace Gwen.Skin
         {
             Rectangle rect = control.RenderBounds;
 
-            rect.Y += Global.Trunc(textHeight * 0.5f);
-            rect.Height -= Global.Trunc(textHeight * 0.5f);
+            rect.Y += (int)(textHeight * 0.5f);
+            rect.Height -= (int)(textHeight * 0.5f);
 
             Color m_colDarker = Color.FromArgb(50, 0, 50, 60);
             Color m_colLighter = Color.FromArgb(150, 255, 255, 255);
@@ -300,7 +297,7 @@ namespace Gwen.Skin
             if (bHovered) m_Render.DrawColor = m_colControl;
             else m_Render.DrawColor = m_colControlDark;
 
-            m_Render.DrawFilledRect(Global.FloatRect(1, rect.Height*0.5f, rect.Width - 2, rect.Height*0.5f - 1));
+            m_Render.DrawFilledRect(Util.FloatRect(1, rect.Height*0.5f, rect.Width - 2, rect.Height*0.5f - 1));
 
             m_Render.DrawColor = m_colControlBright;
             m_Render.DrawShavedCornerRect(new Rectangle(1, 1, rect.Width - 2, rect.Height));
@@ -332,8 +329,8 @@ namespace Gwen.Skin
             if (inFocus)
                 m_Render.DrawColor = Color.FromArgb(230, 87, 164, 232);
             else
-                m_Render.DrawColor = Color.FromArgb(230, Global.Trunc(87 * 0.70f), Global.Trunc(164 * 0.70f),
-                                                    Global.Trunc(232 * 0.70f));
+                m_Render.DrawColor = Color.FromArgb(230, (int)(87 * 0.70f), (int)(164 * 0.70f),
+                                                    (int)(232 * 0.70f));
 
             int iBorderSize = 5;
             m_Render.DrawFilledRect(new Rectangle(rect.X + 1, rect.Y + 1, rect.Width - 2, topHeight - 1));
@@ -421,10 +418,10 @@ namespace Gwen.Skin
 
                 //Right half
                 m_Render.DrawColor = FillColour;
-                m_Render.DrawFilledRect(Global.FloatRect(1, 1, rect.Width * progress - 2, rect.Height - 2));
+                m_Render.DrawFilledRect(Util.FloatRect(1, 1, rect.Width * progress - 2, rect.Height - 2));
 
                 m_Render.DrawColor = Color.FromArgb(150, 255, 255, 255);
-                m_Render.DrawFilledRect(Global.FloatRect(1, 1, rect.Width - 2, rect.Height * 0.45f));
+                m_Render.DrawFilledRect(Util.FloatRect(1, 1, rect.Width - 2, rect.Height * 0.45f));
             }
             else
             {
@@ -434,11 +431,11 @@ namespace Gwen.Skin
 
                 //Top half
                 m_Render.DrawColor = FillColour;
-                m_Render.DrawFilledRect(Global.FloatRect(1, 1 + (rect.Height * (1 - progress)), rect.Width - 2,
+                m_Render.DrawFilledRect(Util.FloatRect(1, 1 + (rect.Height * (1 - progress)), rect.Width - 2,
                                                          rect.Height * progress - 2));
 
                 m_Render.DrawColor = Color.FromArgb(150, 255, 255, 255);
-                m_Render.DrawFilledRect(Global.FloatRect(1, 1, rect.Width * 0.45f, rect.Height - 2));
+                m_Render.DrawFilledRect(Util.FloatRect(1, 1, rect.Width * 0.45f, rect.Height - 2));
             }
 
             m_Render.DrawColor = Color.FromArgb(150, 255, 255, 255);
@@ -485,13 +482,13 @@ namespace Gwen.Skin
 
             if (horizontal)
             {
-                rect.Y += Global.Trunc(rect.Height * 0.4f);
-                rect.Height -= Global.Trunc(rect.Height * 0.8f);
+                rect.Y += (int)(rect.Height * 0.4f);
+                rect.Height -= (int)(rect.Height * 0.8f);
             }
             else
             {
-                rect.X += Global.Trunc(rect.Width * 0.4f);
-                rect.Width -= Global.Trunc(rect.Width * 0.8f);
+                rect.X += (int)(rect.Width * 0.4f);
+                rect.Width -= (int)(rect.Width * 0.8f);
             }
 
             m_Render.DrawColor = m_colBGDark;
@@ -655,8 +652,8 @@ namespace Gwen.Skin
 
                 Renderer.DrawColor = Color.FromArgb(128, 128, 128, 128);
 
-                Renderer.DrawFilledRect(Global.FloatRect(0, 0, rect.Width * 0.5f, rect.Height * 0.5f));
-                Renderer.DrawFilledRect(Global.FloatRect(rect.Width * 0.5f, rect.Height * 0.5f, rect.Width * 0.5f,
+                Renderer.DrawFilledRect(Util.FloatRect(0, 0, rect.Width * 0.5f, rect.Height * 0.5f));
+                Renderer.DrawFilledRect(Util.FloatRect(rect.Width * 0.5f, rect.Height * 0.5f, rect.Width * 0.5f,
                                                          rect.Height * 0.5f));
             }
 

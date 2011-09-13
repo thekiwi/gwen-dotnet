@@ -29,7 +29,7 @@ namespace Gwen.Sample.SFML
                 int width = 800;
                 int height = 600;
                 // Create main window
-                window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net test",
+                window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net SFML test",
                                           Styles.Default, new ContextSettings(32, 0));
 
                 // Setup event handlers
@@ -54,9 +54,8 @@ namespace Gwen.Sample.SFML
 
                 // The fonts work differently in SFML - it can't use
                 // system fonts. So force the skin to use a local one.
-                skin.SetDefaultFont("OpenSans.ttf", 10);
-                Font font2 = skin.DefaultFont;
-                font2.Size = 15;
+                skin.SetDefaultFont("Arial Unicode MS", 10);
+                //skin.SetDefaultFont("OpenSans.ttf", 10);
 
                 // Create a Canvas (it's root, on which all other GWEN panels are created)
                 canvas = new Canvas(skin);
@@ -354,7 +353,7 @@ namespace Gwen.Sample.SFML
 
         static void Sample_OnMenuItemSelectedLoad(Base control)
         {
-            Platform.Windows.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
+            Platform.Neutral.FileOpen("Open file test", @"c:\", "All files(*.*)|*.*", OnFileOpen);
         }
 
         static void OnFileOpen(String file)

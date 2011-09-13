@@ -7,8 +7,9 @@ namespace Gwen.ControlsInternal
     public class Text : Base
     {
         protected String m_String;
+        protected Font m_Font;
 
-        public Font Font;
+        public Font Font { get { return m_Font; } set { m_Font = value; RefreshSize(); Invalidate(); } }
         public String String
         {
             get { return m_String; } 
@@ -31,13 +32,13 @@ namespace Gwen.ControlsInternal
 
         protected override void Render(Skin.Base skin)
         {
-            if (Length == 0 || Font.FaceName == null) return;
+            if (Length == 0 || Font == null) return;
 
             if (TextColorOverride.A == 0)
                 skin.Renderer.DrawColor = TextColor;
             else
                 skin.Renderer.DrawColor = TextColorOverride;
-            skin.Renderer.RenderText(ref Font, Point.Empty, String);
+            skin.Renderer.RenderText(Font, Point.Empty, String);
         }
 
         protected override void Layout(Skin.Base skin)
@@ -52,7 +53,10 @@ namespace Gwen.ControlsInternal
 
         public void RefreshSize()
         {
-            if (Font.FaceName == null)
+            if (String == null)
+                return;
+
+            if (Font == null)
             {
                 throw new InvalidOperationException("Text.RefreshSize() - No Font!!\n");
             }
@@ -61,7 +65,7 @@ namespace Gwen.ControlsInternal
 
             if (Length > 0)
             {
-                p = Skin.Renderer.MeasureText(ref Font, String);
+                p = Skin.Renderer.MeasureText(Font, String);
             }
 
             if (p.X == Width && p.Y == Height)
@@ -80,7 +84,7 @@ namespace Gwen.ControlsInternal
             }
 
             String sub = String.Substring(0, index);
-            Point p = Skin.Renderer.MeasureText(ref Font, sub);
+            Point p = Skin.Renderer.MeasureText(Font, sub);
 
             if (p.Y >= Font.Size)
                 p = new Point(p.X, p.Y - Font.Size);

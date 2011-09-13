@@ -73,10 +73,10 @@ namespace Gwen.Skin.Texturing
             SetRect(7, x + m_Margin.Left, (y + h) - m_Margin.Bottom, w - m_Margin.Left - m_Margin.Right, m_Margin.Bottom);
             SetRect(8, (x + w) - m_Margin.Right, (y + h) - m_Margin.Bottom, m_Margin.Right, m_Margin.Bottom);
 
-            m_Margin.Left = Global.Trunc(m_Margin.Left*drawMarginScale);
-            m_Margin.Right = Global.Trunc(m_Margin.Right*drawMarginScale);
-            m_Margin.Top = Global.Trunc(m_Margin.Top*drawMarginScale);
-            m_Margin.Bottom = Global.Trunc(m_Margin.Bottom*drawMarginScale);
+            m_Margin.Left = (int)(m_Margin.Left*drawMarginScale);
+            m_Margin.Right = (int)(m_Margin.Right*drawMarginScale);
+            m_Margin.Top = (int)(m_Margin.Top*drawMarginScale);
+            m_Margin.Bottom = (int)(m_Margin.Bottom*drawMarginScale);
 
             m_Width = w - x;
             m_Height = h - y;

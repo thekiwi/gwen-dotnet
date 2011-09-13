@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using SFML;
 using SFML.Graphics;
@@ -68,27 +69,49 @@ namespace Gwen.Renderer
             shape.Dispose();
         }
 
-        public override void LoadFont(ref Font font)
+        public override void LoadFont(Font font)
         {
             font.RealSize = font.Size*Scale;
             global::SFML.Graphics.Font sfFont;
             
+            Debug.Print("LoadFont: {0} {1}", font.FaceName, font.RendererData);
             try
             {
                 sfFont = new global::SFML.Graphics.Font(font.FaceName);
             }
             catch (LoadingFailedException)
             {
-                // Ideally here we should be setting the font to a system default font here.
-                sfFont = global::SFML.Graphics.Font.DefaultFont;
+                // try to load windows font by this name
+                String path = Platform.Windows.GetFontPath(font.FaceName);
+                if (path != null)
+                {
+                    try
+                    {
+                        sfFont = new global::SFML.Graphics.Font(path);
+                    }
+                    catch (LoadingFailedException)
+                    {
+                        // Ideally here we should be setting the font to a system default font here.
+                        sfFont = global::SFML.Graphics.Font.DefaultFont;
+                        Debug.Print("LoadFont: failed");
+                    }
+                }
+                else
+                {
+                    // Ideally here we should be setting the font to a system default font here.
+                    sfFont = global::SFML.Graphics.Font.DefaultFont;
+                    Debug.Print("LoadFont: failed");
+                }
             }
 
             font.RendererData = sfFont;
         }
 
-        public override void FreeFont(ref Font font)
+        public override void FreeFont(Font font)
         {
             if ( font.RendererData == null ) return;
+
+            Debug.Print("FreeFont: {0} {1}", font.FaceName, font.RendererData);
 
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
 
@@ -101,7 +124,7 @@ namespace Gwen.Renderer
             font.RendererData = null;
         }
 
-        public override void RenderText(ref Font font, Point pos, string text)
+        public override void RenderText(Font font, Point pos, string text)
         {
             //m_Target.SaveGLStates();
             pos = Translate(pos);
@@ -110,8 +133,8 @@ namespace Gwen.Renderer
             // If the font doesn't exist, or the font size should be changed
             if (sfFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
             {
-                FreeFont(ref font);
-                LoadFont(ref font);
+                FreeFont(font);
+                LoadFont(font);
             }
 
             if (sfFont == null)
@@ -127,15 +150,15 @@ namespace Gwen.Renderer
             //m_Target.RestoreGLStates();
         }
 
-        public override Point MeasureText(ref Font font, string text)
+        public override Point MeasureText(Font font, string text)
         {
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
 
             // If the font doesn't exist, or the font size should be changed
             if (sfFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
             {
-                FreeFont(ref font);
-                LoadFont(ref font);
+                FreeFont(font);
+                LoadFont(font);
             }
 
             if (sfFont == null)
@@ -170,10 +193,10 @@ namespace Gwen.Renderer
             //DrawMissingImage(rect); return;
             
             //m_Target.SaveGLStates();
-            int x1 = Global.Trunc(u1 * tex.Texture.Width);
-            int y1 = Global.Trunc(v1*tex.Texture.Height);
-            int w = Global.Trunc((u2 - u1)*tex.Texture.Width);
-            int h = Global.Trunc((v2 - v1)*tex.Texture.Height);
+            int x1 = (int)(u1 * tex.Texture.Width);
+            int y1 = (int)(v1 * tex.Texture.Height);
+            int w = (int)((u2 - u1) * tex.Texture.Width);
+            int h = (int)((v2 - v1) * tex.Texture.Height);
             var r = new IntRect(x1, y1, w, h);
             /*
             double delta = 0.0001;
@@ -206,36 +229,45 @@ namespace Gwen.Renderer
             */
         }
 
-        public override void LoadTexture(Texture pTexture)
+        public override void LoadTexture(Texture texture)
         {
-            if (null == pTexture) return;
-            if (pTexture.RendererData != null) FreeTexture(pTexture);
+            if (null == texture) return;
+
+            Debug.Print("LoadTexture: {0} {1}", texture.Name, texture.RendererData);
+
+            if (texture.RendererData != null) 
+                FreeTexture(texture);
 
             global::SFML.Graphics.Texture tex;
             Sprite sprite;
 
             try
             {
-                tex = new global::SFML.Graphics.Texture(pTexture.Name);
+                tex = new global::SFML.Graphics.Texture(texture.Name);
                 tex.Smooth = true;
                 sprite = new Sprite(tex);
             }
             catch (LoadingFailedException)
             {
-                pTexture.Failed = true;
+                Debug.Print("LoadTexture: failed");
+                texture.Failed = true;
                 return;
             }
 
-            pTexture.Height = (int)tex.Height;
-            pTexture.Width = (int)tex.Width;
-            pTexture.RendererData = sprite;
+            texture.Height = (int)tex.Height;
+            texture.Width = (int)tex.Width;
+            texture.RendererData = sprite;
         }
 
         // [omeg] added, pixelData are in RGBA format
         public override void LoadTextureRaw(Texture texture, byte[] pixelData)
         {
             if (null == texture) return;
-            if (texture.RendererData != null) FreeTexture(texture);
+
+            Debug.Print("LoadTextureRaw: {0}", texture.RendererData);
+
+            if (texture.RendererData != null) 
+                FreeTexture(texture);
 
             global::SFML.Graphics.Texture tex;
             Sprite sprite;
@@ -250,6 +282,7 @@ namespace Gwen.Renderer
             }
             catch (LoadingFailedException)
             {
+                Debug.Print("LoadTextureRaw: failed");
                 texture.Failed = true;
                 return;
             }
@@ -257,13 +290,15 @@ namespace Gwen.Renderer
             texture.RendererData = sprite;
         }
 
-        public override void FreeTexture(Texture t)
+        public override void FreeTexture(Texture texture)
         {
-            Sprite tex = t.RendererData as Sprite;
+            Sprite tex = texture.RendererData as Sprite;
             if (tex != null)
                 tex.Dispose();
 
-            t.RendererData = null;
+            Debug.Print("FreeTexture: {0} {1}", texture.Name, texture.RendererData);
+
+            texture.RendererData = null;
         }
 
         public override void StartClip()
@@ -275,9 +310,9 @@ namespace Gwen.Renderer
             var v = m_Target.GetViewport(view);
             view.Dispose();
             rect.Y = v.Height - (rect.Y + rect.Height);
-            
-            Gl.glScissor(Global.Trunc(rect.X*Scale), Global.Trunc(rect.Y*Scale),
-                         Global.Trunc(rect.Width*Scale), Global.Trunc(rect.Height*Scale));
+
+            Gl.glScissor((int)(rect.X * Scale), (int)(rect.Y * Scale),
+                         (int)(rect.Width * Scale), (int)(rect.Height * Scale));
             Gl.glEnable(Gl.GL_SCISSOR_TEST);
         }
 

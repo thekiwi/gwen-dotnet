@@ -17,7 +17,7 @@ namespace Gwen.Anim.Size
         }
 
         protected override void onStart() { base.onStart(); m_Control.Height = m_StartSize; }
-        protected override void Run(float delta) { base.Run(delta); m_Control.Height = Global.Trunc( m_StartSize + (m_Delta * delta)); }
+        protected override void Run(float delta) { base.Run(delta); m_Control.Height = (int)(m_StartSize + (m_Delta * delta)); }
         protected override void onFinish() { base.onFinish(); m_Control.Height = m_StartSize + m_Delta; m_Control.IsHidden = m_Hide; }
     }
 }

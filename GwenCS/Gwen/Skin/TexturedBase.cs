@@ -273,9 +273,6 @@ namespace Gwen.Skin
         public TexturedBase(Renderer.Base renderer, String TextureName)
             : base(renderer)
         {
-            m_DefaultFont.FaceName = "Microsoft Sans Serif";
-            m_DefaultFont.Size = 11;
-
             m_Texture = new Texture(Renderer);
             m_Texture.Load(TextureName);
 
@@ -571,8 +568,8 @@ namespace Gwen.Skin
         {
             Rectangle rect = control.RenderBounds;
 
-            rect.Y += Global.Trunc(textHeight * 0.5f);
-            rect.Height -= Global.Trunc(textHeight * 0.5f);
+            rect.Y += (int)(textHeight * 0.5f);
+            rect.Height -= (int)(textHeight * 0.5f);
 
             Color m_colDarker = Color.FromArgb(50, 0, 50, 60);
             Color m_colLighter = Color.FromArgb(150, 255, 255, 255);
@@ -805,7 +802,7 @@ namespace Gwen.Skin
 
             float iSpacing = rect.Width / (float)numNotches;
             for (int i = 0; i < numNotches + 1; i++)
-                Renderer.DrawFilledRect(Global.FloatRect(rect.X + iSpacing * i, rect.Y + dist - 2, 1, 5));
+                Renderer.DrawFilledRect(Util.FloatRect(rect.X + iSpacing * i, rect.Y + dist - 2, 1, 5));
         }
 
         public void DrawSliderNotchesV(Rectangle rect, int numNotches, float dist)
@@ -814,7 +811,7 @@ namespace Gwen.Skin
 
             float iSpacing = rect.Height / (float)numNotches;
             for (int i = 0; i < numNotches + 1; i++)
-                Renderer.DrawFilledRect(Global.FloatRect(rect.X + dist - 2, rect.Y + iSpacing * i, 5, 1));
+                Renderer.DrawFilledRect(Util.FloatRect(rect.X + dist - 2, rect.Y + iSpacing * i, 5, 1));
         }
 
         public override void DrawSlider(Controls.Base control, bool horizontal, int numNotches, int barSize)
@@ -1044,8 +1041,8 @@ namespace Gwen.Skin
 
                 Renderer.DrawColor = Color.FromArgb(128, 128, 128, 128);
 
-                Renderer.DrawFilledRect(Global.FloatRect(0, 0, rect.Width * 0.5f, rect.Height * 0.5f));
-                Renderer.DrawFilledRect(Global.FloatRect(rect.Width * 0.5f, rect.Height * 0.5f, rect.Width * 0.5f, rect.Height * 0.5f));
+                Renderer.DrawFilledRect(Util.FloatRect(0, 0, rect.Width * 0.5f, rect.Height * 0.5f));
+                Renderer.DrawFilledRect(Util.FloatRect(rect.Width * 0.5f, rect.Height * 0.5f, rect.Width * 0.5f, rect.Height * 0.5f));
             }
 
             Renderer.DrawColor = color;

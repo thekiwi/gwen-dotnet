@@ -84,20 +84,20 @@ namespace Gwen.Renderer
 
         public virtual ICacheToTexture CTT { get { return null; } }
 
-        public virtual void LoadFont(ref Font font)
+        public virtual void LoadFont(Font font)
         {}
 
-        public virtual void FreeFont(ref Font font)
+        public virtual void FreeFont(Font font)
         {}
 
-        public virtual Point MeasureText(ref Font font, String text)
+        public virtual Point MeasureText(Font font, String text)
         {
-            Point p = new Point(Global.Trunc(font.Size * Scale * text.Length * 0.4f), Global.Trunc(font.Size * Scale));
+            Point p = new Point((int)(font.Size * Scale * text.Length * 0.4f), (int)(font.Size * Scale));
 
             return p;
         }
 
-        public virtual void RenderText(ref Font font, Point pos, String text)
+        public virtual void RenderText(Font font, Point pos, String text)
         {
             float size = font.Size * Scale;
 
@@ -108,7 +108,7 @@ namespace Gwen.Renderer
                 if ( chr == ' ' ) 
                     continue;
 
-                Rectangle r = Global.FloatRect(pos.X + i * size * 0.4f, pos.Y, size * 0.4f - 1, size);
+                Rectangle r = Util.FloatRect(pos.X + i * size * 0.4f, pos.Y, size * 0.4f - 1, size);
 
                 /*
                     This isn't important, it's just me messing around changing the
@@ -120,8 +120,8 @@ namespace Gwen.Renderer
                 }
                 else if ( chr >= 'a' && chr <= 'z' )
                 {
-                    r.Y += Global.Trunc(size * 0.5f);
-                    r.Height -= Global.Trunc(size * 0.4f);
+                    r.Y = (int)(r.Y + size * 0.5f);
+                    r.Height = (int)(r.Height - size * 0.4f);
                 }
                 else if ( chr == '.' || chr == ',' )
                 {
@@ -206,13 +206,13 @@ namespace Gwen.Renderer
         public int TranslateX(int x)
         {
             int x1 = x + m_RenderOffset.X;
-            return Global.Ceil(x1 * Scale);
+            return Util.Ceil(x1 * Scale);
         }
 
         public int TranslateY(int y)
         {
             int y1 = y + m_RenderOffset.Y;
-            return Global.Ceil(y1 * Scale);
+            return Util.Ceil(y1 * Scale);
         }
 
         //
@@ -224,8 +224,8 @@ namespace Gwen.Renderer
             x += m_RenderOffset.X;
             y += m_RenderOffset.Y;
 
-            x = Global.Ceil(x * Scale);
-            y = Global.Ceil(y * Scale);
+            x = Util.Ceil(x * Scale);
+            y = Util.Ceil(y * Scale);
         }
 
         public Point Translate(Point p)
@@ -238,7 +238,7 @@ namespace Gwen.Renderer
 
         public Rectangle Translate(Rectangle rect)
         {
-            return new Rectangle(TranslateX(rect.X), TranslateY(rect.Y), Global.Ceil(rect.Width * Scale), Global.Ceil(rect.Height * Scale));
+            return new Rectangle(TranslateX(rect.X), TranslateY(rect.Y), Util.Ceil(rect.Width * Scale), Util.Ceil(rect.Height * Scale));
         }
 
         //
