@@ -37,8 +37,8 @@ namespace Gwen.Sample.SFML
                 window.KeyPressed += OnKeyPressed;
                 window.Resized += OnResized;
                 window.KeyReleased += window_KeyReleased;
-                window.MouseButtonPressed += window_MouseButton;
-                window.MouseButtonReleased += window_MouseButton;
+                window.MouseButtonPressed += window_MouseButtonPressed;
+                window.MouseButtonReleased += window_MouseButtonReleased;
                 window.MouseWheelMoved += window_MouseWheelMoved;
                 window.MouseMoved += window_MouseMoved;
                 window.TextEntered += window_TextEntered;
@@ -376,14 +376,19 @@ namespace Gwen.Sample.SFML
             GwenInput.ProcessMessage(e);
         }
 
-        static void window_MouseButton(object sender, MouseButtonEventArgs e)
+        static void window_MouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            GwenInput.ProcessMessage(e);
+            GwenInput.ProcessMessage(new Gwen.Input.SFMLMouseButtonEventArgs(e, true));
+        }
+
+        static void window_MouseButtonReleased(object sender, MouseButtonEventArgs e)
+        {
+            GwenInput.ProcessMessage(new Gwen.Input.SFMLMouseButtonEventArgs(e, false));
         }
 
         static void window_KeyReleased(object sender, KeyEventArgs e)
         {
-            GwenInput.ProcessMessage(e);
+            GwenInput.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, false));
         }
 
         /// <summary>
@@ -418,7 +423,7 @@ namespace Gwen.Sample.SFML
                 img.Dispose();
             }
             else
-                GwenInput.ProcessMessage(e);
+                GwenInput.ProcessMessage(new Gwen.Input.SFMLKeyEventArgs(e, true));
         }
 
         /// <summary>

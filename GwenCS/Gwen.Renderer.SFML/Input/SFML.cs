@@ -4,6 +4,46 @@ using SFML.Window;
 
 namespace Gwen.Input
 {
+    /// <summary>
+    /// Helper class to avoid modifying SFML itself.
+    /// Build it in SFML::RenderWindow.MouseButtonPressed/Released and pass to ProcessMessage.
+    /// </summary>
+    public class SFMLMouseButtonEventArgs : EventArgs
+    {
+        public MouseButtonEventArgs Args;
+
+        /// <summary>
+        /// Indicates whether the button is pressed (true) or released (false).
+        /// </summary>
+        public bool Down;
+
+        public SFMLMouseButtonEventArgs(MouseButtonEventArgs args, bool down)
+        {
+            Args = args;
+            Down = down;
+        }
+    }
+
+    /// <summary>
+    /// Helper class to avoid modifying SFML itself.
+    /// Build it in SFML::RenderWindow.KeyPressed/Released and pass to ProcessMessage.
+    /// </summary>
+    public class SFMLKeyEventArgs : EventArgs
+    {
+        public KeyEventArgs Args;
+
+        /// <summary>
+        /// Indicates whether the key is pressed (true) or released (false).
+        /// </summary>
+        public bool Down;
+
+        public SFMLKeyEventArgs(KeyEventArgs args, bool down)
+        {
+            Args = args;
+            Down = down;
+        }
+    }
+
     public class SFML
     {
         private Canvas m_Canvas;
@@ -81,10 +121,10 @@ namespace Gwen.Input
                 return m_Canvas.Input_MouseMoved(m_MouseX, m_MouseY, dx, dy);
             }
 
-            if (args is MouseButtonEventArgs)
+            if (args is SFMLMouseButtonEventArgs)
             {
-                MouseButtonEventArgs ev = args as MouseButtonEventArgs;
-                return m_Canvas.Input_MouseButton((int) ev.Button, ev.Down);
+                SFMLMouseButtonEventArgs ev = args as SFMLMouseButtonEventArgs;
+                return m_Canvas.Input_MouseButton((int) ev.Args.Button, ev.Down);
             }
 
             if (args is MouseWheelEventArgs)
@@ -100,22 +140,23 @@ namespace Gwen.Input
                 return m_Canvas.Input_Character(ev.Unicode[0]);
             }
 
-            if (args is KeyEventArgs)
+            if (args is SFMLKeyEventArgs)
             {
-                KeyEventArgs ev = args as KeyEventArgs;
+                SFMLKeyEventArgs ev = args as SFMLKeyEventArgs;
 
-                if (ev.Control && ev.Alt && ev.Code == Keyboard.Key.LControl)
+                if (ev.Args.Control && ev.Args.Alt && ev.Args.Code == Keyboard.Key.LControl)
                     return false; // sfml bug: this is right alt
 
-                char ch = TranslateChar(ev.Code);
+                char ch = TranslateChar(ev.Args.Code);
                 if (ev.Down && Input.DoSpecialKeys(m_Canvas, ch))
                     return false;
 
-                Key iKey = TranslateKeyCode(ev.Code);
+                Key iKey = TranslateKeyCode(ev.Args.Code);
 
                 return m_Canvas.Input_Key(iKey, ev.Down);
             }
 
+            throw new ArgumentException("Invalid event args", "args");
             return false;
         }
     }
