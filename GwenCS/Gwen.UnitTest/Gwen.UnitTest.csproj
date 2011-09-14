@@ -54,6 +54,7 @@
     <Compile Include="Button.cs" />
     <Compile Include="CheckBox.cs" />
     <Compile Include="CollapsibleList.cs" />
+    <Compile Include="ColorPickers.cs" />
     <Compile Include="ComboBox.cs" />
     <Compile Include="CrossSplitter.cs" />
     <Compile Include="GroupBox.cs" />

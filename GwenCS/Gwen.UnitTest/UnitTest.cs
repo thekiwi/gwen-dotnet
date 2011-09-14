@@ -98,6 +98,8 @@ namespace Gwen.UnitTest
                 {
                     test = new CollapsibleList(center);
                     RegisterUnitTest("CollapsibleList", cat, test);
+                    test = new ColorPickers(center);
+                    RegisterUnitTest("Color pickers", cat, test);
                 }
             }
 
