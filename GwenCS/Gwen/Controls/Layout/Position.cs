@@ -29,7 +29,7 @@ namespace Gwen.Controls.Layout
         /// <param name="skin">Skin to use.</param>
         protected override void PostLayout(Skin.Base skin)
         {
-            foreach (Base child in Children)
+            foreach (Base child in Children) // ok?
             {
                 child.Position(m_Pos);
             }

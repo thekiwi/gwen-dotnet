@@ -238,9 +238,9 @@ namespace Gwen.Controls
         {
             if (down)
             {
-                var it = m_Menu.InnerChildren.FindIndex(x => x == m_SelectedItem);
-                if (it + 1 < m_Menu.InnerChildren.Count)
-                    onItemSelected(m_Menu.InnerChildren[it + 1]);
+                var it = m_Menu.Children.FindIndex(x => x == m_SelectedItem);
+                if (it + 1 < m_Menu.Children.Count)
+                    onItemSelected(m_Menu.Children[it + 1]);
             }
             return true;
         }
@@ -256,9 +256,9 @@ namespace Gwen.Controls
         {
             if (down)
             {
-                var it = m_Menu.InnerChildren.FindLastIndex(x => x == m_SelectedItem);
+                var it = m_Menu.Children.FindLastIndex(x => x == m_SelectedItem);
                 if (it - 1 >= 0)
-                    onItemSelected(m_Menu.InnerChildren[it - 1]);
+                    onItemSelected(m_Menu.Children[it - 1]);
             }
             return true;
         }

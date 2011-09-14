@@ -70,12 +70,12 @@ namespace Gwen.Controls
         /// </summary>
         public override void Dispose()
         {
-            base.Dispose();
             // kill everything since we're the top-level control
             foreach (Base child in Children)
             {
                 child.Dispose();
             }
+            base.Dispose(); // inner panel if any
         }
 
         /// <summary>

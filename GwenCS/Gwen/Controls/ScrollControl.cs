@@ -183,8 +183,8 @@ namespace Gwen.Controls
                 return;
 
             //Get the max size of all our children together
-            int childrenWidth = m_InnerPanel.Children.Count > 0 ? m_InnerPanel.Children.Max(x => x.Right) : 0;
-            int childrenHeight = m_InnerPanel.Children.Count > 0 ? m_InnerPanel.Children.Max(x => x.Bottom) : 0;
+            int childrenWidth = Children.Count > 0 ? Children.Max(x => x.Right) : 0;
+            int childrenHeight = Children.Count > 0 ? Children.Max(x => x.Bottom) : 0;
 
             if (m_CanScrollH)
             {

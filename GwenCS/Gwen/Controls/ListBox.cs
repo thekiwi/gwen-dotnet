@@ -33,7 +33,8 @@ namespace Gwen.Controls
         {
             get
             {
-                if (m_SelectedRows.Count == 0) return null;
+                if (m_SelectedRows.Count == 0) 
+                    return null;
                 return m_SelectedRows[0];
             }
         }

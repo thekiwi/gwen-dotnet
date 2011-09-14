@@ -87,7 +87,7 @@ namespace Gwen.Controls
         /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
-            int childrenHeight = m_InnerPanel.Children.Sum(child => child != null ? child.Height : 0);
+            int childrenHeight = Children.Sum(child => child != null ? child.Height : 0);
 
             if (Y + childrenHeight > GetCanvas().Height)
                 childrenHeight = GetCanvas().Height - Y;
@@ -153,7 +153,7 @@ namespace Gwen.Controls
         /// </summary>
         public virtual void ClearItems()
         {
-            foreach (Base child in m_InnerPanel.Children)
+            foreach (Base child in Children)
             {
                 m_InnerPanel.RemoveChild(child); // bug: this modifies collection
                 child.Dispose();
@@ -165,7 +165,7 @@ namespace Gwen.Controls
         /// </summary>
         public virtual void CloseAll()
         {
-            m_InnerPanel.Children.ForEach(child => { if (child is MenuItem) (child as MenuItem).CloseMenu(); });
+            Children.ForEach(child => { if (child is MenuItem) (child as MenuItem).CloseMenu(); });
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace Gwen.Controls
         /// <returns></returns>
         public virtual bool IsMenuOpen()
         {
-            return m_InnerPanel.Children.Any(child => { if (child is MenuItem) return (child as MenuItem).IsMenuOpen; return false; });
+            return Children.Any(child => { if (child is MenuItem) return (child as MenuItem).IsMenuOpen; return false; });
         }
 
         /// <summary>

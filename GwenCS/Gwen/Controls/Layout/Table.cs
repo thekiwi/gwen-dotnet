@@ -200,15 +200,15 @@ namespace Gwen.Controls.Layout
                 m_ColumnWidth[i] = 10;
             }
 
-            foreach (TableRow pRow in Children.OfType<TableRow>())
+            foreach (TableRow row in Children.OfType<TableRow>())
             {
-                pRow.SizeToContents();
+                row.SizeToContents();
 
                 for (int i = 0; i < TableRow.MaxColumns; i++)
                 {
-                    if (null != pRow.m_Columns[i])
+                    if (null != row.m_Columns[i])
                     {
-                        m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], pRow.m_Columns[i].Width);
+                        m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], row.m_Columns[i].Width);
                     }
                 }
                 //iBottom += pRow->Height();

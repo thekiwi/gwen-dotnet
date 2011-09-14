@@ -32,7 +32,7 @@ namespace Gwen.Controls
         /// </summary>
         public override void Dispose()
         {
-            foreach (Base child in InnerChildren)
+            foreach (Base child in Children)
             {
                 CollapsibleCategory cat = child as CollapsibleCategory;
                 if (cat == null)
@@ -51,7 +51,7 @@ namespace Gwen.Controls
         {
             get
             {
-                foreach (Base child in InnerChildren)
+                foreach (Base child in Children)
                 {
                     CollapsibleCategory cat = child as CollapsibleCategory;
                     if (cat == null)
@@ -108,7 +108,7 @@ namespace Gwen.Controls
         /// </summary>
         public virtual void UnselectAll()
         {
-            foreach (Base child in InnerChildren)
+            foreach (Base child in Children)
             {
                 CollapsibleCategory cat = child as CollapsibleCategory;
                 if (cat == null)
