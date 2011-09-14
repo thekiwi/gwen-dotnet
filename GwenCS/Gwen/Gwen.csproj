@@ -118,6 +118,8 @@
     <Compile Include="Controls\TabTitleBar.cs" />
     <Compile Include="Controls\TextBox.cs" />
     <Compile Include="Controls\TextBoxNumeric.cs" />
+    <Compile Include="Controls\TreeControl.cs" />
+    <Compile Include="Controls\TreeNode.cs" />
     <Compile Include="Controls\VerticalScrollBar.cs" />
     <Compile Include="Controls\VerticalSlider.cs" />
     <Compile Include="Controls\WindowControl.cs" />

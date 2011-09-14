@@ -113,7 +113,7 @@ namespace Gwen.Controls
             m_HorizontalScrollBar.IsHidden = !m_CanScrollH;
         }
 
-        protected virtual void SetInnerSize(int w, int h)
+        public virtual void SetInnerSize(int w, int h)
         {
             m_InnerPanel.SetSize(w, h);
         }
@@ -177,7 +177,7 @@ namespace Gwen.Controls
 #endif
         }
 
-        protected virtual void UpdateScrollBars()
+        public virtual void UpdateScrollBars()
         {
             if (null == m_InnerPanel)
                 return;

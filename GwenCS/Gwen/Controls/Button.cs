@@ -44,6 +44,11 @@ namespace Gwen.Controls
         public event ControlCallback OnToggleOff;
 
         /// <summary>
+        /// Invoked when the button has been double clicked.
+        /// </summary>
+        public event ControlCallback OnDoubleClickLeft;
+
+        /// <summary>
         /// Indicates whether the button is depressed.
         /// </summary>
         public bool IsDepressed
@@ -302,6 +307,18 @@ namespace Gwen.Controls
             }
 
             TextColor = Skin.Colors.Button.Normal;
+        }
+
+        /// <summary>
+        /// Handler invoked on mouse double click (left) event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        protected override void onMouseDoubleClickLeft(int x, int y)
+        {
+            onMouseClickLeft(x, y, true);
+            if (OnDoubleClickLeft != null)
+                OnDoubleClickLeft.Invoke(this);
         }
     }
 }
