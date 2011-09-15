@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Gwen.Controls;
+using Gwen.Control;
 using Tao.OpenGl;
-using Button = Gwen.Controls.Button;
-using ComboBox = Gwen.Controls.ComboBox;
-using GroupBox = Gwen.Controls.GroupBox;
-using Label = Gwen.Controls.Label;
-using ListBox = Gwen.Controls.ListBox;
-using MenuStrip = Gwen.Controls.MenuStrip;
-using NumericUpDown = Gwen.Controls.NumericUpDown;
-using TabControl = Gwen.Controls.TabControl;
-using TextBox = Gwen.Controls.TextBox;
+using Button = Gwen.Control.Button;
+using ComboBox = Gwen.Control.ComboBox;
+using GroupBox = Gwen.Control.GroupBox;
+using Label = Gwen.Control.Label;
+using ListBox = Gwen.Control.ListBox;
+using MenuStrip = Gwen.Control.MenuStrip;
+using NumericUpDown = Gwen.Control.NumericUpDown;
+using TabControl = Gwen.Control.TabControl;
+using TextBox = Gwen.Control.TextBox;
 
 namespace Gwen.Sample.Tao
 {

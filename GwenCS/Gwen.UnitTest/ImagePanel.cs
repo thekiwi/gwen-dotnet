@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -10,14 +10,14 @@ namespace Gwen.UnitTest
         {
             // Normal
             {
-                Controls.ImagePanel img = new Controls.ImagePanel(this);
+                Control.ImagePanel img = new Control.ImagePanel(this);
                 img.ImageName = "gwen.png";
                 img.SetBounds(10, 10, 100, 100);
             }
 
             // Missing
             {
-                Controls.ImagePanel img = new Controls.ImagePanel(this);
+                Control.ImagePanel img = new Control.ImagePanel(this);
                 img.ImageName = "missingimage.png";
                 img.SetBounds(120, 10, 100, 100);
             }

@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -8,7 +8,7 @@ namespace Gwen.UnitTest
         public Properties(Base parent)
             : base(parent)
         {
-            Controls.Label label = new Controls.Label(this);
+            Control.Label label = new Control.Label(this);
             label.Text = "Not implemented yet";
         }
     }

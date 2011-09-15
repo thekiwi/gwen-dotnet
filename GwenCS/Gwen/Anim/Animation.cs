@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.Anim
 {

@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 using SFML.Window;
 
 namespace Gwen.Input

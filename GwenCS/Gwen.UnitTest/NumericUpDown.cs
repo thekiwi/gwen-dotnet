@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -8,7 +8,7 @@ namespace Gwen.UnitTest
         public NumericUpDown(Base parent)
             : base(parent)
         {
-            Controls.NumericUpDown ctrl = new Controls.NumericUpDown(this);
+            Control.NumericUpDown ctrl = new Control.NumericUpDown(this);
             ctrl.SetBounds(10, 10, 50, 20);
             ctrl.Value = 50;
             ctrl.Max = 100;
@@ -18,7 +18,7 @@ namespace Gwen.UnitTest
 
         void OnValueChanged(Base control)
         {
-            UnitPrint(String.Format("NumericUpDown: OnValueChanged: {0}", ((Controls.NumericUpDown)control).Value));
+            UnitPrint(String.Format("NumericUpDown: OnValueChanged: {0}", ((Control.NumericUpDown)control).Value));
         }
     }
 }

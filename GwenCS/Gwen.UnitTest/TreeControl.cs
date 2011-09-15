@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -9,10 +9,10 @@ namespace Gwen.UnitTest
             : base(parent)
         {
             {
-                Controls.TreeControl ctrl = new Controls.TreeControl(this);
+                Control.TreeControl ctrl = new Control.TreeControl(this);
 
                 ctrl.AddNode("Node One");
-                Controls.TreeNode node = ctrl.AddNode("Node Two");
+                Control.TreeNode node = ctrl.AddNode("Node Two");
                 node.AddNode("Node Two Inside");
                 node.AddNode("Eyes");
                 node.AddNode("Brown").AddNode("Node Two Inside").AddNode("Eyes").AddNode("Brown");
@@ -29,15 +29,15 @@ namespace Gwen.UnitTest
             }
 
             {
-                Controls.TreeControl ctrl = new Controls.TreeControl(this);
+                Control.TreeControl ctrl = new Control.TreeControl(this);
 
                 ctrl.AllowMultiSelect = true;
 
                 ctrl.AddNode("Node One");
-                Controls.TreeNode node = ctrl.AddNode("Node Two");
+                Control.TreeNode node = ctrl.AddNode("Node Two");
                 node.AddNode("Node Two Inside");
                 node.AddNode("Eyes");
-                Controls.TreeNode nodeTwo = node.AddNode("Brown").AddNode("Node Two Inside").AddNode("Eyes");
+                Control.TreeNode nodeTwo = node.AddNode("Brown").AddNode("Node Two Inside").AddNode("Eyes");
                 nodeTwo.AddNode("Brown");
                 nodeTwo.AddNode("Green");
                 nodeTwo.AddNode("Slime");

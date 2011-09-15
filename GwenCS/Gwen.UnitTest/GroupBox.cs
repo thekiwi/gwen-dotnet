@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -7,7 +7,7 @@ namespace Gwen.UnitTest
     {
         public GroupBox(Base parent) : base(parent)
         {
-            Controls.GroupBox gb = new Controls.GroupBox(this);
+            Control.GroupBox gb = new Control.GroupBox(this);
             gb.Text = "Group Box";
             gb.SetSize(300, 200);
         }

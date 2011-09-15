@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
-using Gwen.Controls;
+using Gwen.Control;
 using SFML.Graphics;
 using SFML.Window;
 using Tao.OpenGl;
@@ -26,8 +26,8 @@ namespace Gwen.Sample.SFML
         {
             //try
             {
-                int width = 800;
-                int height = 600;
+                int width = 1004;
+                int height = 650;
                 // Create main window
                 window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net SFML test",
                                           Styles.Default, new ContextSettings(32, 0));

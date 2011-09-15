@@ -1,17 +1,17 @@
 ﻿using System;
-using Gwen.Controls;
-using Gwen.Controls.Layout;
+using Gwen.Control;
+using Gwen.Control.Layout;
 
 namespace Gwen.UnitTest
 {
     public class UnitTest : DockBase
     {
-        private Controls.Base m_LastControl;
-        private readonly Controls.StatusBar m_StatusBar;
-        private readonly Controls.ListBox m_TextOutput;
-        private Controls.TabControl m_TabControl;
-        private Controls.TabButton m_Button;
-        private readonly Controls.CollapsibleList m_List;
+        private Control.Base m_LastControl;
+        private readonly Control.StatusBar m_StatusBar;
+        private readonly Control.ListBox m_TextOutput;
+        private Control.TabControl m_TabControl;
+        private Control.TabButton m_Button;
+        private readonly Control.CollapsibleList m_List;
 
         public double Fps; // set this in your rendering loop
 
@@ -19,16 +19,16 @@ namespace Gwen.UnitTest
         {
             Dock = Pos.Fill;
             SetSize(1024, 768);
-            m_List = new Controls.CollapsibleList(this);
+            m_List = new Control.CollapsibleList(this);
 
             LeftDock.TabControl.AddPage("Unit tests", m_List);
             LeftDock.Width = 150;
 
-            m_TextOutput = new Controls.ListBox(BottomDock);
+            m_TextOutput = new Control.ListBox(BottomDock);
             m_Button = BottomDock.TabControl.AddPage("Output", m_TextOutput);
             BottomDock.Height = 200;
 
-            m_StatusBar = new Controls.StatusBar(this);
+            m_StatusBar = new Control.StatusBar(this);
             m_StatusBar.Dock = Pos.Bottom;
 
             Center center = new Center(this);
@@ -109,7 +109,7 @@ namespace Gwen.UnitTest
 
         public void RegisterUnitTest(String name, CollapsibleCategory cat, GUnit test)
         {
-            Controls.Button btn = cat.Add(name);
+            Control.Button btn = cat.Add(name);
             test.Dock = Pos.Fill;
             test.Hide();
             test.UnitTest = this;

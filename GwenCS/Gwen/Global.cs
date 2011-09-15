@@ -1,4 +1,4 @@
-﻿using Gwen.Controls;
+﻿using Gwen.Control;
 
 namespace Gwen
 {

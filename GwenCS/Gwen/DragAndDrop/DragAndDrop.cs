@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Windows.Forms;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.DragDrop
 {

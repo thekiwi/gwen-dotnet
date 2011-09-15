@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -13,7 +13,7 @@ namespace Gwen.UnitTest
         {
             rand = new Random();
 
-            Controls.Button button = new Controls.Button(this);
+            Control.Button button = new Control.Button(this);
             button.SetText("Open a Window");
             button.OnPress += OpenWindow;
 
@@ -22,7 +22,7 @@ namespace Gwen.UnitTest
 
         void OpenWindow(Base control)
         {
-            Controls.WindowControl pWindow = new Controls.WindowControl(GetCanvas());
+            Control.WindowControl pWindow = new Control.WindowControl(GetCanvas());
             pWindow.Title = String.Format("Window {0}", m_WindowCount);
             pWindow.SetSize(rand.Next(200, 400), rand.Next(200, 400));
             pWindow.SetPos(rand.Next(700), rand.Next(400));

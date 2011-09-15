@@ -323,13 +323,13 @@ namespace Gwen.Renderer
 
         #region Implementation of ICacheToTexture
 
-        private Dictionary<Controls.Base, RenderTexture> m_RT;
+        private Dictionary<Control.Base, RenderTexture> m_RT;
         private Stack<RenderTarget> m_Stack;
         private RenderTarget m_RealRT;
 
         public void Initialize()
         {
-            m_RT = new Dictionary<Controls.Base, RenderTexture>();
+            m_RT = new Dictionary<Control.Base, RenderTexture>();
             m_Stack = new Stack<RenderTarget>();
         }
 
@@ -344,7 +344,7 @@ namespace Gwen.Renderer
         /// Called to set the target up for rendering.
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void SetupCacheTexture(Controls.Base control)
+        public void SetupCacheTexture(Control.Base control)
         {
             m_RealRT = m_Target;
             m_Stack.Push(m_Target); // save current RT
@@ -355,7 +355,7 @@ namespace Gwen.Renderer
         /// Called when cached rendering is done.
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void FinishCacheTexture(Controls.Base control)
+        public void FinishCacheTexture(Control.Base control)
         {
             m_Target = m_Stack.Pop();
         }
@@ -364,7 +364,7 @@ namespace Gwen.Renderer
         /// Called when gwen wants to draw the cached version of the control. 
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void DrawCachedControlTexture(Controls.Base control)
+        public void DrawCachedControlTexture(Control.Base control)
         {
             RenderTexture ri = m_RT[control];
             //ri.Display();
@@ -379,7 +379,7 @@ namespace Gwen.Renderer
         /// Called to actually create a cached texture. 
         /// </summary>
         /// <param name="control">Control to be rendered.</param>
-        public void CreateControlCacheTexture(Controls.Base control)
+        public void CreateControlCacheTexture(Control.Base control)
         {
             // initialize cache RT
             if (!m_RT.ContainsKey(control))
@@ -394,7 +394,7 @@ namespace Gwen.Renderer
             ri.Display();
         }
 
-        public void UpdateControlCacheTexture(Controls.Base control)
+        public void UpdateControlCacheTexture(Control.Base control)
         {
             throw new NotImplementedException();
         }

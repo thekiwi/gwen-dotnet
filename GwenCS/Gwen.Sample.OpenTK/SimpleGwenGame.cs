@@ -3,7 +3,7 @@ using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-using Gwen.Controls;
+using Gwen.Control;
 namespace Gwen.Sample.OpenTKSample
 {
     /// <summary>
@@ -15,7 +15,7 @@ namespace Gwen.Sample.OpenTKSample
         Gwen.Input.OpenTK input = null;
         Gwen.Renderer.Base renderer = null;
         Gwen.Skin.Base skin = null;
-        Gwen.Controls.Canvas canvas = null;
+        Gwen.Control.Canvas canvas = null;
 
         private static Label fpsLabel;
         private static RadioButtonController rbc2;
@@ -293,7 +293,7 @@ namespace Gwen.Sample.OpenTKSample
             spl.SetBounds(150, 380, 150, 150);
             spl.SplittersVisible = true;
 
-            Gwen.Controls.Button btl = new Button(spl);
+            Gwen.Control.Button btl = new Button(spl);
             btl.Text = "Top Left";
             spl.SetPanel(0, btl);
             Button btr = new Button(spl);

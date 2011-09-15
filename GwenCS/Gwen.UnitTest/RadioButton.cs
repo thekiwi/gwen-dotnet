@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -8,7 +8,7 @@ namespace Gwen.UnitTest
         public RadioButton(Base parent)
             : base(parent)
         {
-            Controls.RadioButtonController rbc = new Controls.RadioButtonController(this);
+            Control.RadioButtonController rbc = new Control.RadioButtonController(this);
 
             rbc.AddOption("Option 1");
             rbc.AddOption("Option 2");

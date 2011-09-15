@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -8,10 +8,10 @@ namespace Gwen.UnitTest
         public MenuStrip(Base parent)
             : base(parent)
         {
-            Controls.MenuStrip menu = new Controls.MenuStrip(this);
+            Control.MenuStrip menu = new Control.MenuStrip(this);
 
             {
-                Controls.MenuItem pRoot = menu.AddItem("File");
+                Control.MenuItem pRoot = menu.AddItem("File");
                 pRoot.Menu.AddItem("New", "test16.png", MenuItemSelect);
                 pRoot.Menu.AddItem("Load", "test16.png", MenuItemSelect);
                 pRoot.Menu.AddItem("Save", MenuItemSelect);
@@ -20,20 +20,20 @@ namespace Gwen.UnitTest
             }
 
             {
-                Controls.MenuItem pRoot = menu.AddItem("\u043F\u0438\u0440\u0430\u0442\u0441\u0442\u0432\u043E");
+                Control.MenuItem pRoot = menu.AddItem("\u043F\u0438\u0440\u0430\u0442\u0441\u0442\u0432\u043E");
                 pRoot.Menu.AddItem("\u5355\u5143\u6D4B\u8BD5", MenuItemSelect);
                 pRoot.Menu.AddItem("\u0111\u01A1n v\u1ECB th\u1EED nghi\u1EC7m", "test16.png", MenuItemSelect);
             }
 
             {
-                Controls.MenuItem pRoot = menu.AddItem("Submenu");
+                Control.MenuItem pRoot = menu.AddItem("Submenu");
 
-                Controls.MenuItem pCheckable = pRoot.Menu.AddItem("Checkable");
+                Control.MenuItem pCheckable = pRoot.Menu.AddItem("Checkable");
                 pCheckable.IsCheckable = true;
                 pCheckable.IsCheckable = true;
 
                 {
-                    Controls.MenuItem pRootB = pRoot.Menu.AddItem("Two");
+                    Control.MenuItem pRootB = pRoot.Menu.AddItem("Two");
                     pRootB.Menu.AddItem("Two.One");
                     pRootB.Menu.AddItem("Two.Two");
                     pRootB.Menu.AddItem("Two.Three");
@@ -50,7 +50,7 @@ namespace Gwen.UnitTest
                 pRoot.Menu.AddItem("Five");
 
                 {
-                    Controls.MenuItem pRootB = pRoot.Menu.AddItem("Six");
+                    Control.MenuItem pRootB = pRoot.Menu.AddItem("Six");
                     pRootB.Menu.AddItem("Six.One");
                     pRootB.Menu.AddItem("Six.Two");
                     pRootB.Menu.AddItem("Six.Three");
@@ -58,19 +58,19 @@ namespace Gwen.UnitTest
                     pRootB.Menu.AddItem("Six.Five", "test16.png");
 
                     {
-                        Controls.MenuItem pRootC = pRootB.Menu.AddItem("Six.Six");
+                        Control.MenuItem pRootC = pRootB.Menu.AddItem("Six.Six");
                         pRootC.Menu.AddItem("Sheep");
                         pRootC.Menu.AddItem("Goose");
                         {
-                            Controls.MenuItem pRootD = pRootC.Menu.AddItem("Camel");
+                            Control.MenuItem pRootD = pRootC.Menu.AddItem("Camel");
                             pRootD.Menu.AddItem("Eyes");
                             pRootD.Menu.AddItem("Nose");
                             {
-                                Controls.MenuItem pRootE = pRootD.Menu.AddItem("Hair");
+                                Control.MenuItem pRootE = pRootD.Menu.AddItem("Hair");
                                 pRootE.Menu.AddItem("Blonde");
                                 pRootE.Menu.AddItem("Black");
                                 {
-                                    Controls.MenuItem pRootF = pRootE.Menu.AddItem("Red");
+                                    Control.MenuItem pRootF = pRootE.Menu.AddItem("Red");
                                     pRootF.Menu.AddItem("Light");
                                     pRootF.Menu.AddItem("Medium");
                                     pRootF.Menu.AddItem("Dark");

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Gwen.Controls;
+using Gwen.Control;
 using OpenTK.Input;
 
 namespace Gwen.Input

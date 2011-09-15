@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -9,7 +9,7 @@ namespace Gwen.UnitTest
             : base(parent)
         {
             {
-                Controls.HorizontalSlider slider = new Controls.HorizontalSlider(this);
+                Control.HorizontalSlider slider = new Control.HorizontalSlider(this);
                 slider.SetPos(10, 10);
                 slider.SetSize(150, 20);
                 slider.SetRange(0, 100);
@@ -18,7 +18,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Controls.HorizontalSlider slider = new Controls.HorizontalSlider(this);
+                Control.HorizontalSlider slider = new Control.HorizontalSlider(this);
                 slider.SetPos(10, 40);
                 slider.SetSize(150, 20);
                 slider.SetRange(0, 100);
@@ -29,7 +29,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Controls.VerticalSlider slider = new Controls.VerticalSlider(this);
+                Control.VerticalSlider slider = new Control.VerticalSlider(this);
                 slider.SetPos(160, 10);
                 slider.SetSize(20, 200);
                 slider.SetRange(0, 100);
@@ -38,7 +38,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Controls.VerticalSlider slider = new Controls.VerticalSlider(this);
+                Control.VerticalSlider slider = new Control.VerticalSlider(this);
                 slider.SetPos(190, 10);
                 slider.SetSize(20, 200);
                 slider.SetRange(0, 100);
@@ -51,7 +51,7 @@ namespace Gwen.UnitTest
 
         void SliderMoved(Base control)
         {
-            Controls.Slider slider = control as Controls.Slider;
+            Control.Slider slider = control as Control.Slider;
             UnitPrint(String.Format("Slider moved: OnValueChanged: {0}", slider.Value));
         }
     }

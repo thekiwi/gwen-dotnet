@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using Gwen.Controls;
+using Gwen.Control;
 using Gwen.DragDrop;
 
 namespace Gwen.Input

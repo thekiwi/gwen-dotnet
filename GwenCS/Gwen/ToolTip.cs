@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen
 {

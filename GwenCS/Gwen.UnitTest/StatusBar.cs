@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -8,20 +8,20 @@ namespace Gwen.UnitTest
         public StatusBar(Base parent)
             : base(parent)
         {
-            Controls.StatusBar sb = new Controls.StatusBar(this);
-            Controls.Label left = new Controls.Label(sb);
+            Control.StatusBar sb = new Control.StatusBar(this);
+            Control.Label left = new Control.Label(sb);
             left.Text = "Label added to left";
             sb.AddControl(left, false);
 
-            Controls.Label right = new Controls.Label(sb);
+            Control.Label right = new Control.Label(sb);
             right.Text = "Label added to right";
             sb.AddControl(right, true);
 
-            Controls.Button bl = new Controls.Button(sb);
+            Control.Button bl = new Control.Button(sb);
             bl.Text = "Left button";
             sb.AddControl(bl, false);
 
-            Controls.Button br = new Controls.Button(sb);
+            Control.Button br = new Control.Button(sb);
             br.Text = "Right button";
             sb.AddControl(br, true);
         }

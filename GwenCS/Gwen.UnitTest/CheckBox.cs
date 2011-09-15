@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Controls;
+using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
@@ -9,13 +9,13 @@ namespace Gwen.UnitTest
             : base(parent)
         {
             {
-                Controls.CheckBox check = new Controls.CheckBox(this);
+                Control.CheckBox check = new Control.CheckBox(this);
                 check.SetPos(10, 10);
                 check.OnChecked += OnChecked;
                 check.OnUnChecked += OnUnchecked;
                 check.OnCheckChanged += OnCheckChanged;
 
-                Controls.LabeledCheckBox labeled = new Controls.LabeledCheckBox(this);
+                Control.LabeledCheckBox labeled = new Control.LabeledCheckBox(this);
                 labeled.SetPos(10, 30);
                 labeled.Text = "Labeled CheckBox";
                 labeled.OnChecked += OnChecked;
@@ -24,7 +24,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Controls.CheckBox check = new Controls.CheckBox(this);
+                Control.CheckBox check = new Control.CheckBox(this);
                 check.SetPos(10, 54);
                 check.IsDisabled = true;
             }
