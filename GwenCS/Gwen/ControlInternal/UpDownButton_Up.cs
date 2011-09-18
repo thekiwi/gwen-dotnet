@@ -1,21 +1,21 @@
 ﻿using System;
+using Gwen.Control;
 
-namespace Gwen.Control
+namespace Gwen.ControlInternal
 {
     /// <summary>
-    /// Clickable label (for checkboxes etc).
+    /// Numeric up arrow.
     /// </summary>
-    public class LabelClickable : Button
+    public class UpDownButton_Up : Button
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LabelClickable"/> class.
+        /// Initializes a new instance of the <see cref="UpDownButton_Up"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabelClickable(Base parent)
+        public UpDownButton_Up(Base parent)
             : base(parent)
         {
-            IsToggle = false;
-            Alignment = Pos.Left | Pos.CenterV;
+            SetSize(7, 7);
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            // no button look
+            skin.DrawNumericUpDownButton(this, IsDepressed, true);
         }
     }
 }

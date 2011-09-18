@@ -15,7 +15,7 @@ namespace Gwen.UnitTest
 
             Control.Button button = new Control.Button(this);
             button.SetText("Open a Window");
-            button.OnPress += OpenWindow;
+            button.Clicked += OpenWindow;
 
             m_WindowCount = 1;
         }
@@ -25,7 +25,7 @@ namespace Gwen.UnitTest
             Control.WindowControl pWindow = new Control.WindowControl(GetCanvas());
             pWindow.Title = String.Format("Window {0}", m_WindowCount);
             pWindow.SetSize(rand.Next(200, 400), rand.Next(200, 400));
-            pWindow.SetPos(rand.Next(700), rand.Next(400));
+            pWindow.SetPosition(rand.Next(700), rand.Next(400));
 
             m_WindowCount++;
         }

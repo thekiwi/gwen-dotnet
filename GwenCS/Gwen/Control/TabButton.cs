@@ -2,12 +2,20 @@
 
 namespace Gwen.Control
 {
+    /// <summary>
+    /// Tab header.
+    /// </summary>
     public class TabButton : Button
     {
-        protected Base m_Page;
-        protected TabControl m_Control;
+        private Base m_Page;
+        private TabControl m_Control;
 
+        /// <summary>
+        /// Indicates whether the tab is active.
+        /// </summary>
         public bool IsActive { get { return m_Page != null && m_Page.IsVisible; } }
+
+        // todo: remove public access
         public TabControl TabControl
         {
             get { return m_Control; }
@@ -15,26 +23,41 @@ namespace Gwen.Control
             {
                 if (value == m_Control) return;
                 if (m_Control != null)
-                    m_Control.onLoseTab(this);
+                    m_Control.OnLoseTab(this);
                 m_Control = value;
             }
         }
 
+        /// <summary>
+        /// Interior of the tab.
+        /// </summary>
         public Base Page { get { return m_Page; } set { m_Page = value; } }
 
+        /// <summary>
+        /// Determines whether the control should be clipped to its bounds while rendering.
+        /// </summary>
         protected override bool ShouldClip
         {
             get { return false; }
         }
 
-        public TabButton(Base parent) : base(parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabButton"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
+        public TabButton(Base parent)
+            : base(parent)
         {
             DragAndDrop_SetPackage(true, "TabButtonMove");
             Alignment = Pos.Top | Pos.Left;
             TextPadding = new Padding(5, 3, 3, 3);
-            Padding = new Padding(2, 2, 2, 2);
+            Padding = Padding.Two;
+            KeyboardInputEnabled = true;
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
         public override void Dispose()
         {
             m_Page.Dispose(); // [omeg] it's not set by us, but this is the most convenient place for it
@@ -57,33 +80,58 @@ namespace Gwen.Control
             return m_Control.AllowReorder;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             skin.DrawTabButton(this, IsActive, m_Control.TabStrip.Dock);
         }
 
-        protected override bool onKeyDown(bool down)
+        /// <summary>
+        /// Handler for Down Arrow keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool OnKeyDown(bool down)
         {
-            onKeyRight(down);
+            OnKeyRight(down);
             return true;
         }
 
-        protected override bool onKeyUp(bool down)
+        /// <summary>
+        /// Handler for Up Arrow keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool OnKeyUp(bool down)
         {
-            onKeyLeft(down);
+            OnKeyLeft(down);
             return true;
         }
 
-        protected override bool onKeyRight(bool down)
+        /// <summary>
+        /// Handler for Right Arrow keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool OnKeyRight(bool down)
         {
             if (down)
             {
-                var count = Parent.ChildrenCount;
+                var count = Parent.Children.Count;
                 int me = Parent.Children.IndexOf(this);
                 if (me + 1 < count)
                 {
                     var nextTab = Parent.Children[me + 1];
-                    TabControl.onTabPressed(nextTab);
+                    TabControl.OnTabPressed(nextTab);
                     Global.KeyboardFocus = nextTab;
                 }
             }
@@ -91,16 +139,23 @@ namespace Gwen.Control
             return true;
         }
 
-        protected override bool onKeyLeft(bool down)
+        /// <summary>
+        /// Handler for Left Arrow keyboard event.
+        /// </summary>
+        /// <param name="down">Indicates whether the key was pressed or released.</param>
+        /// <returns>
+        /// True if handled.
+        /// </returns>
+        protected override bool OnKeyLeft(bool down)
         {
             if (down)
             {
-                var count = Parent.ChildrenCount;
+                var count = Parent.Children.Count;
                 int me = Parent.Children.IndexOf(this);
                 if (me - 1 >= 0)
                 {
                     var prevTab = Parent.Children[me - 1];
-                    TabControl.onTabPressed(prevTab);
+                    TabControl.OnTabPressed(prevTab);
                     Global.KeyboardFocus = prevTab;
                 }
             }
@@ -108,6 +163,9 @@ namespace Gwen.Control
             return true;
         }
 
+        /// <summary>
+        /// Updates control colors.
+        /// </summary>
         public override void UpdateColors()
         {
             if (IsActive)

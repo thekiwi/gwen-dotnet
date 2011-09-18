@@ -5,13 +5,13 @@ using Gwen.ControlInternal;
 namespace Gwen.Control
 {
     /// <summary>
-    /// Static label.
+    /// Static text label.
     /// </summary>
     public class Label : Base
     {
         protected readonly Text m_Text;
-        protected Pos m_Align;
-        protected Padding m_TextPadding;
+        private Pos m_Align;
+        private Padding m_TextPadding;
 
         /// <summary>
         /// Text alignment.
@@ -107,9 +107,30 @@ namespace Gwen.Control
         }
 
         /// <summary>
+        /// Returns index of the character closest to specified point (in canvas coordinates).
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns></returns>
+        protected int GetClosestCharacter(int x, int y)
+        { 
+            return m_Text.GetClosestCharacter(m_Text.CanvasPosToLocal(new Point(x, y))); 
+        }
+
+        /// <summary>
+        /// Sets the position of the internal text control.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        protected void SetTextPosition(int x, int y)
+        {
+            m_Text.SetPosition(x, y);
+        }
+
+        /// <summary>
         /// Handler for text changed event.
         /// </summary>
-        protected virtual void onTextChanged()
+        protected virtual void OnTextChanged()
         {}
 
         /// <summary>
@@ -122,20 +143,20 @@ namespace Gwen.Control
 
             Pos align = m_Align;
 
-            int x = m_TextPadding.Left + m_Padding.Left;
-            int y = m_TextPadding.Top + m_Padding.Top;
+            int x = m_TextPadding.Left + Padding.Left;
+            int y = m_TextPadding.Top + Padding.Top;
 
             if (align.HasFlag(Pos.Right)) 
-                x = Width - m_Text.Width - m_TextPadding.Right - m_Padding.Right;
+                x = Width - m_Text.Width - m_TextPadding.Right - Padding.Right;
             if (align.HasFlag(Pos.CenterH))
-                x = (int)((m_TextPadding.Left + m_Padding.Left) + ((Width - m_Text.Width - m_TextPadding.Left - m_Padding.Left - m_TextPadding.Right - m_Padding.Right) * 0.5f));
+                x = (int)((m_TextPadding.Left + Padding.Left) + ((Width - m_Text.Width - m_TextPadding.Left - Padding.Left - m_TextPadding.Right - Padding.Right) * 0.5f));
 
             if (align.HasFlag(Pos.CenterV))
-                y = (int)((m_TextPadding.Top + m_Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_TextPadding.Bottom - m_Padding.Bottom);
+                y = (int)((m_TextPadding.Top + Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_TextPadding.Bottom - Padding.Bottom);
             if (align.HasFlag(Pos.Bottom)) 
-                y = Height - m_Text.Height - m_TextPadding.Bottom - m_Padding.Bottom;
+                y = Height - m_Text.Height - m_TextPadding.Bottom - Padding.Bottom;
 
-            m_Text.SetPos(x, y);
+            m_Text.SetPosition(x, y);
         }
 
         /// <summary>
@@ -154,16 +175,16 @@ namespace Gwen.Control
             Redraw();
 
             if (doEvents)
-                onTextChanged();
+                OnTextChanged();
         }
 
         public virtual void SizeToContents()
         {
-            m_Text.SetPos(m_TextPadding.Left + m_Padding.Left, m_TextPadding.Top + m_Padding.Top);
-            m_Text.RefreshSize();
+            m_Text.SetPosition(m_TextPadding.Left + Padding.Left, m_TextPadding.Top + Padding.Top);
+            m_Text.SizeToContents();
 
-            SetSize(m_Text.Width + m_Padding.Left + m_Padding.Right + m_TextPadding.Left + m_TextPadding.Right, 
-                m_Text.Height + m_Padding.Top + m_Padding.Bottom + m_TextPadding.Top + m_TextPadding.Bottom);
+            SetSize(m_Text.Width + Padding.Left + Padding.Right + m_TextPadding.Left + m_TextPadding.Right, 
+                m_Text.Height + Padding.Top + Padding.Bottom + m_TextPadding.Top + m_TextPadding.Bottom);
         }
 
         /// <summary>

@@ -6,7 +6,7 @@ namespace Gwen.Control
     /// <summary>
     /// Base class for scrollbars.
     /// </summary>
-    public class BaseScrollBar : Base
+    public class ScrollBar : Base
     {
         protected readonly ScrollBarButton[] m_ScrollButton;
         protected readonly ScrollBarBar m_Bar;
@@ -20,7 +20,7 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when the bar is moved.
         /// </summary>
-        public event ControlCallback OnBarMoved;
+        public event GwenEventHandler BarMoved;
 
         /// <summary>
         /// Bar size (in pixels).
@@ -48,10 +48,10 @@ namespace Gwen.Control
         public virtual bool IsHorizontal { get { return false; } }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseScrollBar"/> class.
+        /// Initializes a new instance of the <see cref="ScrollBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        protected BaseScrollBar(Base parent) : base(parent)
+        protected ScrollBar(Base parent) : base(parent)
         {
             m_ScrollButton = new ScrollBarButton[2];
             m_ScrollButton[0] = new ScrollBarButton(this);
@@ -81,18 +81,18 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Sets the scroll amount (in pixels).
+        /// Sets the scroll amount (0-1).
         /// </summary>
         /// <param name="value">Scroll amount.</param>
         /// <param name="forceUpdate">Determines whether the control should be updated.</param>
         /// <returns>True if control state changed.</returns>
-        public virtual bool SetScrollAmount(float value, bool forceUpdate = true)
+        public virtual bool SetScrollAmount(float value, bool forceUpdate = false)
         {
             if (m_ScrollAmount == value && !forceUpdate)
                 return false;
             m_ScrollAmount = value;
             Invalidate();
-            onBarMoved(this);
+            OnBarMoved(this);
             return true;
         }
 
@@ -102,7 +102,7 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
 
         }
@@ -117,13 +117,13 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Handler for the OnBarMoved event.
+        /// Handler for the BarMoved event.
         /// </summary>
         /// <param name="control">The control.</param>
-        protected virtual void onBarMoved(Base control)
+        protected virtual void OnBarMoved(Base control)
         {
-            if (OnBarMoved != null)
-                OnBarMoved.Invoke(this);
+            if (BarMoved != null)
+                BarMoved.Invoke(this);
         }
 
         protected virtual float CalculateScrolledAmount()

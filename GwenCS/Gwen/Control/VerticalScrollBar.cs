@@ -3,38 +3,58 @@ using System.Drawing;
 
 namespace Gwen.Control
 {
-    public class VerticalScrollBar : BaseScrollBar
+    /// <summary>
+    /// Vertical scrollbar.
+    /// </summary>
+    public class VerticalScrollBar : ScrollBar
     {
+        /// <summary>
+        /// Bar size (in pixels).
+        /// </summary>
         public override int BarSize
         {
             get { return m_Bar.Height; }
             set { m_Bar.Height = value; }
         }
 
+        /// <summary>
+        /// Bar position (in pixels).
+        /// </summary>
         public override int BarPos
         {
             get { return m_Bar.Y - Width; }
         }
 
+        /// <summary>
+        /// Button size (in pixels).
+        /// </summary>
         public override int ButtonSize
         {
             get { return Width; }
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="VerticalScrollBar"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public VerticalScrollBar(Base parent)
             : base(parent)
         {
             m_Bar.IsVertical = true;
 
             m_ScrollButton[0].SetDirectionUp();
-            m_ScrollButton[0].OnPress += NudgeUp;
+            m_ScrollButton[0].Clicked += NudgeUp;
 
             m_ScrollButton[1].SetDirectionDown();
-            m_ScrollButton[1].OnPress += NudgeDown;
+            m_ScrollButton[1].Clicked += NudgeDown;
 
-            m_Bar.OnDragged += onBarMoved;
+            m_Bar.Dragged += OnBarMoved;
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
@@ -57,7 +77,7 @@ namespace Gwen.Control
             m_Bar.IsHidden = Height - (ButtonSize * 2) <= barHeight;
 
             //Based on our last scroll amount, produce a position for the bar
-            if (!m_Bar.IsDepressed)
+            if (!m_Bar.IsHeld)
             {
                 SetScrollAmount(ScrollAmount, true);
             }
@@ -100,7 +120,13 @@ namespace Gwen.Control
             }
         }
 
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        /// <summary>
+        /// Handler invoked on mouse click (left) event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="down">If set to <c>true</c> mouse button is down.</param>
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
             if (down)
             {
@@ -125,28 +151,38 @@ namespace Gwen.Control
             return (float)(m_Bar.Y - ButtonSize) / (Height - m_Bar.Height - (ButtonSize * 2));
         }
 
-        public override bool SetScrollAmount(float amount, bool forceUpdate)
+        /// <summary>
+        /// Sets the scroll amount (0-1).
+        /// </summary>
+        /// <param name="value">Scroll amount.</param>
+        /// <param name="forceUpdate">Determines whether the control should be updated.</param>
+        /// <returns>True if control state changed.</returns>
+        public override bool SetScrollAmount(float value, bool forceUpdate = false)
         {
-            amount = Util.Clamp(amount, 0, 1);
+            value = Util.Clamp(value, 0, 1);
 
-            if (!base.SetScrollAmount(amount, forceUpdate))
+            if (!base.SetScrollAmount(value, forceUpdate))
                 return false;
 
             if (forceUpdate)
             {
-                int newY = (int)(ButtonSize + (amount * ((Height - m_Bar.Height) - (ButtonSize * 2))));
+                int newY = (int)(ButtonSize + (value * ((Height - m_Bar.Height) - (ButtonSize * 2))));
                 m_Bar.MoveTo(m_Bar.X, newY);
             }
 
             return true;
         }
 
-        protected override void onBarMoved(Base control)
+        /// <summary>
+        /// Handler for the BarMoved event.
+        /// </summary>
+        /// <param name="control">The control.</param>
+        protected override void OnBarMoved(Base control)
         {
-            if (m_Bar.IsDepressed)
+            if (m_Bar.IsHeld)
             {
                 SetScrollAmount(CalculateScrolledAmount(), false);
-                base.onBarMoved(control);
+                base.OnBarMoved(control);
             }
             else
                 InvalidateParent();

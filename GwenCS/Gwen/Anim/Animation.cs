@@ -9,7 +9,7 @@ namespace Gwen.Anim
         protected Base m_Control;
 
         //private static List<Animation> g_AnimationsListed = new List<Animation>(); // unused
-        private static Dictionary<Base, List<Animation>> m_Animations = new Dictionary<Base, List<Animation>>();
+        private static readonly Dictionary<Base, List<Animation>> m_Animations = new Dictionary<Base, List<Animation>>();
 
         protected virtual void Think()
         {

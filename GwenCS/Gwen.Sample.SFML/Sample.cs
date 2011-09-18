@@ -67,7 +67,7 @@ namespace Gwen.Sample.SFML
 #if !UNIT_TEST
             MenuStrip ms = new MenuStrip(canvas);
             ms.Dock = Pos.Top;
-            //ms.SetPos(300, 20);
+            //ms.SetPosition(300, 20);
             var root = ms.AddItem("File");
             var item = root.Menu.AddItem("New", "test16.png");
             item.Menu.AddItem("Account");

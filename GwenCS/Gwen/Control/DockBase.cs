@@ -23,6 +23,8 @@ namespace Gwen.Control
         private bool m_DropFar;
         private Rectangle m_HoverRect;
 
+        // todo: dock events?
+
         /// <summary>
         /// Control docked on the left side.
         /// </summary>
@@ -52,7 +54,7 @@ namespace Gwen.Control
         public DockBase(Base parent)
             : base(parent)
         {
-            Padding = new Padding(1, 1, 1, 1);
+            Padding = Padding.One;
             SetSize(200, 200);
         }
 
@@ -75,7 +77,7 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeySpace(bool down)
+        protected override bool OnKeySpace(bool down)
         {
             // No action on space (default button action is to press)
             return false;
@@ -90,7 +92,7 @@ namespace Gwen.Control
             if (m_DockedTabControl == null)
             {
                 m_DockedTabControl = new DockedTabControl(this);
-                m_DockedTabControl.OnLoseTab += onTabRemoved;
+                m_DockedTabControl.TabRemoved += OnTabRemoved;
                 m_DockedTabControl.TabStripPosition = Pos.Bottom;
                 m_DockedTabControl.TitleBarVisible = true;
             }
@@ -284,7 +286,7 @@ namespace Gwen.Control
             }
         }
 
-        protected virtual void onTabRemoved(Base control)
+        protected virtual void OnTabRemoved(Base control)
         {
             DoRedundancyCheck();
             DoConsolidateCheck();
@@ -297,7 +299,7 @@ namespace Gwen.Control
             DockBase pDockParent = Parent as DockBase;
             if (null == pDockParent) return;
 
-            pDockParent.onRedundantChildDock(this);
+            pDockParent.OnRedundantChildDock(this);
         }
 
         protected virtual void DoConsolidateCheck()
@@ -331,7 +333,7 @@ namespace Gwen.Control
             }
         }
 
-        protected virtual void onRedundantChildDock(DockBase dock)
+        protected virtual void OnRedundantChildDock(DockBase dock)
         {
             dock.IsHidden = true;
             DoRedundancyCheck();

@@ -65,14 +65,14 @@ namespace Gwen.Control
         /// Add item handler.
         /// </summary>
         /// <param name="item">Item added.</param>
-        protected override void onAddItem(MenuItem item)
+        protected override void OnAddItem(MenuItem item)
         {
             item.Dock = Pos.Left;
             item.TextPadding = new Padding(5, 0, 5, 0);
             item.Padding = new Padding(10, 0, 10, 0);
             item.SizeToContents();
             item.IsOnStrip = true;
-            item.OnHoverEnter += onHoverItem;
+            item.HoverEnter += OnHoverItem;
         }
     }
 }

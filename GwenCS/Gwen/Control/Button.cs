@@ -7,46 +7,46 @@ namespace Gwen.Control
     /// </summary>
     public class Button : Label
     {
-        protected bool m_Depressed;
-        protected bool m_Toggle;
-        protected bool m_ToggleStatus;
-        protected bool m_CenterImage;
-        protected ImagePanel m_Image;
+        private bool m_Depressed;
+        private bool m_Toggle;
+        private bool m_ToggleStatus;
+        private bool m_CenterImage;
+        private ImagePanel m_Image;
 
         /// <summary>
         /// Invoked when the button is released.
         /// </summary>
-        public event ControlCallback OnPress;
+        public event GwenEventHandler Clicked;
 
         /// <summary>
-        /// Invoked when the button is pressed down.
+        /// Invoked when the button is pressed.
         /// </summary>
-        public event ControlCallback OnDown;
+        public event GwenEventHandler Pressed;
 
         /// <summary>
         /// Invoked when the button is released.
         /// </summary>
-        public event ControlCallback OnUp;
+        public event GwenEventHandler Released;
 
         /// <summary>
         /// Invoked when the button's toggle state has changed.
         /// </summary>
-        public event ControlCallback OnToggle;
+        public event GwenEventHandler Toggled;
 
         /// <summary>
         /// Invoked when the button's toggle state has changed to On.
         /// </summary>
-        public event ControlCallback OnToggleOn;
+        public event GwenEventHandler ToggledOn;
 
         /// <summary>
         /// Invoked when the button's toggle state has changed to Off.
         /// </summary>
-        public event ControlCallback OnToggleOff;
+        public event GwenEventHandler ToggledOff;
 
         /// <summary>
         /// Invoked when the button has been double clicked.
         /// </summary>
-        public event ControlCallback OnDoubleClickLeft;
+        public event GwenEventHandler DoubleClickedLeft;
 
         /// <summary>
         /// Indicates whether the button is depressed.
@@ -56,7 +56,8 @@ namespace Gwen.Control
             get { return m_Depressed; }
             set
             {
-                if (m_Depressed == value) return;
+                if (m_Depressed == value) 
+                    return;
                 m_Depressed = value; 
                 Redraw();
             }
@@ -80,18 +81,18 @@ namespace Gwen.Control
 
                 m_ToggleStatus = value;
 
-                if (OnToggle != null)
-                    OnToggle.Invoke(this);
+                if (Toggled != null)
+                    Toggled.Invoke(this);
 
                 if (m_ToggleStatus)
                 {
-                    if (OnToggleOn != null)
-                        OnToggleOn.Invoke(this);
+                    if (ToggledOn != null)
+                        ToggledOn.Invoke(this);
                 }
                 else
                 {
-                    if (OnToggleOff != null)
-                        OnToggleOff.Invoke(this);
+                    if (ToggledOff != null)
+                        ToggledOff.Invoke(this);
                 }
 
                 Redraw();
@@ -130,11 +131,11 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Presses the button.
+        /// "Clicks" the button.
         /// </summary>
         public virtual void Press(Base control = null)
         {
-            onPress();
+            OnClicked();
         }
 
         /// <summary>
@@ -163,44 +164,44 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
-            base.onMouseClickLeft(x, y, down);
+            //base.OnMouseClickedLeft(x, y, down);
             if (down)
             {
                 IsDepressed = true;
                 Global.MouseFocus = this;
-                if (OnDown != null)
-                    OnDown.Invoke(this);
+                if (Pressed != null)
+                    Pressed.Invoke(this);
             }
             else
             {
                 if (IsHovered && m_Depressed)
                 {
-                    onPress();
+                    OnClicked();
                 }
 
                 IsDepressed = false;
                 Global.MouseFocus = null;
-                if (OnUp != null)
-                    OnUp.Invoke(this);
+                if (Released != null)
+                    Released.Invoke(this);
             }
 
             Redraw();
         }
 
         /// <summary>
-        /// Internal OnPress implementation.
+        /// Internal OnPressed implementation.
         /// </summary>
-        protected virtual void onPress()
+        protected virtual void OnClicked()
         {
             if (IsToggle)
             {
                 Toggle();
             }
 
-            if (OnPress != null)
-                OnPress.Invoke(this);
+            if (Clicked != null)
+                Clicked.Invoke(this);
         }
         
         /// <summary>
@@ -225,10 +226,10 @@ namespace Gwen.Control
 
             m_Image.ImageName = textureName;
             m_Image.SizeToContents( );
-            m_Image.SetPos(Math.Max(m_Padding.Left, 2), 2);
+            m_Image.SetPosition(Math.Max(Padding.Left, 2), 2);
             m_CenterImage = center;
 
-            m_TextPadding.Left = m_Image.Right + 2;
+            TextPadding = new Padding(m_Image.Right + 2, TextPadding.Top, TextPadding.Right, TextPadding.Bottom);
         }
 
         /// <summary>
@@ -254,19 +255,19 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeySpace(bool down)
+        protected override bool OnKeySpace(bool down)
         {
             if (down)
-                onPress();
+                OnClicked();
             return true;
         }
 
         /// <summary>
         /// Default accelerator handler.
         /// </summary>
-        protected override void AcceleratePressed()
+        protected override void OnAccelerator()
         {
-            onPress();
+            OnClicked();
         }
 
         /// <summary>
@@ -316,11 +317,11 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
-        protected override void onMouseDoubleClickLeft(int x, int y)
+        protected override void OnMouseDoubleClickedLeft(int x, int y)
         {
-            onMouseClickLeft(x, y, true);
-            if (OnDoubleClickLeft != null)
-                OnDoubleClickLeft.Invoke(this);
+            OnMouseClickedLeft(x, y, true);
+            if (DoubleClickedLeft != null)
+                DoubleClickedLeft.Invoke(this);
         }
     }
 }

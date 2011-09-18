@@ -6,7 +6,7 @@ namespace Gwen.Control
     /// <summary>
     /// Horizontal scrollbar.
     /// </summary>
-    public class HorizontalScrollBar : BaseScrollBar
+    public class HorizontalScrollBar : ScrollBar
     {
         /// <summary>
         /// Bar size (in pixels).
@@ -51,12 +51,12 @@ namespace Gwen.Control
             m_Bar.IsHorizontal = true;
 
             m_ScrollButton[0].SetDirectionLeft();
-            m_ScrollButton[0].OnPress += NudgeLeft;
+            m_ScrollButton[0].Clicked += NudgeLeft;
 
             m_ScrollButton[1].SetDirectionRight();
-            m_ScrollButton[1].OnPress += NudgeRight;
+            m_ScrollButton[1].Clicked += NudgeRight;
 
-            m_Bar.OnDragged += onBarMoved;
+            m_Bar.Dragged += OnBarMoved;
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace Gwen.Control
             m_Bar.IsHidden = Width - (ButtonSize * 2) <= barWidth;
 
             //Based on our last scroll amount, produce a position for the bar
-            if (!m_Bar.IsDepressed)
+            if (!m_Bar.IsHeld)
             {
                 SetScrollAmount(ScrollAmount, true);
             }
@@ -134,7 +134,7 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
             if (down)
             {
@@ -160,16 +160,24 @@ namespace Gwen.Control
             return (float)(m_Bar.X - ButtonSize) / (Width - m_Bar.Width - (ButtonSize * 2));
         }
 
-        public override bool SetScrollAmount(float amount, bool forceUpdate = true)
+        /// <summary>
+        /// Sets the scroll amount (0-1).
+        /// </summary>
+        /// <param name="value">Scroll amount.</param>
+        /// <param name="forceUpdate">Determines whether the control should be updated.</param>
+        /// <returns>
+        /// True if control state changed.
+        /// </returns>
+        public override bool SetScrollAmount(float value, bool forceUpdate = false)
         {
-            amount = Util.Clamp(amount, 0, 1);
+            value = Util.Clamp(value, 0, 1);
 
-            if (!base.SetScrollAmount(amount, forceUpdate))
+            if (!base.SetScrollAmount(value, forceUpdate))
                 return false;
 
             if (forceUpdate)
             {
-                int newX = (int)(ButtonSize + (amount * ((Width - m_Bar.Width) - (ButtonSize * 2))));
+                int newX = (int)(ButtonSize + (value * ((Width - m_Bar.Width) - (ButtonSize * 2))));
                 m_Bar.MoveTo(newX, m_Bar.Y);
             }
 
@@ -177,15 +185,15 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Handler for the OnBarMoved event.
+        /// Handler for the BarMoved event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected override void onBarMoved(Base control)
+        protected override void OnBarMoved(Base control)
         {
-            if (m_Bar.IsDepressed)
+            if (m_Bar.IsHeld)
             {
                 SetScrollAmount(CalculateScrolledAmount(), false);
-                base.onBarMoved(control);
+                base.OnBarMoved(control);
             }
             else
                 InvalidateParent();

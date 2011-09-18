@@ -9,6 +9,14 @@ namespace Gwen
         public int Left;
         public int Right;
 
+        // common values
+        public static Padding Zero = new Padding(0, 0, 0, 0);
+        public static Padding One = new Padding(1, 1, 1, 1);
+        public static Padding Two = new Padding(2, 2, 2, 2);
+        public static Padding Three = new Padding(3, 3, 3, 3);
+        public static Padding Four = new Padding(4, 4, 4, 4);
+        public static Padding Five = new Padding(5, 5, 5, 5);
+
         public Padding(int l, int t, int r, int b)
         {
             Top = t;

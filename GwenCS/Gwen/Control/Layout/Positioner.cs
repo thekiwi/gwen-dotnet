@@ -5,7 +5,7 @@ namespace Gwen.Control.Layout
     /// <summary>
     /// Helper control that positions its children in a specific way.
     /// </summary>
-    public class Position : Base
+    public class Positioner : Base
     {
         private Pos m_Pos;
 
@@ -15,10 +15,10 @@ namespace Gwen.Control.Layout
         public Pos Pos { get { return m_Pos; } set { m_Pos = value; } }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Position"/> class.
+        /// Initializes a new instance of the <see cref="Positioner"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Position(Base parent) : base(parent)
+        public Positioner(Base parent) : base(parent)
         {
             Pos = Pos.Left | Pos.Top;
         }
@@ -39,7 +39,7 @@ namespace Gwen.Control.Layout
     /// <summary>
     /// Helper class that centers all its children.
     /// </summary>
-    public class Center : Position
+    public class Center : Positioner
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Center"/> class.

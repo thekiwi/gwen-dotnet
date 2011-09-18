@@ -32,10 +32,10 @@ namespace Gwen.Control
 
                 m_Scale = value;
 
-                if (m_Skin != null && m_Skin.Renderer != null)
-                    m_Skin.Renderer.Scale = m_Scale;
+                if (Skin != null && Skin.Renderer != null)
+                    Skin.Renderer.Scale = m_Scale;
 
-                onScaleChanged();
+                OnScaleChanged();
                 Redraw();
             }
         }
@@ -109,27 +109,27 @@ namespace Gwen.Control
         {
             DoThink();
 
-            Renderer.Base render = m_Skin.Renderer;
+            Renderer.Base render = Skin.Renderer;
 
             render.Begin();
 
-            RecurseLayout(m_Skin);
+            RecurseLayout(Skin);
 
             render.ClipRegion = Bounds;
             render.RenderOffset = Point.Empty;
             render.Scale = Scale;
 
-            if (m_DrawBackground)
+            if (ShouldDrawBackground)
             {
                 render.DrawColor = m_BackgroundColor;
                 render.DrawFilledRect(RenderBounds);
             }
 
-            DoRender(m_Skin);
+            DoRender(Skin);
 
-            DragAndDrop.RenderOverlay(this, m_Skin);
+            DragAndDrop.RenderOverlay(this, Skin);
 
-            Gwen.ToolTip.RenderToolTip(m_Skin);
+            Gwen.ToolTip.RenderToolTip(Skin);
 
             render.EndClip();
 
@@ -151,9 +151,9 @@ namespace Gwen.Control
         /// Handler invoked when control's bounds change.
         /// </summary>
         /// <param name="oldBounds">Old bounds.</param>
-        protected override void onBoundsChanged(Rectangle oldBounds)
+        protected override void OnBoundsChanged(Rectangle oldBounds)
         {
-            base.onBoundsChanged(oldBounds);
+            base.OnBoundsChanged(oldBounds);
             InvalidateChildren(true);
         }
 
@@ -174,13 +174,13 @@ namespace Gwen.Control
             }
 
             // Check has focus etc..
-            RecurseLayout(m_Skin);
+            RecurseLayout(Skin);
 
             // If we didn't have a next tab, cycle to the start.
             if (NextTab == null)
                 NextTab = FirstTab;
 
-            Input.Input.onCanvasThink(this);
+            Input.Input.OnCanvasThink(this);
         }
 
         /// <summary>
@@ -195,7 +195,7 @@ namespace Gwen.Control
             // Todo: Handle scaling here..
             //float fScale = 1.0f / Scale();
 
-            Input.Input.onMouseMoved(this, x, y, dx, dy);
+            Input.Input.OnMouseMoved(this, x, y, dx, dy);
 
             if (Global.HoveredControl == null) return false;
             if (Global.HoveredControl == this) return false;
@@ -204,7 +204,7 @@ namespace Gwen.Control
             Global.HoveredControl.InputMouseMoved(x, y, dx, dy);
             Global.HoveredControl.UpdateCursor();
 
-            DragAndDrop.onMouseMoved(Global.HoveredControl, x, y);
+            DragAndDrop.OnMouseMoved(Global.HoveredControl, x, y);
             return true;
         }
 
@@ -216,7 +216,7 @@ namespace Gwen.Control
         {
             if (IsHidden) return false;
 
-            return Input.Input.onMouseClicked(this, button, down);
+            return Input.Input.OnMouseClicked(this, button, down);
         }
 
         /// <summary>
@@ -229,7 +229,7 @@ namespace Gwen.Control
             if (key <= Key.Invalid) return false;
             if (key >= Key.Count) return false;
 
-            return Input.Input.onKeyEvent(this, key, down);
+            return Input.Input.OnKeyEvent(this, key, down);
         }
 
         /// <summary>

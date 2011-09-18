@@ -14,21 +14,21 @@ namespace Gwen.UnitTest
             {
                 Control.TextBox label = new Control.TextBox(this);
                 label.SetText("Type something here");
-                label.SetPos(10, 10);
-                label.OnTextChanged += OnEdit;
-                label.OnReturnPressed += OnSubmit;
+                label.SetPosition(10, 10);
+                label.TextChanged += OnEdit;
+                label.SubmitPressed += OnSubmit;
             }
 
             {
                 Control.TextBox label = new Control.TextBox(this);
                 label.SetText("Normal Everyday TextBox");
-                label.SetPos(10, 10 + 25);
+                label.SetPosition(10, 10 + 25);
             }
 
             {
                 Control.TextBox label = new Control.TextBox(this);
                 label.SetText("Select All Text On Focus");
-                label.SetPos(10, 10 + 25*2);
+                label.SetPosition(10, 10 + 25*2);
                 label.SelectAllOnFocus = true;
             }
 
@@ -36,14 +36,14 @@ namespace Gwen.UnitTest
                 Control.TextBox label = new Control.TextBox(this);
                 label.SetText("Different Coloured Text, for some reason");
                 label.TextColor = Color.ForestGreen;
-                label.SetPos(10, 10 + 25*3);
+                label.SetPosition(10, 10 + 25*3);
             }
 
             {
                 Control.TextBoxNumeric label = new Control.TextBoxNumeric(this);
                 label.SetText("2004");
                 label.TextColor = Color.LightCoral;
-                label.SetPos(10, 10 + 25*4);
+                label.SetPosition(10, 10 + 25*4);
             }
 
             {
@@ -51,7 +51,7 @@ namespace Gwen.UnitTest
 
                 Control.TextBox label = new Control.TextBox(this);
                 label.SetText("Different Font");
-                label.SetPos(10, 10 + 25*5);
+                label.SetPosition(10, 10 + 25*5);
                 label.Font = m_Font;
                 label.SetSize(200, 55);
             }

@@ -37,9 +37,9 @@ namespace Gwen.Control
         public int A { get { return m_Color.A; } set { m_Color = Color.FromArgb(value, m_Color.R, m_Color.G, m_Color.B); } }
 
         /// <summary>
-        /// Invoked when the selected color has changed.
+        /// Invoked when the selected color has been changed.
         /// </summary>
-        public event ControlCallback OnColorChanged;
+        public event GwenEventHandler ColorChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorPicker"/> class.
@@ -59,7 +59,7 @@ namespace Gwen.Control
             int colorSize = 12;
 
             GroupBox colorGroup = new GroupBox(this);
-            colorGroup.SetPos(10, y);
+            colorGroup.SetPosition(10, y);
             colorGroup.SetText(name);
             colorGroup.SetSize(160, 35);
             colorGroup.Name = name + "groupbox";
@@ -70,17 +70,17 @@ namespace Gwen.Control
 
             TextBoxNumeric numeric = new TextBoxNumeric(colorGroup);
             numeric.Name=name + "Box";
-            numeric.SetPos(105, 7);
+            numeric.SetPosition(105, 7);
             numeric.SetSize(26, 16);
             numeric.SelectAllOnFocus=true;
-            numeric.OnTextChanged += NumericTyped;
+            numeric.TextChanged += NumericTyped;
 
             HorizontalSlider slider = new HorizontalSlider(colorGroup);
-            slider.SetPos(colorSize + 5, 10);
+            slider.SetPosition(colorSize + 5, 10);
             slider.SetRange(0, 255);
             slider.SetSize(80, colorSize);
             slider.Name = name + "Slider";
-            slider.OnValueChanged += SlidersMoved;
+            slider.ValueChanged += SlidersMoved;
         }
 
         /// <summary>
@@ -134,7 +134,7 @@ namespace Gwen.Control
             CreateColorControl("Alpha", startY + height*3);
 
             GroupBox finalGroup = new GroupBox(this);
-            finalGroup.SetPos(180, 40);
+            finalGroup.SetPosition(180, 40);
             finalGroup.SetSize(60, 60);
             finalGroup.SetText("Result");
             finalGroup.Name = "ResultGroupBox";
@@ -142,7 +142,7 @@ namespace Gwen.Control
             ColorDisplay disp = new ColorDisplay(finalGroup);
             disp.Name = "Result";
             disp.SetBounds(0, 10, 32, 32);
-            disp.DrawCheckers = true;
+            //disp.DrawCheckers = true;
 
             //UpdateControls();
         }
@@ -169,8 +169,8 @@ namespace Gwen.Control
             ColorDisplay disp = FindChildByName("Result", true) as ColorDisplay;
             disp.Color = SelectedColor;
 
-            if (OnColorChanged != null)
-                OnColorChanged.Invoke(this);
+            if (ColorChanged != null)
+                ColorChanged.Invoke(this);
         }
 
         private void SlidersMoved(Base control)
@@ -203,7 +203,7 @@ namespace Gwen.Control
 
             GroupBox groupBox = FindChildByName("ResultGroupBox", true) as GroupBox;
             if (groupBox != null)
-                groupBox.SetPos(groupBox.X, Height * 0.5f - groupBox.Height * 0.5f);
+                groupBox.SetPosition(groupBox.X, Height * 0.5f - groupBox.Height * 0.5f);
 
             //UpdateControls(); // this spams events continuously every tick
         }

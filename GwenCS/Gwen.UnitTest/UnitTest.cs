@@ -114,7 +114,7 @@ namespace Gwen.UnitTest
             test.Hide();
             test.UnitTest = this;
             btn.UserData = test;
-            btn.OnPress += onCategorySelect;
+            btn.Clicked += onCategorySelect;
         }
 
         private void onCategorySelect(Base control)

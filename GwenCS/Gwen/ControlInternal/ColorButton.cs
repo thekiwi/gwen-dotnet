@@ -9,7 +9,7 @@ namespace Gwen.ControlInternal
     /// </summary>
     public class ColorButton : Button
     {
-        protected Color m_Color;
+        private Color m_Color;
 
         /// <summary>
         /// Current color value.

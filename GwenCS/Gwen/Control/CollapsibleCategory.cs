@@ -8,8 +8,8 @@ namespace Gwen.Control
     /// </summary>
     public class CollapsibleCategory : Base
     {
-        protected readonly Button m_HeaderButton;
-        protected readonly CollapsibleList m_List;
+        private readonly Button m_HeaderButton;
+        private readonly CollapsibleList m_List;
 
         /// <summary>
         /// Header text.
@@ -22,36 +22,14 @@ namespace Gwen.Control
         public bool IsCollapsed { get { return m_HeaderButton.ToggleState; } set { m_HeaderButton.ToggleState = value; } }
 
         /// <summary>
-        /// Invoked when an entry is selected.
+        /// Invoked when an entry has been selected.
         /// </summary>
-        public event ControlCallback OnSelection;
+        public event GwenEventHandler Selected;
 
         /// <summary>
-        /// Invoked when the category collapsed state changes (header button is pressed).
+        /// Invoked when the category collapsed state has been changed (header button has been pressed).
         /// </summary>
-        public event ControlCallback OnCollapsed;
-
-        // todo: iterator, make this as function?
-        /// <summary>
-        /// Selected entry.
-        /// </summary>
-        public Button Selected
-        {
-            get
-            {
-                foreach (Base child in Children)
-                {
-                    CategoryButton button = child as CategoryButton;
-                    if (button == null)
-                        continue;
-
-                    if (button.ToggleState)
-                        return button;
-                }
-
-                return null;
-            }
-        }
+        public event GwenEventHandler Collapsed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CollapsibleCategory"/> class.
@@ -63,7 +41,7 @@ namespace Gwen.Control
             m_HeaderButton.Text = "Category Title"; // [omeg] todo: i18n
             m_HeaderButton.Dock = Pos.Top;
             m_HeaderButton.Height = 20;
-            m_HeaderButton.OnToggle += onHeaderToggle;
+            m_HeaderButton.Toggled += OnHeaderToggle;
 
             m_List = parent;
 
@@ -81,20 +59,38 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Handler for header button toggle event.
+        /// Gets the selected entry.
         /// </summary>
-        /// <param name="control">Source control.</param>
-        protected virtual void onHeaderToggle(Base control)
+        public Button GetSelectedButton()
         {
-            if (OnCollapsed != null)
-                OnCollapsed.Invoke(this);
+            foreach (Base child in Children)
+            {
+                CategoryButton button = child as CategoryButton;
+                if (button == null)
+                    continue;
+
+                if (button.ToggleState)
+                    return button;
+            }
+
+            return null;
         }
 
         /// <summary>
-        /// Handler for OnSelection event.
+        /// Handler for header button toggle event.
+        /// </summary>
+        /// <param name="control">Source control.</param>
+        protected virtual void OnHeaderToggle(Base control)
+        {
+            if (Collapsed != null)
+                Collapsed.Invoke(this);
+        }
+
+        /// <summary>
+        /// Handler for Selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onSelection(Base control)
+        protected virtual void OnSelected(Base control)
         {
             CategoryButton child = control as CategoryButton;
             if (child == null) return;
@@ -110,8 +106,8 @@ namespace Gwen.Control
 
             child.ToggleState = true;
 
-            if (OnSelection != null)
-                OnSelection.Invoke(this);
+            if (Selected != null)
+                Selected.Invoke(this);
         }
 
         /// <summary>
@@ -127,7 +123,7 @@ namespace Gwen.Control
             button.SizeToContents();
             button.SetSize(button.Width + 4, button.Height + 4);
             button.Padding = new Padding(5, 2, 2, 2);
-            button.OnPress += onSelection;
+            button.Clicked += OnSelected;
 
             return button;
         }

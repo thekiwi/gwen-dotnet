@@ -7,7 +7,7 @@ namespace Gwen.Control.Property
     /// </summary>
     public class Check : Base
     {
-        protected Control.CheckBox m_CheckBox;
+        protected readonly Control.CheckBox m_CheckBox;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Check"/> class.
@@ -18,10 +18,10 @@ namespace Gwen.Control.Property
         {
             m_CheckBox = new Control.CheckBox(this);
             m_CheckBox.ShouldDrawBackground = false;
-            m_CheckBox.OnCheckChanged += onValueChanged;
+            m_CheckBox.CheckChanged += OnValueChanged;
             m_CheckBox.IsTabable = true;
             m_CheckBox.KeyboardInputEnabled = true;
-            m_CheckBox.SetPos(2, 1);
+            m_CheckBox.SetPosition(2, 1);
 
             Height = 18;
         }

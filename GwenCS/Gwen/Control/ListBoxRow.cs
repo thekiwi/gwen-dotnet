@@ -9,13 +9,14 @@ namespace Gwen.Control
     /// </summary>
     public class ListBoxRow : TableRow
     {
-        protected bool m_Selected;
+        private bool m_Selected;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBoxRow"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ListBoxRow(Base parent) : base(parent)
+        public ListBoxRow(Base parent)
+            : base(parent)
         {
             MouseInputEnabled = true;
             IsSelected = false;
@@ -53,12 +54,12 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
             if (down)
             {
                 //IsSelected = true; // [omeg] ListBox manages that
-                onRowSelected();
+                OnRowSelected();
             }
         }
     }

@@ -276,65 +276,65 @@ namespace Gwen.Skin
             m_Texture = new Texture(Renderer);
             m_Texture.Load(TextureName);
 
-            Colors.Window.TitleActive   = Renderer.PixelColour(m_Texture, 4 + 8 * 0, 508, Color.Red);
-            Colors.Window.TitleInactive = Renderer.PixelColour(m_Texture, 4 + 8 * 1, 508, Color.Yellow);
+            Colors.Window.TitleActive   = Renderer.PixelColor(m_Texture, 4 + 8 * 0, 508, Color.Red);
+            Colors.Window.TitleInactive = Renderer.PixelColor(m_Texture, 4 + 8 * 1, 508, Color.Yellow);
 
-            Colors.Button.Normal   = Renderer.PixelColour(m_Texture, 4 + 8 * 2, 508, Color.Yellow);
-            Colors.Button.Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 3, 508, Color.Yellow);
-            Colors.Button.Down     = Renderer.PixelColour(m_Texture, 4 + 8 * 2, 500, Color.Yellow);
-            Colors.Button.Disabled = Renderer.PixelColour(m_Texture, 4 + 8 * 3, 500, Color.Yellow);
+            Colors.Button.Normal   = Renderer.PixelColor(m_Texture, 4 + 8 * 2, 508, Color.Yellow);
+            Colors.Button.Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 3, 508, Color.Yellow);
+            Colors.Button.Down     = Renderer.PixelColor(m_Texture, 4 + 8 * 2, 500, Color.Yellow);
+            Colors.Button.Disabled = Renderer.PixelColor(m_Texture, 4 + 8 * 3, 500, Color.Yellow);
 
-            Colors.Tab.Active.Normal     = Renderer.PixelColour(m_Texture, 4 + 8 * 4, 508, Color.Yellow);
-            Colors.Tab.Active.Hover      = Renderer.PixelColour(m_Texture, 4 + 8 * 5, 508, Color.Yellow);
-            Colors.Tab.Active.Down       = Renderer.PixelColour(m_Texture, 4 + 8 * 4, 500, Color.Yellow);
-            Colors.Tab.Active.Disabled   = Renderer.PixelColour(m_Texture, 4 + 8 * 5, 500, Color.Yellow);
-            Colors.Tab.Inactive.Normal   = Renderer.PixelColour(m_Texture, 4 + 8 * 6, 508, Color.Yellow);
-            Colors.Tab.Inactive.Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 7, 508, Color.Yellow);
-            Colors.Tab.Inactive.Down     = Renderer.PixelColour(m_Texture, 4 + 8 * 6, 500, Color.Yellow);
-            Colors.Tab.Inactive.Disabled = Renderer.PixelColour(m_Texture, 4 + 8 * 7, 500, Color.Yellow);
+            Colors.Tab.Active.Normal     = Renderer.PixelColor(m_Texture, 4 + 8 * 4, 508, Color.Yellow);
+            Colors.Tab.Active.Hover      = Renderer.PixelColor(m_Texture, 4 + 8 * 5, 508, Color.Yellow);
+            Colors.Tab.Active.Down       = Renderer.PixelColor(m_Texture, 4 + 8 * 4, 500, Color.Yellow);
+            Colors.Tab.Active.Disabled   = Renderer.PixelColor(m_Texture, 4 + 8 * 5, 500, Color.Yellow);
+            Colors.Tab.Inactive.Normal   = Renderer.PixelColor(m_Texture, 4 + 8 * 6, 508, Color.Yellow);
+            Colors.Tab.Inactive.Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 7, 508, Color.Yellow);
+            Colors.Tab.Inactive.Down     = Renderer.PixelColor(m_Texture, 4 + 8 * 6, 500, Color.Yellow);
+            Colors.Tab.Inactive.Disabled = Renderer.PixelColor(m_Texture, 4 + 8 * 7, 500, Color.Yellow);
 
-            Colors.Label.Default   = Renderer.PixelColour(m_Texture, 4 + 8 * 8, 508, Color.Yellow);
-            Colors.Label.Bright    = Renderer.PixelColour(m_Texture, 4 + 8 * 9, 508, Color.Yellow);
-            Colors.Label.Dark      = Renderer.PixelColour(m_Texture, 4 + 8 * 8, 500, Color.Yellow);
-            Colors.Label.Highlight = Renderer.PixelColour(m_Texture, 4 + 8 * 9, 500, Color.Yellow);
+            Colors.Label.Default   = Renderer.PixelColor(m_Texture, 4 + 8 * 8, 508, Color.Yellow);
+            Colors.Label.Bright    = Renderer.PixelColor(m_Texture, 4 + 8 * 9, 508, Color.Yellow);
+            Colors.Label.Dark      = Renderer.PixelColor(m_Texture, 4 + 8 * 8, 500, Color.Yellow);
+            Colors.Label.Highlight = Renderer.PixelColor(m_Texture, 4 + 8 * 9, 500, Color.Yellow);
 
-            Colors.Tree.Lines    = Renderer.PixelColour(m_Texture, 4 + 8 * 10, 508, Color.Yellow);
-            Colors.Tree.Normal   = Renderer.PixelColour(m_Texture, 4 + 8 * 11, 508, Color.Yellow);
-            Colors.Tree.Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 10, 500, Color.Yellow);
-            Colors.Tree.Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 11, 500, Color.Yellow);
+            Colors.Tree.Lines    = Renderer.PixelColor(m_Texture, 4 + 8 * 10, 508, Color.Yellow);
+            Colors.Tree.Normal   = Renderer.PixelColor(m_Texture, 4 + 8 * 11, 508, Color.Yellow);
+            Colors.Tree.Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 10, 500, Color.Yellow);
+            Colors.Tree.Selected = Renderer.PixelColor(m_Texture, 4 + 8 * 11, 500, Color.Yellow);
         
-            Colors.Properties.Line_Normal     = Renderer.PixelColour(m_Texture, 4 + 8 * 12, 508, Color.Yellow);
-            Colors.Properties.Line_Selected   = Renderer.PixelColour(m_Texture, 4 + 8 * 13, 508, Color.Yellow);
-            Colors.Properties.Line_Hover      = Renderer.PixelColour(m_Texture, 4 + 8 * 12, 500, Color.Yellow);
-            Colors.Properties.Title           = Renderer.PixelColour(m_Texture, 4 + 8 * 13, 500, Color.Yellow);
-            Colors.Properties.Column_Normal   = Renderer.PixelColour(m_Texture, 4 + 8 * 14, 508, Color.Yellow);
-            Colors.Properties.Column_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 15, 508, Color.Yellow);
-            Colors.Properties.Column_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 14, 500, Color.Yellow);
-            Colors.Properties.Border          = Renderer.PixelColour(m_Texture, 4 + 8 * 15, 500, Color.Yellow);
-            Colors.Properties.Label_Normal    = Renderer.PixelColour(m_Texture, 4 + 8 * 16, 508, Color.Yellow);
-            Colors.Properties.Label_Selected  = Renderer.PixelColour(m_Texture, 4 + 8 * 17, 508, Color.Yellow);
-            Colors.Properties.Label_Hover     = Renderer.PixelColour(m_Texture, 4 + 8 * 16, 500, Color.Yellow);
+            Colors.Properties.Line_Normal     = Renderer.PixelColor(m_Texture, 4 + 8 * 12, 508, Color.Yellow);
+            Colors.Properties.Line_Selected   = Renderer.PixelColor(m_Texture, 4 + 8 * 13, 508, Color.Yellow);
+            Colors.Properties.Line_Hover      = Renderer.PixelColor(m_Texture, 4 + 8 * 12, 500, Color.Yellow);
+            Colors.Properties.Title           = Renderer.PixelColor(m_Texture, 4 + 8 * 13, 500, Color.Yellow);
+            Colors.Properties.Column_Normal   = Renderer.PixelColor(m_Texture, 4 + 8 * 14, 508, Color.Yellow);
+            Colors.Properties.Column_Selected = Renderer.PixelColor(m_Texture, 4 + 8 * 15, 508, Color.Yellow);
+            Colors.Properties.Column_Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 14, 500, Color.Yellow);
+            Colors.Properties.Border          = Renderer.PixelColor(m_Texture, 4 + 8 * 15, 500, Color.Yellow);
+            Colors.Properties.Label_Normal    = Renderer.PixelColor(m_Texture, 4 + 8 * 16, 508, Color.Yellow);
+            Colors.Properties.Label_Selected  = Renderer.PixelColor(m_Texture, 4 + 8 * 17, 508, Color.Yellow);
+            Colors.Properties.Label_Hover     = Renderer.PixelColor(m_Texture, 4 + 8 * 16, 500, Color.Yellow);
 
-            Colors.ModalBackground = Renderer.PixelColour(m_Texture, 4 + 8 * 18, 508, Color.Yellow);
-            Colors.TooltipText     = Renderer.PixelColour(m_Texture, 4 + 8 * 19, 508, Color.Yellow);
+            Colors.ModalBackground = Renderer.PixelColor(m_Texture, 4 + 8 * 18, 508, Color.Yellow);
+            Colors.TooltipText     = Renderer.PixelColor(m_Texture, 4 + 8 * 19, 508, Color.Yellow);
 
-            Colors.Category.Header        = Renderer.PixelColour(m_Texture, 4 + 8 * 18, 500, Color.Yellow);
-            Colors.Category.Header_Closed = Renderer.PixelColour(m_Texture, 4 + 8 * 19, 500, Color.Yellow);
+            Colors.Category.Header        = Renderer.PixelColor(m_Texture, 4 + 8 * 18, 500, Color.Yellow);
+            Colors.Category.Header_Closed = Renderer.PixelColor(m_Texture, 4 + 8 * 19, 500, Color.Yellow);
 
-            Colors.Category.Line.Text          = Renderer.PixelColour(m_Texture, 4 + 8 * 20, 508, Color.Yellow);
-            Colors.Category.Line.Text_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 21, 508, Color.Yellow);
-            Colors.Category.Line.Text_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 20, 500, Color.Yellow);
-            Colors.Category.Line.Button        = Renderer.PixelColour(m_Texture, 4 + 8 * 21, 500, Color.Yellow);
+            Colors.Category.Line.Text          = Renderer.PixelColor(m_Texture, 4 + 8 * 20, 508, Color.Yellow);
+            Colors.Category.Line.Text_Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 21, 508, Color.Yellow);
+            Colors.Category.Line.Text_Selected = Renderer.PixelColor(m_Texture, 4 + 8 * 20, 500, Color.Yellow);
+            Colors.Category.Line.Button        = Renderer.PixelColor(m_Texture, 4 + 8 * 21, 500, Color.Yellow);
 
-            Colors.Category.Line.Button_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 22, 508, Color.Yellow);
-            Colors.Category.Line.Button_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 23, 508, Color.Yellow);
-            Colors.Category.LineAlt.Text         = Renderer.PixelColour(m_Texture, 4 + 8 * 22, 500, Color.Yellow);
-            Colors.Category.LineAlt.Text_Hover   = Renderer.PixelColour(m_Texture, 4 + 8 * 23, 500, Color.Yellow);
+            Colors.Category.Line.Button_Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 22, 508, Color.Yellow);
+            Colors.Category.Line.Button_Selected = Renderer.PixelColor(m_Texture, 4 + 8 * 23, 508, Color.Yellow);
+            Colors.Category.LineAlt.Text         = Renderer.PixelColor(m_Texture, 4 + 8 * 22, 500, Color.Yellow);
+            Colors.Category.LineAlt.Text_Hover   = Renderer.PixelColor(m_Texture, 4 + 8 * 23, 500, Color.Yellow);
 
-            Colors.Category.LineAlt.Text_Selected   = Renderer.PixelColour(m_Texture, 4 + 8 * 24, 508, Color.Yellow);
-            Colors.Category.LineAlt.Button          = Renderer.PixelColour(m_Texture, 4 + 8 * 25, 508, Color.Yellow);
-            Colors.Category.LineAlt.Button_Hover    = Renderer.PixelColour(m_Texture, 4 + 8 * 24, 500, Color.Yellow);
-            Colors.Category.LineAlt.Button_Selected = Renderer.PixelColour(m_Texture, 4 + 8 * 25, 500, Color.Yellow);
+            Colors.Category.LineAlt.Text_Selected   = Renderer.PixelColor(m_Texture, 4 + 8 * 24, 508, Color.Yellow);
+            Colors.Category.LineAlt.Button          = Renderer.PixelColor(m_Texture, 4 + 8 * 25, 508, Color.Yellow);
+            Colors.Category.LineAlt.Button_Hover    = Renderer.PixelColor(m_Texture, 4 + 8 * 24, 500, Color.Yellow);
+            Colors.Category.LineAlt.Button_Selected = Renderer.PixelColor(m_Texture, 4 + 8 * 25, 500, Color.Yellow);
 
             Textures.Shadow    = new Bordered(m_Texture, 448, 0, 31, 31, new Margin(8, 8, 8, 8));
             Textures.Tooltip   = new Bordered(m_Texture, 128, 320, 127, 31, new Margin(8, 8, 8, 8));

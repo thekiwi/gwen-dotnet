@@ -1,61 +1,34 @@
 ﻿using System;
 using System.Drawing;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
-    /// <summary>
-    /// ComboBox arrow.
-    /// </summary>
-    public class DownArrow : Base
-    {
-        private readonly ComboBox m_ComboBox;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DownArrow"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public DownArrow(ComboBox parent) : base(parent) // or Base?
-        {
-            MouseInputEnabled = false;
-            SetSize(15, 15);
-
-            m_ComboBox = parent;
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawComboBoxArrow(this, m_ComboBox.IsHovered, m_ComboBox.IsDepressed, m_ComboBox.IsMenuOpen, m_ComboBox.IsDisabled);
-        }
-    }
-
     /// <summary>
     /// ComboBox control.
     /// </summary>
     public class ComboBox : Button
     {
-        protected readonly Menu m_Menu;
-        protected MenuItem m_SelectedItem;
-        protected readonly Base m_Button;
+        private readonly Menu m_Menu;
+        private readonly Base m_Button;
+        private MenuItem m_SelectedItem;
 
         /// <summary>
         /// Invoked when the selected item has changed.
         /// </summary>
-        public event ControlCallback OnSelection;
+        public event GwenEventHandler ItemSelected;
 
         /// <summary>
         /// Indicates whether the combo menu is open.
         /// </summary>
-        public bool IsMenuOpen { get { return m_Menu != null && !m_Menu.IsHidden; } }
+        public bool IsOpen { get { return m_Menu != null && !m_Menu.IsHidden; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ComboBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ComboBox(Base parent) : base(parent)
+        public ComboBox(Base parent)
+            : base(parent)
         {
             SetSize(100, 20);
             m_Menu = new Menu(this);
@@ -87,6 +60,7 @@ namespace Gwen.Control
         /// <summary>
         /// Selected item.
         /// </summary>
+        /// <remarks>Not just String property, because items also have internal names.</remarks>
         public Label SelectedItem { get { return m_SelectedItem; } }
 
         internal override bool IsMenuComponent
@@ -101,14 +75,14 @@ namespace Gwen.Control
         /// <param name="name">Item name.</param>
         /// <param name="handler">Handler invoked when the item is selected.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem(String label, String name = "", ControlCallback handler = null)
+        public virtual MenuItem AddItem(String label, String name = "", GwenEventHandler handler = null)
         {
             MenuItem item = m_Menu.AddItem(label, String.Empty, handler);
             item.Name = name;
-            item.OnMenuItemSelected += onItemSelected;
+            item.Selected += OnItemSelected;
 
             if (m_SelectedItem != null)
-                onItemSelected(item);
+                OnItemSelected(item);
 
             return item;
         }
@@ -119,15 +93,15 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawComboBox(this, IsDepressed, IsMenuOpen);
+            skin.DrawComboBox(this, IsDepressed, IsOpen);
         }
 
         /// <summary>
-        /// Internal OnPress implementation.
+        /// Internal Pressed implementation.
         /// </summary>
-        protected override void onPress()
+        protected override void OnClicked()
         {
-            if (IsMenuOpen)
+            if (IsOpen)
             {
                 GetCanvas().CloseMenus();
                 return;
@@ -139,7 +113,7 @@ namespace Gwen.Control
 
             if (bWasMenuHidden)
             {
-                OpenList();
+                Open();
             }
         }
 
@@ -156,18 +130,18 @@ namespace Gwen.Control
         /// Internal handler for item selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onItemSelected(Base control)
+        protected virtual void OnItemSelected(Base control)
         {
             //Convert selected to a menu item
-            MenuItem pItem = control as MenuItem;
-            if (null==pItem) return;
+            MenuItem item = control as MenuItem;
+            if (null == item) return;
 
-            m_SelectedItem = pItem;
+            m_SelectedItem = item;
             Text = m_SelectedItem.Text;
             m_Menu.IsHidden = true;
 
-            if (OnSelection != null)
-                OnSelection.Invoke(this);
+            if (ItemSelected != null)
+                ItemSelected.Invoke(this);
 
             Focus();
             Invalidate();
@@ -186,7 +160,7 @@ namespace Gwen.Control
         /// <summary>
         /// Handler for losing keyboard focus.
         /// </summary>
-        protected override void onLostKeyboardFocus()
+        protected override void OnLostKeyboardFocus()
         {
             TextColor = Color.Black;
         }
@@ -194,16 +168,16 @@ namespace Gwen.Control
         /// <summary>
         /// Handler for gaining keyboard focus.
         /// </summary>
-        protected override void onKeyboardFocus()
+        protected override void OnKeyboardFocus()
         {
             //Until we add the blue highlighting again
             TextColor = Color.Black;
         }
 
         /// <summary>
-        /// Opens the combo list.
+        /// Opens the combo.
         /// </summary>
-        public virtual void OpenList()
+        public virtual void Open()
         {
             if (null == m_Menu) return;
 
@@ -217,9 +191,9 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Closes the combo list.
+        /// Closes the combo.
         /// </summary>
-        public virtual void CloseList()
+        public virtual void Close()
         {
             if (m_Menu == null) 
                 return;
@@ -234,13 +208,13 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeyDown(bool down)
+        protected override bool OnKeyDown(bool down)
         {
             if (down)
             {
                 var it = m_Menu.Children.FindIndex(x => x == m_SelectedItem);
                 if (it + 1 < m_Menu.Children.Count)
-                    onItemSelected(m_Menu.Children[it + 1]);
+                    OnItemSelected(m_Menu.Children[it + 1]);
             }
             return true;
         }
@@ -252,13 +226,13 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeyUp(bool down)
+        protected override bool OnKeyUp(bool down)
         {
             if (down)
             {
                 var it = m_Menu.Children.FindLastIndex(x => x == m_SelectedItem);
                 if (it - 1 >= 0)
-                    onItemSelected(m_Menu.Children[it - 1]);
+                    OnItemSelected(m_Menu.Children[it - 1]);
             }
             return true;
         }

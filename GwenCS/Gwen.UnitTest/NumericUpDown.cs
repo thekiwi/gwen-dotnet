@@ -13,12 +13,12 @@ namespace Gwen.UnitTest
             ctrl.Value = 50;
             ctrl.Max = 100;
             ctrl.Min = -100;
-            ctrl.OnValueChanged += OnValueChanged;
+            ctrl.ValueChanged += OnValueChanged;
         }
 
         void OnValueChanged(Base control)
         {
-            UnitPrint(String.Format("NumericUpDown: OnValueChanged: {0}", ((Control.NumericUpDown)control).Value));
+            UnitPrint(String.Format("NumericUpDown: ValueChanged: {0}", ((Control.NumericUpDown)control).Value));
         }
     }
 }

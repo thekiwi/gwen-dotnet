@@ -39,7 +39,7 @@ namespace Gwen.Renderer
             }
         }
 
-        public override System.Drawing.Color PixelColour(Texture texture, uint x, uint y, System.Drawing.Color defaultColor)
+        public override System.Drawing.Color PixelColor(Texture texture, uint x, uint y, System.Drawing.Color defaultColor)
         {
             Sprite tex = texture.RendererData as Sprite;
             if (tex == null)

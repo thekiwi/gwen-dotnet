@@ -10,39 +10,39 @@ namespace Gwen.UnitTest
         {
             {
                 Control.CheckBox check = new Control.CheckBox(this);
-                check.SetPos(10, 10);
-                check.OnChecked += OnChecked;
-                check.OnUnChecked += OnUnchecked;
-                check.OnCheckChanged += OnCheckChanged;
+                check.SetPosition(10, 10);
+                check.Checked += OnChecked;
+                check.UnChecked += OnUnchecked;
+                check.CheckChanged += OnCheckChanged;
 
                 Control.LabeledCheckBox labeled = new Control.LabeledCheckBox(this);
-                labeled.SetPos(10, 30);
+                labeled.SetPosition(10, 30);
                 labeled.Text = "Labeled CheckBox";
-                labeled.OnChecked += OnChecked;
-                labeled.OnUnChecked += OnUnchecked;
-                labeled.OnCheckChanged += OnCheckChanged;
+                labeled.Checked += OnChecked;
+                labeled.UnChecked += OnUnchecked;
+                labeled.CheckChanged += OnCheckChanged;
             }
 
             {
                 Control.CheckBox check = new Control.CheckBox(this);
-                check.SetPos(10, 54);
+                check.SetPosition(10, 54);
                 check.IsDisabled = true;
             }
         }
 
         void OnChecked(Base control)
         {
-            UnitPrint("CheckBox: OnChecked");
+            UnitPrint("CheckBox: Checked");
         }
 
         void OnCheckChanged(Base control)
         {
-            UnitPrint("CheckBox: OnCheckChanged");
+            UnitPrint("CheckBox: CheckChanged");
         }
 
         void OnUnchecked(Base control)
         {
-            UnitPrint("CheckBox: OnUnchecked");
+            UnitPrint("CheckBox: UnChecked");
         }
     }
 }

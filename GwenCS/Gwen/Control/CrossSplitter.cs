@@ -22,19 +22,19 @@ namespace Gwen.Control
         private int m_ZoomedSection; // 0-3
 
         /// <summary>
-        /// Invoked when one of the panels is zoomed (maximized).
+        /// Invoked when one of the panels has been zoomed (maximized).
         /// </summary>
-        public event ControlCallback OnZoomed;
+        public event GwenEventHandler PanelZoomed;
 
         /// <summary>
-        /// Invoked when one of the panels is unzoomed (restored).
+        /// Invoked when one of the panels has been unzoomed (restored).
         /// </summary>
-        public event ControlCallback OnUnZoomed;
+        public event GwenEventHandler PanelUnZoomed;
 
         /// <summary>
-        /// Invoked when the zoomed panel changes.
+        /// Invoked when the zoomed panel has been changed.
         /// </summary>
-        public event ControlCallback OnZoomChange;
+        public event GwenEventHandler ZoomChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CrossSplitter"/> class.
@@ -46,18 +46,18 @@ namespace Gwen.Control
             m_Sections = new Base[4];
 
             m_VSplitter = new SplitterBar(this);
-            m_VSplitter.SetPos(0, 128);
-            m_VSplitter.OnDragged += onVerticalMoved;
+            m_VSplitter.SetPosition(0, 128);
+            m_VSplitter.Dragged += OnVerticalMoved;
             m_VSplitter.Cursor = Cursors.SizeNS;
 
             m_HSplitter = new SplitterBar(this);
-            m_HSplitter.SetPos(128, 0);
-            m_HSplitter.OnDragged += onHorizontalMoved;
+            m_HSplitter.SetPosition(128, 0);
+            m_HSplitter.Dragged += OnHorizontalMoved;
             m_HSplitter.Cursor = Cursors.SizeWE;
 
             m_CSplitter = new SplitterBar(this);
-            m_CSplitter.SetPos(128, 128);
-            m_CSplitter.OnDragged += onCenterMoved;
+            m_CSplitter.SetPosition(128, 128);
+            m_CSplitter.Dragged += OnCenterMoved;
             m_CSplitter.Cursor = Cursors.SizeAll;
 
             m_HVal = 0.5f;
@@ -136,19 +136,19 @@ namespace Gwen.Control
             m_CSplitter.MoveTo((Width - m_CSplitter.Width) * (m_HVal), (Height - m_CSplitter.Height) * (m_VVal));
         }
 
-        protected void onCenterMoved(Base control)
+        protected void OnCenterMoved(Base control)
         {
             CalculateValueCenter();
             Invalidate();
         }
 
-        protected void onVerticalMoved(Base control)
+        protected void OnVerticalMoved(Base control)
         {
             m_VVal = CalculateValueVertical();
             Invalidate();
         }
 
-        protected void onHorizontalMoved(Base control)
+        protected void OnHorizontalMoved(Base control)
         {
             m_HVal = CalculateValueHorizontal();
             Invalidate();
@@ -236,20 +236,20 @@ namespace Gwen.Control
         /// <summary>
         /// Internal handler for the zoom changed event.
         /// </summary>
-        protected void ZoomChanged()
+        protected void OnZoomChanged()
         {
-            if (OnZoomChange != null)
-                OnZoomChange.Invoke(this);
+            if (ZoomChanged != null)
+                ZoomChanged.Invoke(this);
          
             if (m_ZoomedSection == -1)
             {
-                if (OnUnZoomed != null)
-                    OnUnZoomed.Invoke(this);
+                if (PanelUnZoomed != null)
+                    PanelUnZoomed.Invoke(this);
             }
             else
             {
-                if (OnZoomed != null)
-                    OnZoomed.Invoke(this);
+                if (PanelZoomed != null)
+                    PanelZoomed.Invoke(this);
             }
         }
 
@@ -272,7 +272,7 @@ namespace Gwen.Control
 
                 Invalidate();
             }
-            ZoomChanged();
+            OnZoomChanged();
         }
 
         /// <summary>
@@ -289,7 +289,7 @@ namespace Gwen.Control
             }
 
             Invalidate();
-            ZoomChanged();
+            OnZoomChanged();
         }
     }
 }

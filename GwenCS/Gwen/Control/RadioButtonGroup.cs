@@ -6,9 +6,9 @@ namespace Gwen.Control
     /// <summary>
     /// Radio button group.
     /// </summary>
-    public class RadioButtonController : Base
+    public class RadioButtonGroup : Base
     {
-        protected LabeledRadioButton m_Selected;
+        private LabeledRadioButton m_Selected;
 
         /// <summary>
         /// Selected radio button.
@@ -28,13 +28,14 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when the selected option has changed.
         /// </summary>
-        public event ControlCallback OnSelectionChange;
+        public event GwenEventHandler SelectionChanged;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="RadioButtonController"/> class.
+        /// Initializes a new instance of the <see cref="RadioButtonGroup"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public RadioButtonController(Base parent) : base(parent)
+        public RadioButtonGroup(Base parent)
+            : base(parent)
         {
             IsTabable = false;
             KeyboardInputEnabled = false;
@@ -47,7 +48,8 @@ namespace Gwen.Control
         {
             foreach (Base child in Children)
             {
-                child.Dispose(); // [omeg] todo: safe?
+                if (child is LabeledRadioButton)
+                    child.Dispose();
             }
             base.Dispose();
         }
@@ -73,10 +75,10 @@ namespace Gwen.Control
             LabeledRadioButton lrb = new LabeledRadioButton(this);
             lrb.Name = optionName;
             lrb.Text = text;
-            lrb.RadioButton.OnChecked += onRadioClicked;
+            lrb.RadioButton.Checked += OnRadioClicked;
             lrb.Dock = Pos.Top;
             lrb.Margin = new Margin(0, 1, 0, 1);
-            lrb.KeyboardInputEnabled = false;
+            lrb.KeyboardInputEnabled = false; // todo: true?
             lrb.IsTabable = false;
 
             Invalidate();
@@ -87,7 +89,7 @@ namespace Gwen.Control
         /// Handler for the option change.
         /// </summary>
         /// <param name="fromPanel">Event source.</param>
-        protected virtual void onRadioClicked(Base fromPanel)
+        protected virtual void OnRadioClicked(Base fromPanel)
         {
             RadioButton @checked = fromPanel as RadioButton;
             foreach (LabeledRadioButton rb in Children.OfType<LabeledRadioButton>()) // todo: optimize
@@ -98,13 +100,13 @@ namespace Gwen.Control
                     rb.RadioButton.IsChecked = false;
             }
 
-            onChange();
+            OnChanged();
         }
 
-        protected virtual void onChange()
+        protected virtual void OnChanged()
         {
-            if (OnSelectionChange != null)
-                OnSelectionChange.Invoke(this);
+            if (SelectionChanged != null)
+                SelectionChanged.Invoke(this);
         }
 
         /// <summary>

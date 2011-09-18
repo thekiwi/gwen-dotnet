@@ -5,15 +5,15 @@ namespace Gwen.Anim
     // Timed animation. Provides a useful base for animations.
     public class TimedAnimation : Animation
     {
-        protected bool m_Started;
-        protected bool m_Finished;
-        protected float m_Start;
-        protected float m_End;
-        protected float m_Ease;
+        private bool m_Started;
+        private bool m_Finished;
+        private float m_Start;
+        private float m_End;
+        private float m_Ease;
 
         public override bool Finished { get { return m_Finished; } }
 
-        public TimedAnimation( float length, float delay = 0.0f, float ease = 1.0f )
+        public TimedAnimation(float length, float delay = 0.0f, float ease = 1.0f)
         {
             m_Start = Platform.Neutral.GetTimeInSeconds() + delay;
             m_End = m_Start + length;
@@ -26,44 +26,44 @@ namespace Gwen.Anim
         {
             base.Think();
 
-            if (m_Finished) 
+            if (m_Finished)
                 return;
 
-            float fCurrent = Platform.Neutral.GetTimeInSeconds();
-            float fSecondsIn = fCurrent - m_Start;
-            if (fSecondsIn < 0.0) 
+            float current = Platform.Neutral.GetTimeInSeconds();
+            float secondsIn = current - m_Start;
+            if (secondsIn < 0.0)
                 return;
 
             if (!m_Started)
             {
                 m_Started = true;
-                onStart();
+                OnStart();
             }
 
-            float fDelta = fSecondsIn/(m_End - m_Start);
-            if (fDelta < 0.0f) 
-                fDelta = 0.0f;
-            if (fDelta > 1.0f) 
-                fDelta = 1.0f;
+            float delta = secondsIn / (m_End - m_Start);
+            if (delta < 0.0f)
+                delta = 0.0f;
+            if (delta > 1.0f)
+                delta = 1.0f;
 
-            Run((float)Math.Pow(fDelta, m_Ease));
+            Run((float)Math.Pow(delta, m_Ease));
 
-            if (fDelta == 1.0f)
+            if (delta == 1.0f)
             {
                 m_Finished = true;
-                onFinish();
+                OnFinish();
             }
         }
 
         // These are the magic functions you should be overriding
 
-        protected virtual void onStart()
-        {}
+        protected virtual void OnStart()
+        { }
 
         protected virtual void Run(float delta)
-        {}
+        { }
 
-        protected virtual void onFinish()
-        {}
+        protected virtual void OnFinish()
+        { }
     }
 }

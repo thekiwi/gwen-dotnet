@@ -1,4 +1,5 @@
 ﻿using System;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
@@ -11,9 +12,23 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="PropertyTree"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public PropertyTree(Base parent) : base(parent)
+        public PropertyTree(Base parent)
+            : base(parent)
         {
-            
+
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            foreach (Base child in Children)
+            {
+                if (child is PropertyTreeNode || child is Properties)
+                    child.Dispose();
+            }
+            base.Dispose();
         }
 
         /// <summary>

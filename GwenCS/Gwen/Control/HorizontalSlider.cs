@@ -12,7 +12,8 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="HorizontalSlider"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public HorizontalSlider(Base parent) : base(parent)
+        public HorizontalSlider(Base parent)
+            : base(parent)
         {
             m_SliderBar.IsHorizontal = true;
         }
@@ -33,11 +34,11 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
             m_SliderBar.MoveTo((int)(CanvasPosToLocal(new Point(x, y)).X - m_SliderBar.Width*0.5), m_SliderBar.Y);
-            m_SliderBar.InputMouseClickLeft(x, y, down);
-            onMoved(m_SliderBar);
+            m_SliderBar.InputMouseClickedLeft(x, y, down);
+            OnMoved(m_SliderBar);
         }
 
         /// <summary>
@@ -55,7 +56,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawSlider(this, true, m_ClampToNotches ? m_NotchCount : 0, m_SliderBar.Width);
+            skin.DrawSlider(this, true, m_SnapToNotches ? m_NotchCount : 0, m_SliderBar.Width);
         }
     }
 }

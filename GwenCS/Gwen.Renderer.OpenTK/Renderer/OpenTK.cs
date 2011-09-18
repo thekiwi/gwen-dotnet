@@ -229,7 +229,7 @@ namespace Gwen.Renderer
             bmp.Dispose();
         }
 
-        public override unsafe Color PixelColour(Texture texture, uint x, uint y, Color defaultColor)
+        public override unsafe Color PixelColor(Texture texture, uint x, uint y, Color defaultColor)
         {
             int tex = (int)texture.RendererData;
             if (tex == 0)

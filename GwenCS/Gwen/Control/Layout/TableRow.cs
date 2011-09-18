@@ -9,16 +9,21 @@ namespace Gwen.Control.Layout
     public class TableRow : Base
     {
         // [omeg] todo: get rid of this
-        public static int MaxColumns = 5;
+        public const int MaxColumns = 5;
 
-        protected int m_ColumnCount;
-        protected bool m_bEvenRow;
-        internal readonly Label[] m_Columns;
+        private int m_ColumnCount;
+        private bool m_EvenRow;
+        private readonly Label[] m_Columns;
+
+        internal Label GetColumn(int index)
+        {
+            return m_Columns[index];
+        }
 
         /// <summary>
-        /// Invoked when the row is selected.
+        /// Invoked when the row has been selected.
         /// </summary>
-        public event ControlCallback OnRowSelected;
+        public event GwenEventHandler RowSelected;
 
         /// <summary>
         /// Column count.
@@ -28,7 +33,7 @@ namespace Gwen.Control.Layout
         /// <summary>
         /// Indicates whether the row is even or odd (used for alternate coloring).
         /// </summary>
-        public bool EvenRow { get { return m_bEvenRow; } set { m_bEvenRow = value; } }
+        public bool EvenRow { get { return m_EvenRow; } set { m_EvenRow = value; } }
 
         /// <summary>
         /// Text of the first column.
@@ -139,10 +144,10 @@ namespace Gwen.Control.Layout
             return m_Columns[column];
         }
 
-        protected void onRowSelected()
+        protected virtual void OnRowSelected()
         {
-            if (OnRowSelected != null)
-                OnRowSelected.Invoke(this);
+            if (RowSelected != null)
+                RowSelected.Invoke(this);
         }
 
         /// <summary>
@@ -158,7 +163,7 @@ namespace Gwen.Control.Layout
 
                 // Note, more than 1 child here, because the 
                 // label has a child built in ( The Text )
-                if (m_Columns[i].ChildrenCount > 1)
+                if (m_Columns[i].Children.Count > 1)
                 {
                     m_Columns[i].SizeToChildren();
                 }
@@ -200,7 +205,7 @@ namespace Gwen.Control.Layout
         /// Handler for Copy event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void onCopy(Base from)
+        protected override void OnCopy(Base from)
         {
             Platform.Neutral.SetClipboardText(Text);
         }

@@ -23,9 +23,9 @@ namespace Gwen.UnitTest
                 ctrl.SetBounds(30, 30, 200, 200);
                 ctrl.ExpandAll();
 
-                ctrl.OnSelect += NodeSelected;
-                ctrl.OnExpanded += NodeExpanded;
-                ctrl.OnCollapsed += NodeCollapsed;
+                ctrl.Selected += NodeSelected;
+                ctrl.Expanded += NodeExpanded;
+                ctrl.Collapsed += NodeCollapsed;
             }
 
             {
@@ -51,9 +51,9 @@ namespace Gwen.UnitTest
                 ctrl.SetBounds(240, 30, 200, 200);
                 ctrl.ExpandAll();
 
-                ctrl.OnSelect += NodeSelected;
-                ctrl.OnExpanded += NodeExpanded;
-                ctrl.OnCollapsed += NodeCollapsed;
+                ctrl.Selected += NodeSelected;
+                ctrl.Expanded += NodeExpanded;
+                ctrl.Collapsed += NodeCollapsed;
             }
         }
 

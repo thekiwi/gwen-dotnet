@@ -7,15 +7,13 @@ namespace Gwen.Control
     /// </summary>
     public class TreeControl : TreeNode
     {
-        protected ScrollControl m_ScrollControl;
-        protected bool m_MultiSelect;
+        private readonly ScrollControl m_ScrollControl;
+        private bool m_MultiSelect;
 
         /// <summary>
         /// Determines if multiple nodes can be selected at the same time.
         /// </summary>
         public bool AllowMultiSelect { get { return m_MultiSelect; } set { m_MultiSelect = value; } }
-
-        //public ScrollControl Scroller { get { return m_ScrollControl; } }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeControl"/> class.
@@ -44,7 +42,7 @@ namespace Gwen.Control
             m_ScrollControl.Dock = Pos.Fill;
             m_ScrollControl.EnableScroll(false, true);
             m_ScrollControl.AutoHideBars = true;
-            m_ScrollControl.Margin = new Margin(1, 1, 1, 1);
+            m_ScrollControl.Margin = Margin.One;
 
             m_InnerPanel = m_ScrollControl;
 
@@ -66,7 +64,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="oldChildBounds"></param>
         /// <param name="child"></param>
-        protected override void onChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
+        protected override void OnChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
         {
             if (m_ScrollControl != null)
                 m_ScrollControl.UpdateScrollBars();
@@ -80,12 +78,20 @@ namespace Gwen.Control
             m_ScrollControl.DeleteAll();
         }
 
-        public virtual void onNodeAdded(TreeNode node)
+        /// <summary>
+        /// Handler for node added event.
+        /// </summary>
+        /// <param name="node">Node added.</param>
+        public virtual void OnNodeAdded(TreeNode node)
         {
-            node.OnLabelPress += onNodeSelected;
+            node.LabelPressed += OnNodeSelected;
         }
 
-        protected virtual void onNodeSelected(Base Control)
+        /// <summary>
+        /// Handler for node selected event.
+        /// </summary>
+        /// <param name="Control">Node selected.</param>
+        protected virtual void OnNodeSelected(Base Control)
         {
             if (!m_MultiSelect /*|| Input.Input.IsKeyDown(Key.Control)*/)
                 UnselectAll();

@@ -19,7 +19,7 @@ namespace Gwen.Control
             {
                 if (m_Checked == value) return;
                 m_Checked = value;
-                onCheckChanged();
+                OnCheckChanged();
             }
         }
 
@@ -27,11 +27,12 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="CheckBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CheckBox(Base parent) : base(parent)
+        public CheckBox(Base parent)
+            : base(parent)
         {
             SetSize(15, 15);
-            m_Checked = true; // [omeg] why?!
-            Toggle();
+            //m_Checked = true; // [omeg] why?!
+            //Toggle();
         }
 
         /// <summary>
@@ -44,19 +45,19 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Invoked when the checkbox is checked.
+        /// Invoked when the checkbox has been checked.
         /// </summary>
-        public event ControlCallback OnChecked;
+        public event GwenEventHandler Checked;
 
         /// <summary>
-        /// Invoked when the checkbox is unchecked.
+        /// Invoked when the checkbox has been unchecked.
         /// </summary>
-        public event ControlCallback OnUnChecked;
+        public event GwenEventHandler UnChecked;
 
         /// <summary>
-        /// Invoked when the checkbox state changes.
+        /// Invoked when the checkbox state has been changed.
         /// </summary>
-        public event ControlCallback OnCheckChanged;
+        public event GwenEventHandler CheckChanged;
 
         /// <summary>
         /// Determines whether unchecking is allowed.
@@ -64,23 +65,23 @@ namespace Gwen.Control
         protected virtual bool AllowUncheck { get { return true; } }
 
         /// <summary>
-        /// Handler for OnCheckChanged event.
+        /// Handler for CheckChanged event.
         /// </summary>
-        protected virtual void onCheckChanged()
+        protected virtual void OnCheckChanged()
         {
             if (IsChecked)
             { 
-                if (OnChecked != null)
-                    OnChecked.Invoke(this);
+                if (Checked != null)
+                    Checked.Invoke(this);
             }
             else
             {
-                if (OnUnChecked != null)
-                    OnUnChecked.Invoke(this);
+                if (UnChecked != null)
+                    UnChecked.Invoke(this);
             }
 
-            if (OnCheckChanged != null)
-                OnCheckChanged.Invoke(this);
+            if (CheckChanged != null)
+                CheckChanged.Invoke(this);
         }
 
         /// <summary>
@@ -94,9 +95,9 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Internal OnPress implementation.
+        /// Internal OnPressed implementation.
         /// </summary>
-        protected override void onPress()
+        protected override void OnClicked()
         {
             if (IsDisabled)
                 return;

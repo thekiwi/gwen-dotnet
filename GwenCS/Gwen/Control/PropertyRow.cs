@@ -1,4 +1,5 @@
 ﻿using System;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
@@ -7,15 +8,15 @@ namespace Gwen.Control
     /// </summary>
     public class PropertyRow : Base
     {
-        protected Label m_Label;
-        protected Property.Base m_Property;
-        protected bool m_LastEditing;
-        protected bool m_LastHover;
+        private readonly Label m_Label;
+        private readonly Property.Base m_Property;
+        private bool m_LastEditing;
+        private bool m_LastHover;
 
         /// <summary>
         /// Invoked when the property value has changed.
         /// </summary>
-        public event ControlCallback OnChange;
+        public event GwenEventHandler ValueChanged;
 
         /// <summary>
         /// Indicates whether the property value is being edited.
@@ -60,7 +61,7 @@ namespace Gwen.Control
             m_Property = prop;
             m_Property.Parent = this;
             m_Property.Dock = Pos.Fill;
-            m_Property.OnChange += onPropertyValueChanged;
+            m_Property.ValueChanged += OnValueChanged;
         }
 
         /// <summary>
@@ -81,13 +82,13 @@ namespace Gwen.Control
             /* SORRY */
             if (IsEditing != m_LastEditing)
             {
-                onEditingChanged();
+                OnEditingChanged();
                 m_LastEditing = IsEditing;
             }
 
             if (IsHovered != m_LastHover)
             {
-                onHoverChanged();
+                OnHoverChanged();
                 m_LastHover = IsHovered;
             }
             /* SORRY */
@@ -112,18 +113,18 @@ namespace Gwen.Control
             }
         }
 
-        protected virtual void onPropertyValueChanged(Base control)
+        protected virtual void OnValueChanged(Base control)
         {
-            if (OnChange != null)
-                OnChange.Invoke(this);
+            if (ValueChanged != null)
+                ValueChanged.Invoke(this);
         }
 
-        private void onEditingChanged()
+        private void OnEditingChanged()
         {
             m_Label.Redraw();
         }
 
-        private void onHoverChanged()
+        private void OnHoverChanged()
         {
             m_Label.Redraw();
         }

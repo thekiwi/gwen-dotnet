@@ -7,7 +7,7 @@ namespace Gwen.Control.Property
     /// </summary>
     public class Text : Base
     {
-        protected TextBox m_TextBox;
+        protected readonly TextBox m_TextBox;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Text"/> class.
@@ -18,7 +18,7 @@ namespace Gwen.Control.Property
             m_TextBox = new TextBox(this);
             m_TextBox.Dock = Pos.Fill;
             m_TextBox.ShouldDrawBackground = false;
-            m_TextBox.OnTextChanged += onValueChanged;
+            m_TextBox.TextChanged += OnValueChanged;
         }
 
         /// <summary>

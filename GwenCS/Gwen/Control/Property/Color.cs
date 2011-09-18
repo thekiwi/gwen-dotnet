@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Gwen.ControlInternal;
 
 namespace Gwen.Control.Property
@@ -9,7 +8,7 @@ namespace Gwen.Control.Property
     /// </summary>
     public class Color : Text
     {
-        protected ControlInternal.ColorButton m_Button;
+        protected readonly ColorButton m_Button;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Color"/> class.
@@ -21,14 +20,23 @@ namespace Gwen.Control.Property
             m_Button.Dock = Pos.Right;
             m_Button.Width = 20;
             m_Button.Margin = new Margin(1, 1, 1, 2);
-            m_Button.OnPress += onButtonPress;
+            m_Button.Clicked += OnButtonPressed;
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            m_Button.Dispose();
+            base.Dispose();
         }
 
         /// <summary>
         /// Color-select button press handler.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onButtonPress(Control.Base control)
+        protected virtual void OnButtonPressed(Control.Base control)
         {
             Menu menu = new Menu(GetCanvas());
             menu.SetSize(256, 180);
@@ -43,7 +51,7 @@ namespace Gwen.Control.Property
 
             picker.SetColor(System.Drawing.Color.FromArgb(255, 
                 Convert.ToInt32(split[0]), Convert.ToInt32(split[1]), Convert.ToInt32(split[2])), false, true);
-            picker.OnColorChanged += onColorChanged;
+            picker.ColorChanged += OnColorChanged;
 
             menu.Open(Pos.Right | Pos.Top);
         }
@@ -52,7 +60,7 @@ namespace Gwen.Control.Property
         /// Color changed handler.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onColorChanged(Control.Base control)
+        protected virtual void OnColorChanged(Control.Base control)
         {
             HSVColorPicker picker = control as HSVColorPicker;
             System.Drawing.Color col = picker.SelectedColor;

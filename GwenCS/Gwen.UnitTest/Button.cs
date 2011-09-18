@@ -11,11 +11,13 @@ namespace Gwen.UnitTest
             Control.Button buttonA = new Control.Button(this);
             buttonA.Text = "Event tester";
             buttonA.SetBounds(200, 30, 300, 200);
-            buttonA.OnPress += onButtonA;
+            buttonA.Pressed += onButtonAp;
+            buttonA.Clicked += onButtonAc;
+            buttonA.Released += onButtonAr;
 
             var buttonB = new Control.Button(this);
             buttonB.Text = "\u0417\u0430\u043C\u0435\u0436\u043D\u0430\u044F \u043C\u043E\u0432\u0430";
-            buttonB.SetPos(0, 20);
+            buttonB.SetPosition(0, 20);
 
             var buttonC = new Control.Button(this);
             buttonC.Text = "Image button";
@@ -30,9 +32,9 @@ namespace Gwen.UnitTest
             var buttonE = new Control.Button(this);
             buttonE.Text = "Toggle me";
             buttonE.IsToggle = true;
-            buttonE.OnToggle += onToggle;
-            buttonE.OnToggleOn += onToggleOn;
-            buttonE.OnToggleOff += onToggleOff;
+            buttonE.Toggled += onToggle;
+            buttonE.ToggledOn += onToggleOn;
+            buttonE.ToggledOff += onToggleOff;
             Align.PlaceBelow(buttonE, buttonD, 10);
 
             var buttonF = new Control.Button(this);
@@ -46,14 +48,24 @@ namespace Gwen.UnitTest
             Align.PlaceBelow(buttonG, buttonF, 10);
         }
 
-        private void onButtonA(Base control)
+        private void onButtonAc(Base control)
         {
-            UnitPrint("Button: OnPress");
+            UnitPrint("Button: Clicked");
+        }
+
+        private void onButtonAp(Base control)
+        {
+            UnitPrint("Button: Pressed");
+        }
+
+        private void onButtonAr(Base control)
+        {
+            UnitPrint("Button: Released");
         }
 
         private void onToggle(Base control)
         {
-            UnitPrint("Button: OnToggle");
+            UnitPrint("Button: Toggled");
         }
 
         private void onToggleOn(Base control)
@@ -63,7 +75,7 @@ namespace Gwen.UnitTest
 
         private void onToggleOff(Base control)
         {
-            UnitPrint("Button: OnToggleOff");
+            UnitPrint("Button: ToggledOff");
         }
     }
 }

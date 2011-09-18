@@ -1,69 +1,20 @@
 ﻿using System;
 using Gwen.Control.Layout;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
-    /// <summary>
-    /// Numeric up arrow.
-    /// </summary>
-    public class NumericUpDownButton_Up : Button
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NumericUpDownButton_Up"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public NumericUpDownButton_Up(Base parent)
-            : base(parent)
-        {
-            SetSize(7, 7);
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawNumericUpDownButton(this, IsDepressed, true);
-        }
-    }
-
-    /// <summary>
-    /// Numeric down arrow.
-    /// </summary>
-    internal class NumericUpDownButton_Down : Button
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NumericUpDownButton_Down"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public NumericUpDownButton_Down(Base parent)
-            : base(parent)
-        {
-            SetSize(7, 7);
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawNumericUpDownButton(this, IsDepressed, false);
-        }
-    }
-
     /// <summary>
     /// Numeric up/down.
     /// </summary>
     public class NumericUpDown : TextBoxNumeric
     {
-        protected int m_Max;
-        protected int m_Min;
+        private int m_Max;
+        private int m_Min;
 
         private readonly Splitter m_Splitter;
-        private readonly NumericUpDownButton_Up m_Up;
-        private readonly NumericUpDownButton_Down m_Down;
+        private readonly UpDownButton_Up m_Up;
+        private readonly UpDownButton_Down m_Down;
 
         /// <summary>
         /// Minimum value.
@@ -88,13 +39,13 @@ namespace Gwen.Control
             m_Splitter.Dock = Pos.Right;
             m_Splitter.SetSize(13, 13);
 
-            m_Up = new NumericUpDownButton_Up(m_Splitter);
-            m_Up.OnPress += onButtonUp;
+            m_Up = new UpDownButton_Up(m_Splitter);
+            m_Up.Clicked += OnButtonUp;
             m_Up.IsTabable = false;
             m_Splitter.SetPanel(0, m_Up, false);
 
-            m_Down = new NumericUpDownButton_Down(m_Splitter);
-            m_Down.OnPress += onButtonDown;
+            m_Down = new UpDownButton_Down(m_Splitter);
+            m_Down.Clicked += OnButtonDown;
             m_Down.IsTabable = false;
             m_Down.Padding = new Padding(0, 1, 1, 0);
             m_Splitter.SetPanel(1, m_Down, false);
@@ -106,9 +57,9 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Invoked when the value has changed.
+        /// Invoked when the value has been changed.
         /// </summary>
-        public event ControlCallback OnValueChanged;
+        public event GwenEventHandler ValueChanged;
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -128,9 +79,9 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeyUp(bool down)
+        protected override bool OnKeyUp(bool down)
         {
-            if (down) onButtonUp(null);
+            if (down) OnButtonUp(null);
             return true;
         }
 
@@ -141,9 +92,9 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeyDown(bool down)
+        protected override bool OnKeyDown(bool down)
         {
-            if (down) onButtonDown(null);
+            if (down) OnButtonDown(null);
             return true;
         }
 
@@ -151,7 +102,7 @@ namespace Gwen.Control
         /// Handler for the button up event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onButtonUp(Base control)
+        protected virtual void OnButtonUp(Base control)
         {
             Value = m_Value + 1;
         }
@@ -160,7 +111,7 @@ namespace Gwen.Control
         /// Handler for the button down event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onButtonDown(Base control)
+        protected virtual void OnButtonDown(Base control)
         {
             Value = m_Value - 1;
         }
@@ -202,11 +153,11 @@ namespace Gwen.Control
         /// <summary>
         /// Handler for the text changed event.
         /// </summary>
-        protected override void onTextChanged()
+        protected override void OnTextChanged()
         {
-            base.onTextChanged();
-            if (OnValueChanged != null)
-                OnValueChanged.Invoke(this);
+            base.OnTextChanged();
+            if (ValueChanged != null)
+                ValueChanged.Invoke(this);
         }
     }
 }

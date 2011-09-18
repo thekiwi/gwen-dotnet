@@ -4,24 +4,54 @@ using Gwen.Control;
 
 namespace Gwen.ControlInternal
 {
+    /// <summary>
+    /// Displays text.
+    /// </summary>
     public class Text : Base
     {
-        protected String m_String;
-        protected Font m_Font;
+        private String m_String;
+        private Font m_Font;
 
-        public Font Font { get { return m_Font; } set { m_Font = value; RefreshSize(); Invalidate(); } }
+        /// <summary>
+        /// Font used to display the text.
+        /// </summary>
+        public Font Font { get { return m_Font; } set { m_Font = value; SizeToContents(); Invalidate(); } }
+
+        /// <summary>
+        /// Text to display.
+        /// </summary>
         public String String
         {
             get { return m_String; } 
-            set { m_String = value; if (AutoSizeToContents) RefreshSize(); Invalidate(); /*InvalidateParent();*/ }
+            set { m_String = value; if (AutoSizeToContents) SizeToContents(); Invalidate(); /*InvalidateParent();*/ }
         }
+
+        /// <summary>
+        /// Text color.
+        /// </summary>
         public Color TextColor { get; set; }
+
+        /// <summary>
+        /// Determines whether the control should be automatically resized to fit the text.
+        /// </summary>
         public bool AutoSizeToContents { get; set; } // [omeg] added
+
+        /// <summary>
+        /// Text length in characters.
+        /// </summary>
         public int Length { get { return String.Length; } }
 
+        /// <summary>
+        /// Text color override - used by tooltips.
+        /// </summary>
         public Color TextColorOverride { get; set; }
 
-        public Text(Base parent) : base(parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Text"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
+        public Text(Base parent)
+            : base(parent)
         {
             Font = Skin.DefaultFont;
             String = string.Empty;
@@ -30,6 +60,10 @@ namespace Gwen.ControlInternal
             TextColorOverride = Color.FromArgb(0, 255, 255, 255); // A==0, override disabled
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             if (Length == 0 || Font == null) return;
@@ -41,24 +75,34 @@ namespace Gwen.ControlInternal
             skin.Renderer.RenderText(Font, Point.Empty, String);
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
-            RefreshSize();
+            SizeToContents();
         }
 
-        protected override void onScaleChanged()
+        /// <summary>
+        /// Handler invoked when control's scale changes.
+        /// </summary>
+        protected override void OnScaleChanged()
         {
             Invalidate();
         }
 
-        public void RefreshSize()
+        /// <summary>
+        /// Sizes the control to its contents.
+        /// </summary>
+        public void SizeToContents()
         {
             if (String == null)
                 return;
 
             if (Font == null)
             {
-                throw new InvalidOperationException("Text.RefreshSize() - No Font!!\n");
+                throw new InvalidOperationException("Text.SizeToContents() - No Font!!\n");
             }
 
             Point p = new Point(1, Font.Size);
@@ -76,6 +120,11 @@ namespace Gwen.ControlInternal
             Invalidate();
         }
 
+        /// <summary>
+        /// Gets the coordinates of specified character in the text.
+        /// </summary>
+        /// <param name="index">Character index.</param>
+        /// <returns>Character position in local coordinates.</returns>
         public Point GetCharacterPosition(int index)
         {
             if (Length == 0 || index == 0)
@@ -92,6 +141,11 @@ namespace Gwen.ControlInternal
             return p;
         }
 
+        /// <summary>
+        /// Searches for a character closest to given point.
+        /// </summary>
+        /// <param name="p">Point.</param>
+        /// <returns>Character index.</returns>
         public int GetClosestCharacter(Point p)
         {
             int distance = Global.MaxCoord;

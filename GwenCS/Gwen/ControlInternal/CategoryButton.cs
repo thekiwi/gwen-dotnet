@@ -3,17 +3,28 @@ using Gwen.Control;
 
 namespace Gwen.ControlInternal
 {
+    /// <summary>
+    /// Item in CollapsibleCategory.
+    /// </summary>
     public class CategoryButton : Button
     {
-        internal bool m_Alt;
+        internal bool m_Alt; // for alternate coloring
 
-        internal CategoryButton(Base parent) : base(parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryButton"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
+        public CategoryButton(Base parent) : base(parent)
         {
             Alignment = Pos.Left | Pos.CenterV;
             m_Alt = false;
             IsToggle = true;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             if (m_Alt)
@@ -38,6 +49,9 @@ namespace Gwen.ControlInternal
             skin.Renderer.DrawFilledRect(RenderBounds);
         }
 
+        /// <summary>
+        /// Updates control colors.
+        /// </summary>
         public override void UpdateColors()
         {
             if (m_Alt)

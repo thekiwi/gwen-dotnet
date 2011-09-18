@@ -3,15 +3,26 @@ using Gwen.Control;
 
 namespace Gwen.ControlInternal
 {
+    /// <summary>
+    /// Header of CollapsibleCategory.
+    /// </summary>
     public class CategoryHeaderButton : Button
     {
-        public CategoryHeaderButton(Base parent) : base(parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="CategoryHeaderButton"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
+        public CategoryHeaderButton(Base parent)
+            : base(parent)
         {
             ShouldDrawBackground = false;
             IsToggle = true;
             Alignment = Pos.Center;
         }
 
+        /// <summary>
+        /// Updates control colors.
+        /// </summary>
         public override void UpdateColors()
         {
             if (IsDepressed || ToggleState)

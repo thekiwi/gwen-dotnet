@@ -11,19 +11,19 @@ namespace Gwen.Control
         private readonly LabelClickable m_Label;
 
         /// <summary>
-        /// Invoked when the control is checked.
+        /// Invoked when the control has been checked.
         /// </summary>
-        public event ControlCallback OnChecked;
+        public event GwenEventHandler Checked;
 
         /// <summary>
-        /// Invoked when the control is unchecked.
+        /// Invoked when the control has been unchecked.
         /// </summary>
-        public event ControlCallback OnUnChecked;
+        public event GwenEventHandler UnChecked;
 
         /// <summary>
-        /// Invoked when the control's check is changed.
+        /// Invoked when the control's check has been changed.
         /// </summary>
-        public event ControlCallback OnCheckChanged;
+        public event GwenEventHandler CheckChanged;
 
         /// <summary>
         /// Indicates whether the control is checked.
@@ -39,18 +39,19 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="LabeledCheckBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabeledCheckBox(Base parent) : base(parent)
+        public LabeledCheckBox(Base parent)
+            : base(parent)
         {
             SetSize(200, 19);
             m_CheckBox = new CheckBox(this);
             m_CheckBox.Dock = Pos.Left;
             m_CheckBox.Margin = new Margin(0, 2, 2, 2);
             m_CheckBox.IsTabable = false;
-            m_CheckBox.OnCheckChanged += onCheckChanged;
+            m_CheckBox.CheckChanged += OnCheckChanged;
 
             m_Label = new LabelClickable(this);
             m_Label.Dock = Pos.Fill;
-            m_Label.OnPress += m_CheckBox.Press;
+            m_Label.Clicked += m_CheckBox.Press;
             m_Label.IsTabable = false;
 
             IsTabable = false;
@@ -67,23 +68,23 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Handler for OnCheckChanged event.
+        /// Handler for CheckChanged event.
         /// </summary>
-        protected virtual void onCheckChanged(Base control)
+        protected virtual void OnCheckChanged(Base control)
         {
             if (m_CheckBox.IsChecked)
             {
-                if (OnChecked != null)
-                    OnChecked.Invoke(this);
+                if (Checked != null)
+                    Checked.Invoke(this);
             }
             else
             {
-                if (OnUnChecked != null)
-                    OnUnChecked.Invoke(this);
+                if (UnChecked != null)
+                    UnChecked.Invoke(this);
             }
 
-            if (OnCheckChanged != null)
-                OnCheckChanged.Invoke(this);
+            if (CheckChanged != null)
+                CheckChanged.Invoke(this);
         }
 
         /// <summary>
@@ -93,9 +94,9 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeySpace(bool down)
+        protected override bool OnKeySpace(bool down)
         {
-            base.onKeySpace(down);
+            base.OnKeySpace(down);
             if (!down) 
                 m_CheckBox.IsChecked = !m_CheckBox.IsChecked; 
             return true;

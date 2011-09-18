@@ -8,14 +8,14 @@ namespace Gwen.Control
     public class CollapsibleList : ScrollControl
     {
         /// <summary>
-        /// Invoked when an entry is selected.
+        /// Invoked when an entry has been selected.
         /// </summary>
-        public event ControlCallback OnSelection;
+        public event GwenEventHandler ItemSelected;
 
         /// <summary>
-        /// Invoked when the category collapsed state changes (header button is pressed).
+        /// Invoked when a category collapsed state has been changed (header button has been pressed).
         /// </summary>
-        public event ControlCallback OnCollapsed;
+        public event GwenEventHandler CategoryCollapsed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CollapsibleList"/> class.
@@ -44,27 +44,25 @@ namespace Gwen.Control
         }
 
         // todo: iterator, make this as function? check if works
+
         /// <summary>
         /// Selected entry.
         /// </summary>
-        public Button Selected
+        public Button GetSelectedButton()
         {
-            get
+            foreach (Base child in Children)
             {
-                foreach (Base child in Children)
-                {
-                    CollapsibleCategory cat = child as CollapsibleCategory;
-                    if (cat == null)
-                        continue;
+                CollapsibleCategory cat = child as CollapsibleCategory;
+                if (cat == null)
+                    continue;
 
-                    Button button = cat.Selected;
+                Button button = cat.GetSelectedButton();
 
-                    if (button != null)
-                        return button;
-                }
-
-                return null;
+                if (button != null)
+                    return button;
             }
+
+            return null;
         }
 
         /// <summary>
@@ -76,8 +74,8 @@ namespace Gwen.Control
             category.Parent = this;
             category.Dock = Pos.Top;
             category.Margin = new Margin(1, 0, 1, 1);
-            category.OnSelection += onCategorySelect;
-            category.OnCollapsed += onCategoryCollapse;
+            category.Selected += OnCategorySelected;
+            category.Collapsed += OnCategoryCollapsed;
             // this relies on fact that category.m_List is set to its parent
         }
 
@@ -119,29 +117,29 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Handler for OnSelection event.
+        /// Handler for ItemSelected event.
         /// </summary>
         /// <param name="control">Event source: <see cref="CollapsibleList"/>.</param>
-        protected virtual void onCategorySelect(Base control)
+        protected virtual void OnCategorySelected(Base control)
         {
             CollapsibleCategory cat = control as CollapsibleCategory;
             if (cat == null) return;
 
-            if (OnSelection != null)
-                OnSelection.Invoke(this);
+            if (ItemSelected != null)
+                ItemSelected.Invoke(this);
         }
 
         /// <summary>
         /// Handler for category collapsed event.
         /// </summary>
         /// <param name="control">Event source: <see cref="CollapsibleCategory"/>.</param>
-        protected virtual void onCategoryCollapse(Base control)
+        protected virtual void OnCategoryCollapsed(Base control)
         {
             CollapsibleCategory cat = control as CollapsibleCategory;
             if (cat == null) return;
 
-            if (OnCollapsed != null)
-                OnCollapsed.Invoke(control);
+            if (CategoryCollapsed != null)
+                CategoryCollapsed.Invoke(control);
         }
     }
 }

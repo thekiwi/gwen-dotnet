@@ -14,7 +14,7 @@ namespace Gwen.UnitTest
             m_CurZoom = 0;
 
             m_Splitter = new Control.CrossSplitter(this);
-            m_Splitter.SetPos(0, 0);
+            m_Splitter.SetPosition(0, 0);
             m_Splitter.Dock = Pos.Fill;
 
             {
@@ -48,28 +48,28 @@ namespace Gwen.UnitTest
             {
                 Control.Button pButton = new Control.Button(pStatus);
                 pButton.SetText("Zoom");
-                pButton.OnPress += ZoomTest;
+                pButton.Clicked += ZoomTest;
                 pStatus.AddControl(pButton, false);
             }
 
             {
                 Control.Button pButton = new Control.Button(pStatus);
                 pButton.SetText("UnZoom");
-                pButton.OnPress += UnZoomTest;
+                pButton.Clicked += UnZoomTest;
                 pStatus.AddControl(pButton, false);
             }
 
             {
                 Control.Button pButton = new Control.Button(pStatus);
                 pButton.SetText("CenterPanels");
-                pButton.OnPress += CenterPanels;
+                pButton.Clicked += CenterPanels;
                 pStatus.AddControl(pButton, true);
             }
 
             {
                 Control.Button pButton = new Control.Button(pStatus);
                 pButton.SetText("Splitters");
-                pButton.OnPress += ToggleSplitters;
+                pButton.Clicked += ToggleSplitters;
                 pStatus.AddControl(pButton, true);
             }
         }

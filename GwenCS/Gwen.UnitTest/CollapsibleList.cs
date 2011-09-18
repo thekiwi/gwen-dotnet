@@ -10,9 +10,9 @@ namespace Gwen.UnitTest
         {
             Control.CollapsibleList control = new Control.CollapsibleList(this);
             control.SetSize(100, 200);
-            control.SetPos(10, 10);
-            control.OnSelection += OnSelection;
-            control.OnCollapsed += OnCollapsed;
+            control.SetPosition(10, 10);
+            control.ItemSelected += OnSelection;
+            control.CategoryCollapsed += OnCollapsed;
 
             {
                 Control.CollapsibleCategory cat = control.Add("Category One");
@@ -53,13 +53,13 @@ namespace Gwen.UnitTest
         void OnSelection(Base control)
         {
             Control.CollapsibleList list = control as Control.CollapsibleList;
-            UnitPrint(String.Format("CollapsibleList: Selected: {0}", list.Selected.Text));
+            UnitPrint(String.Format("CollapsibleList: Selected: {0}", list.GetSelectedButton().Text));
         }
 
         void OnCollapsed(Base control)
         {
             Control.CollapsibleCategory cat = control as Control.CollapsibleCategory;
-            UnitPrint(String.Format("CollapsibleCategory: Collapsed: {0} {1}", cat.Text, cat.IsCollapsed));
+            UnitPrint(String.Format("CollapsibleCategory: CategoryCollapsed: {0} {1}", cat.Text, cat.IsCollapsed));
         }
     }
 }

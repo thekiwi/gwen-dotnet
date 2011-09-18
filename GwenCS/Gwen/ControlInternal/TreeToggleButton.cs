@@ -4,29 +4,28 @@ using Gwen.Control;
 namespace Gwen.ControlInternal
 {
     /// <summary>
-    /// Modal control for windows.
+    /// Tree node toggle button (the little plus sign).
     /// </summary>
-    public class Modal : Base
+    public class TreeToggleButton : Button
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Modal"/> class.
+        /// Initializes a new instance of the <see cref="TreeToggleButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Modal(Base parent)
+        public TreeToggleButton(Base parent)
             : base(parent)
         {
-            KeyboardInputEnabled = true;
-            MouseInputEnabled = true;
-            ShouldDrawBackground = true;
+            IsToggle = true;
+            IsTabable = false;
         }
 
         /// <summary>
-        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void RenderFocus(Skin.Base skin)
         {
-            SetBounds(0, 0, GetCanvas().Width, GetCanvas().Height);
+
         }
 
         /// <summary>
@@ -35,9 +34,7 @@ namespace Gwen.ControlInternal
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            if (!ShouldDrawBackground)
-                return;
-            skin.DrawModalControl(this);
+            skin.DrawTreeButton(this, ToggleState);
         }
     }
 }

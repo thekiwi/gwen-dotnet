@@ -9,13 +9,13 @@ namespace Gwen.UnitTest
         public ColorPickers(Base parent) : base(parent)
         {
             ColorPicker rgbPicker = new ColorPicker(this);
-            rgbPicker.SetPos(10, 10);
+            rgbPicker.SetPosition(10, 10);
 
-            rgbPicker.OnColorChanged += ColorChanged;
+            rgbPicker.ColorChanged += ColorChanged;
 
             HSVColorPicker hsvPicker = new HSVColorPicker(this);
-            hsvPicker.SetPos(300, 10);
-            hsvPicker.OnColorChanged += ColorChanged;
+            hsvPicker.SetPosition(300, 10);
+            hsvPicker.ColorChanged += ColorChanged;
         }
 
         void ColorChanged(Base control)

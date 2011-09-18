@@ -19,7 +19,7 @@ namespace Gwen.UnitTest
                     Base page = button.Page;
 
                     {
-                        Control.RadioButtonController radio = new Control.RadioButtonController(page);
+                        Control.RadioButtonGroup radio = new Control.RadioButtonGroup(page);
                         radio.SetBounds(10, 10, 100, 100);
 
                         radio.AddOption("Top").Select();
@@ -27,7 +27,7 @@ namespace Gwen.UnitTest
                         radio.AddOption("Left");
                         radio.AddOption("Right");
 
-                        radio.OnSelectionChange += OnDockChange;
+                        radio.SelectionChanged += OnDockChange;
 
                     }
                 }
@@ -53,7 +53,7 @@ namespace Gwen.UnitTest
 
         void OnDockChange(Base control)
         {
-            RadioButtonController rc = (RadioButtonController)control;
+            RadioButtonGroup rc = (RadioButtonGroup)control;
 
             if (rc.SelectedLabel == "Top") m_DockControl.TabStripPosition = Pos.Top;
             if (rc.SelectedLabel == "Bottom") m_DockControl.TabStripPosition = Pos.Bottom;

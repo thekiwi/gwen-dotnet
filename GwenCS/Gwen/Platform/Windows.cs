@@ -7,12 +7,20 @@ using Microsoft.Win32;
 
 namespace Gwen.Platform
 {
+    /// <summary>
+    /// Windows-specific utility functions.
+    /// </summary>
     public static class Windows
     {
         private const String FontRegKey = @"SOFTWARE\Microsoft\Windows NT\CurrentVersion\Fonts";
 
         private static Dictionary<String, String> m_FontPaths;
 
+        /// <summary>
+        /// Gets a font file path from font name.
+        /// </summary>
+        /// <param name="fontName">Font name.</param>
+        /// <returns>Font file path.</returns>
         public static String GetFontPath(String fontName)
         {
             if (m_FontPaths == null)

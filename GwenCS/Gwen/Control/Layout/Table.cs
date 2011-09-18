@@ -8,11 +8,13 @@ namespace Gwen.Control.Layout
     /// </summary>
     public class Table : Base
     {
-        protected bool m_SizeToContents;
-        protected int m_ColumnCount;
-        protected readonly int m_DefaultRowHeight;
+        // only children of this control should be TableRow.
 
-        protected int[] m_ColumnWidth = new int[TableRow.MaxColumns];
+        private bool m_SizeToContents;
+        private int m_ColumnCount;
+        private readonly int m_DefaultRowHeight;
+
+        private readonly int[] m_ColumnWidth = new int[TableRow.MaxColumns];
 
         /// <summary>
         /// Column count (default 1).
@@ -138,9 +140,9 @@ namespace Gwen.Control.Layout
         /// <summary>
         /// Removes all rows.
         /// </summary>
-        public void Clear()
+        public void RemoveAll()
         {
-            foreach (TableRow child in Children.OfType<TableRow>())
+            foreach (TableRow child in Children) // all should be of type TableRow
             {
                 RemoveRow(child);
             }
@@ -160,7 +162,7 @@ namespace Gwen.Control.Layout
             }
 
             bool even = false;
-            foreach (TableRow row in Children.OfType<TableRow>())
+            foreach (TableRow row in Children)
             {
                 row.EvenRow = even;
                 even = !even;
@@ -200,15 +202,15 @@ namespace Gwen.Control.Layout
                 m_ColumnWidth[i] = 10;
             }
 
-            foreach (TableRow row in Children.OfType<TableRow>())
+            foreach (TableRow row in Children)
             {
                 row.SizeToContents();
 
                 for (int i = 0; i < TableRow.MaxColumns; i++)
                 {
-                    if (null != row.m_Columns[i])
+                    if (null != row.GetColumn(i))
                     {
-                        m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], row.m_Columns[i].Width);
+                        m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], row.GetColumn(i).Width);
                     }
                 }
                 //iBottom += pRow->Height();

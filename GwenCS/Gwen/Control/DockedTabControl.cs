@@ -18,7 +18,8 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="DockedTabControl"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public DockedTabControl(Base parent) : base(parent)
+        public DockedTabControl(Base parent)
+            : base(parent)
         {
             Dock = Pos.Fill;
 

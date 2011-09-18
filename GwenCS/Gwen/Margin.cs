@@ -10,6 +10,14 @@ namespace Gwen
         public int Left;
         public int Right;
 
+        // common values
+        public static Margin Zero = new Margin(0, 0, 0, 0);
+        public static Margin One = new Margin(1, 1, 1, 1);
+        public static Margin Two = new Margin(2, 2, 2, 2);
+        public static Margin Three = new Margin(3, 3, 3, 3);
+        public static Margin Four = new Margin(4, 4, 4, 4);
+        public static Margin Five = new Margin(5, 5, 5, 5);
+
         public Margin(int l, int t, int r, int b)
         {
             Top = t;

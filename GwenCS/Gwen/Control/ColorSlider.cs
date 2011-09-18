@@ -8,23 +8,24 @@ namespace Gwen.Control
     /// </summary>
     public class ColorSlider : Base
     {
-        protected int m_SelectedDist;
-        protected bool m_Depressed;
-        protected Texture m_Texture; // [omeg] added
+        private int m_SelectedDist;
+        private bool m_Depressed;
+        private Texture m_Texture; // [omeg] added
 
         /// <summary>
-        /// Invoked when the selected color has changed.
+        /// Invoked when the selected color has been changed.
         /// </summary>
-        public event ControlCallback OnColorChanged;
+        public event GwenEventHandler ColorChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorSlider"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorSlider(Base parent) : base(parent)
+        public ColorSlider(Base parent)
+            : base(parent)
         {
             SetSize(32, 128);
-            MouseInputEnabled=true;
+            MouseInputEnabled = true;
             m_Depressed = false;
         }
 
@@ -87,7 +88,7 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
             m_Depressed = down;
             if (down)
@@ -95,7 +96,7 @@ namespace Gwen.Control
             else
                 Global.MouseFocus = null;
 
-            onMouseMoved(x, y, 0, 0);
+            OnMouseMoved(x, y, 0, 0);
         }
 
         /// <summary>
@@ -105,7 +106,7 @@ namespace Gwen.Control
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        protected override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
             if (m_Depressed)
             {
@@ -117,8 +118,8 @@ namespace Gwen.Control
                     cursorPos.Y = Height;
 
                 m_SelectedDist = cursorPos.Y;
-                if (OnColorChanged != null)
-                    OnColorChanged.Invoke(this);
+                if (ColorChanged != null)
+                    ColorChanged.Invoke(this);
             }
         }
 
@@ -134,8 +135,8 @@ namespace Gwen.Control
 
             m_SelectedDist = (int)(hsv.h / 360 * Height);
 
-            if (OnColorChanged != null)
-                OnColorChanged.Invoke(this);
+            if (ColorChanged != null)
+                ColorChanged.Invoke(this);
         }
 
         /// <summary>

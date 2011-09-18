@@ -1,20 +1,23 @@
 ﻿using System;
+using Gwen.Control;
 
-namespace Gwen.Control
+namespace Gwen.ControlInternal
 {
-    public class PropertyRowLabel : Label
+    /// <summary>
+    /// Tree node label.
+    /// </summary>
+    public class TreeNodeLabel : Button
     {
-        private readonly PropertyRow m_PropertyRow;
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyRowLabel"/> class.
+        /// Initializes a new instance of the <see cref="TreeNodeLabel"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public PropertyRowLabel(PropertyRow parent)
+        public TreeNodeLabel(Base parent)
             : base(parent)
         {
             Alignment = Pos.Left | Pos.CenterV;
-            m_PropertyRow = parent;
+            ShouldDrawBackground = false;
+            Height = 16;
         }
 
         /// <summary>
@@ -28,19 +31,19 @@ namespace Gwen.Control
                 return;
             }
 
-            if (m_PropertyRow != null && m_PropertyRow.IsEditing)
+            if (IsDepressed || ToggleState)
             {
-                TextColor = Skin.Colors.Properties.Label_Selected;
+                TextColor = Skin.Colors.Tree.Selected;
                 return;
             }
 
-            if (m_PropertyRow != null && m_PropertyRow.IsHovered)
+            if (IsHovered)
             {
-                TextColor = Skin.Colors.Properties.Label_Hover;
+                TextColor = Skin.Colors.Tree.Hover;
                 return;
             }
 
-            TextColor = Skin.Colors.Properties.Label_Normal;
+            TextColor = Skin.Colors.Tree.Normal;
         }
     }
 }

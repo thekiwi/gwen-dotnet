@@ -3,6 +3,9 @@ using Gwen.DragDrop;
 
 namespace Gwen.Control
 {
+    /// <summary>
+    /// Titlebar for DockedTabControl.
+    /// </summary>
     public class TabTitleBar : Label
     {
         public TabTitleBar(Base parent) : base(parent)
@@ -14,6 +17,10 @@ namespace Gwen.Control
             DragAndDrop_SetPackage(true, "TabWindowMove");
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
             skin.DrawTabTitleBar(this);

@@ -8,15 +8,16 @@ namespace Gwen.Control
     /// </summary>
     public class ImagePanel : Base
     {
-        protected readonly Texture m_Texture;
-        protected readonly float[] m_uv;
-        protected Color m_DrawColor;
+        private readonly Texture m_Texture;
+        private readonly float[] m_uv;
+        private Color m_DrawColor;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ImagePanel"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ImagePanel(Base parent) : base(parent)
+        public ImagePanel(Base parent)
+            : base(parent)
         {
             m_uv = new float[4];
             m_Texture = new Texture(Skin.Renderer);
@@ -54,11 +55,6 @@ namespace Gwen.Control
             set { m_Texture.Load(value); }
         }
 
-        public void SetDrawColor(Color c)
-        {
-            m_DrawColor = c;
-        }
-
         /// <summary>
         /// Renders the control using specified skin.
         /// </summary>
@@ -70,6 +66,9 @@ namespace Gwen.Control
             skin.Renderer.DrawTexturedRect(m_Texture, RenderBounds, m_uv[0], m_uv[1], m_uv[2], m_uv[3]);
         }
 
+        /// <summary>
+        /// Sizes the control to its contents.
+        /// </summary>
         public virtual void SizeToContents()
         {
             SetSize(m_Texture.Width, m_Texture.Height);

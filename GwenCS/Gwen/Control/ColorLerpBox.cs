@@ -8,15 +8,15 @@ namespace Gwen.Control
     /// </summary>
     public class ColorLerpBox : Base
     {
-        protected Point m_CursorPos;
-        protected bool m_Depressed;
-        protected byte m_Hue;
-        protected Texture m_Texture; // [omeg] added
+        private Point m_CursorPos;
+        private bool m_Depressed;
+        private byte m_Hue;
+        private Texture m_Texture; // [omeg] added
 
         /// <summary>
-        /// Invoked when the selected color has changed.
+        /// Invoked when the selected color has been changed.
         /// </summary>
-        public event ControlCallback OnColorChanged;
+        public event GwenEventHandler ColorChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ColorLerpBox"/> class.
@@ -75,8 +75,8 @@ namespace Gwen.Control
             }
             Invalidate();
 
-            if (OnColorChanged != null)
-                OnColorChanged.Invoke(this);
+            if (ColorChanged != null)
+                ColorChanged.Invoke(this);
         }
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Gwen.Control
         /// <param name="y">Y coordinate.</param>
         /// <param name="dx">X change.</param>
         /// <param name="dy">Y change.</param>
-        protected override void onMouseMoved(int x, int y, int dx, int dy)
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
             if (m_Depressed)
             {
@@ -102,8 +102,8 @@ namespace Gwen.Control
                 if (m_CursorPos.Y > Height)
                     m_CursorPos.Y = Height;
 
-                if (OnColorChanged != null)
-                    OnColorChanged.Invoke(this);
+                if (ColorChanged != null)
+                    ColorChanged.Invoke(this);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Gwen.Control
         /// <param name="x">X coordinate.</param>
         /// <param name="y">Y coordinate.</param>
         /// <param name="down">If set to <c>true</c> mouse button is down.</param>
-        protected override void onMouseClickLeft(int x, int y, bool down)
+        protected override void OnMouseClickedLeft(int x, int y, bool down)
         {
             m_Depressed = down;
             if (down)
@@ -121,7 +121,7 @@ namespace Gwen.Control
             else
                 Global.MouseFocus = null;
 
-            onMouseMoved(x, y, 0, 0);
+            OnMouseMoved(x, y, 0, 0);
         }
 
         /// <summary>

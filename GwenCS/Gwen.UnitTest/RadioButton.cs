@@ -8,7 +8,7 @@ namespace Gwen.UnitTest
         public RadioButton(Base parent)
             : base(parent)
         {
-            Control.RadioButtonController rbc = new Control.RadioButtonController(this);
+            Control.RadioButtonGroup rbc = new Control.RadioButtonGroup(this);
 
             rbc.AddOption("Option 1");
             rbc.AddOption("Option 2");
@@ -17,14 +17,14 @@ namespace Gwen.UnitTest
 
             rbc.SetBounds(30, 30, 200, 200);
 
-            rbc.OnSelectionChange += OnChange;
+            rbc.SelectionChanged += OnChange;
         }
 
         void OnChange(Base control)
         {
-            RadioButtonController rbc = control as RadioButtonController;
+            RadioButtonGroup rbc = control as RadioButtonGroup;
             LabeledRadioButton rb = rbc.Selected;
-            UnitPrint(String.Format("RadioButton: OnSelectionChange: {0}", rb.Text));
+            UnitPrint(String.Format("RadioButton: SelectionChanged: {0}", rb.Text));
         }
     }
 }

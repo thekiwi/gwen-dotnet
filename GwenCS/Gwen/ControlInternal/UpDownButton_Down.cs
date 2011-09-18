@@ -1,19 +1,21 @@
 ﻿using System;
+using Gwen.Control;
 
-namespace Gwen.Control
+namespace Gwen.ControlInternal
 {
     /// <summary>
-    /// Properties node.
+    /// Numeric down arrow.
     /// </summary>
-    public class PropertyTreeNode : TreeNode
+    internal class UpDownButton_Down : Button
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="PropertyTreeNode"/> class.
+        /// Initializes a new instance of the <see cref="UpDownButton_Down"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public PropertyTreeNode(Base parent) : base(parent)
+        public UpDownButton_Down(Base parent)
+            : base(parent)
         {
-            m_Title.TextColorOverride = Skin.Colors.Properties.Title;
+            SetSize(7, 7);
         }
 
         /// <summary>
@@ -22,7 +24,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawPropertyTreeNode(this, m_InnerPanel.X, m_InnerPanel.Y);
+            skin.DrawNumericUpDownButton(this, IsDepressed, false);
         }
     }
 }

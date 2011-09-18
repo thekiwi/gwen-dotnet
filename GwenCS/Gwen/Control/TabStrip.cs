@@ -5,47 +5,66 @@ using Gwen.DragDrop;
 
 namespace Gwen.Control
 {
+    /// <summary>
+    /// Tab strip - groups TabButtons and allows reordering.
+    /// </summary>
     public class TabStrip : Base
     {
-        protected Base m_TabDragControl;
-        protected bool m_AllowReorder;
+        private Base m_TabDragControl;
+        private bool m_AllowReorder;
 
+        /// <summary>
+        /// Determines whether it is possible to reorder tabs by mouse dragging.
+        /// </summary>
         public bool AllowReorder { get { return m_AllowReorder; } set { m_AllowReorder = value; } }
 
+        /// <summary>
+        /// Determines whether the control should be clipped to its bounds while rendering.
+        /// </summary>
         protected override bool ShouldClip
         {
             get { return false; }
         }
 
-        public TabStrip(Base parent) : base(parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TabStrip"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
+        public TabStrip(Base parent)
+            : base(parent)
         {
             m_AllowReorder = false;
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public override void Dispose()
         {
             foreach (var child in Children)
             {
-                TabButton button = child as TabButton;
-                if (null == button) continue;
-                button.Dispose(); // this also disposes whole page
+                if (child is TabButton)
+                    child.Dispose(); // this also disposes whole page
             }
             base.Dispose();
         }
 
-        public Pos TabPosition
+        /// <summary>
+        /// Strip position (top/left/right/bottom).
+        /// </summary>
+        public Pos StripPosition
         {
             get { return Dock; }
             set
             {
                 Dock = value;
-                if (m_Dock == Pos.Top)
+                if (Dock == Pos.Top)
                     Padding = new Padding(5, 0, 0, 0);
-                if (m_Dock == Pos.Left)
+                if (Dock == Pos.Left)
                     Padding = new Padding(0, 5, 0, 0);
-                if (m_Dock == Pos.Bottom)
+                if (Dock == Pos.Bottom)
                     Padding = new Padding(5, 0, 0, 0);
-                if (m_Dock == Pos.Right)
+                if (Dock == Pos.Right)
                     Padding = new Padding(0, 5, 0, 0);
             }
         }
@@ -89,6 +108,10 @@ namespace Gwen.Control
             return false;
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             Point largestTab = new Point(5, 5);
@@ -104,25 +127,25 @@ namespace Gwen.Control
                 Margin m = new Margin();
                 int notFirst = num > 0 ? -1 : 0;
 
-                if (m_Dock == Pos.Top)
+                if (Dock == Pos.Top)
                 {
                     m.Left = notFirst;
                     button.Dock = Pos.Left;
                 }
 
-                if (m_Dock == Pos.Left)
+                if (Dock == Pos.Left)
                 {
                     m.Top = notFirst;
                     button.Dock = Pos.Top;
                 }
 
-                if (m_Dock == Pos.Right)
+                if (Dock == Pos.Right)
                 {
                     m.Top = notFirst;
                     button.Dock = Pos.Top;
                 }
 
-                if (m_Dock == Pos.Bottom)
+                if (Dock == Pos.Bottom)
                 {
                     m.Left = notFirst;
                     button.Dock = Pos.Left;
@@ -135,10 +158,10 @@ namespace Gwen.Control
                 num++;
             }
 
-            if (m_Dock == Pos.Top || m_Dock == Pos.Bottom)
+            if (Dock == Pos.Top || Dock == Pos.Bottom)
                 SetSize(Width, largestTab.Y);
 
-            if (m_Dock == Pos.Left || m_Dock == Pos.Right)
+            if (Dock == Pos.Left || Dock == Pos.Right)
                 SetSize(largestTab.X, Height);
 
             base.Layout(skin);
@@ -176,7 +199,7 @@ namespace Gwen.Control
                 Point dropPos = droppedOn.CanvasPosToLocal(new Point(x, y));
                 m_TabDragControl.SetBounds(new Rectangle(0, 0, 3, Height));
                 m_TabDragControl.BringToFront();
-                m_TabDragControl.SetPos(droppedOn.X - 1, 0);
+                m_TabDragControl.SetPosition(droppedOn.X - 1, 0);
 
                 if (dropPos.X > droppedOn.Width/2)
                 {

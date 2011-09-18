@@ -5,6 +5,9 @@ using Gwen.Control;
 
 namespace Gwen.DragDrop
 {
+    /// <summary>
+    /// Drag and drop handling.
+    /// </summary>
     public static class DragAndDrop
     {
         public static Package CurrentPackage;
@@ -143,7 +146,7 @@ namespace Gwen.DragDrop
             return true;
         }
 
-        public static bool onMouseButton(Base hoveredControl, int x, int y, bool down)
+        public static bool OnMouseButton(Base hoveredControl, int x, int y, bool down)
         {
             if (!down)
             {
@@ -164,7 +167,7 @@ namespace Gwen.DragDrop
                 return false;
 
             // Store the last clicked on control. Don't do anything yet, 
-            // we'll check it in onMouseMoved, and if it moves further than
+            // we'll check it in OnMouseMoved, and if it moves further than
             // x pixels with the mouse down, we'll start to drag.
             m_LastPressedPos = new Point(x, y);
             m_LastPressedControl = hoveredControl;
@@ -172,7 +175,7 @@ namespace Gwen.DragDrop
             return false;
         }
 
-        public static void onMouseMoved(Base hoveredControl, int x, int y)
+        public static void OnMouseMoved(Base hoveredControl, int x, int y)
         {
             // Always keep these up to date, they're used to draw the dragged control.
             m_MouseX = x;

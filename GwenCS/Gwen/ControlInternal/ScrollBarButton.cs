@@ -3,10 +3,17 @@ using Gwen.Control;
 
 namespace Gwen.ControlInternal
 {
+    /// <summary>
+    /// Scrollbar button.
+    /// </summary>
     public class ScrollBarButton : Button
     {
-        protected Pos m_Direction;
+        private Pos m_Direction;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ScrollBarButton"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
         public ScrollBarButton(Base parent)
             : base(parent)
         {
@@ -33,9 +40,13 @@ namespace Gwen.ControlInternal
             m_Direction = Pos.Right;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            skin.DrawScrollButton(this, m_Direction, m_Depressed, IsHovered, IsDisabled);
+            skin.DrawScrollButton(this, m_Direction, IsDepressed, IsHovered, IsDisabled);
         }
     }
 }

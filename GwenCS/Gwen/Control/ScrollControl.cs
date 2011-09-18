@@ -3,22 +3,25 @@ using System.Linq;
 
 namespace Gwen.Control
 {
+    /// <summary>
+    /// Base for controls whose interior can be scrolled.
+    /// </summary>
     public class ScrollControl : Base
     {
-        protected bool m_CanScrollH;
-        protected bool m_CanScrollV;
-        protected bool m_AutoHideBars;
+        private bool m_CanScrollH;
+        private bool m_CanScrollV;
+        private bool m_AutoHideBars;
 
-        protected readonly BaseScrollBar m_VerticalScrollBar;
-        protected readonly BaseScrollBar m_HorizontalScrollBar;
+        private readonly ScrollBar m_VerticalScrollBar;
+        private readonly ScrollBar m_HorizontalScrollBar;
 
         /// <summary>
-        /// Indicates whether the control can scroll horizontally.
+        /// Indicates whether the control can be scrolled horizontally.
         /// </summary>
         public bool CanScrollH { get { return m_CanScrollH; } }
 
         /// <summary>
-        /// Indicates whether the control can scroll vertically.
+        /// Indicates whether the control can be scrolled vertically.
         /// </summary>
         public bool CanScrollV { get { return m_CanScrollV; } }
 
@@ -38,19 +41,19 @@ namespace Gwen.Control
 
             m_VerticalScrollBar = new VerticalScrollBar(this);
             m_VerticalScrollBar.Dock = Pos.Right;
-            m_VerticalScrollBar.OnBarMoved += VBarMoved;
+            m_VerticalScrollBar.BarMoved += VBarMoved;
             m_CanScrollV = true;
             m_VerticalScrollBar.NudgeAmount = 30;
 
             m_HorizontalScrollBar = new HorizontalScrollBar(this);
             m_HorizontalScrollBar.Dock = Pos.Bottom;
-            m_HorizontalScrollBar.OnBarMoved += HBarMoved;
+            m_HorizontalScrollBar.BarMoved += HBarMoved;
             m_CanScrollH = true;
             m_HorizontalScrollBar.NudgeAmount = 30;
 
             m_InnerPanel = new Base(this);
-            m_InnerPanel.SetPos(0, 0);
-            m_InnerPanel.Margin = new Margin(5, 5, 5, 5);
+            m_InnerPanel.SetPosition(0, 0);
+            m_InnerPanel.Margin = Margin.Five;
             m_InnerPanel.SendToBack();
             m_InnerPanel.MouseInputEnabled = false;
 
@@ -105,6 +108,11 @@ namespace Gwen.Control
             }
         }
 
+        /// <summary>
+        /// Enables or disables inner scrollbars.
+        /// </summary>
+        /// <param name="horizontal">Determines whether the horizontal scrollbar should be enabled.</param>
+        /// <param name="vertical">Determines whether the vertical scrollbar should be enabled.</param>
         public virtual void EnableScroll(bool horizontal, bool vertical)
         {
             m_CanScrollV = vertical;
@@ -113,9 +121,9 @@ namespace Gwen.Control
             m_HorizontalScrollBar.IsHidden = !m_CanScrollH;
         }
 
-        public virtual void SetInnerSize(int w, int h)
+        public virtual void SetInnerSize(int width, int height)
         {
-            m_InnerPanel.SetSize(w, h);
+            m_InnerPanel.SetSize(width, height);
         }
 
         protected virtual void VBarMoved(Base control)
@@ -128,18 +136,32 @@ namespace Gwen.Control
             Invalidate();
         }
 
-        protected override void onChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
+        /// <summary>
+        /// Handler invoked when control children's bounds change.
+        /// </summary>
+        /// <param name="oldChildBounds"></param>
+        /// <param name="child"></param>
+        protected override void OnChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
         {
             UpdateScrollBars();
         }
 
+        /// <summary>
+        /// Lays out the control's interior according to alignment, padding, dock etc.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
             UpdateScrollBars();
             base.Layout(skin);
         }
 
-        protected override bool onMouseWheeled(int delta)
+        /// <summary>
+        /// Handler invoked on mouse wheel event.
+        /// </summary>
+        /// <param name="delta">Scroll delta.</param>
+        /// <returns></returns>
+        protected override bool OnMouseWheeled(int delta)
         {
             if (CanScrollV && m_VerticalScrollBar.IsVisible)
             {
@@ -158,6 +180,10 @@ namespace Gwen.Control
             return false;
         }
 
+        /// <summary>
+        /// Renders the control using specified skin.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
 #if false
@@ -238,7 +264,7 @@ namespace Gwen.Control
                         m_HorizontalScrollBar.ScrollAmount);
             }
 
-            m_InnerPanel.SetPos(newInnerPanelPosX, newInnerPanelPosY);
+            m_InnerPanel.SetPosition(newInnerPanelPosX, newInnerPanelPosY);
         }
 
         public virtual void ScrollToBottom()

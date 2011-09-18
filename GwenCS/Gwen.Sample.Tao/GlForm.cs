@@ -22,7 +22,7 @@ namespace Gwen.Sample.Tao
         private Gwen.Skin.Base skin;
 
         private static Label fpsLabel;
-        private static RadioButtonController rbc2;
+        private static RadioButtonGroup rbc2;
         private static TabControl tab;
 
         private static Label _ColorText;
@@ -53,15 +53,15 @@ namespace Gwen.Sample.Tao
 
             MenuStrip ms = new MenuStrip(canvas);
             ms.Dock = Pos.Top;
-            //ms.SetPos(300, 20);
+            //ms.SetPosition(300, 20);
             var root = ms.AddItem("File");
             var item = root.Menu.AddItem("New", "test16.png");
             item.Menu.AddItem("Account");
             item.Menu.AddItem("Character", "test16.png");
-            root.Menu.AddItem("Load (works)", "test16.png").OnMenuItemSelected += Sample_OnMenuItemSelectedLoad;
+            root.Menu.AddItem("Load (works)", "test16.png").Selected += Sample_OnMenuItemSelectedLoad;
             root.Menu.AddItem("Save");
             root.Menu.AddDivider();
-            root.Menu.AddItem("Quit (works)").OnMenuItemSelected += Sample_OnMenuItemSelectedQuit;
+            root.Menu.AddItem("Quit (works)").Selected += Sample_OnMenuItemSelectedQuit;
             //ms.ShouldCacheToTexture = true;
             // ms.AddDivider(); // no vertical dividers yet
 
@@ -70,7 +70,7 @@ namespace Gwen.Sample.Tao
             root.Menu.AddItem("jaźń");
             item = root.Menu.AddItem("checkable");
             item.IsCheckable = true;
-            item.Checked = true;
+            item.IsChecked = true;
 
             /////////////////////////////////////////////////////////
             // bug: if this is moved to the end, tooltips are kind of screwed
@@ -84,7 +84,7 @@ namespace Gwen.Sample.Tao
             //sc1.ShouldCacheToTexture = true;
 
             ComboBox cb = new ComboBox(canvas);
-            cb.SetPos(200, 50);
+            cb.SetPosition(200, 50);
             cb.KeyboardInputEnabled = true;
             cb.AddItem("item 1", "a");
             cb.AddItem("item 2", "b");
@@ -102,7 +102,7 @@ namespace Gwen.Sample.Tao
             //label1.Dock = Pos.Right;
 
             Label label2 = new Label(canvas);
-            label2.SetPos(10, 80);
+            label2.SetPosition(10, 80);
             label2.AutoSizeToContents = true;
             //label2.Font = font2;
             label2.MouseInputEnabled = true;
@@ -115,15 +115,15 @@ namespace Gwen.Sample.Tao
             Button button1 = new Button(canvas);
             button1.AutoSizeToContents = true;
             button1.Text = "DO STUFF";
-            button1.SetPos(10, 110);
+            button1.SetPosition(10, 110);
             button1.Width = 150;
             button1.Height = 30;
             button1.IsTabable = true;
             button1.KeyboardInputEnabled = true;
-            button1.OnPress += button1_OnPress;
+            button1.Clicked += button1_OnPress;
 
             LabeledCheckBox cb1 = new LabeledCheckBox(canvas);
-            cb1.SetPos(10, 140);
+            cb1.SetPosition(10, 140);
             cb1.IsTabable = true;
             cb1.KeyboardInputEnabled = true;
             cb1.Text = "Sample checkbox 1";
@@ -131,31 +131,31 @@ namespace Gwen.Sample.Tao
             cb1.IsChecked = true;
 
             LabeledCheckBox cb2 = new LabeledCheckBox(canvas);
-            cb2.SetPos(200, 140);
+            cb2.SetPosition(200, 140);
             cb2.IsTabable = true;
             cb2.KeyboardInputEnabled = true;
             cb2.Text = "Sample checkbox 2";
             cb2.SetToolTipText("trololo 2");
 
             TextBox tb1 = new TextBox(canvas);
-            tb1.SetPos(10, 180);
+            tb1.SetPosition(10, 180);
             tb1.Text = "sample edit";
             tb1.CursorPos = 3;
             tb1.CursorEnd = 7; // todo: show even without focus
 
             TextBoxNumeric tb2 = new TextBoxNumeric(canvas);
-            tb2.SetPos(10, 200);
+            tb2.SetPosition(10, 200);
             tb2.Text = "123.4asdasd"; // this fails
             tb2.Text = "123.4"; // ok
             tb2.SelectAllOnFocus = true;
 
             NumericUpDown n1 = new NumericUpDown(canvas);
-            n1.SetPos(10, 220);
+            n1.SetPosition(10, 220);
             n1.Min = -10;
             n1.Text = "-51"; // this fails
             n1.Text = "-5"; // ok
 
-            RadioButtonController rb1 = new RadioButtonController(canvas);
+            RadioButtonGroup rb1 = new RadioButtonGroup(canvas);
             rb1.AddOption("Option 1");
             rb1.AddOption("Option 2");
             rb1.AddOption("Option 3");
@@ -196,16 +196,16 @@ namespace Gwen.Sample.Tao
             lb2.RemoveRow(2);
 
             HSVColorPicker cp1 = new HSVColorPicker(canvas);
-            cp1.SetPos(400, 50);
+            cp1.SetPosition(400, 50);
             cp1.SetColor(System.Drawing.Color.Green);
-            cp1.OnColorChanged += OnColorChanged;
+            cp1.ColorChanged += OnColorChanged;
 
             ColorPicker cp2 = new ColorPicker(canvas);
-            cp2.SetPos(400, 250);
-            cp2.OnColorChanged += OnColorChanged;
+            cp2.SetPosition(400, 250);
+            cp2.ColorChanged += OnColorChanged;
 
             _ColorText = new Label(canvas);
-            _ColorText.SetPos(400, 200);
+            _ColorText.SetPosition(400, 200);
             _ColorText.AutoSizeToContents = true;
 
             CrossSplitter spl = new CrossSplitter(canvas);
@@ -230,13 +230,13 @@ namespace Gwen.Sample.Tao
 
             var tabbtn1 = tab.AddPage("Controls");
 
-            rbc2 = new RadioButtonController(tabbtn1.Page);
+            rbc2 = new RadioButtonGroup(tabbtn1.Page);
             rbc2.SetBounds(10, 10, 100, 100);
             rbc2.AddOption("Top").Select();
             rbc2.AddOption("Bottom");
             rbc2.AddOption("Left");
             rbc2.AddOption("Right");
-            rbc2.OnSelectionChange += rbc2_OnSelectionChange;
+            rbc2.SelectionChanged += rbc2_OnSelectionChange;
 
             tab.AddPage("Red");
             tab.AddPage("Green");
@@ -286,7 +286,7 @@ namespace Gwen.Sample.Tao
 
         void rbc2_OnSelectionChange(Base control)
         {
-            RadioButtonController rc = control as RadioButtonController;
+            RadioButtonGroup rc = control as RadioButtonGroup;
 
             if (rc.SelectedLabel == "Top") tab.TabStripPosition = Pos.Top;
             if (rc.SelectedLabel == "Bottom") tab.TabStripPosition = Pos.Bottom;

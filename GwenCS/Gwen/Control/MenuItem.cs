@@ -1,42 +1,19 @@
 ﻿using System;
 using System.Drawing;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
-    /// <summary>
-    /// Submenu indicator.
-    /// </summary>
-    public class RightArrow : Base
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="RightArrow"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public RightArrow(Base parent) : base(parent)
-        {
-            MouseInputEnabled = false;
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawMenuRightArrow(this);
-        }
-    }
-
     /// <summary>
     /// Menu item.
     /// </summary>
     public class MenuItem : Button
     {
-        protected Menu m_Menu;
-        protected bool m_OnStrip;
-        protected bool m_Checkable;
-        protected bool m_Checked;
-        protected Base m_SubmenuArrow;
+        private Menu m_Menu;
+        private bool m_OnStrip;
+        private bool m_Checkable;
+        private bool m_Checked;
+        private Base m_SubmenuArrow;
 
         /// <summary>
         /// Indicates whether the item is on a menu strip.
@@ -56,7 +33,7 @@ namespace Gwen.Control
         /// <summary>
         /// Gets or sets the check value.
         /// </summary>
-        public bool Checked
+        public bool IsChecked
         {
             get { return m_Checked; }
             set
@@ -66,18 +43,18 @@ namespace Gwen.Control
 
                 m_Checked = value;
 
-                if (OnCheckChanged != null)
-                    OnCheckChanged.Invoke(this);
+                if (CheckChanged != null)
+                    CheckChanged.Invoke(this);
 
                 if (value)
                 {
-                    if (OnChecked != null)
-                        OnChecked.Invoke(this);
+                    if (Checked != null)
+                        Checked.Invoke(this);
                 }
                 else
                 {
-                    if (OnUnChecked != null)
-                        OnUnChecked.Invoke(this);
+                    if (UnChecked != null)
+                        UnChecked.Invoke(this);
                 }
             }
         }
@@ -112,22 +89,22 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when the item is selected.
         /// </summary>
-        public event ControlCallback OnMenuItemSelected;
+        public event GwenEventHandler Selected;
 
         /// <summary>
         /// Invoked when the item is checked.
         /// </summary>
-        public event ControlCallback OnChecked;
+        public event GwenEventHandler Checked;
 
         /// <summary>
         /// Invoked when the item is unchecked.
         /// </summary>
-        public event ControlCallback OnUnChecked;
+        public event GwenEventHandler UnChecked;
 
         /// <summary>
         /// Invoked when the item's check value is changed.
         /// </summary>
-        public event ControlCallback OnCheckChanged;
+        public event GwenEventHandler CheckChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MenuItem"/> class.
@@ -139,7 +116,7 @@ namespace Gwen.Control
             m_OnStrip = false;
             IsTabable = false;
             IsCheckable = false;
-            Checked = false;
+            IsChecked = false;
         }
 
         /// <summary>
@@ -176,9 +153,9 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Internal OnPress implementation.
+        /// Internal OnPressed implementation.
         /// </summary>
-        protected override void onPress()
+        protected override void OnClicked()
         {
             if (m_Menu != null)
             {
@@ -186,12 +163,12 @@ namespace Gwen.Control
             }
             else if (!m_OnStrip)
             {
-                Checked = !Checked;
-                if (OnMenuItemSelected != null)
-                    OnMenuItemSelected.Invoke(this);
+                IsChecked = !IsChecked;
+                if (Selected != null)
+                    Selected.Invoke(this);
                 GetCanvas().CloseMenus();
             }
-            base.onPress();
+            base.OnClicked();
         }
 
         /// <summary>
@@ -220,12 +197,12 @@ namespace Gwen.Control
             // Strip menus open downwards
             if (m_OnStrip)
             {
-                m_Menu.SetPos(p.X, p.Y + Height + 1);
+                m_Menu.SetPosition(p.X, p.Y + Height + 1);
             }
             // Submenus open sidewards
             else
             {
-                m_Menu.SetPos(p.X + Width, p.Y);
+                m_Menu.SetPosition(p.X + Width, p.Y);
             }
 
             // TODO: Option this.

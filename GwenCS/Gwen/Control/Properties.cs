@@ -4,9 +4,12 @@ using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
+    /// <summary>
+    /// Properties table.
+    /// </summary>
     public class Properties : Base
     {
-        protected SplitterBar m_SplitterBar;
+        private readonly SplitterBar m_SplitterBar;
 
         /// <summary>
         /// Returns the width of the first column (property names).
@@ -16,7 +19,7 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when a property value has been changed.
         /// </summary>
-        public event ControlCallback OnChange;
+        public event GwenEventHandler ValueChanged;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Properties"/> class.
@@ -26,9 +29,9 @@ namespace Gwen.Control
             : base(parent)
         {
             m_SplitterBar = new SplitterBar(this);
-            m_SplitterBar.SetPos(80, 0);
+            m_SplitterBar.SetPosition(80, 0);
             m_SplitterBar.Cursor = Cursors.SizeWE;
-            m_SplitterBar.OnDragged += onSplitterMoved;
+            m_SplitterBar.Dragged += OnSplitterMoved;
             m_SplitterBar.ShouldDrawBackground = false;
         }
 
@@ -61,7 +64,7 @@ namespace Gwen.Control
         /// Handles the splitter moved event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onSplitterMoved(Base control)
+        protected virtual void OnSplitterMoved(Base control)
         {
             InvalidateChildren();
         }
@@ -89,7 +92,7 @@ namespace Gwen.Control
             PropertyRow row = new PropertyRow(this, prop);
             row.Dock = Pos.Top;
             row.Label = label;
-            row.OnChange += onRowValueChanged;
+            row.ValueChanged += OnRowValueChanged;
 
             prop.SetValue(value, true);
 
@@ -97,10 +100,10 @@ namespace Gwen.Control
             return row;
         }
 
-        private void onRowValueChanged(Base control)
+        private void OnRowValueChanged(Base control)
         {
-            if (OnChange != null)
-                OnChange.Invoke(control);
+            if (ValueChanged != null)
+                ValueChanged.Invoke(control);
         }
 
         /// <summary>

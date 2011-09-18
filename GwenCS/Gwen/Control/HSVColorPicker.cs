@@ -17,7 +17,7 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when the selected color has changed.
         /// </summary>
-        public event ControlCallback OnColorChanged;
+        public event GwenEventHandler ColorChanged;
 
         /// <summary>
         /// The "before" color.
@@ -41,21 +41,21 @@ namespace Gwen.Control
             //ShouldCacheToTexture = true;
 
             m_LerpBox = new ColorLerpBox(this);
-            m_LerpBox.OnColorChanged += ColorBoxChanged;
+            m_LerpBox.ColorChanged += ColorBoxChanged;
             m_LerpBox.Dock = Pos.Left;
 
             m_ColorSlider = new ColorSlider(this);
-            m_ColorSlider.SetPos(m_LerpBox.Width + 15, 5);
-            m_ColorSlider.OnColorChanged += ColorSliderChanged;
+            m_ColorSlider.SetPosition(m_LerpBox.Width + 15, 5);
+            m_ColorSlider.ColorChanged += ColorSliderChanged;
             m_ColorSlider.Dock = Pos.Left;
 
             m_After = new ColorDisplay(this);
             m_After.SetSize(48, 24);
-            m_After.SetPos(m_ColorSlider.X + m_ColorSlider.Width + 15, 5);
+            m_After.SetPosition(m_ColorSlider.X + m_ColorSlider.Width + 15, 5);
 
             m_Before = new ColorDisplay(this);
             m_Before.SetSize(48, 24);
-            m_Before.SetPos(m_After.X, 28);
+            m_Before.SetPosition(m_After.X, 28);
 
             int x = m_Before.X;
             int y = m_Before.Y + 30;
@@ -64,14 +64,14 @@ namespace Gwen.Control
                 Label label = new Label(this);
                 label.SetText("R:");
                 label.SizeToContents();
-                label.SetPos(x, y);
+                label.SetPosition(x, y);
 
                 TextBoxNumeric numeric = new TextBoxNumeric(this);
                 numeric.Name = "RedBox";
-                numeric.SetPos(x + 15, y - 1);
+                numeric.SetPosition(x + 15, y - 1);
                 numeric.SetSize(26, 16);
                 numeric.SelectAllOnFocus = true;
-                numeric.OnTextChanged += NumericTyped;
+                numeric.TextChanged += NumericTyped;
             }
 
             y += 20;
@@ -80,14 +80,14 @@ namespace Gwen.Control
                 Label label = new Label(this);
                 label.SetText("G:");
                 label.SizeToContents();
-                label.SetPos(x, y);
+                label.SetPosition(x, y);
 
                 TextBoxNumeric numeric = new TextBoxNumeric(this);
                 numeric.Name = "GreenBox";
-                numeric.SetPos(x + 15, y - 1);
+                numeric.SetPosition(x + 15, y - 1);
                 numeric.SetSize(26, 16);
                 numeric.SelectAllOnFocus = true;
-                numeric.OnTextChanged += NumericTyped;
+                numeric.TextChanged += NumericTyped;
             }
 
             y += 20;
@@ -96,14 +96,14 @@ namespace Gwen.Control
                 Label label = new Label(this);
                 label.SetText("B:");
                 label.SizeToContents();
-                label.SetPos(x, y);
+                label.SetPosition(x, y);
 
                 TextBoxNumeric numeric = new TextBoxNumeric(this);
                 numeric.Name = "BlueBox";
-                numeric.SetPos(x + 15, y - 1);
+                numeric.SetPosition(x + 15, y - 1);
                 numeric.SetSize(26, 16);
                 numeric.SelectAllOnFocus = true;
-                numeric.OnTextChanged += NumericTyped;
+                numeric.TextChanged += NumericTyped;
             }
 
             SetColor(DefaultColor);
@@ -173,8 +173,8 @@ namespace Gwen.Control
 
             m_After.Color = color;
 
-            if (OnColorChanged != null)
-                OnColorChanged.Invoke(this);
+            if (ColorChanged != null)
+                ColorChanged.Invoke(this);
         }
 
         /// <summary>

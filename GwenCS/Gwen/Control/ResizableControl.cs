@@ -9,8 +9,8 @@ namespace Gwen.Control
     /// </summary>
     public class ResizableControl : Base
     {
-        protected bool m_ClampMovement;
-        protected readonly Resizer[] m_Resizer;
+        private bool m_ClampMovement;
+        private readonly Resizer[] m_Resizer;
 
         /// <summary>
         /// Determines whether control's position should be restricted to its parent bounds.
@@ -20,13 +20,14 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when the control has been resized.
         /// </summary>
-        public event ControlCallback OnResized;
+        public event GwenEventHandler Resized;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ResizableControl"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ResizableControl(Base parent) : base(parent)
+        public ResizableControl(Base parent)
+            : base(parent)
         {
             m_Resizer = new Resizer[10];
             MinimumSize = new Point(5, 5);
@@ -35,42 +36,42 @@ namespace Gwen.Control
             m_Resizer[2] = new Resizer(this);
             m_Resizer[2].Dock = Pos.Bottom;
             m_Resizer[2].ResizeDir = Pos.Bottom;
-            m_Resizer[2].OnResize += onResized;
+            m_Resizer[2].Resized += OnResized;
 
             m_Resizer[1] = new Resizer(m_Resizer[2]);
             m_Resizer[1].Dock = Pos.Left;
             m_Resizer[1].ResizeDir = Pos.Bottom | Pos.Left;
-            m_Resizer[1].OnResize += onResized;
+            m_Resizer[1].Resized += OnResized;
 
             m_Resizer[3] = new Resizer(m_Resizer[2]);
             m_Resizer[3].Dock = Pos.Right;
             m_Resizer[3].ResizeDir = Pos.Bottom | Pos.Right;
-            m_Resizer[3].OnResize += onResized;
+            m_Resizer[3].Resized += OnResized;
 
             m_Resizer[8] = new Resizer(this);
             m_Resizer[8].Dock = Pos.Top;
             m_Resizer[8].ResizeDir = Pos.Top;
-            m_Resizer[8].OnResize += onResized;
+            m_Resizer[8].Resized += OnResized;
 
             m_Resizer[7] = new Resizer(m_Resizer[8]);
             m_Resizer[7].Dock = Pos.Left;
             m_Resizer[7].ResizeDir = Pos.Left | Pos.Top;
-            m_Resizer[7].OnResize += onResized;
+            m_Resizer[7].Resized += OnResized;
 
             m_Resizer[9] = new Resizer(m_Resizer[8]);
             m_Resizer[9].Dock = Pos.Right;
             m_Resizer[9].ResizeDir = Pos.Right | Pos.Top;
-            m_Resizer[9].OnResize += onResized;
+            m_Resizer[9].Resized += OnResized;
 
             m_Resizer[4] = new Resizer(this);
             m_Resizer[4].Dock = Pos.Left;
             m_Resizer[4].ResizeDir = Pos.Left;
-            m_Resizer[4].OnResize += onResized;
+            m_Resizer[4].Resized += OnResized;
 
             m_Resizer[6] = new Resizer(this);
             m_Resizer[6].Dock = Pos.Right;
             m_Resizer[6].ResizeDir = Pos.Right;
-            m_Resizer[6].OnResize += onResized;
+            m_Resizer[6].Resized += OnResized;
         }
 
         /// <summary>
@@ -90,10 +91,10 @@ namespace Gwen.Control
         /// Handler for the resized event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onResized(Base control)
+        protected virtual void OnResized(Base control)
         {
-            if (OnResized != null)
-                OnResized.Invoke(this);
+            if (Resized != null)
+                Resized.Invoke(this);
         }
 
         protected Resizer GetResizer(int i)

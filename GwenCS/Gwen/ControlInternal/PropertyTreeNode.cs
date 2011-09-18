@@ -1,21 +1,21 @@
 ﻿using System;
+using Gwen.Control;
 
-namespace Gwen.Control
+namespace Gwen.ControlInternal
 {
     /// <summary>
-    /// Clickable label (for checkboxes etc).
+    /// Properties node.
     /// </summary>
-    public class LabelClickable : Button
+    public class PropertyTreeNode : TreeNode
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="LabelClickable"/> class.
+        /// Initializes a new instance of the <see cref="PropertyTreeNode"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabelClickable(Base parent)
+        public PropertyTreeNode(Base parent)
             : base(parent)
         {
-            IsToggle = false;
-            Alignment = Pos.Left | Pos.CenterV;
+            m_Title.TextColorOverride = Skin.Colors.Properties.Title;
         }
 
         /// <summary>
@@ -24,7 +24,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            // no button look
+            skin.DrawPropertyTreeNode(this, m_InnerPanel.X, m_InnerPanel.Y);
         }
     }
 }

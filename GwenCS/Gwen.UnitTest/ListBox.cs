@@ -30,8 +30,8 @@ namespace Gwen.UnitTest
                 ctrl.AllowMultiSelect = true;
                 ctrl.SelectRowsByRegex("Bl.e|Dog");
 
-                ctrl.OnRowSelected += RowSelected;
-                ctrl.OnRowUnselected += RowUnSelected;
+                ctrl.RowSelected += RowSelected;
+                ctrl.RowUnselected += RowUnSelected;
             }
 
             {
@@ -39,8 +39,8 @@ namespace Gwen.UnitTest
                 ctrl.SetBounds(120, 10, 200, 200);
                 ctrl.ColumnCount = 3;
                 ctrl.AllowMultiSelect = true;
-                ctrl.OnRowSelected += RowSelected;
-                ctrl.OnRowUnselected += RowUnSelected;
+                ctrl.RowSelected += RowSelected;
+                ctrl.RowUnselected += RowUnSelected;
 
                 {
                     Control.Layout.TableRow pRow = ctrl.AddItem("Baked Beans");
@@ -65,7 +65,7 @@ namespace Gwen.UnitTest
         void RowSelected(Base control)
         {
             Control.ListBox list = control as Control.ListBox;
-            UnitPrint(String.Format("ListBox: OnRowSelected: {0}", list.SelectedRows.Last().Text));
+            UnitPrint(String.Format("ListBox: RowSelected: {0}", list.SelectedRows.Last().Text));
         }
 
         void RowUnSelected(Base control)

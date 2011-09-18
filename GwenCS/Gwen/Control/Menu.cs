@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Linq;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
@@ -9,10 +10,11 @@ namespace Gwen.Control
     /// </summary>
     public class Menu : ScrollControl
     {
-        protected bool m_DisableIconMargin;
-        protected bool m_DeleteOnClose;
+        private bool m_DisableIconMargin;
+        private bool m_DeleteOnClose;
 
         internal override bool IsMenuComponent { get { return true; } }
+        
         public bool IconMarginDisabled { get { return m_DisableIconMargin; } set { m_DisableIconMargin = value; } }
         
         /// <summary>
@@ -33,7 +35,7 @@ namespace Gwen.Control
             : base(parent)
         {
             SetBounds(0, 0, 10, 10);
-            Padding = new Padding(2, 2, 2, 2);
+            Padding = Padding.Two;
             IconMarginDisabled = false;
 
             AutoHideBars = true;
@@ -78,7 +80,7 @@ namespace Gwen.Control
             IsHidden = false;
             BringToFront();
             Point mouse = Input.Input.MousePosition;
-            SetPos(mouse.X, mouse.Y);
+            SetPosition(mouse.X, mouse.Y);
         }
 
         /// <summary>
@@ -103,7 +105,7 @@ namespace Gwen.Control
         /// <param name="text">Item text.</param>
         /// <param name="handler">Handler invoked on item selection.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem(String text, ControlCallback handler = null)
+        public virtual MenuItem AddItem(String text, GwenEventHandler handler = null)
         {
             return AddItem(text, String.Empty, handler);
         }
@@ -115,17 +117,17 @@ namespace Gwen.Control
         /// <param name="handler">Handler invoked on item selection.</param>
         /// <param name="iconName">Icon texture name.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem(String text, String iconName, ControlCallback handler = null)
+        public virtual MenuItem AddItem(String text, String iconName, GwenEventHandler handler = null)
         {
             MenuItem item = new MenuItem(this);
-            item.Padding = new Padding(4, 4, 4, 4);
+            item.Padding = Padding.Four;
             item.SetText(text);
             item.SetImage(iconName);
 
             if (handler != null)
-                item.OnMenuItemSelected += handler;
+                item.Selected += handler;
 
-            onAddItem(item);
+            OnAddItem(item);
 
             return item;
         }
@@ -134,13 +136,13 @@ namespace Gwen.Control
         /// Add item handler.
         /// </summary>
         /// <param name="item">Item added.</param>
-        protected virtual void onAddItem(MenuItem item)
+        protected virtual void OnAddItem(MenuItem item)
         {
             item.TextPadding = new Padding(IconMarginDisabled ? 0 : 24, 0, 16, 0);
             item.Dock = Pos.Top;
             item.SizeToContents();
             item.Alignment = Pos.CenterV | Pos.Left;
-            item.OnHoverEnter += onHoverItem;
+            item.HoverEnter += OnHoverItem;
 
             // Do this here - after Top Docking these values mean nothing in layout
             int w = item.Width + 10 + 32;
@@ -169,7 +171,7 @@ namespace Gwen.Control
         /// Mouse hover handler.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onHoverItem(Base control)
+        protected virtual void OnHoverItem(Base control)
         {
             if (!ShouldHoverOpenMenu) return;
 
@@ -209,30 +211,6 @@ namespace Gwen.Control
             MenuDivider divider = new MenuDivider(this);
             divider.Dock = Pos.Top;
             divider.Margin = new Margin(IconMarginDisabled ? 0 : 24, 0, 4, 0);
-        }
-    }
-
-    /// <summary>
-    /// Divider menu item.
-    /// </summary>
-    public class MenuDivider : Base
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MenuDivider"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public MenuDivider(Base parent) : base(parent)
-        {
-            Height = 1;
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawMenuDivider(this);
         }
     }
 }

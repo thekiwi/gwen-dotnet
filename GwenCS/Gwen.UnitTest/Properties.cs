@@ -10,7 +10,7 @@ namespace Gwen.UnitTest
         {
             {
                 Control.Properties props = new Control.Properties(this);
-                props.OnChange += OnChanged;
+                props.ValueChanged += OnChanged;
 
                 props.SetBounds(10, 10, 150, 300);
 
@@ -30,7 +30,7 @@ namespace Gwen.UnitTest
 
                 {
                     Control.Properties props = ptree.Add("Item One");
-                    props.OnChange += OnChanged;
+                    props.ValueChanged += OnChanged;
 
                     props.Add("Middle Name");
                     props.Add("Last Name");
@@ -39,7 +39,7 @@ namespace Gwen.UnitTest
 
                 {
                     Control.Properties props = ptree.Add("Item Two");
-                    props.OnChange += OnChanged;
+                    props.ValueChanged += OnChanged;
                     
                     props.Add("More Items");
                     props.Add("Bacon", new Control.Property.Check(props), "1");

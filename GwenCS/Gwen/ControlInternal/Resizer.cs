@@ -5,13 +5,24 @@ using Gwen.Control;
 
 namespace Gwen.ControlInternal
 {
+    /// <summary>
+    /// Grab point for resizing.
+    /// </summary>
     public class Resizer : Dragger
     {
-        protected Pos m_ResizeDir;
+        private readonly Pos m_ResizeDir;
 
-        public event ControlCallback OnResize;
+        /// <summary>
+        /// Invoked when the control has been resized.
+        /// </summary>
+        public event GwenEventHandler Resized;
 
-        public Resizer(Base parent) : base(parent)
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Resizer"/> class.
+        /// </summary>
+        /// <param name="parent">Parent control.</param>
+        public Resizer(Base parent)
+            : base(parent)
         {
             m_ResizeDir = Pos.Left;
             MouseInputEnabled = true;
@@ -19,10 +30,17 @@ namespace Gwen.ControlInternal
             Target = parent;
         }
 
-        protected override void onMouseMoved(int x, int y, int dx, int dy)
+        /// <summary>
+        /// Handler invoked on mouse moved event.
+        /// </summary>
+        /// <param name="x">X coordinate.</param>
+        /// <param name="y">Y coordinate.</param>
+        /// <param name="dx">X change.</param>
+        /// <param name="dy">Y change.</param>
+        protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
             if (null == m_Target) return;
-            if (!m_Depressed) return;
+            if (!m_Held) return;
 
             Rectangle oldBounds = m_Target.Bounds;
             Rectangle bounds = m_Target.Bounds;
@@ -97,10 +115,13 @@ namespace Gwen.ControlInternal
 
             m_Target.SetBounds(bounds);
 
-            if (OnResize != null)
-                OnResize.Invoke(this);
+            if (Resized != null)
+                Resized.Invoke(this);
         }
 
+        /// <summary>
+        /// Gets or sets the sizing direction.
+        /// </summary>
         public Pos ResizeDir
         {
             set

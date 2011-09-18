@@ -11,10 +11,10 @@ namespace Gwen.Control
     /// </summary>
     public class ListBox : ScrollControl
     {
-        protected readonly Table m_Table;
-        protected readonly List<TableRow> m_SelectedRows;
+        private readonly Table m_Table;
+        private readonly List<TableRow> m_SelectedRows;
 
-        protected bool m_MultiSelect;
+        private bool m_MultiSelect;
 
         /// <summary>
         /// Determines whether multiple rows can be selected at once.
@@ -24,7 +24,7 @@ namespace Gwen.Control
         /// <summary>
         /// List of selected rows.
         /// </summary>
-        public IList<TableRow> SelectedRows { get { return m_SelectedRows; } }
+        public IEnumerable<TableRow> SelectedRows { get { return m_SelectedRows; } }
 
         /// <summary>
         /// First selected row (and only if list is not multiselectable).
@@ -39,7 +39,6 @@ namespace Gwen.Control
             }
         }
 
-        //public Table Table { get { return m_Table; } }
         /// <summary>
         /// Column count of table rows.
         /// </summary>
@@ -48,12 +47,12 @@ namespace Gwen.Control
         /// <summary>
         /// Invoked when a row has been selected.
         /// </summary>
-        public event ControlCallback OnRowSelected;
+        public event GwenEventHandler RowSelected;
 
         /// <summary>
         /// Invoked whan a row has beed unselected.
         /// </summary>
-        public event ControlCallback OnRowUnselected;
+        public event GwenEventHandler RowUnselected;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ListBox"/> class.
@@ -66,7 +65,7 @@ namespace Gwen.Control
 
             EnableScroll(false, true);
             AutoHideBars = true;
-            Margin = new Margin(1, 1, 1, 1);
+            Margin = Gwen.Margin.One;
 
             m_Table = new Table(this);
             m_Table.Dock = Pos.Top;
@@ -153,8 +152,8 @@ namespace Gwen.Control
             // TODO: make sure this is one of our rows!
             row.IsSelected = true;
             m_SelectedRows.Add(row);
-            if (OnRowSelected != null)
-                OnRowSelected.Invoke(this);
+            if (RowSelected != null)
+                RowSelected.Invoke(this);
         }
 
         /// <summary>
@@ -180,7 +179,7 @@ namespace Gwen.Control
             row.SetCellText(0, label);
             row.Name = name;
 
-            row.OnRowSelected += onRowSelected;
+            row.RowSelected += OnRowSelected;
 
             m_Table.SizeToContents();
 
@@ -204,8 +203,8 @@ namespace Gwen.Control
             foreach (ListBoxRow row in m_SelectedRows)
             {
                 row.IsSelected = false;
-                if (OnRowUnselected != null)
-                    OnRowUnselected.Invoke(this);
+                if (RowUnselected != null)
+                    RowUnselected.Invoke(this);
             }
             m_SelectedRows.Clear();
         }
@@ -219,15 +218,15 @@ namespace Gwen.Control
             row.IsSelected = false;
             m_SelectedRows.Remove(row);
 
-            if (OnRowUnselected != null)
-                OnRowUnselected.Invoke(this);
+            if (RowUnselected != null)
+                RowUnselected.Invoke(this);
         }
 
         /// <summary>
         /// Handler for the row selection event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onRowSelected(Base control)
+        protected virtual void OnRowSelected(Base control)
         {
             // [omeg] changed default behavior
             bool clear = false;// !Input.Input.IsShiftDown;
@@ -246,7 +245,7 @@ namespace Gwen.Control
         public virtual void Clear()
         {
             UnselectAll();
-            m_Table.Clear();
+            m_Table.RemoveAll();
         }
     }
 }

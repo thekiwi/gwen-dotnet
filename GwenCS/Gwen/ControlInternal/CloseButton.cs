@@ -1,26 +1,24 @@
 ﻿using System;
+using Gwen.Control;
 
-namespace Gwen.Control
+namespace Gwen.ControlInternal
 {
     /// <summary>
     /// Window close button.
     /// </summary>
     public class CloseButton : Button
     {
-        private WindowControl m_Window; // [omeg] not ours, no disposing
-
-        /// <summary>
-        /// Window that owns this control.
-        /// </summary>
-        public WindowControl Window { set { m_Window = value; } }
+        private readonly WindowControl m_Window; // [omeg] not ours, no disposing
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CloseButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CloseButton(Base parent) : base(parent)
+        /// <param name="owner">Window that owns this button.</param>
+        public CloseButton(Base parent, WindowControl owner)
+            : base(parent)
         {
-            
+            m_Window = owner;
         }
 
         /// <summary>

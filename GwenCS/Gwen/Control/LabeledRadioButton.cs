@@ -7,8 +7,8 @@ namespace Gwen.Control
     /// </summary>
     public class LabeledRadioButton : Base
     {
-        protected readonly RadioButton m_RadioButton;
-        protected readonly LabelClickable m_Label;
+        private readonly RadioButton m_RadioButton;
+        private readonly LabelClickable m_Label;
 
         /// <summary>
         /// Label text.
@@ -19,7 +19,8 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="LabeledRadioButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabeledRadioButton(Base parent) : base(parent)
+        public LabeledRadioButton(Base parent)
+            : base(parent)
         {
             SetSize(200, 19);
 
@@ -33,7 +34,7 @@ namespace Gwen.Control
             m_Label.Alignment = Pos.CenterV | Pos.Left;
             m_Label.Text = "Radio Button";
             m_Label.Dock = Pos.Fill;
-            m_Label.OnPress += m_RadioButton.Press;
+            m_Label.Clicked += m_RadioButton.Press;
             m_Label.IsTabable = false;
             m_Label.KeyboardInputEnabled = false;
         }
@@ -60,6 +61,7 @@ namespace Gwen.Control
             skin.DrawKeyboardHighlight(this, RenderBounds, 0);
         }
 
+        // todo: would be nice to remove that
         internal RadioButton RadioButton { get { return m_RadioButton; } }
 
         /// <summary>
@@ -69,7 +71,7 @@ namespace Gwen.Control
         /// <returns>
         /// True if handled.
         /// </returns>
-        protected override bool onKeySpace(bool down)
+        protected override bool OnKeySpace(bool down)
         {
             if (down)
                 m_RadioButton.IsChecked = !m_RadioButton.IsChecked;

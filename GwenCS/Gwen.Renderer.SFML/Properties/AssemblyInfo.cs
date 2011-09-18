@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Gwen.Net - SFML renderer")]
 [assembly: AssemblyDescription("Gwen.Net - SFML renderer")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Gwen.Net")]
 [assembly: AssemblyCopyright("Copyleft © 2011 Omega Red")]
 [assembly: AssemblyTrademark("")]

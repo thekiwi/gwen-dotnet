@@ -10,7 +10,7 @@ namespace Gwen.UnitTest
         {
             {
                 Control.ComboBox combo = new Control.ComboBox(this);
-                combo.SetPos(50, 50);
+                combo.SetPosition(50, 50);
                 combo.Width = 200;
 
                 combo.AddItem("Option One", "one");
@@ -19,26 +19,26 @@ namespace Gwen.UnitTest
                 combo.AddItem("Four Legs", "four");
                 combo.AddItem("Five Birds", "five");
 
-                combo.OnSelection += OnComboSelect;
+                combo.ItemSelected += OnComboSelect;
             }
 
             {
                 // Empty..
                 Control.ComboBox combo = new Control.ComboBox(this);
-                combo.SetPos(50, 80);
+                combo.SetPosition(50, 80);
                 combo.Width = 200;
             }
 
             {
                 // Empty..
                 Control.ComboBox combo = new Control.ComboBox(this);
-                combo.SetPos(50, 110);
+                combo.SetPosition(50, 110);
                 combo.Width = 200;
 
                 for (int i = 0; i < 500; i++)
                     combo.AddItem(String.Format("Option {0}", i));
 
-                combo.OnSelection += OnComboSelect;
+                combo.ItemSelected += OnComboSelect;
             }
         }
 

@@ -3,6 +3,9 @@ using Gwen.Control;
 
 namespace Gwen.Input
 {
+    /// <summary>
+    /// Keyboard state.
+    /// </summary>
     public class KeyData
     {
         public bool[] KeyState;

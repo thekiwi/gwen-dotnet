@@ -1,85 +1,9 @@
 ﻿using System;
 using System.Linq;
+using Gwen.ControlInternal;
 
 namespace Gwen.Control
 {
-    /// <summary>
-    /// Tree node toggle button (the little plus sign).
-    /// </summary>
-    public class TreeToggleButton : Button
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeToggleButton"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public TreeToggleButton(Base parent) : base(parent)
-        {
-            IsToggle = true;
-            IsTabable = false;
-        }
-
-        /// <summary>
-        /// Renders the focus overlay.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus(Skin.Base skin)
-        {
-            
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-            skin.DrawTreeButton(this, ToggleState);
-        }
-    }
-
-    /// <summary>
-    /// Tree node label.
-    /// </summary>
-    public class TreeNodeText : Button
-    {
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TreeNodeText"/> class.
-        /// </summary>
-        /// <param name="parent">Parent control.</param>
-        public TreeNodeText(Base parent) : base(parent)
-        {
-            Alignment = Pos.Left | Pos.CenterV;
-            ShouldDrawBackground = false;
-            Height = 16;
-        }
-
-        /// <summary>
-        /// Updates control colors.
-        /// </summary>
-        public override void UpdateColors()
-        {
-            if (IsDisabled)
-            {
-                TextColor = Skin.Colors.Button.Disabled;
-                return;
-            }
-
-            if (IsDepressed || ToggleState)
-            {
-                TextColor = Skin.Colors.Tree.Selected;
-                return;
-            }
-
-            if (IsHovered)
-            {
-                TextColor = Skin.Colors.Tree.Hover;
-                return;
-            }
-
-            TextColor = Skin.Colors.Tree.Normal;
-        }
-    }
-
     /// <summary>
     /// Tree control node.
     /// </summary>
@@ -90,9 +14,9 @@ namespace Gwen.Control
         protected TreeControl m_TreeControl;
         protected Button m_ToggleButton;
         protected Button m_Title;
-        protected bool m_Root;
-        protected bool m_Selected;
-        protected bool m_Selectable;
+        private bool m_Root;
+        private bool m_Selected;
+        private bool m_Selectable;
 
         /// <summary>
         /// Indicates whether this is a root node.
@@ -127,63 +51,66 @@ namespace Gwen.Control
                 if (m_Title != null)
                     m_Title.ToggleState = value;
 
-                if (OnSelectionChange != null)
-                    OnSelectionChange.Invoke(this);
+                if (SelectionChanged != null)
+                    SelectionChanged.Invoke(this);
 
                 // propagate to root parent (tree)
-                if (m_TreeControl != null && m_TreeControl.OnSelectionChange != null)
-                    m_TreeControl.OnSelectionChange.Invoke(this);
+                if (m_TreeControl != null && m_TreeControl.SelectionChanged != null)
+                    m_TreeControl.SelectionChanged.Invoke(this);
 
                 if (value)
                 {
-                    if (OnSelect != null)
-                        OnSelect.Invoke(this);
+                    if (Selected != null)
+                        Selected.Invoke(this);
 
-                    if (m_TreeControl.OnSelect != null)
-                        m_TreeControl.OnSelect.Invoke(this);
+                    if (m_TreeControl != null && m_TreeControl.Selected != null)
+                        m_TreeControl.Selected.Invoke(this);
                 }
                 else
                 {
-                    if (OnUnselect != null)
-                        OnUnselect.Invoke(this);
+                    if (Unselected != null)
+                        Unselected.Invoke(this);
 
-                    if (m_TreeControl.OnUnselect != null)
-                        m_TreeControl.OnUnselect.Invoke(this);
+                    if (m_TreeControl != null && m_TreeControl.Unselected != null)
+                        m_TreeControl.Unselected.Invoke(this);
                 }
             }
         }
 
+        /// <summary>
+        /// Node's label.
+        /// </summary>
         public String Text { get { return m_Title.Text; } set { m_Title.Text = value; } }
 
         /// <summary>
         /// Invoked when the node label has been pressed.
         /// </summary>
-        public event ControlCallback OnLabelPress;
+        public event GwenEventHandler LabelPressed;
 
         /// <summary>
         /// Invoked when the node's selected state has changed.
         /// </summary>
-        public event ControlCallback OnSelectionChange;
+        public event GwenEventHandler SelectionChanged;
 
         /// <summary>
         /// Invoked when the node has been selected.
         /// </summary>
-        public event ControlCallback OnSelect;
+        public event GwenEventHandler Selected;
 
         /// <summary>
         /// Invoked when the node has been unselected.
         /// </summary>
-        public event ControlCallback OnUnselect;
+        public event GwenEventHandler Unselected;
 
         /// <summary>
         /// Invoked when the node has been expanded.
         /// </summary>
-        public event ControlCallback OnExpanded;
+        public event GwenEventHandler Expanded;
 
         /// <summary>
         /// Invoked when the node has been collapsed.
         /// </summary>
-        public event ControlCallback OnCollapsed;
+        public event GwenEventHandler Collapsed;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="TreeNode"/> class.
@@ -194,13 +121,13 @@ namespace Gwen.Control
         {
             m_ToggleButton = new TreeToggleButton(this);
             m_ToggleButton.SetBounds(0, 0, 15, 15);
-            m_ToggleButton.OnToggle += onToggleButtonPress;
+            m_ToggleButton.Toggled += OnToggleButtonPress;
 
-            m_Title = new TreeNodeText(this);
+            m_Title = new TreeNodeLabel(this);
             m_Title.Dock = Pos.Top;
             m_Title.Margin = new Margin(16, 0, 0, 0);
-            m_Title.OnDoubleClickLeft += onDoubleClickName;
-            m_Title.OnDown += onClickName;
+            m_Title.DoubleClickedLeft += OnDoubleClickName;
+            m_Title.Clicked += OnClickName;
 
             m_InnerPanel = new Base(this);
             m_InnerPanel.Dock = Pos.Top;
@@ -230,7 +157,7 @@ namespace Gwen.Control
         protected override void Render(Skin.Base skin)
         {
             int bottom = 0;
-            if (m_InnerPanel.ChildrenCount > 0)
+            if (m_InnerPanel.Children.Count > 0)
             {
                 bottom = m_InnerPanel.Children.Last().Y + m_InnerPanel.Y;
             }
@@ -249,10 +176,10 @@ namespace Gwen.Control
             {
                 if (m_Title != null)
                 {
-                    m_ToggleButton.SetPos(0, (m_Title.Height - m_ToggleButton.Height)*0.5f);
+                    m_ToggleButton.SetPosition(0, (m_Title.Height - m_ToggleButton.Height)*0.5f);
                 }
 
-                if (m_InnerPanel.ChildrenCount == 0)
+                if (m_InnerPanel.Children.Count == 0)
                 {
                     m_ToggleButton.Hide();
                     m_ToggleButton.ToggleState = false;
@@ -295,7 +222,7 @@ namespace Gwen.Control
 
             if (m_TreeControl != null)
             {
-                m_TreeControl.onNodeAdded(node);
+                m_TreeControl.OnNodeAdded(node);
             }
 
             return node;
@@ -310,10 +237,10 @@ namespace Gwen.Control
             if (m_ToggleButton != null)
                 m_ToggleButton.ToggleState = true;
 
-            if (OnExpanded != null)
-                OnExpanded.Invoke(this);
-            if (m_TreeControl != null && m_TreeControl.OnExpanded != null)
-                m_TreeControl.OnExpanded.Invoke(this);
+            if (Expanded != null)
+                Expanded.Invoke(this);
+            if (m_TreeControl != null && m_TreeControl.Expanded != null)
+                m_TreeControl.Expanded.Invoke(this);
 
             Invalidate();
         }
@@ -327,10 +254,10 @@ namespace Gwen.Control
             if (m_ToggleButton != null)
                 m_ToggleButton.ToggleState = false;
 
-            if (OnCollapsed != null)
-                OnCollapsed.Invoke(this);
-            if (m_TreeControl.OnCollapsed != null)
-                m_TreeControl.OnCollapsed.Invoke(this);
+            if (Collapsed != null)
+                Collapsed.Invoke(this);
+            if (m_TreeControl != null && m_TreeControl.Collapsed != null)
+                m_TreeControl.Collapsed.Invoke(this);
 
             Invalidate();
         }
@@ -372,7 +299,7 @@ namespace Gwen.Control
         /// Handler for the toggle button.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onToggleButtonPress(Base control)
+        protected virtual void OnToggleButtonPress(Base control)
         {
             if (m_ToggleButton.ToggleState)
             {
@@ -388,7 +315,7 @@ namespace Gwen.Control
         /// Handler for label double click.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onDoubleClickName(Base control)
+        protected virtual void OnDoubleClickName(Base control)
         {
             if (!m_ToggleButton.IsVisible)
                 return;
@@ -399,10 +326,10 @@ namespace Gwen.Control
         /// Handler for label click.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void onClickName(Base control)
+        protected virtual void OnClickName(Base control)
         {
-            if (OnLabelPress != null)
-                OnLabelPress.Invoke(this);
+            if (LabelPressed != null)
+                LabelPressed.Invoke(this);
             IsSelected = !IsSelected;
         }
     }
