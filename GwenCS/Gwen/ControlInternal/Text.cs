@@ -47,6 +47,11 @@ namespace Gwen.ControlInternal
         public Color TextColorOverride { get; set; }
 
         /// <summary>
+        /// Text override - used to display different string.
+        /// </summary>
+        public String TextOverride { get; set; }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Text"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
@@ -72,7 +77,8 @@ namespace Gwen.ControlInternal
                 skin.Renderer.DrawColor = TextColor;
             else
                 skin.Renderer.DrawColor = TextColorOverride;
-            skin.Renderer.RenderText(Font, Point.Empty, String);
+
+            skin.Renderer.RenderText(Font, Point.Empty, TextOverride ?? String);
         }
 
         /// <summary>
@@ -109,7 +115,7 @@ namespace Gwen.ControlInternal
 
             if (Length > 0)
             {
-                p = Skin.Renderer.MeasureText(Font, String);
+                p = Skin.Renderer.MeasureText(Font, TextOverride ?? String);
             }
 
             if (p.X == Width && p.Y == Height)
@@ -132,7 +138,7 @@ namespace Gwen.ControlInternal
                 return new Point(1, 0);
             }
 
-            String sub = String.Substring(0, index);
+            String sub = (TextOverride ?? String).Substring(0, index);
             Point p = Skin.Renderer.MeasureText(Font, sub);
 
             if (p.Y >= Font.Size)

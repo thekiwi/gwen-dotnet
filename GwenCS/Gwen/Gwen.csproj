@@ -135,6 +135,7 @@
     <Compile Include="Control\TabTitleBar.cs" />
     <Compile Include="Control\TextBox.cs" />
     <Compile Include="Control\TextBoxNumeric.cs" />
+    <Compile Include="Control\TextBoxPassword.cs" />
     <Compile Include="Control\TreeControl.cs" />
     <Compile Include="Control\TreeNode.cs" />
     <Compile Include="Control\VerticalScrollBar.cs" />

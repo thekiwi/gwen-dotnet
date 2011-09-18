@@ -20,8 +20,10 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
-                label.SetText("Normal Everyday TextBox");
+                Control.TextBoxPassword label = new Control.TextBoxPassword(this);
+                //label.MaskCharacter = '@';
+                label.SetText("secret");
+                label.TextChanged += OnEdit;
                 label.SetPosition(10, 10 + 25);
             }
 
@@ -40,7 +42,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBoxNumeric label = new Control.TextBoxNumeric(this);
+                Control.TextBox label = new Control.TextBoxNumeric(this);
                 label.SetText("2004");
                 label.TextColor = Color.LightCoral;
                 label.SetPosition(10, 10 + 25*4);

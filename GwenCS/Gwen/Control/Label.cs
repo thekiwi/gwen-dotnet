@@ -9,7 +9,7 @@ namespace Gwen.Control
     /// </summary>
     public class Label : Base
     {
-        protected readonly Text m_Text;
+        private readonly Text m_Text;
         private Pos m_Align;
         private Padding m_TextPadding;
 
@@ -48,6 +48,11 @@ namespace Gwen.Control
         /// </summary>
         public Color TextColorOverride { get { return m_Text.TextColorOverride; } set { m_Text.TextColorOverride = value; } }
 
+        /// <summary>
+        /// Text override - used to display different string.
+        /// </summary>
+        public String TextOverride { get { return m_Text.TextOverride; } set { m_Text.TextOverride = value; } }
+        
         /// <summary>
         /// Width of the text (in pixels).
         /// </summary>
