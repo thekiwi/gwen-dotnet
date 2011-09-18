@@ -277,9 +277,9 @@ namespace Gwen.Control
             }
         }
 
-        public virtual void RemoveAll()
+        public virtual void DeleteAll()
         {
-            m_InnerPanel.RemoveAllChildren();
+            m_InnerPanel.DeleteAllChildren();
         }
     }
 }

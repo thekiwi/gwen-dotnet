@@ -146,10 +146,10 @@ namespace Gwen.Control
         /// <summary>
         /// Removes all items.
         /// </summary>
-        public virtual void ClearItems()
+        public virtual void DeleteAll()
         {
             if (m_Menu != null)
-                m_Menu.ClearItems();
+                m_Menu.DeleteAll();
         }
 
         /// <summary>

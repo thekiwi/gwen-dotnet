@@ -59,6 +59,7 @@
     <Compile Include="Anim\TimedAnimation.cs" />
     <Compile Include="ControlInternal\CategoryButton.cs" />
     <Compile Include="ControlInternal\CategoryHeaderButton.cs" />
+    <Compile Include="ControlInternal\ColorButton.cs" />
     <Compile Include="ControlInternal\ColorDisplay.cs" />
     <Compile Include="ControlInternal\Modal.cs" />
     <Compile Include="ControlInternal\Resizer.cs" />
@@ -72,6 +73,15 @@
     <Compile Include="Control\DockedTabControl.cs" />
     <Compile Include="Control\Layout\Position.cs" />
     <Compile Include="Control\ProgressBar.cs" />
+    <Compile Include="Control\Properties.cs" />
+    <Compile Include="Control\PropertyRow.cs" />
+    <Compile Include="Control\PropertyRowLabel.cs" />
+    <Compile Include="Control\PropertyTree.cs" />
+    <Compile Include="Control\PropertyTreeNode.cs" />
+    <Compile Include="Control\Property\Base.cs" />
+    <Compile Include="Control\Property\Check.cs" />
+    <Compile Include="Control\Property\Color.cs" />
+    <Compile Include="Control\Property\Text.cs" />
     <Compile Include="Control\ResizableControl.cs" />
     <Compile Include="Control\StatusBar.cs" />
     <Compile Include="Control\TabStrip.cs" />
@@ -150,9 +160,7 @@
     <Compile Include="Skin\Base.cs" />
     <Compile Include="Util.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Control\Property\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="readme.txt" />
   </ItemGroup>

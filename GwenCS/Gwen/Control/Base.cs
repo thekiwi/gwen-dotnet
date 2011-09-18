@@ -112,7 +112,7 @@ namespace Gwen.Control
 
                 if (m_Parent != null)
                 {
-                    m_Parent.RemoveChild(this);
+                    m_Parent.RemoveChild(this, false);
                 }
 
                 m_Parent = value;
@@ -247,7 +247,7 @@ namespace Gwen.Control
         /// <summary>
         /// Indicates whether the control is hovered by mouse pointer.
         /// </summary>
-        public bool IsHovered { get { return Global.HoveredControl == this; } }
+        public virtual bool IsHovered { get { return Global.HoveredControl == this; } }
 
         /// <summary>
         /// Indicates whether the control has focus.
@@ -631,32 +631,40 @@ namespace Gwen.Control
         /// Detaches specified control from this one.
         /// </summary>
         /// <param name="child">Child to be removed.</param>
-        public virtual void RemoveChild(Base child)
+        /// <param name="dispose">Determines whether the child should be disposed.</param>
+        public virtual void RemoveChild(Base child, bool dispose)
         {
             // If we removed our innerpanel
             // remove our pointer to it
             if (m_InnerPanel == child)
             {
+                // bug: currently innerpanel is disposed in Base only, so we need to dispose it here 
+                // even if the intention of this function is to just "detach".
+                // but afaik no code does such innerpanel detaching now.
+                m_InnerPanel.Dispose();
                 m_InnerPanel = null;
             }
 
             if (m_InnerPanel != null)
             {
-                m_InnerPanel.RemoveChild(child);
+                m_InnerPanel.RemoveChild(child, dispose);
             }
 
             m_Children.Remove(child);
             onChildRemoved(child);
+            
+            if (dispose)
+                child.Dispose();
         }
 
         /// <summary>
-        /// Removes all children.
+        /// Removes all children (and disposes them).
         /// </summary>
-        public virtual void RemoveAllChildren()
+        public virtual void DeleteAllChildren()
         {
             // todo: probably shouldn't invalidate after each removal
             while (m_Children.Count > 0)
-                RemoveChild(m_Children[0]);
+                RemoveChild(m_Children[0], true);
         }
 
         /// <summary>

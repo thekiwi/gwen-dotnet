@@ -77,7 +77,7 @@ namespace Gwen.Control
         /// </summary>
         public virtual void RemoveAll()
         {
-            m_ScrollControl.RemoveAll();
+            m_ScrollControl.DeleteAll();
         }
 
         public virtual void onNodeAdded(TreeNode node)

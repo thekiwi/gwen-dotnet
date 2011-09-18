@@ -3,9 +3,9 @@ using Gwen.Control;
 
 namespace Gwen.ControlInternal
 {
-    internal class SplitterBar : Dragger
+    public class SplitterBar : Dragger
     {
-        internal SplitterBar(Base parent) : base(parent)
+        public SplitterBar(Base parent) : base(parent)
         {
             Target = this;
             RestrictToParent = true;

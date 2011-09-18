@@ -14,7 +14,8 @@ namespace Gwen.UnitTest
 
         public void UnitPrint(String str)
         {
-            UnitTest.PrintText(str);
+            if (UnitTest != null)
+                UnitTest.PrintText(str);
         }
     }
 }

@@ -114,7 +114,7 @@ namespace Gwen.Control
         /// </summary>
         public bool IsSelected
         {
-            get { return m_Selected; } 
+            get { return m_Selected; }
             set
             {
                 if (!IsSelectable)
@@ -131,9 +131,8 @@ namespace Gwen.Control
                     OnSelectionChange.Invoke(this);
 
                 // propagate to root parent (tree)
-                if (m_TreeControl.OnSelectionChange != null)
+                if (m_TreeControl != null && m_TreeControl.OnSelectionChange != null)
                     m_TreeControl.OnSelectionChange.Invoke(this);
-
 
                 if (value)
                 {
@@ -313,7 +312,7 @@ namespace Gwen.Control
 
             if (OnExpanded != null)
                 OnExpanded.Invoke(this);
-            if (m_TreeControl.OnExpanded != null)
+            if (m_TreeControl != null && m_TreeControl.OnExpanded != null)
                 m_TreeControl.OnExpanded.Invoke(this);
 
             Invalidate();

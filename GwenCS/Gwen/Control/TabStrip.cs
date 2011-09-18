@@ -160,7 +160,7 @@ namespace Gwen.Control
         {
             if (m_TabDragControl != null)
             {
-                RemoveChild(m_TabDragControl); // [omeg] need to do that explicitely
+                RemoveChild(m_TabDragControl, false); // [omeg] need to do that explicitely
                 m_TabDragControl.Dispose();
             }
             m_TabDragControl = null;

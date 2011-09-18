@@ -46,7 +46,7 @@ namespace Gwen.Control
         /// </summary>
         public override void Dispose()
         {
-            ClearItems();
+            DeleteAll();
             base.Dispose();
         }
 
@@ -73,7 +73,7 @@ namespace Gwen.Control
         ///  Opens the menu.
         /// </summary>
         /// <param name="pos">Unused.</param>
-        public void Open(uint pos)
+        public void Open(Pos pos)
         {
             IsHidden = false;
             BringToFront();
@@ -146,18 +146,6 @@ namespace Gwen.Control
             int w = item.Width + 10 + 32;
             if (w < Width) w = Width;
             SetSize(w, Height);
-        }
-
-        /// <summary>
-        /// Removes all items.
-        /// </summary>
-        public virtual void ClearItems()
-        {
-            foreach (Base child in Children)
-            {
-                m_InnerPanel.RemoveChild(child); // bug: this modifies collection
-                child.Dispose();
-            }
         }
 
         /// <summary>

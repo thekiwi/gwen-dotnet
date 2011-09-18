@@ -212,6 +212,8 @@ namespace Gwen.Control
         {
             if (String.IsNullOrEmpty(textureName))
             {
+                if (m_Image != null)
+                    m_Image.Dispose();
                 m_Image = null;
                 return;
             }
