@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.Text.RegularExpressions;
 
 namespace Gwen
 {
@@ -129,6 +130,17 @@ namespace Gwen
         public static Rectangle Add(this Rectangle r, Rectangle other)
         {
             return new Rectangle(r.X + other.X, r.Y + other.Y, r.Width + other.Width, r.Height + other.Height);
+        }
+
+        /// <summary>
+        /// Splits a string but keeps the separators intact (at the end of split parts).
+        /// </summary>
+        /// <param name="text">String to split.</param>
+        /// <param name="separators">Separator characters.</param>
+        /// <returns>Split strings.</returns>
+        public static String[] SplitAndKeep(String text, String separators)
+        {
+            return Regex.Split(text, @"(?=[" + separators + "])");
         }
     }
 }

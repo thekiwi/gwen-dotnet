@@ -92,14 +92,25 @@ namespace Gwen
         }
 
         /// <summary>
-        /// Places the control below other control.
+        /// Places the control below other control (left aligned).
         /// </summary>
         /// <param name="control">Control to place.</param>
-        /// <param name="below">Anchor control.</param>
+        /// <param name="anchor">Anchor control.</param>
         /// <param name="spacing">Optional spacing.</param>
-        public static void PlaceBelow(Base control, Base below, int spacing = 0)
+        public static void PlaceBelow(Base control, Base anchor, int spacing = 0)
         {
-            control.SetPosition(control.X, below.Bottom + spacing);
+            control.SetPosition(control.X, anchor.Bottom + spacing);
+        }
+
+        /// <summary>
+        /// Places the control to the right of other control (bottom aligned).
+        /// </summary>
+        /// <param name="control">Control to place.</param>
+        /// <param name="anchor">Anchor control.</param>
+        /// <param name="spacing">Optional spacing.</param>
+        public static void PlaceToRight(Base control, Base anchor, int spacing = 0)
+        {
+            control.SetPosition(anchor.Right + spacing, anchor.Y - control.Height + anchor.Height);
         }
     }
 }

@@ -90,6 +90,7 @@
     <Compile Include="Control\Property\Color.cs" />
     <Compile Include="Control\Property\Text.cs" />
     <Compile Include="Control\ResizableControl.cs" />
+    <Compile Include="Control\RichLabel.cs" />
     <Compile Include="Control\StatusBar.cs" />
     <Compile Include="Control\TabStrip.cs" />
     <Compile Include="Control\TabButton.cs" />

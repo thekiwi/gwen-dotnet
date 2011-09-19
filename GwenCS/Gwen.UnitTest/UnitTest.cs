@@ -40,6 +40,8 @@ namespace Gwen.UnitTest
                 {
                     test = new Label(center);
                     RegisterUnitTest("Label", cat, test);
+                    test = new RichLabel(center);
+                    RegisterUnitTest("RichLabel", cat, test);
                     test = new GroupBox(center);
                     RegisterUnitTest("GroupBox", cat, test);
                     test = new ProgressBar(center);

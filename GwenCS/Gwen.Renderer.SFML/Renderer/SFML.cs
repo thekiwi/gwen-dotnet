@@ -120,6 +120,7 @@ namespace Gwen.Renderer
                 }
             }
 
+            sfFont.GetTexture((uint) font.Size).Smooth = font.Smooth;
             font.RendererData = sfFont;
         }
 
@@ -162,7 +163,7 @@ namespace Gwen.Renderer
 
             Text sfText = new Text(text);
             sfText.Font = sfFont;
-            sfText.Position = new Vector2f(pos.X, pos.Y); // [omeg] todo: correct? or origin?
+            sfText.Position = new Vector2f(pos.X, pos.Y);
             sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
             sfText.Color = m_Color;
             m_Target.Draw(sfText);

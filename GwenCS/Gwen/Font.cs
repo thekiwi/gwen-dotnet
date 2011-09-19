@@ -17,6 +17,11 @@ namespace Gwen
         /// </summary>
         public int Size { get; set; }
 
+        /// <summary>
+        /// Enables or disables font smoothing (default: disabled).
+        /// </summary>
+        public bool Smooth { get; set; }
+
         //public bool Bold { get; set; }
         //public bool DropShadow { get; set; }
         
@@ -52,6 +57,7 @@ namespace Gwen
             m_Renderer = renderer;
             FaceName = faceName;
             Size = size;
+            Smooth = false;
             //Bold = false;
             //DropShadow = false;
         }
