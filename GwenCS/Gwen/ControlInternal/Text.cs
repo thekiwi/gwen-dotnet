@@ -15,7 +15,18 @@ namespace Gwen.ControlInternal
         /// <summary>
         /// Font used to display the text.
         /// </summary>
-        public Font Font { get { return m_Font; } set { m_Font = value; SizeToContents(); Invalidate(); } }
+        public Font Font
+        {
+            get { return m_Font; }
+            set
+            {
+                if (m_Font != null)
+                    m_Font.Dispose();
+                m_Font = value;
+                SizeToContents(); 
+                Invalidate();
+            }
+        }
 
         /// <summary>
         /// Text to display.
@@ -63,6 +74,15 @@ namespace Gwen.ControlInternal
             TextColor = Skin.Colors.Label.Default;
             MouseInputEnabled = false;
             TextColorOverride = Color.FromArgb(0, 255, 255, 255); // A==0, override disabled
+        }
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            m_Font.Dispose();
+            base.Dispose();
         }
 
         /// <summary>
@@ -154,7 +174,7 @@ namespace Gwen.ControlInternal
         /// <returns>Character index.</returns>
         public int GetClosestCharacter(Point p)
         {
-            int distance = Global.MaxCoord;
+            int distance = MaxCoord;
             int c = 0;
 
             for (int i = 0; i < String.Length + 1; i++)

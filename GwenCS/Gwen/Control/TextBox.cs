@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using Gwen.Input;
 
 namespace Gwen.Control
 {
@@ -377,7 +378,7 @@ namespace Gwen.Control
             if (m_CursorPos > 0)
                 m_CursorPos--;
 
-            if (!Input.Input.IsShiftDown)
+            if (!Input.InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -401,7 +402,7 @@ namespace Gwen.Control
             if (m_CursorPos < TextLength)
                 m_CursorPos++;
 
-            if (!Input.Input.IsShiftDown)
+            if (!Input.InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -423,7 +424,7 @@ namespace Gwen.Control
             if (!down) return true;
             m_CursorPos = 0;
 
-            if (!Input.Input.IsShiftDown)
+            if (!Input.InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -444,7 +445,7 @@ namespace Gwen.Control
             base.OnKeyEnd(down);
             m_CursorPos = TextLength;
 
-            if (!Input.Input.IsShiftDown)
+            if (!Input.InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -525,17 +526,17 @@ namespace Gwen.Control
             {
                 CursorPos = c;
 
-                if (!Input.Input.IsShiftDown)
+                if (!Input.InputHandler.IsShiftDown)
                     CursorEnd = c;
 
-                Global.MouseFocus = this;
+                InputHandler.MouseFocus = this;
             }
             else
             {
-                if (Global.MouseFocus == this)
+                if (InputHandler.MouseFocus == this)
                 {
                     CursorPos = c;
-                    Global.MouseFocus = null;
+                    InputHandler.MouseFocus = null;
                 }
             }
         }
@@ -550,7 +551,7 @@ namespace Gwen.Control
         protected override void OnMouseMoved(int x, int y, int dx, int dy)
         {
             base.OnMouseMoved(x, y, dx, dy);
-            if (Global.MouseFocus != this) return;
+            if (InputHandler.MouseFocus != this) return;
 
             int c = GetClosestCharacter(x, y);
 

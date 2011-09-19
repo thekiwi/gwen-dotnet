@@ -7,6 +7,9 @@ namespace Gwen.Skin.Texturing
         public float[] uv;
     }
 
+    /// <summary>
+    /// 3x3 texture grid.
+    /// </summary>
     public struct Bordered
     {
         private Texture m_Texture;
@@ -18,7 +21,8 @@ namespace Gwen.Skin.Texturing
         private float m_Width;
         private float m_Height;
 
-        public Bordered(Texture texture, float x, float y, float w, float h, Margin inMargin, float drawMarginScale = 1.0f) : this()
+        public Bordered(Texture texture, float x, float y, float w, float h, Margin inMargin, float drawMarginScale = 1.0f)
+            : this()
         {
             m_Rects = new SubRect[9];
             for (int i = 0; i < m_Rects.Length; i++)
@@ -54,7 +58,7 @@ namespace Gwen.Skin.Texturing
             //	rects[num].uv[1] += 1.0f / m_Texture->width;
         }
 
-        void Init(Texture texture, float x, float y, float w, float h, Margin inMargin, float drawMarginScale = 1.0f)
+        private void Init(Texture texture, float x, float y, float w, float h, Margin inMargin, float drawMarginScale = 1.0f)
         {
             m_Texture = texture;
 

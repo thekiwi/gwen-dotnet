@@ -3,11 +3,15 @@ using System.Drawing;
 
 namespace Gwen.Skin.Texturing
 {
+    /// <summary>
+    /// Single textured element.
+    /// </summary>
     public struct Single
     {
-        private Texture m_Texture;
-        private float[] m_uv;
-        private int m_Width, m_Height;
+        private readonly Texture m_Texture;
+        private readonly float[] m_uv;
+        private readonly int m_Width;
+        private readonly int m_Height;
 
         public Single(Texture texture, float x, float y, float w, float h )
         {

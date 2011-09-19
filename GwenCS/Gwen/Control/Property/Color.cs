@@ -1,5 +1,6 @@
 ﻿using System;
 using Gwen.ControlInternal;
+using Gwen.Input;
 
 namespace Gwen.Control.Property
 {
@@ -92,7 +93,7 @@ namespace Gwen.Control.Property
         /// </summary>
         public override bool IsEditing
         {
-            get { return m_TextBox == Global.KeyboardFocus; }
+            get { return m_TextBox == InputHandler.KeyboardFocus; }
         }
 
         protected override void DoChanged()

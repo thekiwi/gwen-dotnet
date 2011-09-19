@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using Gwen.Input;
 
 namespace Gwen.Control
 {
@@ -139,7 +140,7 @@ namespace Gwen.Control
             if (down)
             {
                 m_Depressed = true;
-                Global.MouseFocus = this;
+                InputHandler.MouseFocus = this;
             }
             else
             {
@@ -151,7 +152,7 @@ namespace Gwen.Control
                         NudgeRight(this);
 
                 m_Depressed = false;
-                Global.MouseFocus = null;
+                InputHandler.MouseFocus = null;
             }
         }
 

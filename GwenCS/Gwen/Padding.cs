@@ -2,12 +2,15 @@
 
 namespace Gwen
 {
+    /// <summary>
+    /// Represents inner spacing.
+    /// </summary>
     public struct Padding : IEquatable<Padding>
     {
-        public int Top;
-        public int Bottom;
-        public int Left;
-        public int Right;
+        public readonly int Top;
+        public readonly int Bottom;
+        public readonly int Left;
+        public readonly int Right;
 
         // common values
         public static Padding Zero = new Padding(0, 0, 0, 0);
@@ -17,17 +20,17 @@ namespace Gwen
         public static Padding Four = new Padding(4, 4, 4, 4);
         public static Padding Five = new Padding(5, 5, 5, 5);
 
-        public Padding(int l, int t, int r, int b)
+        public Padding(int left, int top, int right, int bottom)
         {
-            Top = t;
-            Bottom = b;
-            Left = l;
-            Right = r;
+            Top = top;
+            Bottom = bottom;
+            Left = left;
+            Right = right;
         }
 
         public bool Equals(Padding other)
         {
-            return (Top == other.Top && Bottom == other.Bottom && Left == other.Left && Right == other.Right);
+            return other.Top == Top && other.Bottom == Bottom && other.Left == Left && other.Right == Right;
         }
 
         public static bool operator ==(Padding lhs, Padding rhs)
@@ -38,6 +41,25 @@ namespace Gwen
         public static bool operator !=(Padding lhs, Padding rhs)
         {
             return !lhs.Equals(rhs);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (obj.GetType() != typeof (Padding)) return false;
+            return Equals((Padding) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                int result = Top;
+                result = (result*397) ^ Bottom;
+                result = (result*397) ^ Left;
+                result = (result*397) ^ Right;
+                return result;
+            }
         }
     }
 }

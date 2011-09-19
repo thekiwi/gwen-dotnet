@@ -3,18 +3,21 @@ using System.Drawing;
 
 namespace Gwen
 {
+    /// <summary>
+    /// Misc utility functions.
+    /// </summary>
     public static class Util
     {
         public static int Round(float x)
         {
             return (int)Math.Round(x, MidpointRounding.AwayFromZero);
         }
-
+        /*
         public static int Trunc(float x)
         {
             return (int)Math.Truncate(x);
         }
-
+        */
         public static int Ceil(float x)
         {
             return (int)Math.Ceiling(x);
@@ -22,7 +25,7 @@ namespace Gwen
 
         public static Rectangle FloatRect(float x, float y, float w, float h)
         {
-            return new Rectangle(Trunc(x), Trunc(y), Trunc(w), Trunc(h));
+            return new Rectangle((int)x, (int)y, (int)w, (int)h);
         }
 
         public static int Clamp(int x, int min, int max)
@@ -120,7 +123,7 @@ namespace Gwen
 
         public static Color Multiply(this Color color, float amount)
         {
-            return Color.FromArgb(color.A, Trunc(color.R * amount), Trunc(color.G * amount), Trunc(color.B * amount));
+            return Color.FromArgb(color.A, (int)(color.R * amount), (int)(color.G * amount), (int)(color.B * amount));
         }
 
         public static Rectangle Add(this Rectangle r, Rectangle other)

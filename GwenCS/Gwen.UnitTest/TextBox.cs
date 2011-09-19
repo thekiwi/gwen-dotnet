@@ -49,7 +49,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                m_Font = new Font("Impact", 50);
+                m_Font = new Font(Skin.Renderer, "Impact", 50);
 
                 Control.TextBox label = new Control.TextBox(this);
                 label.SetText("Different Font");

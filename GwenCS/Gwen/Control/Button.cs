@@ -1,4 +1,5 @@
 ﻿using System;
+using Gwen.Input;
 
 namespace Gwen.Control
 {
@@ -170,7 +171,7 @@ namespace Gwen.Control
             if (down)
             {
                 IsDepressed = true;
-                Global.MouseFocus = this;
+                InputHandler.MouseFocus = this;
                 if (Pressed != null)
                     Pressed.Invoke(this);
             }
@@ -182,7 +183,7 @@ namespace Gwen.Control
                 }
 
                 IsDepressed = false;
-                Global.MouseFocus = null;
+                InputHandler.MouseFocus = null;
                 if (Released != null)
                     Released.Invoke(this);
             }

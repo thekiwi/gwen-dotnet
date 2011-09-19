@@ -93,7 +93,7 @@ namespace Gwen.Control
         /// <param name="Control">Node selected.</param>
         protected virtual void OnNodeSelected(Base Control)
         {
-            if (!m_MultiSelect /*|| Input.Input.IsKeyDown(Key.Control)*/)
+            if (!m_MultiSelect /*|| InputHandler.InputHandler.IsKeyDown(Key.Control)*/)
                 UnselectAll();
         }
     }

@@ -9,24 +9,36 @@ using Tao.OpenGl;
 using Color = SFML.Graphics.Color;
 using Image = SFML.Graphics.Image;
 
-
 namespace Gwen.Renderer
 {
+    /// <summary>
+    /// SFML renderer.
+    /// </summary>
     public class SFML : Renderer.Base, ICacheToTexture
     {
-        protected RenderTarget m_Target;
-        protected Color m_Color;
+        private RenderTarget m_Target;
+        private Color m_Color;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SFML"/> class.
+        /// </summary>
+        /// <param name="target">SFML render target.</param>
         public SFML(RenderTarget target)
         {
             m_Target = target;
         }
 
+        /// <summary>
+        /// Cache to texture provider.
+        /// </summary>
         public override ICacheToTexture CTT
         {
             get { return this; }
         }
-        
+
+        /// <summary>
+        /// Gets or sets the current drawing color.
+        /// </summary>
         public override System.Drawing.Color DrawColor
         {
             get
@@ -69,6 +81,10 @@ namespace Gwen.Renderer
             shape.Dispose();
         }
 
+        /// <summary>
+        /// Loads the specified font.
+        /// </summary>
+        /// <param name="font">Font to load.</param>
         public override void LoadFont(Font font)
         {
             font.RealSize = font.Size*Scale;
@@ -107,6 +123,10 @@ namespace Gwen.Renderer
             font.RendererData = sfFont;
         }
 
+        /// <summary>
+        /// Frees the specified font.
+        /// </summary>
+        /// <param name="font">Font to free.</param>
         public override void FreeFont(Font font)
         {
             if ( font.RendererData == null ) return;
@@ -150,6 +170,14 @@ namespace Gwen.Renderer
             //m_Target.RestoreGLStates();
         }
 
+        /// <summary>
+        /// Returns dimensions of the text using specified font.
+        /// </summary>
+        /// <param name="font">Font to use.</param>
+        /// <param name="text">Text to measure.</param>
+        /// <returns>
+        /// Width and height of the rendered text.
+        /// </returns>
         public override Point MeasureText(Font font, string text)
         {
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
@@ -167,12 +195,10 @@ namespace Gwen.Renderer
             Text sfText = new Text(text);
             sfText.Font = sfFont;
             sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
-            //sfText.Color = m_Color; // [omeg] not needed?
 
             FloatRect fr = sfText.GetRect();
             sfText.Dispose();
-            // [omeg] what's going on here? GetRect() returns too small rect
-            return new Point((int)Math.Round(fr.Width)+2, (int)Math.Round(fr.Height)+2);
+            return new Point((int)Math.Round(fr.Width), (int)Math.Round(fr.Height));
         }
 
         public override void DrawTexturedRect(Texture t, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)

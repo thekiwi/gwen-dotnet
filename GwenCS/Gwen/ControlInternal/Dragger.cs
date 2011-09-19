@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Gwen.Control;
+using Gwen.Input;
 
 namespace Gwen.ControlInternal
 {
@@ -49,13 +50,13 @@ namespace Gwen.ControlInternal
             {
                 m_Held = true;
                 m_HoldPos = m_Target.CanvasPosToLocal(new Point(x, y));
-                Global.MouseFocus = this;
+                InputHandler.MouseFocus = this;
             }
             else
             {
                 m_Held = false;
 
-                Global.MouseFocus = null;
+                InputHandler.MouseFocus = null;
             }
         }
 

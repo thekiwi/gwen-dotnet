@@ -8,7 +8,7 @@
     <ProjectGuid>{3528E188-400A-4902-8050-FBAEAFC1F266}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Gwen</RootNamespace>
+    <RootNamespace>Gwen.Sample</RootNamespace>
     <AssemblyName>Gwen.Sample.SFML</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

@@ -2,6 +2,9 @@
 
 namespace Gwen
 {
+    /// <summary>
+    /// Key constants.
+    /// </summary>
     public enum Key
     {
         Invalid = 0,

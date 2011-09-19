@@ -144,7 +144,7 @@
     <Compile Include="Font.cs" />
     <Compile Include="HSV.cs" />
     <Compile Include="Input\Action.cs" />
-    <Compile Include="Input\Input.cs" />
+    <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\KeyData.cs" />
     <Compile Include="Input\Message.cs" />
     <Compile Include="Margin.cs" />
@@ -154,14 +154,14 @@
     <Compile Include="Pos.cs" />
     <Compile Include="Platform\Neutral.cs" />
     <Compile Include="Skin\Simple.cs" />
+    <Compile Include="Skin\SkinColors.cs" />
     <Compile Include="Skin\TexturedBase.cs" />
     <Compile Include="Skin\Texturing\Bordered.cs" />
     <Compile Include="Skin\Texturing\Single.cs" />
     <Compile Include="Texture.cs" />
     <Compile Include="ToolTip.cs" />
-    <Compile Include="DragAndDrop\DragAndDrop.cs" />
-    <Compile Include="DragAndDrop\Package.cs" />
-    <Compile Include="Global.cs" />
+    <Compile Include="DragDrop\DragAndDrop.cs" />
+    <Compile Include="DragDrop\Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Renderer\Base.cs" />
     <Compile Include="Renderer\ICacheToTexture.cs" />

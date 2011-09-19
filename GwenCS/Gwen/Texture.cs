@@ -2,33 +2,66 @@
 
 namespace Gwen
 {
+    /// <summary>
+    /// Represents a texture.
+    /// </summary>
     public class Texture : IDisposable
     {
-        public String Name;
-        public object RendererData;
-        public bool Failed;
-        public int Width;
-        public int Height;
+        /// <summary>
+        /// Texture name. Usually file name, but exact meaning depends on renderer.
+        /// </summary>
+        public String Name { get; set; }
 
-        private Renderer.Base m_Renderer;
+        /// <summary>
+        /// Renderer data.
+        /// </summary>
+        public object RendererData { get; set; }
 
+        /// <summary>
+        /// Indicates that the texture failed to load.
+        /// </summary>
+        public bool Failed { get; set; }
+
+        /// <summary>
+        /// Texture width.
+        /// </summary>
+        public int Width { get; set; }
+
+        /// <summary>
+        /// Texture height.
+        /// </summary>
+        public int Height { get; set; }
+
+        private readonly Renderer.Base m_Renderer;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Texture"/> class.
+        /// </summary>
+        /// <param name="renderer">Renderer to use.</param>
         public Texture(Renderer.Base renderer)
         {
             m_Renderer = renderer;
             Width = 4;
             Height = 4;
             Failed = false;
-            Name = null;
-            RendererData = null;
         }
 
+        /// <summary>
+        /// Loads the specified texture.
+        /// </summary>
+        /// <param name="name">Texture name.</param>
         public void Load(String name)
         {
             Name = name;
             m_Renderer.LoadTexture(this);
         }
 
-        // [omeg] added. pixel data = RGBA order
+        /// <summary>
+        /// Initializes the texture from raw pixel data.
+        /// </summary>
+        /// <param name="width">Texture width.</param>
+        /// <param name="height">Texture height.</param>
+        /// <param name="pixelData">Color array in RGBA format.</param>
         public void LoadRaw(int width, int height, byte[] pixelData)
         {
             Width = width;
@@ -39,7 +72,6 @@ namespace Gwen
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        /// <filterpriority>2</filterpriority>
         public void Dispose()
         {
             m_Renderer.FreeTexture(this);

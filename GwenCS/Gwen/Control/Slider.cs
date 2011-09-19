@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Gwen.ControlInternal;
+using Gwen.Input;
 
 namespace Gwen.Control
 {
@@ -235,7 +236,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void RenderFocus(Skin.Base skin)
         {
-            if (Global.KeyboardFocus != this) return;
+            if (InputHandler.KeyboardFocus != this) return;
             if (!IsTabable) return;
             
             skin.DrawKeyboardHighlight(this, RenderBounds, 0);

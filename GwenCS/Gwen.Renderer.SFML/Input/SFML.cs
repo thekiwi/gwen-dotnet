@@ -10,12 +10,15 @@ namespace Gwen.Input
     /// </summary>
     public class SFMLMouseButtonEventArgs : EventArgs
     {
-        public MouseButtonEventArgs Args;
+        /// <summary>
+        /// SFML event args.
+        /// </summary>
+        public readonly MouseButtonEventArgs Args;
 
         /// <summary>
         /// Indicates whether the button is pressed (true) or released (false).
         /// </summary>
-        public bool Down;
+        public readonly bool Down;
 
         public SFMLMouseButtonEventArgs(MouseButtonEventArgs args, bool down)
         {
@@ -30,7 +33,7 @@ namespace Gwen.Input
     /// </summary>
     public class SFMLKeyEventArgs : EventArgs
     {
-        public KeyEventArgs Args;
+        public readonly KeyEventArgs Args;
 
         /// <summary>
         /// Indicates whether the key is pressed (true) or released (false).
@@ -44,6 +47,9 @@ namespace Gwen.Input
         }
     }
 
+    /// <summary>
+    /// SFML input handler.
+    /// </summary>
     public class SFML
     {
         private Canvas m_Canvas;
@@ -105,6 +111,11 @@ namespace Gwen.Input
             return ' ';
         }
 
+        /// <summary>
+        /// Main entrypoint for processing input events. Call from your RenderWindow's event handlers.
+        /// </summary>
+        /// <param name="args">SFML input event args: can be MouseMoveEventArgs, SFMLMouseButtonEventArgs, MouseWheelEventArgs, TextEventArgs, SFMLKeyEventArgs.</param>
+        /// <returns>True if the event was handled.</returns>
         public bool ProcessMessage(EventArgs args)
         {
             if (null == m_Canvas) return false;
@@ -148,7 +159,7 @@ namespace Gwen.Input
                     return false; // sfml bug: this is right alt
 
                 char ch = TranslateChar(ev.Args.Code);
-                if (ev.Down && Input.DoSpecialKeys(m_Canvas, ch))
+                if (ev.Down && InputHandler.DoSpecialKeys(m_Canvas, ch))
                     return false;
 
                 Key iKey = TranslateKeyCode(ev.Args.Code);

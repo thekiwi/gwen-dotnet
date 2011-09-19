@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Gwen.Anim;
 using Gwen.DragDrop;
+using Gwen.Input;
 
 namespace Gwen.Control
 {
@@ -86,6 +87,8 @@ namespace Gwen.Control
         /// Accelerator map.
         /// </summary>
         private readonly Dictionary<String, GwenEventHandler> m_Accelerators;
+
+        public const int MaxCoord = 4096; // added here from various places in code
 
         /// <summary>
         /// Logical list of children. If InnerPanel is not null, returns InnerPanel's children.
@@ -248,12 +251,12 @@ namespace Gwen.Control
         /// <summary>
         /// Indicates whether the control is hovered by mouse pointer.
         /// </summary>
-        public virtual bool IsHovered { get { return Global.HoveredControl == this; } }
+        public virtual bool IsHovered { get { return InputHandler.HoveredControl == this; } }
 
         /// <summary>
         /// Indicates whether the control has focus.
         /// </summary>
-        public bool HasFocus { get { return Global.KeyboardFocus == this; } }
+        public bool HasFocus { get { return InputHandler.KeyboardFocus == this; } }
 
         /// <summary>
         /// Indicates whether the control is disabled.
@@ -331,12 +334,12 @@ namespace Gwen.Control
         public Point MaximumSize { get { return m_MaximumSize; } set { m_MaximumSize = value; } }
 
         private Point m_MinimumSize = new Point(1, 1);
-        private Point m_MaximumSize = new Point(Global.MaxCoord, Global.MaxCoord);
+        private Point m_MaximumSize = new Point(MaxCoord, MaxCoord);
 
         /// <summary>
         /// Determines whether hover should be drawn during rendering.
         /// </summary>
-        protected bool ShouldDrawHover { get { return Global.MouseFocus == this || Global.MouseFocus == null; } }
+        protected bool ShouldDrawHover { get { return InputHandler.MouseFocus == this || InputHandler.MouseFocus == null; } }
 
         protected virtual bool AccelOnlyFocus { get { return false; } }
         protected virtual bool NeedsInputChars { get { return false; } }
@@ -401,12 +404,12 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Dispose()
         {
-            if (Global.HoveredControl == this)
-                Global.HoveredControl = null;
-            if (Global.KeyboardFocus == this)
-                Global.KeyboardFocus = null;
-            if (Global.MouseFocus == this)
-                Global.MouseFocus = null;
+            if (InputHandler.HoveredControl == this)
+                InputHandler.HoveredControl = null;
+            if (InputHandler.KeyboardFocus == this)
+                InputHandler.KeyboardFocus = null;
+            if (InputHandler.MouseFocus == this)
+                InputHandler.MouseFocus = null;
 
             DragAndDrop.ControlDeleted(this);
             Gwen.ToolTip.ControlDeleted(this);
@@ -1237,13 +1240,13 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Focus()
         {
-            if (Global.KeyboardFocus == this)
+            if (InputHandler.KeyboardFocus == this)
                 return;
 
-            if (Global.KeyboardFocus != null)
-                Global.KeyboardFocus.OnLostKeyboardFocus();
+            if (InputHandler.KeyboardFocus != null)
+                InputHandler.KeyboardFocus.OnLostKeyboardFocus();
 
-            Global.KeyboardFocus = this;
+            InputHandler.KeyboardFocus = this;
             OnKeyboardFocus();
             Redraw();
         }
@@ -1253,10 +1256,10 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Blur()
         {
-            if (Global.KeyboardFocus != this)
+            if (InputHandler.KeyboardFocus != this)
                 return;
 
-            Global.KeyboardFocus = null;
+            InputHandler.KeyboardFocus = null;
             OnLostKeyboardFocus();
             Redraw();
         }
@@ -1425,7 +1428,7 @@ namespace Gwen.Control
                     GetCanvas().NextTab = this;
             }
 
-            if (Global.KeyboardFocus == this)
+            if (InputHandler.KeyboardFocus == this)
             {
                 GetCanvas().NextTab = null;
             }
@@ -1644,7 +1647,7 @@ namespace Gwen.Control
         /// <returns>True if handled.</returns>
         internal virtual bool HandleAccelerator(String accelerator)
         {
-            if (Global.KeyboardFocus == this || !AccelOnlyFocus)
+            if (InputHandler.KeyboardFocus == this || !AccelOnlyFocus)
             {
                 if (m_Accelerators.ContainsKey(accelerator))
                 {
@@ -1921,7 +1924,7 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected virtual void RenderFocus(Skin.Base skin)
         {
-            if (Global.KeyboardFocus != this)
+            if (InputHandler.KeyboardFocus != this)
                 return;
             if (!IsTabable)
                 return;

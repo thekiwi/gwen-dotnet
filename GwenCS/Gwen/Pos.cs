@@ -2,6 +2,9 @@
 
 namespace Gwen
 {
+    /// <summary>
+    /// Represents relative position.
+    /// </summary>
     [Flags]
     public enum Pos
     {

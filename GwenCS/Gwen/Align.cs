@@ -3,67 +3,103 @@ using Gwen.Control;
 
 namespace Gwen
 {
+    /// <summary>
+    /// Utility class for manipulating control's position according to its parent. Rarely needed, use control.Dock.
+    /// </summary>
     public static class Align
     {
-        public static void Center(Base ctrl)
+        /// <summary>
+        /// Centers the control inside its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void Center(Base control)
         {
-            Base parent = ctrl.Parent;
+            Base parent = control.Parent;
             if (parent == null) return;
-            ctrl.SetPosition(parent.Padding.Left + (((parent.Width - parent.Padding.Left - parent.Padding.Right) - ctrl.Width) / 2),
-                                (parent.Height - ctrl.Height) / 2);
+            control.SetPosition(parent.Padding.Left + (((parent.Width - parent.Padding.Left - parent.Padding.Right) - control.Width) / 2),
+                                (parent.Height - control.Height) / 2);
         }
 
-        public static void AlignLeft(Base ctrl)
+        /// <summary>
+        /// Moves the control to the left of its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void AlignLeft(Base control)
         {
-            Base parent = ctrl.Parent;
+            Base parent = control.Parent;
             if (null == parent) return;
 
-            ctrl.SetPosition(parent.Padding.Left, ctrl.Y);
+            control.SetPosition(parent.Padding.Left, control.Y);
         }
 
-        public static void CenterHorizontally(Base ctrl)
+        /// <summary>
+        /// Centers the control horizontally inside its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void CenterHorizontally(Base control)
         {
-            Base parent = ctrl.Parent;
+            Base parent = control.Parent;
             if (null == parent) return;
 
 
-            ctrl.SetPosition(parent.Padding.Left + (((parent.Width - parent.Padding.Left - parent.Padding.Right) - ctrl.Width) / 2), ctrl.Y);
+            control.SetPosition(parent.Padding.Left + (((parent.Width - parent.Padding.Left - parent.Padding.Right) - control.Width) / 2), control.Y);
         }
 
-        public static void AlignRight(Base ctrl)
+        /// <summary>
+        /// Moves the control to the right of its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void AlignRight(Base control)
         {
-            Base parent = ctrl.Parent;
+            Base parent = control.Parent;
             if (null == parent) return;
 
 
-            ctrl.SetPosition(parent.Width - ctrl.Width - parent.Padding.Right, ctrl.Y);
+            control.SetPosition(parent.Width - control.Width - parent.Padding.Right, control.Y);
         }
 
-        public static void AlignTop(Base ctrl)
+        /// <summary>
+        /// Moves the control to the top of its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void AlignTop(Base control)
         {
-            ctrl.SetPosition(ctrl.X, 0);
+            control.SetPosition(control.X, 0);
         }
 
-        public static void CenterVertically(Base ctrl)
+        /// <summary>
+        /// Centers the control vertically inside its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void CenterVertically(Base control)
         {
-            Base parent = ctrl.Parent;
+            Base parent = control.Parent;
             if (null == parent) return;
 
-            ctrl.SetPosition(ctrl.X, (parent.Height - ctrl.Height) / 2);
+            control.SetPosition(control.X, (parent.Height - control.Height) / 2);
         }
 
-        public static void AlignBottom(Base ctrl)
+        /// <summary>
+        /// Moves the control to the bottom of its parent.
+        /// </summary>
+        /// <param name="control"></param>
+        public static void AlignBottom(Base control)
         {
-            Base parent = ctrl.Parent;
+            Base parent = control.Parent;
             if (null == parent) return;
 
-            ctrl.SetPosition(ctrl.X, parent.Height - ctrl.Height);
+            control.SetPosition(control.X, parent.Height - control.Height);
         }
 
-        public static void PlaceBelow(Base ctrl, Base below, int iBorder = 0)
+        /// <summary>
+        /// Places the control below other control.
+        /// </summary>
+        /// <param name="control">Control to place.</param>
+        /// <param name="below">Anchor control.</param>
+        /// <param name="spacing">Optional spacing.</param>
+        public static void PlaceBelow(Base control, Base below, int spacing = 0)
         {
-            ctrl.SetPosition(ctrl.X, below.Bottom + iBorder);
+            control.SetPosition(control.X, below.Bottom + spacing);
         }
-
     }
 }

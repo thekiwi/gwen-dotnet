@@ -53,7 +53,7 @@ namespace Gwen.UnitTest
                 label.Text = "Wow, Coloured Text (and tooltip)";
                 label.TextColor = Color.Blue;
                 label.SetToolTipText("I'm a tooltip");
-                ((Control.Label)label.ToolTip).Font = new Font("Motorwerk", 20);
+                ((Control.Label)label.ToolTip).Font = new Font(Skin.Renderer, "Motorwerk", 20);
                 label.SetPosition(10, 130);
             }
             {
@@ -66,7 +66,7 @@ namespace Gwen.UnitTest
             {
                 // Note that when using a custom font, this font object has to stick around
                 // for the lifetime of the label. Rethink, or is that ideal?
-                font1 = new Font();
+                font1 = new Font(Skin.Renderer);
                 font1.FaceName = "Comic Sans MS";
                 font1.Size = 25;
 
@@ -77,7 +77,7 @@ namespace Gwen.UnitTest
                 label.Font = font1;
             }
             {
-                font2 = new Font("French Script MT", 35);
+                font2 = new Font(Skin.Renderer, "French Script MT", 35);
 
                 Control.Label label = new Control.Label(this);
                 label.AutoSizeToContents = true;

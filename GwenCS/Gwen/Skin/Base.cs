@@ -3,158 +3,76 @@ using System.Drawing;
 
 namespace Gwen.Skin
 {
-    // bit ugly...
-    public struct SkinColors
-    {
-        public struct _Window
-        {
-            public Color TitleActive;
-            public Color TitleInactive;
-        }
-
-        public struct _Button
-        {
-            public Color Normal;
-            public Color Hover;
-            public Color Down;
-            public Color Disabled;
-        }
-
-        public struct _Tab
-        {
-            public struct _Inactive
-            {
-                public Color Normal;
-                public Color Hover;
-                public Color Down;
-                public Color Disabled;
-            }
-
-            public struct _Active
-            {
-                public Color Normal;
-                public Color Hover;
-                public Color Down;
-                public Color Disabled;
-            }
-
-            public _Inactive Inactive;
-            public _Active Active;
-        }
-
-        public struct _Label
-        {
-            public Color Default;
-            public Color Bright;
-            public Color Dark;
-            public Color Highlight;
-        }
-
-        public struct _Tree
-        {
-            public Color Lines;
-            public Color Normal;
-            public Color Hover;
-            public Color Selected;
-        }
-
-        public struct _Properties
-        {
-            public Color Line_Normal;
-            public Color Line_Selected;
-            public Color Line_Hover;
-            public Color Column_Normal;
-            public Color Column_Selected;
-            public Color Column_Hover;
-            public Color Label_Normal;
-            public Color Label_Selected;
-            public Color Label_Hover;
-            public Color Border;
-            public Color Title;
-        }
-
-        public struct _Category
-        {
-            public Color Header;
-            public Color Header_Closed;
-
-            public struct _Line
-            {
-                public Color Text;
-                public Color Text_Hover;
-                public Color Text_Selected;
-                public Color Button;
-                public Color Button_Hover;
-                public Color Button_Selected;
-            }
-
-            public struct _LineAlt
-            {
-                public Color Text;
-                public Color Text_Hover;
-                public Color Text_Selected;
-                public Color Button;
-                public Color Button_Hover;
-                public Color Button_Selected;
-            }
-
-            public _Line Line;
-            public _LineAlt LineAlt;
-        }
-
-        public Color ModalBackground;
-        public Color TooltipText;
-
-        public _Window Window;
-        public _Button Button;
-        public _Tab Tab;
-        public _Label Label;
-        public _Tree Tree;
-        public _Properties Properties;
-        public _Category Category;
-    }
-
+    /// <summary>
+    /// Base skin.
+    /// </summary>
     public class Base : IDisposable
     {
-        protected Font m_DefaultFont = new Font();
-        protected Renderer.Base m_Render;
+        protected readonly Font m_DefaultFont;
+        protected readonly Renderer.Base m_Renderer;
 
+        /// <summary>
+        /// Colors of various UI elements.
+        /// </summary>
         public SkinColors Colors;
 
+        /// <summary>
+        /// Default font to use when rendering text if none specified.
+        /// </summary>
         public Font DefaultFont { get { return m_DefaultFont; } }
 
-        public Renderer.Base Renderer { get { return m_Render; } }
+        /// <summary>
+        /// Renderer used.
+        /// </summary>
+        public Renderer.Base Renderer { get { return m_Renderer; } }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Base"/> class.
+        /// </summary>
+        /// <param name="renderer">Renderer to use.</param>
         protected Base(Renderer.Base renderer)
         {
-            m_Render = renderer;
+            m_DefaultFont = new Font(renderer);
+            m_Renderer = renderer;
         }
-        
+
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public virtual void Dispose()
         {
-            ReleaseFont(m_DefaultFont);
+            m_DefaultFont.Dispose();
         }
         
+        /// <summary>
+        /// Releases the specified font.
+        /// </summary>
+        /// <param name="font">Font to release.</param>
         protected virtual void ReleaseFont(Font font)
         {
             if (font == null)
                 return;
-            if (m_Render == null)
+            if (m_Renderer == null)
                 return;
-            m_Render.FreeFont(font);
+            m_Renderer.FreeFont(font);
         }
         
+        /// <summary>
+        /// Sets the default text font.
+        /// </summary>
+        /// <param name="faceName">Font name. Meaning can vary depending on the renderer.</param>
+        /// <param name="size">Font size.</param>
         public virtual void SetDefaultFont(String faceName, int size = 10)
         {
             m_DefaultFont.FaceName = faceName;
             m_DefaultFont.Size = size;
         }
 
+        #region UI elements
         public virtual void DrawButton(Control.Base control, bool depressed, bool hovered, bool disabled) { }
         public virtual void DrawTabButton(Control.Base control, bool active, Pos dir) { }
         public virtual void DrawTabControl(Control.Base control) { }
         public virtual void DrawTabTitleBar(Control.Base control) { }
-
         public virtual void DrawMenuItem(Control.Base control, bool submenuOpen, bool isChecked) { }
         public virtual void DrawMenuRightArrow(Control.Base control) { }
         public virtual void DrawMenuStrip(Control.Base control) { }
@@ -167,28 +85,23 @@ namespace Gwen.Skin
         public virtual void DrawWindowCloseButton(Control.Base control, bool depressed, bool hovered, bool disabled) { }
         public virtual void DrawHighlight(Control.Base control) { }
         public virtual void DrawStatusBar(Control.Base control) { }
-
         public virtual void DrawShadow(Control.Base control) { }
         public virtual void DrawScrollBarBar(Control.Base control, bool depressed, bool hovered, bool horizontal) { }
         public virtual void DrawScrollBar(Control.Base control, bool horizontal, bool depressed) { }
         public virtual void DrawScrollButton(Control.Base control, Pos direction, bool depressed, bool hovered, bool disabled) { }
         public virtual void DrawProgressBar(Control.Base control, bool horizontal, float progress) { }
-
         public virtual void DrawListBox(Control.Base control) { }
         public virtual void DrawListBoxLine(Control.Base control, bool selected, bool even) { }
-
         public virtual void DrawSlider(Control.Base control, bool horizontal, int numNotches, int barSize) { }
         public virtual void DrawSliderButton(Control.Base control, bool depressed, bool horizontal) { }
-
         public virtual void DrawComboBox(Control.Base control, bool down, bool isMenuOpen) { }
         public virtual void DrawComboBoxArrow(Control.Base control, bool hovered, bool depressed, bool open, bool disabled) { }
         public virtual void DrawKeyboardHighlight(Control.Base control, Rectangle rect, int offset) { }
         public virtual void DrawToolTip(Control.Base control) { }
-
         public virtual void DrawNumericUpDownButton(Control.Base control, bool depressed, bool up) { }
-
         public virtual void DrawTreeButton(Control.Base control, bool open) { }
         public virtual void DrawTreeControl(Control.Base control) { }
+        
         public virtual void DrawTreeNode(Control.Base ctrl, bool open, bool selected, int labelHeight, int labelWidth, int halfWay, int lastBranch, bool isRoot)
         {
             Renderer.DrawColor = Colors.Tree.Lines;
@@ -206,33 +119,32 @@ namespace Gwen.Skin
             Rectangle rect = control.RenderBounds;
 
             if (bBeingEdited)
-                m_Render.DrawColor = Colors.Properties.Column_Selected;
+                m_Renderer.DrawColor = Colors.Properties.Column_Selected;
             else if (hovered)
-                m_Render.DrawColor = Colors.Properties.Column_Hover;
+                m_Renderer.DrawColor = Colors.Properties.Column_Hover;
             else
-                m_Render.DrawColor = Colors.Properties.Column_Normal;
+                m_Renderer.DrawColor = Colors.Properties.Column_Normal;
 
-            m_Render.DrawFilledRect(new Rectangle(0, rect.Y, iWidth, rect.Height));
+            m_Renderer.DrawFilledRect(new Rectangle(0, rect.Y, iWidth, rect.Height));
 
             if (bBeingEdited)
-                m_Render.DrawColor = Colors.Properties.Line_Selected;
+                m_Renderer.DrawColor = Colors.Properties.Line_Selected;
             else if (hovered)
-                m_Render.DrawColor = Colors.Properties.Line_Hover;
+                m_Renderer.DrawColor = Colors.Properties.Line_Hover;
             else
-                m_Render.DrawColor = Colors.Properties.Line_Normal;
+                m_Renderer.DrawColor = Colors.Properties.Line_Normal;
 
-            m_Render.DrawFilledRect(new Rectangle(iWidth, rect.Y, 1, rect.Height));
+            m_Renderer.DrawFilledRect(new Rectangle(iWidth, rect.Y, 1, rect.Height));
 
             rect.Y += rect.Height - 1;
             rect.Height = 1;
 
-            m_Render.DrawFilledRect(rect);
+            m_Renderer.DrawFilledRect(rect);
         }
 
         public virtual void DrawColorDisplay(Control.Base control, Color color) { }
         public virtual void DrawModalControl(Control.Base control) { }
         public virtual void DrawMenuDivider(Control.Base control) { }
-
         public virtual void DrawCategoryHolder(Control.Base control) { }
         public virtual void DrawCategoryInner(Control.Base control, bool collapsed) { }
 
@@ -240,12 +152,14 @@ namespace Gwen.Skin
         {
             Rectangle rect = control.RenderBounds;
 
-            m_Render.DrawColor = Colors.Properties.Border;
+            m_Renderer.DrawColor = Colors.Properties.Border;
 
-            m_Render.DrawFilledRect(new Rectangle(rect.X, rect.Y, BorderLeft, rect.Height));
-            m_Render.DrawFilledRect(new Rectangle(rect.X + BorderLeft, rect.Y, rect.Width - BorderLeft, BorderTop));
+            m_Renderer.DrawFilledRect(new Rectangle(rect.X, rect.Y, BorderLeft, rect.Height));
+            m_Renderer.DrawFilledRect(new Rectangle(rect.X + BorderLeft, rect.Y, rect.Width - BorderLeft, BorderTop));
         }
+#endregion
 
+        #region Symbols for Simple skin
         /*
         Here we're drawing a few symbols such as the directional arrows and the checkbox check
 
@@ -253,17 +167,17 @@ namespace Gwen.Skin
         use the marlett font to draw these.. but since that's a Windows font it wasn't a very
         good cross platform solution.
         */
-
+        
         public virtual void DrawArrowDown(Rectangle rect)
         {
             float x = (rect.Width / 5.0f);
             float y = (rect.Height / 5.0f);
 
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 0.0f, rect.Y + y * 1.0f, x, y * 1.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 1.0f, x, y * 2.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x, y * 3.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 1.0f, x, y * 2.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 1.0f, x, y * 1.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 0.0f, rect.Y + y * 1.0f, x, y * 1.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 1.0f, x, y * 2.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x, y * 3.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 1.0f, x, y * 2.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 1.0f, x, y * 1.0f));
         }
 
         public virtual void DrawArrowUp(Rectangle rect)
@@ -271,11 +185,11 @@ namespace Gwen.Skin
             float x = (rect.Width / 5.0f);
             float y = (rect.Height / 5.0f);
 
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 0.0f, rect.Y + y * 3.0f, x, y * 1.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x, y * 2.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x, y * 3.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 2.0f, x, y * 2.0f));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 3.0f, x, y * 1.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 0.0f, rect.Y + y * 3.0f, x, y * 1.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x, y * 2.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x, y * 3.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 2.0f, x, y * 2.0f));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 3.0f, x, y * 1.0f));
         }
 
         public virtual void DrawArrowLeft(Rectangle rect)
@@ -283,11 +197,11 @@ namespace Gwen.Skin
             float x = (rect.Width / 5.0f);
             float y = (rect.Height / 5.0f);
 
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 0.0f, x * 1.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x * 2.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x * 3.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 3.0f, x * 2.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 4.0f, x * 1.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 0.0f, x * 1.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 1.0f, x * 2.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x * 3.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 3.0f, x * 2.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 4.0f, x * 1.0f, y));
         }
 
         public virtual void DrawArrowRight(Rectangle rect)
@@ -295,11 +209,11 @@ namespace Gwen.Skin
             float x = (rect.Width / 5.0f);
             float y = (rect.Height / 5.0f);
 
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 0.0f, x * 1.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 1.0f, x * 2.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x * 3.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 3.0f, x * 2.0f, y));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 4.0f, x * 1.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 0.0f, x * 1.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 1.0f, x * 2.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 2.0f, x * 3.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 3.0f, x * 2.0f, y));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 4.0f, x * 1.0f, y));
         }
 
         public virtual void DrawCheck(Rectangle rect)
@@ -307,11 +221,12 @@ namespace Gwen.Skin
             float x = (rect.Width / 5.0f);
             float y = (rect.Height / 5.0f);
 
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 0.0f, rect.Y + y * 3.0f, x * 2, y * 2));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 4.0f, x * 2, y * 2));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 3.0f, x * 2, y * 2));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 1.0f, x * 2, y * 2));
-            m_Render.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 0.0f, x * 2, y * 2));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 0.0f, rect.Y + y * 3.0f, x * 2, y * 2));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 1.0f, rect.Y + y * 4.0f, x * 2, y * 2));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 2.0f, rect.Y + y * 3.0f, x * 2, y * 2));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 1.0f, x * 2, y * 2));
+            m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 0.0f, x * 2, y * 2));
         }
+        #endregion
     }
 }

@@ -2,6 +2,7 @@
 using System.Drawing;
 using Gwen.Anim;
 using Gwen.DragDrop;
+using Gwen.Input;
 
 namespace Gwen.Control
 {
@@ -180,7 +181,7 @@ namespace Gwen.Control
             if (NextTab == null)
                 NextTab = FirstTab;
 
-            Input.Input.OnCanvasThink(this);
+            InputHandler.OnCanvasThink(this);
         }
 
         /// <summary>
@@ -195,16 +196,16 @@ namespace Gwen.Control
             // Todo: Handle scaling here..
             //float fScale = 1.0f / Scale();
 
-            Input.Input.OnMouseMoved(this, x, y, dx, dy);
+            InputHandler.OnMouseMoved(this, x, y, dx, dy);
 
-            if (Global.HoveredControl == null) return false;
-            if (Global.HoveredControl == this) return false;
-            if (Global.HoveredControl.GetCanvas() != this) return false;
+            if (InputHandler.HoveredControl == null) return false;
+            if (InputHandler.HoveredControl == this) return false;
+            if (InputHandler.HoveredControl.GetCanvas() != this) return false;
 
-            Global.HoveredControl.InputMouseMoved(x, y, dx, dy);
-            Global.HoveredControl.UpdateCursor();
+            InputHandler.HoveredControl.InputMouseMoved(x, y, dx, dy);
+            InputHandler.HoveredControl.UpdateCursor();
 
-            DragAndDrop.OnMouseMoved(Global.HoveredControl, x, y);
+            DragAndDrop.OnMouseMoved(InputHandler.HoveredControl, x, y);
             return true;
         }
 
@@ -216,7 +217,7 @@ namespace Gwen.Control
         {
             if (IsHidden) return false;
 
-            return Input.Input.OnMouseClicked(this, button, down);
+            return InputHandler.OnMouseClicked(this, button, down);
         }
 
         /// <summary>
@@ -229,7 +230,7 @@ namespace Gwen.Control
             if (key <= Key.Invalid) return false;
             if (key >= Key.Count) return false;
 
-            return Input.Input.OnKeyEvent(this, key, down);
+            return InputHandler.OnKeyEvent(this, key, down);
         }
 
         /// <summary>
@@ -242,16 +243,16 @@ namespace Gwen.Control
             if (char.IsControl(chr)) return false;
 
             //Handle Accelerators
-            if (Input.Input.HandleAccelerator(this, chr))
+            if (Input.InputHandler.HandleAccelerator(this, chr))
                 return true;
 
             //Handle characters
-            if (Global.KeyboardFocus == null) return false;
-            if (Global.KeyboardFocus.GetCanvas() != this) return false;
-            if (!Global.KeyboardFocus.IsVisible) return false;
-            if (Input.Input.IsControlDown) return false;
+            if (InputHandler.KeyboardFocus == null) return false;
+            if (InputHandler.KeyboardFocus.GetCanvas() != this) return false;
+            if (!InputHandler.KeyboardFocus.IsVisible) return false;
+            if (InputHandler.IsControlDown) return false;
 
-            return Global.KeyboardFocus.InputChar(chr);
+            return InputHandler.KeyboardFocus.InputChar(chr);
         }
 
         /// <summary>
@@ -261,11 +262,11 @@ namespace Gwen.Control
         public bool Input_MouseWheel(int val)
         {
             if (IsHidden) return false;
-            if (Global.HoveredControl == null) return false;
-            if (Global.HoveredControl == this) return false;
-            if (Global.HoveredControl.GetCanvas() != this) return false;
+            if (InputHandler.HoveredControl == null) return false;
+            if (InputHandler.HoveredControl == this) return false;
+            if (InputHandler.HoveredControl.GetCanvas() != this) return false;
 
-            return Global.HoveredControl.InputMouseWheeled(val);
+            return InputHandler.HoveredControl.InputMouseWheeled(val);
         }
     }
 }
