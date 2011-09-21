@@ -23,6 +23,10 @@ namespace Gwen.Platform
         /// <returns>Font file path.</returns>
         public static String GetFontPath(String fontName)
         {
+            // is this reliable? we rely on lazy jitting to not run win32 code on linux
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+                return null;
+
             if (m_FontPaths == null)
                 InitFontPaths();
 

@@ -46,14 +46,34 @@ namespace Gwen.Sample.SFML
                 List<int> ftime = new List<int>(fps_frames);
 
                 // create GWEN renderer
-                Renderer.SFML GwenRenderer = new Renderer.SFML(window);
+                Renderer.SFML gwenRenderer = new Renderer.SFML(window);
 
                 // Create GWEN skin
                 //Skin.Simple skin = new Skin.Simple(GwenRenderer);
-                Skin.TexturedBase skin = new Skin.TexturedBase(GwenRenderer, "DefaultSkin.png");
+                Skin.TexturedBase skin = new Skin.TexturedBase(gwenRenderer, "DefaultSkin.png");
 
                 // set default font
-                skin.SetDefaultFont("Arial Unicode MS", 10);
+                Font defaultFont = new Font(gwenRenderer) {Size = 10, FaceName = "Arial Unicode MS"};
+                
+                // try to load, fallback if failed
+                if (gwenRenderer.LoadFont(defaultFont))
+                {
+                    gwenRenderer.FreeFont(defaultFont);
+                }
+                else // try another
+                {
+                    defaultFont.FaceName = "Arial";
+                    if (gwenRenderer.LoadFont(defaultFont))
+                    {
+                        gwenRenderer.FreeFont(defaultFont);
+                    }
+                    else // try default
+                    {
+                        defaultFont.FaceName = "OpenSans.ttf";
+                    }
+                }
+
+                skin.SetDefaultFont(defaultFont.FaceName);
                 //skin.SetDefaultFont("OpenSans.ttf", 10);
 
                 // Create a Canvas (it's root, on which all other GWEN controls are created)

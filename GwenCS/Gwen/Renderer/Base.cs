@@ -161,8 +161,11 @@ namespace Gwen.Renderer
         /// Loads the specified font.
         /// </summary>
         /// <param name="font">Font to load.</param>
-        public virtual void LoadFont(Font font)
-        {}
+        /// <returns>True if succeeded.</returns>
+        public virtual bool LoadFont(Font font)
+        {
+            return false;
+        }
 
         /// <summary>
         /// Frees the specified font.

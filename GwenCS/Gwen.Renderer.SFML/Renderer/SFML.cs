@@ -85,10 +85,12 @@ namespace Gwen.Renderer
         /// Loads the specified font.
         /// </summary>
         /// <param name="font">Font to load.</param>
-        public override void LoadFont(Font font)
+        /// <returns>True if succeeded.</returns>
+        public override bool LoadFont(Font font)
         {
             font.RealSize = font.Size*Scale;
             global::SFML.Graphics.Font sfFont;
+            bool ret = true;
             
             Debug.Print("LoadFont: {0} {1}", font.FaceName, font.RendererData);
             try
@@ -110,6 +112,7 @@ namespace Gwen.Renderer
                         // Ideally here we should be setting the font to a system default font here.
                         sfFont = global::SFML.Graphics.Font.DefaultFont;
                         Debug.Print("LoadFont: failed");
+                        ret = false;
                     }
                 }
                 else
@@ -117,11 +120,13 @@ namespace Gwen.Renderer
                     // Ideally here we should be setting the font to a system default font here.
                     sfFont = global::SFML.Graphics.Font.DefaultFont;
                     Debug.Print("LoadFont: failed");
+                    ret = false;
                 }
             }
 
             sfFont.GetTexture((uint) font.Size).Smooth = font.Smooth;
             font.RendererData = sfFont;
+            return ret;
         }
 
         /// <summary>
@@ -161,6 +166,13 @@ namespace Gwen.Renderer
             if (sfFont == null)
                 sfFont = global::SFML.Graphics.Font.DefaultFont;
 
+            // todo: this is workaround for SFML.Net bug under mono
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                if (text[text.Length - 1] != '\0')
+                    text += '\0';
+            }
+
             Text sfText = new Text(text);
             sfText.Font = sfFont;
             sfText.Position = new Vector2f(pos.X, pos.Y);
@@ -192,6 +204,13 @@ namespace Gwen.Renderer
 
             if (sfFont == null)
                 sfFont = global::SFML.Graphics.Font.DefaultFont;
+
+            // todo: this is workaround for SFML.Net bug under mono
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                if (text[text.Length - 1] != '\0')
+                    text += '\0';
+            }
 
             Text sfText = new Text(text);
             sfText.Font = sfFont;
