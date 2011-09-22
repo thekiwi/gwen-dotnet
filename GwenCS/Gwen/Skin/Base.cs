@@ -8,7 +8,7 @@ namespace Gwen.Skin
     /// </summary>
     public class Base : IDisposable
     {
-        protected readonly Font m_DefaultFont;
+        protected Font m_DefaultFont;
         protected readonly Renderer.Base m_Renderer;
 
         /// <summary>
@@ -19,7 +19,11 @@ namespace Gwen.Skin
         /// <summary>
         /// Default font to use when rendering text if none specified.
         /// </summary>
-        public Font DefaultFont { get { return m_DefaultFont; } }
+        public Font DefaultFont
+        {
+            get { return m_DefaultFont; }
+            set { m_DefaultFont = value; }
+        }
 
         /// <summary>
         /// Renderer used.

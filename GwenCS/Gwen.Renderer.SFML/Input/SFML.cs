@@ -63,6 +63,10 @@ namespace Gwen.Input
             m_MouseY = 0;
         }
 
+        /// <summary>
+        /// Sets the currently active canvas.
+        /// </summary>
+        /// <param name="c">Canvas to use.</param>
         public void Initialize(Canvas c)
         {
             m_Canvas = c;

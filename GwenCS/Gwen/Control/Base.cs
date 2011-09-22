@@ -174,9 +174,6 @@ namespace Gwen.Control
             get { return m_ToolTip; }
             set
             {
-                if (m_ToolTip != null)
-                    m_ToolTip.Dispose();
-
                 m_ToolTip = value;
                 if (m_ToolTip != null)
                 {
@@ -474,8 +471,6 @@ namespace Gwen.Control
         /// <param name="text">Tooltip text.</param>
         public virtual void SetToolTipText(String text)
         {
-            if (ToolTip != null)
-                ToolTip.Dispose();
             Label tooltip = new Label(this);
             tooltip.AutoSizeToContents = true;
             tooltip.Text = text;

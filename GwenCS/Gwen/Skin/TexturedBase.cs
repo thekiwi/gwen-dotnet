@@ -290,6 +290,15 @@ namespace Gwen.Skin
             InitializeTextures();
         }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
+        public override void Dispose()
+        {
+            m_Texture.Dispose();
+            base.Dispose();
+        }
+
         #region Initialization
         private void InitializeColors()
         {

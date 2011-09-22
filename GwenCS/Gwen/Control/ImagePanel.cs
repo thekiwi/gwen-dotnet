@@ -31,8 +31,8 @@ namespace Gwen.Control
         /// </summary>
         public override void Dispose()
         {
-            base.Dispose();
             m_Texture.Dispose();
+            base.Dispose();
         }
 
         /// <summary>

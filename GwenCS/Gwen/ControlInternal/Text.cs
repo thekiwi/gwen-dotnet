@@ -15,13 +15,14 @@ namespace Gwen.ControlInternal
         /// <summary>
         /// Font used to display the text.
         /// </summary>
+        /// <remarks>
+        /// The font is not being disposed by this class.
+        /// </remarks>
         public Font Font
         {
             get { return m_Font; }
             set
             {
-                if (m_Font != null)
-                    m_Font.Dispose();
                 m_Font = value;
                 SizeToContents(); 
                 Invalidate();
@@ -33,8 +34,14 @@ namespace Gwen.ControlInternal
         /// </summary>
         public String String
         {
-            get { return m_String; } 
-            set { m_String = value; if (AutoSizeToContents) SizeToContents(); Invalidate(); /*InvalidateParent();*/ }
+            get { return m_String; }
+            set
+            {
+                m_String = value;
+                if (AutoSizeToContents) 
+                    SizeToContents();
+                Invalidate(); /*InvalidateParent();*/
+            }
         }
 
         /// <summary>
@@ -74,15 +81,6 @@ namespace Gwen.ControlInternal
             TextColor = Skin.Colors.Label.Default;
             MouseInputEnabled = false;
             TextColorOverride = Color.FromArgb(0, 255, 255, 255); // A==0, override disabled
-        }
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Font.Dispose();
-            base.Dispose();
         }
 
         /// <summary>
