@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Windows.Forms;
 using Gwen.Control;
 using SFML.Graphics;
 using SFML.Window;
 using Tao.OpenGl;
 using KeyEventArgs = SFML.Window.KeyEventArgs;
+using MessageBox = System.Windows.Forms.MessageBox;
 
 namespace Gwen.Sample.SFML
 {

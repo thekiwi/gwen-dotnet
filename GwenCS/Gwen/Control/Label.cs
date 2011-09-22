@@ -162,6 +162,9 @@ namespace Gwen.Control
                 y = Height - m_Text.Height - m_TextPadding.Bottom - Padding.Bottom;
 
             m_Text.SetPosition(x, y);
+
+            if (m_Text.AutoSizeToContents)
+                SizeToContents();
         }
 
         /// <summary>

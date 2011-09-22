@@ -11,20 +11,26 @@ namespace Gwen.Control
     public class WindowControl : ResizableControl
     {
         private readonly Dragger m_TitleBar;
-        private readonly Label m_Title;
+        private readonly Label m_Caption;
         private readonly CloseButton m_CloseButton;
         private bool m_DeleteOnClose;
         private Modal m_Modal;
+        private Base m_OldParent;
 
         /// <summary>
-        /// Window title.
+        /// Window caption.
         /// </summary>
-        public String Title { get { return m_Title.Text; } set { m_Title.Text = value; } }
+        public String Caption { get { return m_Caption.Text; } set { m_Caption.Text = value; } }
 
         /// <summary>
         /// Determines whether the window has close button.
         /// </summary>
         public bool IsClosable { get { return !m_CloseButton.IsHidden; } set { m_CloseButton.IsHidden = !value; } }
+
+        /// <summary>
+        /// Determines whether the control should be disposed on close.
+        /// </summary>
+        public bool DeleteOnClose { get { return m_DeleteOnClose; } set { m_DeleteOnClose = value; } }
 
         /// <summary>
         /// Indicates whether the control is hidden.
@@ -44,7 +50,9 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="WindowControl"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public WindowControl(Base parent)
+        /// <param name="caption">Window caption.</param>
+        /// <param name="modal">Determines whether the window should be modal.</param>
+        public WindowControl(Base parent, String caption = "", bool modal = false)
             : base(parent)
         {
             m_TitleBar = new Dragger(this);
@@ -54,19 +62,20 @@ namespace Gwen.Control
             m_TitleBar.Target = this;
             m_TitleBar.Dock = Pos.Top;
 
-            m_Title = new Label(m_TitleBar);
-            m_Title.Alignment = Pos.Left | Pos.CenterV;
-            m_Title.Text = "Window"; // [omeg] todo: i18n
-            m_Title.Dock = Pos.Fill;
-            m_Title.Padding = new Padding(8, 0, 0, 0);
-            m_Title.TextColor = Skin.Colors.Window.TitleInactive;
+            m_Caption = new Label(m_TitleBar);
+            m_Caption.Alignment = Pos.Left | Pos.CenterV;
+            m_Caption.Text = caption;
+            m_Caption.Dock = Pos.Fill;
+            m_Caption.Padding = new Padding(8, 0, 0, 0);
+            m_Caption.TextColor = Skin.Colors.Window.TitleInactive;
 
             m_CloseButton = new CloseButton(m_TitleBar, this);
-            m_CloseButton.Text = String.Empty;
+            //m_CloseButton.Text = String.Empty;
             m_CloseButton.SetSize(24, 24);
             m_CloseButton.Dock = Pos.Right;
             m_CloseButton.Clicked += CloseButtonPressed;
             m_CloseButton.IsTabable = false;
+            m_CloseButton.Name = "closeButton";
 
             //Create a blank content control, dock it to the top - Should this be a ScrollControl?
             m_InnerPanel = new Base(this);
@@ -78,6 +87,9 @@ namespace Gwen.Control
             MinimumSize = new Point(100, 40);
             ClampMovement = true;
             KeyboardInputEnabled = false;
+
+            if (modal)
+                MakeModal();
         }
 
         /// <summary>
@@ -87,9 +99,13 @@ namespace Gwen.Control
         {
             if (m_Modal != null)
                 m_Modal.Dispose();
+
             m_TitleBar.Dispose();
-            m_Title.Dispose();
+            m_Caption.Dispose();
             m_CloseButton.Dispose();
+
+            //Parent.RemoveChild(this, false); // todo: should this be in Base? is it needed?
+
             base.Dispose();
         }
 
@@ -101,16 +117,36 @@ namespace Gwen.Control
                 Dispose();
         }
 
-        public void MakeModal(bool invisible = false)
+        /// <summary>
+        /// Makes the window modal: covers the whole canvas and gets all input.
+        /// </summary>
+        /// <param name="dim">Determines whether all the background should be dimmed.</param>
+        public void MakeModal(bool dim = false)
         {
             if (m_Modal != null)
                 return;
 
             m_Modal = new Modal(GetCanvas());
+            m_OldParent = Parent;
             Parent = m_Modal;
 
-            if (invisible)
+            if (dim)
+                m_Modal.ShouldDrawBackground = true;
+            else
                 m_Modal.ShouldDrawBackground = false;
+        }
+
+        /// <summary>
+        /// Disables modal mode if active.
+        /// </summary>
+        public void DisableModal()
+        {
+            if (m_Modal == null)
+                return;
+
+            Parent = m_OldParent;
+            m_Modal.Dispose();
+            m_Modal = null;
         }
 
         /// <summary>
@@ -130,9 +166,9 @@ namespace Gwen.Control
             bool hasFocus = IsOnTop;
 
             if (hasFocus)
-                m_Title.TextColor = Skin.Colors.Window.TitleActive;
+                m_Caption.TextColor = Skin.Colors.Window.TitleActive;
             else
-                m_Title.TextColor = Skin.Colors.Window.TitleInactive;
+                m_Caption.TextColor = Skin.Colors.Window.TitleInactive;
 
             skin.DrawWindow(this, m_TitleBar.Bottom, hasFocus);
         }

@@ -9,6 +9,7 @@ using GroupBox = Gwen.Control.GroupBox;
 using Label = Gwen.Control.Label;
 using ListBox = Gwen.Control.ListBox;
 using MenuStrip = Gwen.Control.MenuStrip;
+using MessageBox = System.Windows.Forms.MessageBox;
 using NumericUpDown = Gwen.Control.NumericUpDown;
 using TabControl = Gwen.Control.TabControl;
 using TextBox = Gwen.Control.TextBox;

@@ -13,19 +13,32 @@ namespace Gwen.UnitTest
         {
             rand = new Random();
 
-            Control.Button button = new Control.Button(this);
-            button.SetText("Open a Window");
-            button.Clicked += OpenWindow;
+            Control.Button button1 = new Control.Button(this);
+            button1.SetText("Open a Window");
+            button1.Clicked += OpenWindow;
+
+            Control.Button button2 = new Control.Button(this);
+            button2.SetText("Open a MessageBox");
+            button2.Clicked += OpenMsgbox;
+            Align.PlaceToRight(button2, button1, 10);
 
             m_WindowCount = 1;
         }
 
         void OpenWindow(Base control)
         {
-            Control.WindowControl pWindow = new Control.WindowControl(GetCanvas());
-            pWindow.Title = String.Format("Window {0}", m_WindowCount);
-            pWindow.SetSize(rand.Next(200, 400), rand.Next(200, 400));
-            pWindow.SetPosition(rand.Next(700), rand.Next(400));
+            Control.WindowControl window = new Control.WindowControl(GetCanvas());
+            window.Caption = String.Format("Window {0}", m_WindowCount);
+            window.SetSize(rand.Next(200, 400), rand.Next(200, 400));
+            window.SetPosition(rand.Next(700), rand.Next(400));
+
+            m_WindowCount++;
+        }
+
+        void OpenMsgbox(Base control)
+        {
+            MessageBox window = new MessageBox(GetCanvas(), String.Format("Window {0}   MessageBox window = new MessageBox(GetCanvas(), String.Format(  MessageBox window = new MessageBox(GetCanvas(), String.Format(", m_WindowCount));
+            window.SetPosition(rand.Next(700), rand.Next(400));
 
             m_WindowCount++;
         }

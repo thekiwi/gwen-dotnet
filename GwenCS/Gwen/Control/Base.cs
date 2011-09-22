@@ -1259,10 +1259,13 @@ namespace Gwen.Control
             Redraw();
         }
 
+        /// <summary>
+        /// Control has been clicked - invoked by input system. Windows use it to propagate activation.
+        /// </summary>
         public virtual void Touch()
         {
             if (Parent != null)
-                Parent.OnChildRemoved(this);
+                Parent.OnChildTouched(this);
         }
 
         protected virtual void OnChildTouched(Base control)

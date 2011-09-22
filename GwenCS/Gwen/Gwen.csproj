@@ -79,6 +79,7 @@
     <Compile Include="Control\DockBase.cs" />
     <Compile Include="Control\DockedTabControl.cs" />
     <Compile Include="Control\Layout\Positioner.cs" />
+    <Compile Include="Control\MessageBox.cs" />
     <Compile Include="Control\ProgressBar.cs" />
     <Compile Include="Control\Properties.cs" />
     <Compile Include="Control\PropertyRow.cs" />

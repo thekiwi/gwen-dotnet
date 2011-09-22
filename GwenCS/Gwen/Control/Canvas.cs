@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using Gwen.Anim;
+using Gwen.ControlInternal;
 using Gwen.DragDrop;
 using Gwen.Input;
 
@@ -77,6 +78,20 @@ namespace Gwen.Control
                 child.Dispose();
             }
             base.Dispose(); // inner panel if any
+        }
+
+        /// <summary>
+        /// Disables and deletes all modal windows.
+        /// </summary>
+        public void ClearModals()
+        {
+            foreach (Base child in Children)
+            {
+                if (child is Modal)
+                {
+                    child.Dispose(); // this also removes it from our children
+                }
+            }
         }
 
         /// <summary>
