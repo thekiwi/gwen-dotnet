@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 
 namespace Gwen
 {
@@ -67,6 +68,11 @@ namespace Gwen
             Width = width;
             Height = height;
             m_Renderer.LoadTextureRaw(this, pixelData);
+        }
+
+        public void LoadStream(Stream data)
+        {
+            m_Renderer.LoadTextureStream(this, data);
         }
 
         /// <summary>

@@ -181,29 +181,14 @@ namespace Gwen.Renderer
             AddVert(rect.X, rect.Y + rect.Height, u1, v2);
         }
 
-        public override void LoadTexture(Texture t)
+        private static void LoadTextureInternal(Texture t, Bitmap bmp)
         {
-            Bitmap bmp;
-            try
-            {
-                bmp = new Bitmap(t.Name);
-            }
-            catch (Exception)
-            {
-                t.Failed = true;
-                return;
-            }
-
             // todo: convert to proper format
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
             {
                 t.Failed = true;
-                bmp.Dispose();
                 return;
             }
-
-            // Flip
-            //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
 
             int glTex;
 
@@ -223,8 +208,41 @@ namespace Gwen.Renderer
 
             Gl.glTexImage2D(Gl.GL_TEXTURE_2D, 0, Gl.GL_RGBA, t.Width, t.Height, 0, Gl.GL_BGRA,
                             Gl.GL_UNSIGNED_BYTE, data.Scan0);
-            
+
             bmp.UnlockBits(data);
+        }
+
+        public override void LoadTexture(Texture t)
+        {
+            Bitmap bmp;
+            try
+            {
+                bmp = new Bitmap(t.Name);
+            }
+            catch (Exception)
+            {
+                t.Failed = true;
+                return;
+            }
+
+            LoadTextureInternal(t, bmp);
+            bmp.Dispose();
+        }
+
+        public override void LoadTextureStream(Texture t, System.IO.Stream data)
+        {
+            Bitmap bmp;
+            try
+            {
+                bmp = new Bitmap(data);
+            }
+            catch (Exception)
+            {
+                t.Failed = true;
+                return;
+            }
+
+            LoadTextureInternal(t, bmp);
             bmp.Dispose();
         }
 

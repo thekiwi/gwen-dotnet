@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 using Gwen.Skin.Texturing;
 using Single = Gwen.Skin.Texturing.Single;
 
@@ -285,6 +286,16 @@ namespace Gwen.Skin
         {
             m_Texture = new Texture(Renderer);
             m_Texture.Load(textureName);
+
+            InitializeColors();
+            InitializeTextures();
+        }
+
+        public TexturedBase(Renderer.Base renderer, Stream textureData)
+            : base(renderer)
+        {
+            m_Texture = new Texture(Renderer);
+            m_Texture.LoadStream(textureData);
 
             InitializeColors();
             InitializeTextures();

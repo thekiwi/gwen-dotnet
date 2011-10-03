@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Gwen.Control;
+using Gwen.Control.Layout;
 
 namespace Gwen.UnitTest
 {
@@ -43,21 +44,21 @@ namespace Gwen.UnitTest
                 ctrl.RowUnselected += RowUnSelected;
 
                 {
-                    Control.Layout.TableRow pRow = ctrl.AddItem("Baked Beans");
-                    pRow.SetCellText(1, "Heinz");
-                    pRow.SetCellText(2, "£3.50");
+                    TableRow row = ctrl.AddItem("Baked Beans");
+                    row.SetCellText(1, "Heinz");
+                    row.SetCellText(2, "£3.50");
                 }
 
                 {
-                    Control.Layout.TableRow pRow = ctrl.AddItem("Bananas");
-                    pRow.SetCellText(1, "Trees");
-                    pRow.SetCellText(2, "£1.27");
+                    TableRow row = ctrl.AddItem("Bananas");
+                    row.SetCellText(1, "Trees");
+                    row.SetCellText(2, "£1.27");
                 }
 
                 {
-                    Control.Layout.TableRow pRow = ctrl.AddItem("Chicken");
-                    pRow.SetCellText(1, "\u5355\u5143\u6D4B\u8BD5");
-                    pRow.SetCellText(2, "£8.95");
+                    TableRow row = ctrl.AddItem("Chicken");
+                    row.SetCellText(1, "\u5355\u5143\u6D4B\u8BD5");
+                    row.SetCellText(2, "£8.95");
                 }
             }
         }

@@ -20,8 +20,8 @@ namespace Gwen.Renderer
         protected const int MaxVerts = 1024;
         protected Color m_Color;
         protected int m_iVertNum;
-        protected Vertex[] m_Vertices;
-        protected int m_VertexSize;
+        protected readonly Vertex[] m_Vertices;
+        protected readonly int m_VertexSize;
 
         public OpenTK()
             : base()
@@ -183,6 +183,36 @@ namespace Gwen.Renderer
             AddVert(rect.X, rect.Y + rect.Height, u1, v2);
         }
 
+        private static void LoadTextureInternal(Texture t, Bitmap bmp)
+        {
+            // todo: convert to proper format
+            if (bmp.PixelFormat != System.Drawing.Imaging.PixelFormat.Format32bppArgb)
+            {
+                t.Failed = true;
+                return;
+            }
+
+            int glTex;
+
+            // Create the opengl texture
+            GL.GenTextures(1, out glTex);
+            GL.BindTexture(TextureTarget.Texture2D, glTex);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+
+            // Sort out our GWEN texture
+            t.RendererData = glTex;
+            t.Width = bmp.Width;
+            t.Height = bmp.Height;
+
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
+                                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+
+            bmp.UnlockBits(data);
+        }
+
         public override void LoadTexture(Texture t)
         {
             Bitmap bmp;
@@ -196,36 +226,24 @@ namespace Gwen.Renderer
                 return;
             }
 
-            // todo: convert to proper format
-            if (bmp.PixelFormat != System.Drawing.Imaging.PixelFormat.Format32bppArgb)
+            LoadTextureInternal(t, bmp);
+            bmp.Dispose();
+        }
+
+        public override void LoadTextureStream(Texture t, System.IO.Stream data)
+        {
+            Bitmap bmp;
+            try
+            {
+                bmp = new Bitmap(data);
+            }
+            catch (Exception)
             {
                 t.Failed = true;
-                bmp.Dispose();
                 return;
             }
 
-            // Flip
-            //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
-            int glTex;
-
-            // Create the opengl texture
-            GL.GenTextures(1, out glTex);
-            GL.BindTexture(TextureTarget.Texture2D, glTex);
-            GL.TexParameter(TextureTarget.Texture2D,TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
-
-            // Sort out our GWEN texture
-            t.RendererData = glTex;
-            t.Width = bmp.Width;
-            t.Height = bmp.Height;
-
-            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
-                                    System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
-            
-            bmp.UnlockBits(data);
+            LoadTextureInternal(t, bmp);
             bmp.Dispose();
         }
 

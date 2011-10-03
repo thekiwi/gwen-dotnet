@@ -305,6 +305,41 @@ namespace Gwen.Renderer
             texture.RendererData = sprite;
         }
 
+        /// <summary>
+        /// Initializes texture from image file data.
+        /// </summary>
+        /// <param name="texture">Texture to initialize.</param>
+        /// <param name="data">Image file as stream.</param>
+        public override void LoadTextureStream(Texture texture, System.IO.Stream data)
+        {
+            if (null == texture) return;
+
+            Debug.Print("LoadTextureStream: {0} {1}", texture.Name, texture.RendererData);
+
+            if (texture.RendererData != null)
+                FreeTexture(texture);
+
+            global::SFML.Graphics.Texture sfTexture;
+            Sprite sprite;
+
+            try
+            {
+                sfTexture = new global::SFML.Graphics.Texture(data);
+                sfTexture.Smooth = true;
+                sprite = new Sprite(sfTexture);
+            }
+            catch (LoadingFailedException)
+            {
+                Debug.Print("LoadTextureStream: failed");
+                texture.Failed = true;
+                return;
+            }
+
+            texture.Height = (int)sfTexture.Height;
+            texture.Width = (int)sfTexture.Width;
+            texture.RendererData = sprite;        
+        }
+
         // [omeg] added, pixelData are in RGBA format
         public override void LoadTextureRaw(Texture texture, byte[] pixelData)
         {

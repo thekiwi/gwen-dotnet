@@ -433,6 +433,22 @@ namespace Gwen.Control
         }
 
         /// <summary>
+        /// Enables the control.
+        /// </summary>
+        public void Enable()
+        {
+            IsDisabled = false;
+        }
+
+        /// <summary>
+        /// Disables the control.
+        /// </summary>
+        public void Disable()
+        {
+            IsDisabled = true;
+        }
+
+        /// <summary>
         /// Default accelerator handler.
         /// </summary>
         /// <param name="control">Event source.</param>

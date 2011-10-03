@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Drawing;
+using System.IO;
 
 namespace Gwen.Renderer
 {
@@ -120,6 +121,14 @@ namespace Gwen.Renderer
         /// <param name="t">Texture to initialize. Dimensions need to be set.</param>
         /// <param name="pixelData">Pixel data in RGBA format.</param>
         public virtual void LoadTextureRaw(Texture t, byte[] pixelData)
+        {}
+
+        /// <summary>
+        /// Initializes texture from image file data.
+        /// </summary>
+        /// <param name="t">Texture to initialize.</param>
+        /// <param name="data">Image file as stream.</param>
+        public virtual void LoadTextureStream(Texture t, Stream data)
         {}
 
         /// <summary>
