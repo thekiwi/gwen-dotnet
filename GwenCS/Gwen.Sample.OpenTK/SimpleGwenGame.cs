@@ -254,12 +254,12 @@ namespace Gwen.Sample.OpenTKSample
             lb1.SetSize(150, 100);
             lb1.Dock = Pos.Left;
             lb1.AllowMultiSelect = true;
-            var row = lb1.AddItem("multiselect");
+            var row = lb1.AddRow("multiselect");
             row.SetCellText(1, "is");
             row.SetCellText(2, "on");
-            lb1.AddItem("item 2");
-            lb1.AddItem("item 3").SetCellText(2, "3rd column");
-            row = lb1.AddItem("zażółć");
+            lb1.AddRow("item 2");
+            lb1.AddRow("item 3").SetCellText(2, "3rd column");
+            row = lb1.AddRow("zażółć");
             row.SetCellText(1, "gęślą");
             row.SetCellText(2, "jaźń");
             lb1.SelectRow(1);
@@ -268,10 +268,10 @@ namespace Gwen.Sample.OpenTKSample
             ListBox lb2 = new ListBox(gb1);
             lb2.SetSize(70, 100);
             lb2.Dock = Pos.Left;
-            lb2.AddItem("row 1");
-            lb2.AddItem("row 2");
-            lb2.AddItem("row 3");
-            lb2.AddItem("row 4");
+            lb2.AddRow("row 1");
+            lb2.AddRow("row 2");
+            lb2.AddRow("row 3");
+            lb2.AddRow("row 4");
             lb2.SelectRow(0); // this will be unselected since it's not multiselect
             lb2.SelectRow(1);
             lb2.RemoveRow(2);

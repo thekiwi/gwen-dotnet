@@ -15,11 +15,26 @@ namespace Gwen.Control
         private readonly List<TableRow> m_SelectedRows;
 
         private bool m_MultiSelect;
+        private bool m_IsToggle;
 
         /// <summary>
         /// Determines whether multiple rows can be selected at once.
         /// </summary>
-        public bool AllowMultiSelect { get { return m_MultiSelect; } set { m_MultiSelect = value; } }
+        public bool AllowMultiSelect
+        {
+            get { return m_MultiSelect; }
+            set
+            {
+                m_MultiSelect = value; 
+                if (value)
+                    IsToggle = true;
+            }
+        }
+
+        /// <summary>
+        /// Determines whether rows can be unselected by clicking on them again.
+        /// </summary>
+        public bool IsToggle { get { return m_IsToggle; } set { m_IsToggle = value; } }
 
         /// <summary>
         /// List of selected rows.
@@ -36,6 +51,20 @@ namespace Gwen.Control
                 if (m_SelectedRows.Count == 0) 
                     return null;
                 return m_SelectedRows[0];
+            }
+        }
+
+        /// <summary>
+        /// Gets the selected row number.
+        /// </summary>
+        public int SelectedRowIndex
+        {
+            get
+            {
+                var selected = SelectedRow;
+                if (selected == null)
+                    return -1;
+                return m_Table.GetRowIndex(selected);
             }
         }
 
@@ -72,6 +101,7 @@ namespace Gwen.Control
             m_Table.ColumnCount = 1;
 
             m_MultiSelect = false;
+            m_IsToggle = false;
         }
 
         /// <summary>
@@ -81,16 +111,6 @@ namespace Gwen.Control
         {
             m_Table.Dispose();
             base.Dispose();
-        }
-
-        /// <summary>
-        /// Adds a new row.
-        /// </summary>
-        /// <param name="label">Row text.</param>
-        /// <returns>Newly created control.</returns>
-        public TableRow AddItem(String label)
-        {
-            return AddItem(label, String.Empty);
         }
 
         /// <summary>
@@ -169,9 +189,19 @@ namespace Gwen.Control
         /// Adds a new row.
         /// </summary>
         /// <param name="label">Row text.</param>
+        /// <returns>Newly created control.</returns>
+        public TableRow AddRow(String label)
+        {
+            return AddRow(label, String.Empty);
+        }
+
+        /// <summary>
+        /// Adds a new row.
+        /// </summary>
+        /// <param name="label">Row text.</param>
         /// <param name="name">Internal control name.</param>
         /// <returns>Newly created control.</returns>
-        public TableRow AddItem(String label, String name)
+        public TableRow AddRow(String label, String name)
         {
             ListBoxRow row = new ListBoxRow(this);
             m_Table.AddRow(row);
@@ -233,10 +263,16 @@ namespace Gwen.Control
             ListBoxRow row = control as ListBoxRow;
             if (row == null)
                 return;
+            
             if (row.IsSelected)
-                UnselectRow(row);
+            {
+                if (IsToggle)
+                    UnselectRow(row);
+            }
             else
+            {
                 SelectRow(control, clear);
+            }
         }
 
         /// <summary>

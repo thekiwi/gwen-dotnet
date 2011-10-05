@@ -149,6 +149,16 @@ namespace Gwen.Control.Layout
         }
 
         /// <summary>
+        /// Gets the index of a specified row.
+        /// </summary>
+        /// <param name="row">Row to search for.</param>
+        /// <returns>Row index if found, -1 otherwise.</returns>
+        public int GetRowIndex(TableRow row)
+        {
+            return Children.IndexOf(row);
+        }
+
+        /// <summary>
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>

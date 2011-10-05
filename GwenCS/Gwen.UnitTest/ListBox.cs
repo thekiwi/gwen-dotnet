@@ -14,19 +14,19 @@ namespace Gwen.UnitTest
                 Control.ListBox ctrl = new Control.ListBox(this);
                 ctrl.SetBounds(10, 10, 100, 200);
 
-                ctrl.AddItem("First");
-                ctrl.AddItem("Blue");
-                ctrl.AddItem("Yellow");
-                ctrl.AddItem("Orange");
-                ctrl.AddItem("Brown");
-                ctrl.AddItem("Black");
-                ctrl.AddItem("Green");
-                ctrl.AddItem("Dog");
-                ctrl.AddItem("Cat Blue");
-                ctrl.AddItem("Shoes");
-                ctrl.AddItem("Shirts");
-                ctrl.AddItem("Chair");
-                ctrl.AddItem("Last");
+                ctrl.AddRow("First");
+                ctrl.AddRow("Blue");
+                ctrl.AddRow("Yellow");
+                ctrl.AddRow("Orange");
+                ctrl.AddRow("Brown");
+                ctrl.AddRow("Black");
+                ctrl.AddRow("Green");
+                ctrl.AddRow("Dog");
+                ctrl.AddRow("Cat Blue");
+                ctrl.AddRow("Shoes");
+                ctrl.AddRow("Shirts");
+                ctrl.AddRow("Chair");
+                ctrl.AddRow("Last");
 
                 ctrl.AllowMultiSelect = true;
                 ctrl.SelectRowsByRegex("Bl.e|Dog");
@@ -39,24 +39,24 @@ namespace Gwen.UnitTest
                 Control.ListBox ctrl = new Control.ListBox(this);
                 ctrl.SetBounds(120, 10, 200, 200);
                 ctrl.ColumnCount = 3;
-                ctrl.AllowMultiSelect = true;
+                //ctrl.AllowMultiSelect = true;
                 ctrl.RowSelected += RowSelected;
                 ctrl.RowUnselected += RowUnSelected;
 
                 {
-                    TableRow row = ctrl.AddItem("Baked Beans");
+                    TableRow row = ctrl.AddRow("Baked Beans");
                     row.SetCellText(1, "Heinz");
                     row.SetCellText(2, "£3.50");
                 }
 
                 {
-                    TableRow row = ctrl.AddItem("Bananas");
+                    TableRow row = ctrl.AddRow("Bananas");
                     row.SetCellText(1, "Trees");
                     row.SetCellText(2, "£1.27");
                 }
 
                 {
-                    TableRow row = ctrl.AddItem("Chicken");
+                    TableRow row = ctrl.AddRow("Chicken");
                     row.SetCellText(1, "\u5355\u5143\u6D4B\u8BD5");
                     row.SetCellText(2, "£8.95");
                 }

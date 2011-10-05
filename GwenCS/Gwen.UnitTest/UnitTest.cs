@@ -132,7 +132,7 @@ namespace Gwen.UnitTest
 
         public void PrintText(String str)
         {
-            m_TextOutput.AddItem(str);
+            m_TextOutput.AddRow(str);
             m_TextOutput.ScrollToBottom();
         }
 
