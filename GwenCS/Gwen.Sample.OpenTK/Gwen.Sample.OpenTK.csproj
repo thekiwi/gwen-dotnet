@@ -23,6 +23,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -32,21 +33,17 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="OpenTK">
+    <Reference Include="OpenTK, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\opentk\Binaries\OpenTK\Release\OpenTK.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SimpleGwenGame.cs" />
@@ -74,6 +71,10 @@
     <ProjectReference Include="..\Gwen.Renderer.OpenTK\Gwen.Renderer.OpenTK.csproj">
       <Project>{41650C82-D630-4E5C-845A-F1513C8FDC99}</Project>
       <Name>Gwen.Renderer.OpenTK</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Gwen.UnitTest\Gwen.UnitTest.csproj">
+      <Project>{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}</Project>
+      <Name>Gwen.UnitTest</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gwen\Gwen.csproj">
       <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>

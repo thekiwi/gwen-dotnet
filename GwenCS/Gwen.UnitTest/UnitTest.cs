@@ -14,6 +14,7 @@ namespace Gwen.UnitTest
         private readonly Control.CollapsibleList m_List;
 
         public double Fps; // set this in your rendering loop
+        public String Note; // additional text to display in status bar
 
         public UnitTest(Base parent) : base(parent)
         {
@@ -138,7 +139,7 @@ namespace Gwen.UnitTest
 
         protected override void Render(Skin.Base skin)
         {
-            m_StatusBar.Text = String.Format("GWEN.Net Unit Test - {0:F0} fps", Fps);
+            m_StatusBar.Text = String.Format("GWEN.Net Unit Test - {0:F0} fps. {1}", Fps, Note);
 
             base.Render(skin);
         }

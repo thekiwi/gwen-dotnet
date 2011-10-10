@@ -13,10 +13,10 @@ namespace Gwen.Sample.SFML
 {
     public class Program
     {
-        private static Input.SFML GwenInput;
-        private static RenderWindow window;
+        private static Input.SFML m_Input;
+        private static RenderWindow m_Window;
 
-        private static Canvas canvas;
+        private static Canvas m_Canvas;
         private static UnitTest.UnitTest m_UnitTest;
 
         [STAThread]
@@ -24,29 +24,30 @@ namespace Gwen.Sample.SFML
         {
             //try
             {
-                const int width = 1004;
-                const int height = 650;
+                const int width = 1024;
+                const int height = 768;
 
                 // Create main window
-                window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net SFML test",
-                                          Styles.Default, new ContextSettings(32, 0));
+                m_Window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net SFML test",
+                                          Styles.Titlebar, new ContextSettings(32, 0));
 
                 // Setup event handlers
-                window.Closed += OnClosed;
-                window.KeyPressed += OnKeyPressed;
-                window.Resized += OnResized;
-                window.KeyReleased += window_KeyReleased;
-                window.MouseButtonPressed += window_MouseButtonPressed;
-                window.MouseButtonReleased += window_MouseButtonReleased;
-                window.MouseWheelMoved += window_MouseWheelMoved;
-                window.MouseMoved += window_MouseMoved;
-                window.TextEntered += window_TextEntered;
+                m_Window.Closed += OnClosed;
+                m_Window.KeyPressed += OnKeyPressed;
+                m_Window.Resized += OnResized;
+                m_Window.KeyReleased += window_KeyReleased;
+                m_Window.MouseButtonPressed += window_MouseButtonPressed;
+                m_Window.MouseButtonReleased += window_MouseButtonReleased;
+                m_Window.MouseWheelMoved += window_MouseWheelMoved;
+                m_Window.MouseMoved += window_MouseMoved;
+                m_Window.TextEntered += window_TextEntered;
 
                 const int fps_frames = 50;
-                List<int> ftime = new List<int>(fps_frames);
+                List<long> ftime = new List<long>(fps_frames);
+                long lastTime = 0;
 
                 // create GWEN renderer
-                Renderer.SFML gwenRenderer = new Renderer.SFML(window);
+                Renderer.SFML gwenRenderer = new Renderer.SFML(m_Window);
 
                 // Create GWEN skin
                 //Skin.Simple skin = new Skin.Simple(GwenRenderer);
@@ -77,52 +78,54 @@ namespace Gwen.Sample.SFML
                 //skin.SetDefaultFont("OpenSans.ttf", 10);
 
                 // Create a Canvas (it's root, on which all other GWEN controls are created)
-                canvas = new Canvas(skin);
-                canvas.SetSize(width, height);
-                canvas.ShouldDrawBackground = true;
-                canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
-                canvas.KeyboardInputEnabled = true;
+                m_Canvas = new Canvas(skin);
+                m_Canvas.SetSize(width, height);
+                m_Canvas.ShouldDrawBackground = true;
+                m_Canvas.BackgroundColor = System.Drawing.Color.FromArgb(255, 150, 170, 170);
+                m_Canvas.KeyboardInputEnabled = true;
 
                 // create the unit test control
-                m_UnitTest = new UnitTest.UnitTest(canvas);
+                m_UnitTest = new UnitTest.UnitTest(m_Canvas);
 
                 // Create GWEN input processor
-                GwenInput = new Input.SFML();
-                GwenInput.Initialize(canvas);
+                m_Input = new Input.SFML();
+                m_Input.Initialize(m_Canvas);
 
-                Stopwatch w = new Stopwatch();
-                w.Start();
-                while (window.IsOpened())
+                Stopwatch stopwatch = new Stopwatch();
+                stopwatch.Start();
+                while (m_Window.IsOpened())
                 {
-                    window.SetActive();
-                    window.DispatchEvents();
-                    window.Clear();
+                    m_Window.SetActive();
+                    m_Window.DispatchEvents();
+                    m_Window.Clear();
 
                     // Clear depth buffer
                     Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
 
-                    window.SaveGLStates();
+                    m_Window.SaveGLStates();
 
-                    ulong frametime = window.GetFrameTime();
+                    uint frametime = m_Window.GetFrameTime();
 
                     if (ftime.Count == fps_frames)
                         ftime.RemoveAt(0);
 
-                    ftime.Add((int)frametime);
+                    ftime.Add(stopwatch.ElapsedMilliseconds - lastTime);
+                    lastTime = stopwatch.ElapsedMilliseconds;
+                    //ftime.Add((int)frametime);
 
 
-                    if (w.ElapsedMilliseconds > 1000)
+                    if (stopwatch.ElapsedMilliseconds > 1000)
                     {
                         m_UnitTest.Fps = 1000f * ftime.Count / ftime.Sum();
-                        w.Restart();
+                        stopwatch.Restart();
                     }
 
                     // render GWEN canvas
-                    canvas.RenderCanvas();
+                    m_Canvas.RenderCanvas();
 
-                    window.RestoreGLStates();
+                    m_Window.RestoreGLStates();
 
-                    window.Display();
+                    m_Window.Display();
                 }
             }
             //catch (Exception e)
@@ -134,32 +137,32 @@ namespace Gwen.Sample.SFML
 
         static void window_TextEntered(object sender, TextEventArgs e)
         {
-            GwenInput.ProcessMessage(e);
+            m_Input.ProcessMessage(e);
         }
 
         static void window_MouseMoved(object sender, MouseMoveEventArgs e)
         {
-            GwenInput.ProcessMessage(e);
+            m_Input.ProcessMessage(e);
         }
 
         static void window_MouseWheelMoved(object sender, MouseWheelEventArgs e)
         {
-            GwenInput.ProcessMessage(e);
+            m_Input.ProcessMessage(e);
         }
 
         static void window_MouseButtonPressed(object sender, MouseButtonEventArgs e)
         {
-            GwenInput.ProcessMessage(new Input.SFMLMouseButtonEventArgs(e, true));
+            m_Input.ProcessMessage(new Input.SFMLMouseButtonEventArgs(e, true));
         }
 
         static void window_MouseButtonReleased(object sender, MouseButtonEventArgs e)
         {
-            GwenInput.ProcessMessage(new Input.SFMLMouseButtonEventArgs(e, false));
+            m_Input.ProcessMessage(new Input.SFMLMouseButtonEventArgs(e, false));
         }
 
         static void window_KeyReleased(object sender, KeyEventArgs e)
         {
-            GwenInput.ProcessMessage(new Input.SFMLKeyEventArgs(e, false));
+            m_Input.ProcessMessage(new Input.SFMLKeyEventArgs(e, false));
         }
 
         /// <summary>
@@ -167,7 +170,7 @@ namespace Gwen.Sample.SFML
         /// </summary>
         static void OnClosed(object sender, EventArgs e)
         {
-            window.Close();
+            m_Window.Close();
         }
 
         /// <summary>
@@ -176,11 +179,11 @@ namespace Gwen.Sample.SFML
         static void OnKeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == Keyboard.Key.Escape)
-                window.Close();
+                m_Window.Close();
 
             if (e.Code == Keyboard.Key.F12)
             {
-                Image img = window.Capture();
+                Image img = m_Window.Capture();
                 if (img.Pixels == null)
                 {
                     MessageBox.Show("Failed to capture window");
@@ -192,7 +195,7 @@ namespace Gwen.Sample.SFML
                 img.Dispose();
             }
             else
-                GwenInput.ProcessMessage(new Input.SFMLKeyEventArgs(e, true));
+                m_Input.ProcessMessage(new Input.SFMLKeyEventArgs(e, true));
         }
 
         /// <summary>
@@ -202,7 +205,7 @@ namespace Gwen.Sample.SFML
         {
             Gl.glViewport(0, 0, (int)e.Width, (int)e.Height);
             // todo: gwen/sfml doesn't handle resizing well
-            canvas.SetSize((int)e.Width, (int)e.Height);
+            m_Canvas.SetSize((int)e.Width, (int)e.Height);
             // window.ConvertCoords()
         }
     }

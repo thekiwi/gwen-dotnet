@@ -32,7 +32,7 @@ namespace Gwen.Renderer
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
+        public virtual void Dispose()
         {
             if (CTT != null)
                 CTT.ShutDown();
