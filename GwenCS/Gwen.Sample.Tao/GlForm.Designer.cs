@@ -1,4 +1,5 @@
-﻿namespace Gwen.Sample.Tao
+﻿using Tao.Platform.Windows;
+namespace Gwen.Sample.Tao
 {
     partial class GlForm
     {
@@ -46,7 +47,7 @@
             this.glControl.DepthBits = ((byte)(16));
             this.glControl.Location = new System.Drawing.Point(2, -1);
             this.glControl.Name = "glControl";
-            this.glControl.Size = new System.Drawing.Size(759, 529);
+            this.glControl.Size = new System.Drawing.Size(1024, 768);
             this.glControl.StencilBits = ((byte)(0));
             this.glControl.TabIndex = 0;
             this.glControl.Paint += new System.Windows.Forms.PaintEventHandler(this.glControl_Paint);

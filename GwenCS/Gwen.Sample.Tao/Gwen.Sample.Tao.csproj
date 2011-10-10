@@ -82,6 +82,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Gwen.UnitTest\Gwen.UnitTest.csproj">
+      <Project>{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}</Project>
+      <Name>Gwen.UnitTest</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Gwen\Gwen.csproj">
       <Project>{ADDA2F43-96C0-497F-8216-29C67ABC9806}</Project>
       <Name>Gwen</Name>

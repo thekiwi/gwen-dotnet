@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -17,13 +18,17 @@ namespace Gwen.Renderer
             public byte r, g, b, a;
         }
 
-        protected const int MaxVerts = 1024;
-        protected Color m_Color;
-        protected int m_iVertNum;
-        protected Vertex[] m_Vertices;
-        protected int m_VertexSize;
+        private const int MaxVerts = 1024;
+        private Color m_Color;
+        private int m_iVertNum;
+        private readonly Vertex[] m_Vertices;
+        private readonly int m_VertexSize;
 
-        public Tao() : base()
+        private readonly Dictionary<Tuple<String, Font>, TextRenderer> m_StringCache;
+        private readonly Graphics m_Graphics; // only used for text measurement
+
+        public Tao()
+            : base()
         {
             m_Vertices = new Vertex[MaxVerts];
             m_iVertNum = 0;
@@ -32,6 +37,15 @@ namespace Gwen.Renderer
 
             m_VertexSize = Marshal.SizeOf(m_Vertices[0]);
             //Debug.Assert(Marshal.SizeOf(m_Vertices) != MaxVerts*m_VertexSize);
+
+            m_StringCache = new Dictionary<Tuple<string, Font>, TextRenderer>();
+            m_Graphics = Graphics.FromImage(new Bitmap(1024, 1024, PixelFormat.Format32bppArgb));
+        }
+
+        public override void Dispose()
+        {
+            FlushTextCache();
+            base.Dispose();
         }
 
         public override void Begin()
@@ -44,6 +58,24 @@ namespace Gwen.Renderer
         public override void End()
         {
             Flush();
+        }
+
+        /// <summary>
+        /// Returns number of cached strings in the text cache.
+        /// </summary>
+        public int TextCacheSize { get { return m_StringCache.Count; } }
+
+        /// <summary>
+        /// Clears the text rendering cache. Make sure to call this if cached strings size becomes too big (check TextCacheSize).
+        /// </summary>
+        public void FlushTextCache()
+        {
+            // todo: some auto-expiring cache? based on numner of elements or age
+            foreach (var textRenderer in m_StringCache.Values)
+            {
+                textRenderer.Dispose();
+            }
+            m_StringCache.Clear();
         }
 
         private unsafe void Flush()
@@ -153,7 +185,7 @@ namespace Gwen.Renderer
             int tex = (int)t.RendererData;
 
             // Missing image, not loaded properly?
-            if (0==tex)
+            if (0 == tex)
             {
                 DrawMissingImage(rect);
                 return;
@@ -181,7 +213,7 @@ namespace Gwen.Renderer
             AddVert(rect.X, rect.Y + rect.Height, u1, v2);
         }
 
-        private static void LoadTextureInternal(Texture t, Bitmap bmp)
+        internal static void LoadTextureInternal(Texture t, Bitmap bmp)
         {
             // todo: convert to proper format
             if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
@@ -285,9 +317,6 @@ namespace Gwen.Renderer
                 return;
             }
 
-            // Flip
-            //bmp.RotateFlip(RotateFlipType.RotateNoneFlipY);
-
             int glTex;
 
             // Create the opengl texture
@@ -316,6 +345,94 @@ namespace Gwen.Renderer
                 return;
             Gl.glDeleteTextures(1, ref tex);
             t.RendererData = null;
+        }
+
+        public override bool LoadFont(Font font)
+        {
+            Debug.Print(String.Format("LoadFont {0}", font.FaceName));
+            font.RealSize = font.Size * Scale;
+            System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
+
+            if (sysFont != null)
+                sysFont.Dispose();
+
+            // apaprently this can't fail @_@
+            // "If you attempt to use a font that is not supported, or the font is not installed on the machine that is running the application, the Microsoft Sans Serif font will be substituted."
+            sysFont = new System.Drawing.Font(font.FaceName, font.Size);
+            font.RendererData = sysFont;
+            return true;
+        }
+
+        public override void FreeFont(Font font)
+        {
+            Debug.Print(String.Format("FreeFont {0}", font.FaceName));
+            if (font.RendererData == null)
+                return;
+
+            Debug.Print(String.Format("FreeFont {0} - actual free", font.FaceName));
+            System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
+            if (sysFont == null)
+                throw new InvalidOperationException("Freeing empty font");
+
+            sysFont.Dispose();
+            font.RendererData = null;
+        }
+
+        public override Point MeasureText(Font font, string text)
+        {
+            //Debug.Print(String.Format("MeasureText {0}", font.FaceName));
+            System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
+            if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
+            {
+                FreeFont(font);
+                LoadFont(font);
+                sysFont = font.RendererData as System.Drawing.Font;
+            }
+            
+            var key = new Tuple<String, Font>(text, font);
+            if (m_StringCache.ContainsKey(key))
+            {
+                var tex = m_StringCache[key].Texture;
+                return new Point(tex.Width, tex.Height);
+            }
+            
+            SizeF size = m_Graphics.MeasureString(text, sysFont);
+            return new Point((int)size.Width, (int)size.Height);
+        }
+
+        public override void RenderText(Font font, Point position, string text)
+        {
+            //Debug.Print(String.Format("RenderText {0}", font.FaceName));
+
+            System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
+            if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
+            {
+                FreeFont(font);
+                LoadFont(font);
+                sysFont = font.RendererData as System.Drawing.Font;
+            }
+
+            var key = new Tuple<String, Font>(text, font);
+            if (!m_StringCache.ContainsKey(key))
+            {
+                // not cached - create text renderer
+                Debug.Print(String.Format("RenderText: caching \"{0}\", {1}", text, font.FaceName));
+
+                Point size = MeasureText(font, text);
+                TextRenderer tr = new TextRenderer(size.X, size.Y, this);
+                Brush brush = new SolidBrush(DrawColor); // todo: cache
+                tr.DrawString(text, sysFont, brush, Point.Empty); // renders string on the texture
+
+                DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
+
+                brush.Dispose();
+                m_StringCache[key] = tr;
+            }
+            else
+            {
+                TextRenderer tr = m_StringCache[key];
+                DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
+            }
         }
     }
 }
