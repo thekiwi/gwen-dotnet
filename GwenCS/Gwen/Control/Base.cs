@@ -844,14 +844,14 @@ namespace Gwen.Control
 
             int x = X;
             int y = Y;
-            if (pos.HasFlag(Pos.Left)) x = padding.Left + xpadding;
-            if (pos.HasFlag(Pos.Right)) x = w - Width - padding.Right - xpadding;
-            if (pos.HasFlag(Pos.CenterH))
+            if (0 != (pos & Pos.Left)) x = padding.Left + xpadding;
+            if (0 != (pos & Pos.Right)) x = w - Width - padding.Right - xpadding;
+            if (0 != (pos & Pos.CenterH))
                 x = (int)(padding.Left + xpadding + (w - Width - padding.Left - padding.Right) * 0.5f);
 
-            if (pos.HasFlag(Pos.Top)) y = padding.Top + ypadding;
-            if (pos.HasFlag(Pos.Bottom)) y = h - Height - padding.Bottom - ypadding;
-            if (pos.HasFlag(Pos.CenterV))
+            if (0 != (pos & Pos.Top)) y = padding.Top + ypadding;
+            if (0 != (pos & Pos.Bottom)) y = h - Height - padding.Bottom - ypadding;
+            if (0 != (pos & Pos.CenterV))
                 y = (int)(padding.Top + ypadding + (h - Height - padding.Bottom - padding.Top) * 0.5f);
 
             SetPosition(x, y);
@@ -1360,10 +1360,10 @@ namespace Gwen.Control
 
                 Pos dock = child.Dock;
 
-                if (dock.HasFlag(Pos.Fill))
+                if (0 != (dock & Pos.Fill))
                     continue;
 
-                if (dock.HasFlag(Pos.Top))
+                if (0 != (dock & Pos.Top))
                 {
                     Margin margin = child.Margin;
 
@@ -1375,7 +1375,7 @@ namespace Gwen.Control
                     bounds.Height -= height;
                 }
 
-                if (dock.HasFlag(Pos.Left))
+                if (0 != (dock & Pos.Left))
                 {
                     Margin margin = child.Margin;
 
@@ -1387,7 +1387,7 @@ namespace Gwen.Control
                     bounds.Width -= width;
                 }
 
-                if (dock.HasFlag(Pos.Right))
+                if (0 != (dock & Pos.Right))
                 {
                     // TODO: THIS MARGIN CODE MIGHT NOT BE FULLY FUNCTIONAL
                     Margin margin = child.Margin;
@@ -1399,7 +1399,7 @@ namespace Gwen.Control
                     bounds.Width -= width;
                 }
 
-                if (dock.HasFlag(Pos.Bottom))
+                if (0 != (dock & Pos.Bottom))
                 {
                     // TODO: THIS MARGIN CODE MIGHT NOT BE FULLY FUNCTIONAL
                     Margin margin = child.Margin;
@@ -1422,7 +1422,7 @@ namespace Gwen.Control
             {
                 Pos dock = child.Dock;
 
-                if (!(dock.HasFlag(Pos.Fill)))
+                if (!(0 != (dock & Pos.Fill)))
                     continue;
 
                 Margin margin = child.Margin;

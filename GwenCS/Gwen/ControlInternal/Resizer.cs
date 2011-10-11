@@ -53,7 +53,7 @@ namespace Gwen.ControlInternal
             delta.X -= x;
             delta.Y -= y;
 
-            if (m_ResizeDir.HasFlag(Pos.Left))
+            if (0 != (m_ResizeDir & Pos.Left))
             {
                 bounds.X -= delta.X;
                 bounds.Width += delta.X;
@@ -69,7 +69,7 @@ namespace Gwen.ControlInternal
                 }
             }
 
-            if (m_ResizeDir.HasFlag(Pos.Top))
+            if (0 != (m_ResizeDir & Pos.Top))
             {
                 bounds.Y -= delta.Y;
                 bounds.Height += delta.Y;
@@ -85,7 +85,7 @@ namespace Gwen.ControlInternal
                 }
             }
 
-            if (m_ResizeDir.HasFlag(Pos.Right))
+            if (0 != (m_ResizeDir & Pos.Right))
             {
                 // This is complicated.
                 // Basically we want to use the HoldPos, so it doesn't snap to the edge of the control
@@ -102,7 +102,7 @@ namespace Gwen.ControlInternal
                 m_HoldPos.X -= diff;
             }
 
-            if (m_ResizeDir.HasFlag(Pos.Bottom))
+            if (0 != (m_ResizeDir & Pos.Bottom))
             {
                 int hoff = bounds.Height - m_HoldPos.Y;
                 int diff = bounds.Height;
@@ -126,22 +126,22 @@ namespace Gwen.ControlInternal
         {
             set
             {
-                if ((value.HasFlag(Pos.Left) && value.HasFlag(Pos.Top)) || (value.HasFlag(Pos.Right) && value.HasFlag(Pos.Bottom)))
+                if ((0 != (value & Pos.Left) && 0 != (value & Pos.Top)) || (0 != (value & Pos.Right) && 0 != (value & Pos.Bottom)))
                 {
                     Cursor = Cursors.SizeNWSE;
                     return;
                 }
-                if ((value.HasFlag(Pos.Right) && value.HasFlag(Pos.Top)) || (value.HasFlag(Pos.Left) && value.HasFlag(Pos.Bottom)))
+                if ((0 != (value & Pos.Right) && 0 != (value & Pos.Top)) || (0 != (value & Pos.Left) && 0 != (value & Pos.Bottom)))
                 {
                     Cursor = Cursors.SizeNESW;
                     return;
                 }
-                if (value.HasFlag(Pos.Right) && value.HasFlag(Pos.Left))
+                if (0 != (value & Pos.Right) && 0 != (value & Pos.Left))
                 {
                     Cursor = Cursors.SizeWE;
                     return;
                 }
-                if (value.HasFlag(Pos.Top) && value.HasFlag(Pos.Bottom))
+                if (0 != (value & Pos.Top) && 0 != (value & Pos.Bottom))
                 {
                     Cursor = Cursors.SizeNS;
                     return;

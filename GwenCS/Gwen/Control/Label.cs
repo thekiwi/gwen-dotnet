@@ -151,14 +151,14 @@ namespace Gwen.Control
             int x = m_TextPadding.Left + Padding.Left;
             int y = m_TextPadding.Top + Padding.Top;
 
-            if (align.HasFlag(Pos.Right)) 
+            if (0 != (align & Pos.Right)) 
                 x = Width - m_Text.Width - m_TextPadding.Right - Padding.Right;
-            if (align.HasFlag(Pos.CenterH))
+            if (0 != (align & Pos.CenterH))
                 x = (int)((m_TextPadding.Left + Padding.Left) + ((Width - m_Text.Width - m_TextPadding.Left - Padding.Left - m_TextPadding.Right - Padding.Right) * 0.5f));
 
-            if (align.HasFlag(Pos.CenterV))
+            if (0 != (align & Pos.CenterV))
                 y = (int)((m_TextPadding.Top + Padding.Top) + ((Height - m_Text.Height) * 0.5f) - m_TextPadding.Bottom - Padding.Bottom);
-            if (align.HasFlag(Pos.Bottom)) 
+            if (0 != (align & Pos.Bottom)) 
                 y = Height - m_Text.Height - m_TextPadding.Bottom - Padding.Bottom;
 
             m_Text.SetPosition(x, y);

@@ -29,7 +29,7 @@ namespace Gwen.Sample.SFML
 
                 // Create main window
                 m_Window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net SFML test",
-                                          Styles.Titlebar, new ContextSettings(32, 0));
+                                          Styles.Titlebar|Styles.Close, new ContextSettings(32, 0));
 
                 // Setup event handlers
                 m_Window.Closed += OnClosed;
