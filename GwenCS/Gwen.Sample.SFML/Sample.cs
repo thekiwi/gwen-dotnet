@@ -17,7 +17,7 @@ namespace Gwen.Sample.SFML
         private static RenderWindow m_Window;
 
         private static Canvas m_Canvas;
-        private static Base m_UnitTest;
+        private static UnitTest.UnitTest m_UnitTest;
 
         [STAThread]
         static void Main()
@@ -116,7 +116,7 @@ namespace Gwen.Sample.SFML
 
                     if (stopwatch.ElapsedMilliseconds > 1000)
                     {
-                        //m_UnitTest.Fps = 1000f * ftime.Count / ftime.Sum();
+                        m_UnitTest.Fps = 1000f * ftime.Count / ftime.Sum();
                         stopwatch.Restart();
                     }
 
