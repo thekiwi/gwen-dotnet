@@ -58,16 +58,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_CheckBox.Dispose();
-            m_Label.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Handler for CheckChanged event.
         /// </summary>
         protected virtual void OnCheckChanged(Base control)

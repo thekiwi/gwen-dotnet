@@ -29,15 +29,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            m_TitleBar.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>

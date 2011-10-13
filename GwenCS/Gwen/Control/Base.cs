@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Drawing;
 using System.Windows.Forms;
@@ -20,6 +21,8 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="control">Event source.</param>
         public delegate void GwenEventHandler(Base control);
+
+        private bool m_Disposed;
 
         private Base m_Parent;
 
@@ -401,6 +404,16 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Dispose()
         {
+            //Debug.Print("Control.Base: Disposing {0}", GetType());
+            if (m_Disposed)
+            {
+#if DEBUG
+                throw new ObjectDisposedException(String.Format("Control.Base: disposed twice {0}", GetType()));
+#else
+                return;
+#endif
+            }
+
             if (InputHandler.HoveredControl == this)
                 InputHandler.HoveredControl = null;
             if (InputHandler.KeyboardFocus == this)
@@ -412,11 +425,29 @@ namespace Gwen.Control
             Gwen.ToolTip.ControlDeleted(this);
             Animation.Cancel(this);
 
-            if (m_InnerPanel != null)
-                m_InnerPanel.Dispose();
+            foreach (Base child in m_Children)
+                child.Dispose();
 
-            if (m_ToolTip != null)
-                m_ToolTip.Dispose();
+            m_Children.Clear();
+
+            m_Disposed = true;
+            GC.SuppressFinalize(this);
+        }
+
+#if DEBUG
+        ~Base()
+        {
+            throw new InvalidOperationException(String.Format("IDisposable object finalized: {0}", GetType()));
+            //Debug.Print(String.Format("IDisposable object finalized: {0}", GetType()));
+        }
+#endif
+
+        /// <summary>
+        /// Detaches the control from canvas and adds to the deletion queue (processed in Canvas.DoThink).
+        /// </summary>
+        public void DelayedDelete()
+        {
+            GetCanvas().AddDelayedDelete(this);
         }
 
         /// <summary>
@@ -646,30 +677,30 @@ namespace Gwen.Control
         /// Detaches specified control from this one.
         /// </summary>
         /// <param name="child">Child to be removed.</param>
-        /// <param name="dispose">Determines whether the child should be disposed.</param>
+        /// <param name="dispose">Determines whether the child should be disposed (added to delayed delete queue).</param>
         public virtual void RemoveChild(Base child, bool dispose)
         {
             // If we removed our innerpanel
             // remove our pointer to it
             if (m_InnerPanel == child)
             {
-                // bug: currently innerpanel is disposed in Base only, so we need to dispose it here 
-                // even if the intention of this function is to just "detach".
-                // but afaik no code does such innerpanel detaching now.
-                m_InnerPanel.Dispose();
+                m_Children.Remove(m_InnerPanel);
+                m_InnerPanel.DelayedDelete();
                 m_InnerPanel = null;
+                return;
             }
 
-            if (m_InnerPanel != null)
+            if (m_InnerPanel != null && m_InnerPanel.Children.Contains(child))
             {
                 m_InnerPanel.RemoveChild(child, dispose);
+                return;
             }
 
             m_Children.Remove(child);
             OnChildRemoved(child);
             
             if (dispose)
-                child.Dispose();
+                child.DelayedDelete();
         }
 
         /// <summary>

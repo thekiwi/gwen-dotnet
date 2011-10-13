@@ -50,15 +50,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_HeaderButton.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Gets the selected entry.
         /// </summary>
         public Button GetSelectedButton()

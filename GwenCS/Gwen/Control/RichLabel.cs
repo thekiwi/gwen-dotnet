@@ -39,19 +39,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                if (child is Label)
-                    child.Dispose();
-            }
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Adds a line break to the control.
         /// </summary>
         public void AddLineBreak()

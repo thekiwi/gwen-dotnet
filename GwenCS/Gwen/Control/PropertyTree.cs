@@ -19,19 +19,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                if (child is PropertyTreeNode || child is Properties)
-                    child.Dispose();
-            }
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Adds a new properties node.
         /// </summary>
         /// <param name="label">Node label.</param>

@@ -23,16 +23,6 @@ namespace Gwen.Control.Layout
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Panel[0].Dispose();
-            m_Panel[1].Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Sets the contents of a splitter panel.
         /// </summary>
         /// <param name="panelIndex">Panel index (0-1).</param>

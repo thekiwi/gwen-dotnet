@@ -14,7 +14,7 @@ namespace Gwen.Control.Layout
         private int m_ColumnCount;
         private readonly int m_DefaultRowHeight;
 
-        private readonly int[] m_ColumnWidth = new int[TableRow.MaxColumns];
+        private readonly int[] m_ColumnWidth;
 
         /// <summary>
         /// Column count (default 1).
@@ -35,6 +35,8 @@ namespace Gwen.Control.Layout
             m_ColumnCount = 1;
             m_DefaultRowHeight = 22;
 
+            m_ColumnWidth = new int[TableRow.MaxColumns];
+
             for (int i = 0; i < TableRow.MaxColumns; i++)
             {
                 m_ColumnWidth[i] = 20;
@@ -44,30 +46,18 @@ namespace Gwen.Control.Layout
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                child.Dispose();
-            }
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Sets the number of columns.
         /// </summary>
-        /// <param name="i">Number of columns.</param>
-        public void SetColumnCount(int i)
+        /// <param name="count">Number of columns.</param>
+        public void SetColumnCount(int count)
         {
-            if (m_ColumnCount == i) return;
+            if (m_ColumnCount == count) return;
             foreach (TableRow row in Children.OfType<TableRow>())
             {
-                row.ColumnCount = i;
+                row.ColumnCount = count;
             }
 
-            m_ColumnCount = i;
+            m_ColumnCount = count;
         }
 
         /// <summary>
@@ -123,8 +113,7 @@ namespace Gwen.Control.Layout
         /// <param name="row">Row to remove.</param>
         public void RemoveRow(TableRow row)
         {
-            Children.Remove(row);
-            row.Dispose();
+            RemoveChild(row, true);
         }
 
         /// <summary>

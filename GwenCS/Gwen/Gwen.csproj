@@ -145,10 +145,8 @@
     <Compile Include="Control\WindowControl.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="HSV.cs" />
-    <Compile Include="Input\Action.cs" />
     <Compile Include="Input\InputHandler.cs" />
     <Compile Include="Input\KeyData.cs" />
-    <Compile Include="Input\Message.cs" />
     <Compile Include="Margin.cs" />
     <Compile Include="Padding.cs" />
     <Compile Include="Key.cs" />

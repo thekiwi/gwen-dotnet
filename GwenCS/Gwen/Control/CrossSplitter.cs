@@ -75,19 +75,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_VSplitter.Dispose();
-            m_HSplitter.Dispose();
-            m_CSplitter.Dispose();
-            for (int i = 0; i < 4; i++ )
-                m_Sections[i].Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Centers the panels so that they take even amount of space.
         /// </summary>
         public void CenterPanels()

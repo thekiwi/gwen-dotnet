@@ -109,19 +109,6 @@ namespace Gwen.Control
             SetColor(DefaultColor);
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            // [omeg] todo: safe?
-            foreach (Base child in Children)
-            {
-                child.Dispose();
-            }
-            base.Dispose();
-        }
-
         private void NumericTyped(Base control)
         {
             TextBoxNumeric box = control as TextBoxNumeric;

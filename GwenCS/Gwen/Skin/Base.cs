@@ -46,8 +46,17 @@ namespace Gwen.Skin
         public virtual void Dispose()
         {
             m_DefaultFont.Dispose();
+            GC.SuppressFinalize(this);
         }
-        
+
+#if DEBUG
+        ~Base()
+        {
+            throw new InvalidOperationException(String.Format("IDisposable object finalized: {0}", GetType()));
+            //Debug.Print(String.Format("IDisposable object finalized: {0}", GetType()));
+        }
+#endif
+
         /// <summary>
         /// Releases the specified font.
         /// </summary>

@@ -42,19 +42,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                if (child is LabeledRadioButton)
-                    child.Dispose();
-            }
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Adds a new option.
         /// </summary>
         /// <param name="text">Option text.</param>

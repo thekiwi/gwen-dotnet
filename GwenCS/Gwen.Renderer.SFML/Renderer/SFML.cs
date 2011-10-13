@@ -377,7 +377,7 @@ namespace Gwen.Renderer
             if (tex != null)
                 tex.Dispose();
 
-            Debug.Print("FreeTexture: {0} {1}", texture.Name, texture.RendererData);
+            Debug.Print("FreeTexture: {0}", texture.Name);
 
             texture.RendererData = null;
         }

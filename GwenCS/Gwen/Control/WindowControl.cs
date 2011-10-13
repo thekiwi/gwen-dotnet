@@ -15,7 +15,6 @@ namespace Gwen.Control
         private readonly CloseButton m_CloseButton;
         private bool m_DeleteOnClose;
         private Modal m_Modal;
-        private Base m_OldParent;
 
         /// <summary>
         /// Window caption.
@@ -92,29 +91,20 @@ namespace Gwen.Control
                 MakeModal();
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            if (m_Modal != null)
-                m_Modal.Dispose();
-
-            m_TitleBar.Dispose();
-            m_Caption.Dispose();
-            m_CloseButton.Dispose();
-
-            //Parent.RemoveChild(this, false); // todo: should this be in Base? is it needed?
-
-            base.Dispose();
-        }
-
         protected virtual void CloseButtonPressed(Base control)
         {
             IsHidden = true;
 
+            if (m_Modal != null)
+            {
+                m_Modal.DelayedDelete();
+                m_Modal = null;
+            }
+
             if (m_DeleteOnClose)
-                Dispose();
+            {
+                Parent.RemoveChild(this, true);
+            }
         }
 
         /// <summary>
@@ -127,26 +117,12 @@ namespace Gwen.Control
                 return;
 
             m_Modal = new Modal(GetCanvas());
-            m_OldParent = Parent;
             Parent = m_Modal;
 
             if (dim)
                 m_Modal.ShouldDrawBackground = true;
             else
                 m_Modal.ShouldDrawBackground = false;
-        }
-
-        /// <summary>
-        /// Disables modal mode if active.
-        /// </summary>
-        public void DisableModal()
-        {
-            if (m_Modal == null)
-                return;
-
-            Parent = m_OldParent;
-            m_Modal.Dispose();
-            m_Modal = null;
         }
 
         /// <summary>

@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Gwen.Anim;
-using Gwen.ControlInternal;
 using Gwen.DragDrop;
 using Gwen.Input;
 
@@ -20,6 +20,8 @@ namespace Gwen.Control
         // [omeg] these are not created by us, so no disposing
         internal Base FirstTab;
         internal Base NextTab;
+
+        private readonly List<IDisposable> m_DisposeQueue; // dictionary for faster access?
 
         /// <summary>
         /// Scale for rendering.
@@ -65,33 +67,14 @@ namespace Gwen.Control
             Scale = 1.0f;
             BackgroundColor = Color.White;
             ShouldDrawBackground = false;
+
+            m_DisposeQueue = new List<IDisposable>();
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public override void Dispose()
         {
-            // kill everything since we're the top-level control
-            foreach (Base child in Children)
-            {
-                child.Dispose();
-            }
-            base.Dispose(); // inner panel if any
-        }
-
-        /// <summary>
-        /// Disables and deletes all modal windows.
-        /// </summary>
-        public void ClearModals()
-        {
-            foreach (Base child in Children)
-            {
-                if (child is Modal)
-                {
-                    child.Dispose(); // this also removes it from our children
-                }
-            }
+            ProcessDelayedDeletes();
+            base.Dispose();
         }
 
         /// <summary>
@@ -174,7 +157,7 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Processes input and layout.
+        /// Processes input and layout. Also purges delayed delete queue.
         /// </summary>
         private void DoThink()
         {
@@ -184,10 +167,10 @@ namespace Gwen.Control
             Animation.GlobalThink();
 
             // Reset tabbing
-            {
-                NextTab = null;
-                FirstTab = null;
-            }
+            NextTab = null;
+            FirstTab = null;
+            
+            ProcessDelayedDeletes();
 
             // Check has focus etc..
             RecurseLayout(Skin);
@@ -197,6 +180,32 @@ namespace Gwen.Control
                 NextTab = FirstTab;
 
             InputHandler.OnCanvasThink(this);
+        }
+
+        /// <summary>
+        /// Adds given control to the delete queue and detaches it from canvas. Don't call from Dispose, it modifies child list.
+        /// </summary>
+        /// <param name="control">Control to delete.</param>
+        public void AddDelayedDelete(Base control)
+        {
+            if (!m_DisposeQueue.Contains(control))
+            {
+                m_DisposeQueue.Add(control);
+                RemoveChild(control, false);
+            }
+#if DEBUG
+            else
+                throw new InvalidOperationException("Control deleted twice");
+#endif
+        }
+
+        private void ProcessDelayedDeletes()
+        {
+            foreach (IDisposable control in m_DisposeQueue)
+            {
+                control.Dispose();
+            }
+            m_DisposeQueue.Clear();
         }
 
         /// <summary>

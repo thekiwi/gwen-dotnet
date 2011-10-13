@@ -114,16 +114,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            if (m_Image != null)
-                m_Image.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Toggles the button.
         /// </summary>
         public virtual void Toggle()

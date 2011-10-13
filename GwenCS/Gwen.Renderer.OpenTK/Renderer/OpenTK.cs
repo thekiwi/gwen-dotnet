@@ -410,6 +410,8 @@ namespace Gwen.Renderer
 
         public override void FreeTexture(Texture t)
         {
+            if (t.RendererData == null)
+                return;
             int tex = (int)t.RendererData;
             if (tex == 0)
                 return;

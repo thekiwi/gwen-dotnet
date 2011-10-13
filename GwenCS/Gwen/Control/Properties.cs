@@ -52,15 +52,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_SplitterBar.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Handles the splitter moved event.
         /// </summary>
         /// <param name="control">Event source.</param>

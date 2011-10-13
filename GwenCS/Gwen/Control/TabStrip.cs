@@ -37,19 +37,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (var child in Children)
-            {
-                if (child is TabButton)
-                    child.Dispose(); // this also disposes whole page
-            }
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Strip position (top/left/right/bottom).
         /// </summary>
         public Pos StripPosition

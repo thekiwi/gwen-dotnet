@@ -76,18 +76,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_TabStrip.Dispose();
-            m_Scroll[0].Dispose();
-            m_Scroll[1].Dispose();
-            // TabStrip disposes pages
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Adds a new page/tab.
         /// </summary>
         /// <param name="label">Tab label.</param>

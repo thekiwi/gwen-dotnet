@@ -6,7 +6,7 @@ namespace Gwen.UnitTest
 {
     public class TextBox : GUnit
     {
-        private Font m_Font;
+        private readonly Font m_Font;
 
         public TextBox(Base parent)
             : base(parent)
@@ -57,6 +57,12 @@ namespace Gwen.UnitTest
                 label.Font = m_Font;
                 label.SetSize(200, 55);
             }
+        }
+
+        public override void Dispose()
+        {
+            m_Font.Dispose();
+            base.Dispose();
         }
 
         void OnEdit(Base control)

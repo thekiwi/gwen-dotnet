@@ -8,8 +8,8 @@ namespace Gwen.Input
     /// </summary>
     public class KeyData
     {
-        public bool[] KeyState;
-        public float [] NextRepeat;
+        public readonly bool[] KeyState;
+        public readonly float [] NextRepeat;
         public Base Target;
         public bool LeftMouseDown;
         public bool RightMouseDown;

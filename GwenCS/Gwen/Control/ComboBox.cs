@@ -48,16 +48,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Button.Dispose();
-            m_Menu.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Selected item.
         /// </summary>
         /// <remarks>Not just String property, because items also have internal names.</remarks>

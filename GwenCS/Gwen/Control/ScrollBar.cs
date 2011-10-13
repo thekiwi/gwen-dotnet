@@ -70,17 +70,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Bar.Dispose();
-            m_ScrollButton[0].Dispose();
-            m_ScrollButton[1].Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Sets the scroll amount (0-1).
         /// </summary>
         /// <param name="value">Scroll amount.</param>

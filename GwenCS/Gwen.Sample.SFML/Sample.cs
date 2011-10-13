@@ -17,7 +17,7 @@ namespace Gwen.Sample.SFML
         private static RenderWindow m_Window;
 
         private static Canvas m_Canvas;
-        private static UnitTest.UnitTest m_UnitTest;
+        private static Base m_UnitTest;
 
         [STAThread]
         static void Main()
@@ -28,7 +28,7 @@ namespace Gwen.Sample.SFML
                 const int height = 768;
 
                 // Create main window
-                m_Window = new RenderWindow(new VideoMode((uint)width, (uint)height), "GWEN.Net SFML test",
+                m_Window = new RenderWindow(new VideoMode(width, height), "GWEN.Net SFML test",
                                           Styles.Titlebar|Styles.Close, new ContextSettings(32, 0));
 
                 // Setup event handlers
@@ -75,7 +75,7 @@ namespace Gwen.Sample.SFML
                 }
 
                 skin.SetDefaultFont(defaultFont.FaceName);
-                //skin.SetDefaultFont("OpenSans.ttf", 10);
+                defaultFont.Dispose(); // skin has its own
 
                 // Create a Canvas (it's root, on which all other GWEN controls are created)
                 m_Canvas = new Canvas(skin);
@@ -116,7 +116,7 @@ namespace Gwen.Sample.SFML
 
                     if (stopwatch.ElapsedMilliseconds > 1000)
                     {
-                        m_UnitTest.Fps = 1000f * ftime.Count / ftime.Sum();
+                        //m_UnitTest.Fps = 1000f * ftime.Count / ftime.Sum();
                         stopwatch.Restart();
                     }
 
@@ -127,12 +127,21 @@ namespace Gwen.Sample.SFML
 
                     m_Window.Display();
                 }
+
+                // we only need to dispose the canvas, it will take care of disposing all its children
+                m_Canvas.Dispose();
+                
+                // also dispose of these
+                skin.Dispose();
+                gwenRenderer.Dispose();
             }
             //catch (Exception e)
             //{
                 //String msg = String.Format("Exception: {0}\n{1}", e.Message, e.StackTrace);
                 //MessageBox.Show(msg);
             //}
+
+            m_Window.Dispose();
         }
 
         static void window_TextEntered(object sender, TextEventArgs e)

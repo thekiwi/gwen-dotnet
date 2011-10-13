@@ -41,16 +41,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_RadioButton.Dispose();
-            m_Label.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>

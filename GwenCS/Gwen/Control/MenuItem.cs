@@ -120,17 +120,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            if (m_SubmenuArrow != null)
-                m_SubmenuArrow.Dispose();
-
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>

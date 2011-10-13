@@ -75,19 +75,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Resizer resizer in m_Resizer)
-            {
-                if (resizer != null)
-                    resizer.Dispose();
-            }
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Handler for the resized event.
         /// </summary>
         /// <param name="control">Event source.</param>

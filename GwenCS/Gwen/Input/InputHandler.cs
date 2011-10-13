@@ -12,8 +12,8 @@ namespace Gwen.Input
     /// </summary>
     public static class InputHandler
     {
-        private static KeyData m_KeyData = new KeyData();
-        private static float[] m_LastClickTime = new float[MaxMouseButtons];
+        private static readonly KeyData m_KeyData = new KeyData();
+        private static readonly float[] m_LastClickTime = new float[MaxMouseButtons];
         private static Point m_LastClickPos;
 
         /// <summary>

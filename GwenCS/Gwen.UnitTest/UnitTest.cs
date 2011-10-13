@@ -12,6 +12,7 @@ namespace Gwen.UnitTest
         private Control.TabControl m_TabControl;
         private Control.TabButton m_Button;
         private readonly Control.CollapsibleList m_List;
+        private Center m_Center;
 
         public double Fps; // set this in your rendering loop
         public String Note; // additional text to display in status bar
@@ -32,24 +33,24 @@ namespace Gwen.UnitTest
             m_StatusBar = new Control.StatusBar(this);
             m_StatusBar.Dock = Pos.Bottom;
 
-            Center center = new Center(this);
-            center.Dock = Pos.Fill;
+            m_Center = new Center(this);
+            m_Center.Dock = Pos.Fill;
             GUnit test;
 
             {
                 CollapsibleCategory cat = m_List.Add("Non-Interactive");
                 {
-                    test = new Label(center);
+                    test = new Label(m_Center);
                     RegisterUnitTest("Label", cat, test);
-                    test = new RichLabel(center);
+                    test = new RichLabel(m_Center);
                     RegisterUnitTest("RichLabel", cat, test);
-                    test = new GroupBox(center);
+                    test = new GroupBox(m_Center);
                     RegisterUnitTest("GroupBox", cat, test);
-                    test = new ProgressBar(center);
+                    test = new ProgressBar(m_Center);
                     RegisterUnitTest("ProgressBar", cat, test);
-                    test = new ImagePanel(center);
+                    test = new ImagePanel(m_Center);
                     RegisterUnitTest("ImagePanel", cat, test);
-                    test = new StatusBar(center);
+                    test = new StatusBar(m_Center);
                     RegisterUnitTest("StatusBar", cat, test);
                 }
             }
@@ -57,25 +58,25 @@ namespace Gwen.UnitTest
             {
                 CollapsibleCategory cat = m_List.Add("Standard");
                 {
-                    test = new Button(center);
+                    test = new Button(m_Center);
                     RegisterUnitTest("Button", cat, test);
-                    test = new TextBox(center);
+                    test = new TextBox(m_Center);
                     RegisterUnitTest("TextBox", cat, test);
-                    test = new CheckBox(center);
+                    test = new CheckBox(m_Center);
                     RegisterUnitTest("CheckBox", cat, test);
-                    test = new RadioButton(center);
+                    test = new RadioButton(m_Center);
                     RegisterUnitTest("RadioButton", cat, test);
-                    test = new ComboBox(center);
+                    test = new ComboBox(m_Center);
                     RegisterUnitTest("ComboBox", cat, test);
-                    test = new ListBox(center);
+                    test = new ListBox(m_Center);
                     RegisterUnitTest("ListBox", cat, test);
-                    test = new NumericUpDown(center);
+                    test = new NumericUpDown(m_Center);
                     RegisterUnitTest("NumericUpDown", cat, test);
-                    test = new Slider(center);
+                    test = new Slider(m_Center);
                     RegisterUnitTest("Slider", cat, test);
-                    test = new MenuStrip(center);
+                    test = new MenuStrip(m_Center);
                     RegisterUnitTest("MenuStrip", cat, test);
-                    test = new CrossSplitter(center);
+                    test = new CrossSplitter(m_Center);
                     RegisterUnitTest("CrossSplitter", cat, test);
                 }
             }
@@ -83,15 +84,15 @@ namespace Gwen.UnitTest
             {
                 CollapsibleCategory cat = m_List.Add("Containers");
                 {
-                    test = new Window(center);
+                    test = new Window(m_Center);
                     RegisterUnitTest("Window", cat, test);
-                    test = new TreeControl(center);
+                    test = new TreeControl(m_Center);
                     RegisterUnitTest("TreeControl", cat, test);
-                    test = new Properties(center);
+                    test = new Properties(m_Center);
                     RegisterUnitTest("Properties", cat, test);
-                    test = new TabControl(center);
+                    test = new TabControl(m_Center);
                     RegisterUnitTest("TabControl", cat, test);
-                    test = new ScrollControl(center);
+                    test = new ScrollControl(m_Center);
                     RegisterUnitTest("ScrollControl", cat, test);
                 }
             }
@@ -99,9 +100,9 @@ namespace Gwen.UnitTest
             {
                 CollapsibleCategory cat = m_List.Add("Non-standard");
                 {
-                    test = new CollapsibleList(center);
+                    test = new CollapsibleList(m_Center);
                     RegisterUnitTest("CollapsibleList", cat, test);
-                    test = new ColorPickers(center);
+                    test = new ColorPickers(m_Center);
                     RegisterUnitTest("Color pickers", cat, test);
                 }
             }
@@ -117,10 +118,10 @@ namespace Gwen.UnitTest
             test.Hide();
             test.UnitTest = this;
             btn.UserData = test;
-            btn.Clicked += onCategorySelect;
+            btn.Clicked += OnCategorySelect;
         }
 
-        private void onCategorySelect(Base control)
+        private void OnCategorySelect(Base control)
         {
             if (m_LastControl != null)
             {

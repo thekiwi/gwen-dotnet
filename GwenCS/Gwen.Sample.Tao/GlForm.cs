@@ -84,5 +84,13 @@ namespace Gwen.Sample.Tao
             Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
             canvas.RenderCanvas();
         }
+        /*
+        private void GlForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            canvas.Dispose();
+            skin.Dispose();
+            renderer.Dispose();
+        }
+        */
     }
 }

@@ -12,7 +12,7 @@ namespace Gwen.Control
         private Point m_CursorPos;
         private bool m_Depressed;
         private byte m_Hue;
-        private Texture m_Texture; // [omeg] added
+        private Texture m_Texture;
 
         /// <summary>
         /// Invoked when the selected color has been changed.
@@ -38,8 +38,9 @@ namespace Gwen.Control
         /// </summary>
         public override void Dispose()
         {
+            if (m_Texture != null)
+                m_Texture.Dispose();
             base.Dispose();
-            m_Texture.Dispose();
         }
 
         /// <summary>

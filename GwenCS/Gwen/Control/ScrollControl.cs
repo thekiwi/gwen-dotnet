@@ -60,16 +60,6 @@ namespace Gwen.Control
             m_AutoHideBars = false;
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_VerticalScrollBar.Dispose();
-            m_HorizontalScrollBar.Dispose();
-            base.Dispose();
-        }
-
         protected bool HScrollRequired
         {
             set

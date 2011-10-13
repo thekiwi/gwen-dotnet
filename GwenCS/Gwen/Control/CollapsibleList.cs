@@ -27,22 +27,6 @@ namespace Gwen.Control
             AutoHideBars = true;
         }
 
-        /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                CollapsibleCategory cat = child as CollapsibleCategory;
-                if (cat == null)
-                    continue;
-
-                cat.Dispose();
-            }
-            base.Dispose();
-        }
-
         // todo: iterator, make this as function? check if works
 
         /// <summary>

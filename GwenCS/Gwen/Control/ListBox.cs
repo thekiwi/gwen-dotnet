@@ -105,15 +105,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Table.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Selects the specified row by index.
         /// </summary>
         /// <param name="index">Row to select.</param>
@@ -209,7 +200,7 @@ namespace Gwen.Control
             row.SetCellText(0, label);
             row.Name = name;
 
-            row.RowSelected += OnRowSelected;
+            row.Selected += OnRowSelected;
 
             m_Table.SizeToContents();
 

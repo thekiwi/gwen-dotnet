@@ -44,15 +44,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Releases unmanaged and - optionally - managed resources
-        /// </summary>
-        public override void Dispose()
-        {
-            DeleteAll();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
@@ -190,7 +181,9 @@ namespace Gwen.Control
         {
             IsHidden = true;
             if (DeleteOnClose)
-                Dispose();
+            {
+                Parent.RemoveChild(this, true); // delayed delete
+            }
         }
 
         /// <summary>

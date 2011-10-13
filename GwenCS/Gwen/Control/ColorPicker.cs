@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using Gwen.ControlInternal;
 
@@ -56,7 +57,7 @@ namespace Gwen.Control
 
         private void CreateColorControl(String name, int y)
         {
-            int colorSize = 12;
+            const int colorSize = 12;
 
             GroupBox colorGroup = new GroupBox(this);
             colorGroup.SetPosition(10, y);
@@ -65,14 +66,14 @@ namespace Gwen.Control
             colorGroup.Name = name + "groupbox";
 
             ColorDisplay disp = new ColorDisplay(colorGroup);
-            disp.Name=name;
+            disp.Name = name;
             disp.SetBounds(0, 10, colorSize, colorSize);
 
             TextBoxNumeric numeric = new TextBoxNumeric(colorGroup);
-            numeric.Name=name + "Box";
+            numeric.Name = name + "Box";
             numeric.SetPosition(105, 7);
             numeric.SetSize(26, 16);
-            numeric.SelectAllOnFocus=true;
+            numeric.SelectAllOnFocus = true;
             numeric.TextChanged += NumericTyped;
 
             HorizontalSlider slider = new HorizontalSlider(colorGroup);
@@ -83,22 +84,10 @@ namespace Gwen.Control
             slider.ValueChanged += SlidersMoved;
         }
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Base child in Children)
-            {
-                child.Dispose(); // [omeg] todo: safe?
-            }
-            base.Dispose();
-        }
-
         private void NumericTyped(Base control)
         {
             TextBoxNumeric box = control as TextBoxNumeric;
-            if (null==box)
+            if (null == box)
                 return;
 
             if (box.Text == string.Empty)
@@ -125,8 +114,8 @@ namespace Gwen.Control
 
         private void CreateControls()
         {
-            int startY = 5;
-            int height = 35;
+            const int startY = 5;
+            const int height = 35;
 
             CreateColorControl("Red", startY);
             CreateColorControl("Green", startY + height);
@@ -138,7 +127,7 @@ namespace Gwen.Control
             finalGroup.SetSize(60, 60);
             finalGroup.SetText("Result");
             finalGroup.Name = "ResultGroupBox";
-
+            
             ColorDisplay disp = new ColorDisplay(finalGroup);
             disp.Name = "Result";
             disp.SetBounds(0, 10, 32, 32);

@@ -6,7 +6,9 @@ namespace Gwen.UnitTest
 {
     public class Label : GUnit
     {
-        private Font font1, font2;
+        private readonly Font font1;
+        private readonly Font font2;
+        private readonly Font font3;
 
         public Label(Base parent) : base(parent)
         {
@@ -53,7 +55,8 @@ namespace Gwen.UnitTest
                 label.Text = "Wow, Coloured Text (and tooltip)";
                 label.TextColor = Color.Blue;
                 label.SetToolTipText("I'm a tooltip");
-                ((Control.Label)label.ToolTip).Font = new Font(Skin.Renderer, "Motorwerk", 20);
+                font3 = new Font(Skin.Renderer, "Motorwerk", 20);
+                ((Control.Label) label.ToolTip).Font = font3;
                 label.SetPosition(10, 130);
             }
             {
@@ -85,6 +88,14 @@ namespace Gwen.UnitTest
                 label.SetPosition(10, 210);
                 label.Text = "Custom Font (French Script MT 35)";
             }
+        }
+
+        public override void Dispose()
+        {
+            font1.Dispose();
+            font2.Dispose();
+            font3.Dispose();
+            base.Dispose();
         }
     }
 }

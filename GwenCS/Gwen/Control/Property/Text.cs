@@ -22,15 +22,6 @@ namespace Gwen.Control.Property
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_TextBox.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Property value.
         /// </summary>
         public override string Value

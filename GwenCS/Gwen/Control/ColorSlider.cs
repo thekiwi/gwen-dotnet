@@ -11,7 +11,7 @@ namespace Gwen.Control
     {
         private int m_SelectedDist;
         private bool m_Depressed;
-        private Texture m_Texture; // [omeg] added
+        private Texture m_Texture;
 
         /// <summary>
         /// Invoked when the selected color has been changed.
@@ -35,8 +35,9 @@ namespace Gwen.Control
         /// </summary>
         public override void Dispose()
         {
+            if (m_Texture != null)
+                m_Texture.Dispose();
             base.Dispose();
-            m_Texture.Dispose();
         }
 
         /// <summary>

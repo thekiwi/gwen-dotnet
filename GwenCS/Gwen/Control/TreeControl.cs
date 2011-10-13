@@ -24,16 +24,11 @@ namespace Gwen.Control
         {
             m_TreeControl = this;
 
-            m_ToggleButton.Hide();
-            m_ToggleButton.Dispose(); // base constructor runs first
+            RemoveChild(m_ToggleButton, true);
             m_ToggleButton = null;
-
-            m_Title.Hide();
-            m_Title.Dispose();
+            RemoveChild(m_Title, true);
             m_Title = null;
-
-            m_InnerPanel.Hide();
-            m_InnerPanel.Dispose();
+            RemoveChild(m_InnerPanel, true);
             m_InnerPanel = null;
 
             m_MultiSelect = false;

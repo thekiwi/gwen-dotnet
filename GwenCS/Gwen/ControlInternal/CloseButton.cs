@@ -8,7 +8,7 @@ namespace Gwen.ControlInternal
     /// </summary>
     public class CloseButton : Button
     {
-        private readonly WindowControl m_Window; // [omeg] not ours, no disposing
+        private readonly WindowControl m_Window;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CloseButton"/> class.

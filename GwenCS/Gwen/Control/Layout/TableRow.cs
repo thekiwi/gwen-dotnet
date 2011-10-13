@@ -23,7 +23,7 @@ namespace Gwen.Control.Layout
         /// <summary>
         /// Invoked when the row has been selected.
         /// </summary>
-        public event GwenEventHandler RowSelected;
+        public event GwenEventHandler Selected;
 
         /// <summary>
         /// Column count.
@@ -53,18 +53,6 @@ namespace Gwen.Control.Layout
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            foreach (Label column in m_Columns)
-                if (column != null)
-                    column.Dispose();
-
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Sets the number of columns.
         /// </summary>
         /// <param name="columnCount">Number of columns.</param>
@@ -88,7 +76,7 @@ namespace Gwen.Control.Layout
                 }
                 else if (null != m_Columns[i])
                 {
-                    m_Columns[i].Dispose();
+                    RemoveChild(m_Columns[i], true);
                     m_Columns[i] = null;
                 }
 
@@ -146,8 +134,8 @@ namespace Gwen.Control.Layout
 
         protected virtual void OnRowSelected()
         {
-            if (RowSelected != null)
-                RowSelected.Invoke(this);
+            if (Selected != null)
+                Selected.Invoke(this);
         }
 
         /// <summary>

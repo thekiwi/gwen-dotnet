@@ -25,15 +25,6 @@ namespace Gwen.Control.Property
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            m_Button.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Color-select button press handler.
         /// </summary>
         /// <param name="control">Event source.</param>

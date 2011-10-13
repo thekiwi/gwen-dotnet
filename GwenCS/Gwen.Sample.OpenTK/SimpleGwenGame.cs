@@ -44,6 +44,8 @@ namespace Gwen.Sample.OpenTK
 
         public override void Dispose()
         {
+            canvas.Dispose();
+            skin.Dispose();
             renderer.Dispose();
             base.Dispose();
         }

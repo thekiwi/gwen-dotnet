@@ -59,18 +59,6 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public override void Dispose()
-        {
-            if (m_Sizer != null)
-                m_Sizer.Dispose();
-            if (m_DockedTabControl != null)
-                m_DockedTabControl.Dispose();
-            base.Dispose();
-        }
-
-        /// <summary>
         /// Handler for Space keyboard event.
         /// </summary>
         /// <param name="down">Indicates whether the key was pressed or released.</param>
