@@ -22,7 +22,11 @@ namespace Gwen.Skin
         public Font DefaultFont
         {
             get { return m_DefaultFont; }
-            set { m_DefaultFont = value; }
+            set
+            {
+                m_DefaultFont.Dispose();
+                m_DefaultFont = value;
+            }
         }
 
         /// <summary>
