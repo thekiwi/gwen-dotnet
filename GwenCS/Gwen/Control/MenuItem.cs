@@ -9,11 +9,12 @@ namespace Gwen.Control
     /// </summary>
     public class MenuItem : Button
     {
-        private Menu m_Menu;
         private bool m_OnStrip;
         private bool m_Checkable;
         private bool m_Checked;
+        private Menu m_Menu;
         private Base m_SubmenuArrow;
+        private Label m_Accelerator;
 
         /// <summary>
         /// Indicates whether the item is on a menu strip.
@@ -117,6 +118,8 @@ namespace Gwen.Control
             IsTabable = false;
             IsCheckable = false;
             IsChecked = false;
+
+            m_Accelerator = new Label(this);
         }
 
         /// <summary>
@@ -207,6 +210,46 @@ namespace Gwen.Control
             if (null == m_Menu) return;
             m_Menu.Close();
             m_Menu.CloseAll();
+        }
+
+        public override void SizeToContents()
+        {
+            base.SizeToContents();
+            if (m_Accelerator != null)
+            {
+                m_Accelerator.SizeToContents();
+                Width = Width + m_Accelerator.Width;
+            }
+        }
+
+        public MenuItem SetAction(GwenEventHandler handler)
+        {
+            if (m_Accelerator != null)
+            {
+                AddAccelerator(m_Accelerator.Text, handler);
+            }
+
+            Selected += handler;
+            return this;
+        }
+
+        public void SetAccelerator(String acc)
+        {
+            if (m_Accelerator != null)
+            {
+                m_Accelerator.DelayedDelete();
+                m_Accelerator = null;
+            }
+
+            if (acc == string.Empty)
+                return;
+
+            m_Accelerator = new Label(this);
+            m_Accelerator.Dock = Pos.Right;
+            m_Accelerator.Alignment = Pos.Right | Pos.CenterV;
+            m_Accelerator.Text = acc;
+            m_Accelerator.Margin = new Margin(0, 0, 16, 0);
+            // todo
         }
     }
 }

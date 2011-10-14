@@ -267,7 +267,7 @@ namespace Gwen.Control
             if (char.IsControl(chr)) return false;
 
             //Handle Accelerators
-            if (Input.InputHandler.HandleAccelerator(this, chr))
+            if (InputHandler.HandleAccelerator(this, chr))
                 return true;
 
             //Handle characters

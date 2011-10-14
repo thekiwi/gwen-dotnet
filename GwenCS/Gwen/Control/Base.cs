@@ -1711,6 +1711,7 @@ namespace Gwen.Control
         /// <param name="handler">Handler.</param>
         public void AddAccelerator(String accelerator, GwenEventHandler handler)
         {
+            accelerator = accelerator.Trim().ToUpperInvariant();
             m_Accelerators[accelerator] = handler;
         }
 

@@ -94,29 +94,26 @@ namespace Gwen.Control
         /// Adds a new menu item.
         /// </summary>
         /// <param name="text">Item text.</param>
-        /// <param name="handler">Handler invoked on item selection.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem(String text, GwenEventHandler handler = null)
+        public virtual MenuItem AddItem(String text)
         {
-            return AddItem(text, String.Empty, handler);
+            return AddItem(text, String.Empty);
         }
 
         /// <summary>
         /// Adds a new menu item.
         /// </summary>
         /// <param name="text">Item text.</param>
-        /// <param name="handler">Handler invoked on item selection.</param>
         /// <param name="iconName">Icon texture name.</param>
+        /// <param name="accelerator">Accelerator for this item.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem(String text, String iconName, GwenEventHandler handler = null)
+        public virtual MenuItem AddItem(String text, String iconName, String accelerator = "")
         {
             MenuItem item = new MenuItem(this);
             item.Padding = Padding.Four;
             item.SetText(text);
             item.SetImage(iconName);
-
-            if (handler != null)
-                item.Selected += handler;
+            item.SetAccelerator(accelerator);
 
             OnAddItem(item);
 

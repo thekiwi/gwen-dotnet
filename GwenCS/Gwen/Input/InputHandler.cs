@@ -137,9 +137,9 @@ namespace Gwen.Input
             //Build the accelerator search string
             StringBuilder accelString = new StringBuilder();
             if (IsControlDown)
-                accelString.Append("Ctrl + ");
+                accelString.Append("CTRL+");
             if (IsShiftDown)
-                accelString.Append("Shift + ");
+                accelString.Append("SHIFT+");
             // [omeg] todo: alt?
 
             accelString.Append(chr);

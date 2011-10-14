@@ -11,18 +11,18 @@ namespace Gwen.UnitTest
             Control.MenuStrip menu = new Control.MenuStrip(this);
 
             {
-                Control.MenuItem pRoot = menu.AddItem("File");
-                pRoot.Menu.AddItem("New", "test16.png", MenuItemSelect);
-                pRoot.Menu.AddItem("Load", "test16.png", MenuItemSelect);
-                pRoot.Menu.AddItem("Save", MenuItemSelect);
-                pRoot.Menu.AddItem("Save As..", MenuItemSelect);
-                pRoot.Menu.AddItem("Quit", MenuItemSelect);
+                Control.MenuItem root = menu.AddItem("File");
+                root.Menu.AddItem("New", "test16.png", "Ctrl+N").SetAction(MenuItemSelect);
+                root.Menu.AddItem("Load", "test16.png", "Ctrl+L").SetAction(MenuItemSelect);
+                root.Menu.AddItem("Save", String.Empty, "Ctrl+S").SetAction(MenuItemSelect);
+                root.Menu.AddItem("Save As..", String.Empty, "Ctrl+A").SetAction(MenuItemSelect);
+                root.Menu.AddItem("Quit", String.Empty, "Ctrl+Q").SetAction(MenuItemSelect);
             }
 
             {
                 Control.MenuItem pRoot = menu.AddItem("\u043F\u0438\u0440\u0430\u0442\u0441\u0442\u0432\u043E");
-                pRoot.Menu.AddItem("\u5355\u5143\u6D4B\u8BD5", MenuItemSelect);
-                pRoot.Menu.AddItem("\u0111\u01A1n v\u1ECB th\u1EED nghi\u1EC7m", "test16.png", MenuItemSelect);
+                pRoot.Menu.AddItem("\u5355\u5143\u6D4B\u8BD5").SetAction(MenuItemSelect);
+                pRoot.Menu.AddItem("\u0111\u01A1n v\u1ECB th\u1EED nghi\u1EC7m", "test16.png").SetAction(MenuItemSelect);
             }
 
             {

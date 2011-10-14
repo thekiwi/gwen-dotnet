@@ -63,11 +63,10 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="label">Item label (displayed).</param>
         /// <param name="name">Item name.</param>
-        /// <param name="handler">Handler invoked when the item is selected.</param>
         /// <returns>Newly created control.</returns>
-        public virtual MenuItem AddItem(String label, String name = "", GwenEventHandler handler = null)
+        public virtual MenuItem AddItem(String label, String name = "")
         {
-            MenuItem item = m_Menu.AddItem(label, String.Empty, handler);
+            MenuItem item = m_Menu.AddItem(label, String.Empty);
             item.Name = name;
             item.Selected += OnItemSelected;
 

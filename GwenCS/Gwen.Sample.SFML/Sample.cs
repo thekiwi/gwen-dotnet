@@ -28,8 +28,7 @@ namespace Gwen.Sample.SFML
                 const int height = 768;
 
                 // Create main window
-                m_Window = new RenderWindow(new VideoMode(width, height), "GWEN.Net SFML test",
-                                          Styles.Titlebar|Styles.Close, new ContextSettings(32, 0));
+                m_Window = new RenderWindow(new VideoMode(width, height), "GWEN.Net SFML test", Styles.Titlebar|Styles.Close, new ContextSettings(32, 0));
 
                 // Setup event handlers
                 m_Window.Closed += OnClosed;

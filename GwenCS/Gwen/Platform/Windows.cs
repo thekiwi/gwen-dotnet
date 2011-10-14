@@ -52,6 +52,7 @@ namespace Gwen.Platform
                 String font = fontName.Replace(" (TrueType)", "");
                 m_FontPaths[font] = Path.Combine(fontsDir, fontFile);
             }
+            key.Dispose();
         }
     }
 }

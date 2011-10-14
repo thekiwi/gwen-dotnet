@@ -166,9 +166,11 @@ namespace Gwen.Input
                 if (ev.Down && InputHandler.DoSpecialKeys(m_Canvas, ch))
                     return false;
 
-                Key iKey = TranslateKeyCode(ev.Args.Code);
+                Key key = TranslateKeyCode(ev.Args.Code);
+                if (key == Key.Invalid && !ev.Down) // it's not special char and it's been released
+                    return m_Canvas.Input_Character(ch);
 
-                return m_Canvas.Input_Key(iKey, ev.Down);
+                return m_Canvas.Input_Key(key, ev.Down);
             }
 
             throw new ArgumentException("Invalid event args", "args");

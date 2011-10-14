@@ -1081,12 +1081,11 @@ namespace Gwen.Skin
 
         public override void DrawModalControl(Control.Base control)
         {
-            if (control.ShouldDrawBackground)
-            {
-                Rectangle rect = control.RenderBounds;
-                Renderer.DrawColor = Colors.ModalBackground;
-                Renderer.DrawFilledRect(rect);
-            }
+            if (!control.ShouldDrawBackground)
+                return;
+            Rectangle rect = control.RenderBounds;
+            Renderer.DrawColor = Colors.ModalBackground;
+            Renderer.DrawFilledRect(rect);
         }
 
         public override void DrawMenuDivider(Control.Base control)
