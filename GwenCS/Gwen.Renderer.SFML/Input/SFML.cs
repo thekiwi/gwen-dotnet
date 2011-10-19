@@ -38,7 +38,7 @@ namespace Gwen.Input
         /// <summary>
         /// Indicates whether the key is pressed (true) or released (false).
         /// </summary>
-        public bool Down;
+        public readonly bool Down;
 
         public SFMLKeyEventArgs(KeyEventArgs args, bool down)
         {
@@ -168,7 +168,8 @@ namespace Gwen.Input
 
                 Key key = TranslateKeyCode(ev.Args.Code);
                 if (key == Key.Invalid && !ev.Down) // it's not special char and it's been released
-                    return m_Canvas.Input_Character(ch);
+                    return InputHandler.HandleAccelerator(m_Canvas, ch);
+                    //return m_Canvas.Input_Character(ch);)
 
                 return m_Canvas.Input_Key(key, ev.Down);
             }

@@ -96,11 +96,11 @@ namespace Gwen.Control
                 return;
             }
 
-            bool bWasMenuHidden = m_Menu.IsHidden;
+            bool wasMenuHidden = m_Menu.IsHidden;
 
             GetCanvas().CloseMenus();
 
-            if (bWasMenuHidden)
+            if (wasMenuHidden)
             {
                 Open();
             }

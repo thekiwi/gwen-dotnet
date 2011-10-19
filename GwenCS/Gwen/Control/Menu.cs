@@ -143,6 +143,7 @@ namespace Gwen.Control
         /// </summary>
         public virtual void CloseAll()
         {
+            //System.Diagnostics.Debug.Print("Menu.CloseAll: {0}", this);
             Children.ForEach(child => { if (child is MenuItem) (child as MenuItem).CloseMenu(); });
         }
 
@@ -176,10 +177,11 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Close()
         {
+            //System.Diagnostics.Debug.Print("Menu.Close: {0}", this);
             IsHidden = true;
             if (DeleteOnClose)
             {
-                Parent.RemoveChild(this, true); // delayed delete
+                DelayedDelete();
             }
         }
 
@@ -188,6 +190,7 @@ namespace Gwen.Control
         /// </summary>
         public override void CloseMenus()
         {
+            //System.Diagnostics.Debug.Print("Menu.CloseMenus: {0}", this);
             base.CloseMenus();
             CloseAll();
             Close();

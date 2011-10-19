@@ -237,7 +237,7 @@ namespace Gwen.Control
         {
             if (m_Accelerator != null)
             {
-                m_Accelerator.DelayedDelete();
+                //m_Accelerator.DelayedDelete(); // to prevent double disposing
                 m_Accelerator = null;
             }
 

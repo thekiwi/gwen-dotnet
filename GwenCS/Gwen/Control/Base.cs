@@ -404,11 +404,11 @@ namespace Gwen.Control
         /// </summary>
         public virtual void Dispose()
         {
-            //Debug.Print("Control.Base: Disposing {0}", GetType());
+            //Debug.Print("Control.Base: Disposing {0} {1:X}", this, GetHashCode());
             if (m_Disposed)
             {
 #if DEBUG
-                throw new ObjectDisposedException(String.Format("Control.Base: disposed twice {0}", GetType()));
+                throw new ObjectDisposedException(String.Format("Control.Base [{1:X}] disposed twice: {0}", this, GetHashCode()));
 #else
                 return;
 #endif
@@ -437,7 +437,7 @@ namespace Gwen.Control
 #if DEBUG
         ~Base()
         {
-            throw new InvalidOperationException(String.Format("IDisposable object finalized: {0}", GetType()));
+            throw new InvalidOperationException(String.Format("IDisposable object finalized [{1:X}]: {0}", this, GetHashCode()));
             //Debug.Print(String.Format("IDisposable object finalized: {0}", GetType()));
         }
 #endif
@@ -448,6 +448,17 @@ namespace Gwen.Control
         public void DelayedDelete()
         {
             GetCanvas().AddDelayedDelete(this);
+        }
+
+        public override string ToString()
+        {
+            if (this is MenuItem)
+                return "[MenuItem: " + (this as MenuItem).Text + "]";
+            if (this is Label)
+                return "[Label: " + (this as Label).Text + "]";
+            if (this is ControlInternal.Text)
+                return "[Text: " + (this as ControlInternal.Text).String + "]";
+            return GetType().ToString();
         }
 
         /// <summary>
@@ -1549,7 +1560,11 @@ namespace Gwen.Control
         /// </summary>
         public virtual void CloseMenus()
         {
-            foreach (Base child in m_Children)
+            //Debug.Print("Base.CloseMenus: {0}", this);
+
+            // todo: not very efficient with the copying and recursive closing, maybe store currently open menus somewhere (canvas)?
+            var childrenCopy = m_Children.FindAll(x => true);
+            foreach (Base child in childrenCopy)
             {
                 child.CloseMenus();
             }
