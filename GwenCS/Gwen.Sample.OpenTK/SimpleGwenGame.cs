@@ -15,7 +15,6 @@ namespace Gwen.Sample.OpenTK
     /// </summary>
     public class SimpleWindow : GameWindow
     {
-
         private Gwen.Input.OpenTK input;
         private Gwen.Renderer.OpenTK renderer;
         private Gwen.Skin.Base skin;
@@ -26,6 +25,7 @@ namespace Gwen.Sample.OpenTK
         private readonly List<long> ftime;
         private readonly Stopwatch stopwatch;
         private long lastTime;
+        private bool altDown = false;
 
         public SimpleWindow()
             : base(1024, 768)
@@ -59,11 +59,9 @@ namespace Gwen.Sample.OpenTK
         {
             if (e.Key == global::OpenTK.Input.Key.Escape)
                 Exit();
-
-            if ((e.Key == global::OpenTK.Input.Key.AltLeft 
-                || e.Key == global::OpenTK.Input.Key.AltRight)
-                && (e.Key == global::OpenTK.Input.Key.Enter 
-                || e.Key == global::OpenTK.Input.Key.KeypadEnter))
+            else if (e.Key == global::OpenTK.Input.Key.AltLeft)
+                altDown = true;
+            else if (altDown && e.Key == global::OpenTK.Input.Key.Enter)
                 if (WindowState == WindowState.Fullscreen)
                     WindowState = WindowState.Normal;
                 else
@@ -74,6 +72,7 @@ namespace Gwen.Sample.OpenTK
 
         void Keyboard_KeyUp(object sender, KeyboardKeyEventArgs e)
         {
+            altDown = false;
             input.ProcessKeyUp(e);
         }
 
@@ -105,15 +104,10 @@ namespace Gwen.Sample.OpenTK
         {
             GL.ClearColor(Color.MidnightBlue);
 
-            GL.MatrixMode(MatrixMode.Projection);
-            GL.LoadIdentity();
-            GL.Ortho(0, Width, Height, 0, -1, 1);
-            GL.MatrixMode(MatrixMode.Modelview);
-            GL.Viewport(0, 0, Width, Height);
-            
             renderer = new Gwen.Renderer.OpenTK();
             skin = new Gwen.Skin.TexturedBase(renderer, "DefaultSkin.png");
             //skin = new Gwen.Skin.Simple(renderer);
+            skin.DefaultFont = new Font(renderer, "Courier", 10);
             canvas = new Canvas(skin);
 
             input = new Input.OpenTK();
@@ -138,6 +132,9 @@ namespace Gwen.Sample.OpenTK
         protected override void OnResize(EventArgs e)
         {
             GL.Viewport(0, 0, Width, Height);
+            GL.MatrixMode(MatrixMode.Projection);
+            GL.LoadIdentity();
+            GL.Ortho(0, Width, Height, 0, -1, 1);
 
             canvas.SetSize(Width, Height);
         }
