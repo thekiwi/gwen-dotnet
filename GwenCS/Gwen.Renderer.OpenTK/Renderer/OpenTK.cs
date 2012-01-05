@@ -307,14 +307,22 @@ namespace Gwen.Renderer
                 DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
             }
         }
-        
+
         internal static void LoadTextureInternal(Texture t, Bitmap bmp)
         {
             // todo: convert to proper format
-            if (bmp.PixelFormat != PixelFormat.Format32bppArgb)
+            PixelFormat lock_format;
+            switch (bmp.PixelFormat)
             {
-                t.Failed = true;
-                return;
+                case PixelFormat.Format32bppArgb:
+                    lock_format = PixelFormat.Format32bppArgb;
+                    break;
+                case PixelFormat.Format24bppRgb:
+                    lock_format = PixelFormat.Format32bppArgb;
+                    break;
+                default:
+                    t.Failed = true;
+                    return;
             }
 
             int glTex;
@@ -322,17 +330,28 @@ namespace Gwen.Renderer
             // Create the opengl texture
             GL.GenTextures(1, out glTex);
             GL.BindTexture(TextureTarget.Texture2D, glTex);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter, (int)TextureMinFilter.Linear);
-            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter, (int)TextureMagFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMinFilter,
+                            (int) TextureMinFilter.Linear);
+            GL.TexParameter(TextureTarget.Texture2D, TextureParameterName.TextureMagFilter,
+                            (int) TextureMagFilter.Linear);
 
             // Sort out our GWEN texture
             t.RendererData = glTex;
             t.Width = bmp.Width;
             t.Height = bmp.Height;
 
-            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, lock_format);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+            switch (lock_format)
+            {
+                case PixelFormat.Format32bppArgb:
+                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0,
+                                  global::OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                    break;
+                default:
+                    // invalid
+                    break;
+            }
 
             bmp.UnlockBits(data);
         }
@@ -421,18 +440,21 @@ namespace Gwen.Renderer
 
         public override unsafe Color PixelColor(Texture texture, uint x, uint y, Color defaultColor)
         {
-            int tex = (int)texture.RendererData;
+            if (texture.RendererData == null)
+                return defaultColor;
+            int tex = (int) texture.RendererData;
             if (tex == 0)
                 return defaultColor;
 
             Color pixel;
             GL.BindTexture(TextureTarget.Texture2D, tex);
-            long offset = 4 * (x + y * texture.Width);
-            byte[] data = new byte[4 * texture.Width * texture.Height];
+            long offset = 4*(x + y*texture.Width);
+            byte[] data = new byte[4*texture.Width*texture.Height];
             fixed (byte* ptr = &data[0])
             {
                 //GL.GetTexImage(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, PixelType.UnsignedByte, (IntPtr)ptr);
-                GL.GetTexImage(TextureTarget.Texture2D, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)ptr);
+                GL.GetTexImage(TextureTarget.Texture2D, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Rgba,
+                               PixelType.UnsignedByte, (IntPtr) ptr);
                 pixel = Color.FromArgb(data[offset + 3], data[offset + 0], data[offset + 1], data[offset + 2]);
             }
             // Retrieving the entire texture for a single pixel read

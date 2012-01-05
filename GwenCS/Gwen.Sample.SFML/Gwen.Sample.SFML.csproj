@@ -12,6 +12,7 @@
     <AssemblyName>Gwen.Sample.SFML</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>Gwen.Sample.SFML.Program</StartupObject>
@@ -82,6 +83,9 @@
       <Project>{D97B4F91-9FC8-46E0-A511-68D006662051}</Project>
       <Name>Gwen.Renderer.SFML</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -69,13 +69,14 @@ namespace Gwen.Control
             m_Bar.Width = ButtonSize;
             m_Bar.Padding = new Padding(0, ButtonSize, 0, ButtonSize);
 
-            float barHeight = (m_ViewableContentSize / m_ContentSize) * (Height - (ButtonSize * 2));
+            float barHeight = 0.0f;
+            if (m_ContentSize > 0.0f) barHeight = (m_ViewableContentSize/m_ContentSize)*(Height - (ButtonSize*2));
 
-            if (barHeight < ButtonSize * 0.5f)
-                barHeight = (int)(ButtonSize * 0.5f);
+            if (barHeight < ButtonSize*0.5f)
+                barHeight = (int) (ButtonSize*0.5f);
 
-            m_Bar.Height = (int)(barHeight);
-            m_Bar.IsHidden = Height - (ButtonSize * 2) <= barHeight;
+            m_Bar.Height = (int) (barHeight);
+            m_Bar.IsHidden = Height - (ButtonSize*2) <= barHeight;
 
             //Based on our last scroll amount, produce a position for the bar
             if (!m_Bar.IsHeld)

@@ -10,7 +10,7 @@ namespace Gwen.ControlInternal
     /// </summary>
     public class Resizer : Dragger
     {
-        private readonly Pos m_ResizeDir;
+        private Pos m_ResizeDir;
 
         /// <summary>
         /// Invoked when the control has been resized.
@@ -126,6 +126,8 @@ namespace Gwen.ControlInternal
         {
             set
             {
+                m_ResizeDir = value;
+
                 if ((0 != (value & Pos.Left) && 0 != (value & Pos.Top)) || (0 != (value & Pos.Right) && 0 != (value & Pos.Bottom)))
                 {
                     Cursor = Cursors.SizeNWSE;

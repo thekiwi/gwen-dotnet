@@ -131,8 +131,12 @@ namespace Gwen.Control
                 newString += spaced[i];
             }
 
-            leftOver = text.Substring(newString.Length + 1);
-            SplitLabel(leftOver, font, block, ref x, ref y, ref lineHeight);
+            int newstr_len = newString.Length;
+            if (newstr_len < text.Length)
+            {
+                leftOver = text.Substring(newstr_len + 1);
+                SplitLabel(leftOver, font, block, ref x, ref y, ref lineHeight);
+            }
         }
 
         protected void CreateLabel(String text, TextBlock block, ref int x, ref int y, ref int lineHeight, bool noSplit)

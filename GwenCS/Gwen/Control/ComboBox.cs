@@ -70,7 +70,7 @@ namespace Gwen.Control
             item.Name = name;
             item.Selected += OnItemSelected;
 
-            if (m_SelectedItem != null)
+            if (m_SelectedItem == null)
                 OnItemSelected(item);
 
             return item;

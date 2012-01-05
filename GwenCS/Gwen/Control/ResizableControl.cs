@@ -37,41 +37,49 @@ namespace Gwen.Control
             m_Resizer[2].Dock = Pos.Bottom;
             m_Resizer[2].ResizeDir = Pos.Bottom;
             m_Resizer[2].Resized += OnResized;
+            m_Resizer[2].Target = this;
 
             m_Resizer[1] = new Resizer(m_Resizer[2]);
             m_Resizer[1].Dock = Pos.Left;
             m_Resizer[1].ResizeDir = Pos.Bottom | Pos.Left;
             m_Resizer[1].Resized += OnResized;
+            m_Resizer[1].Target = this;
 
             m_Resizer[3] = new Resizer(m_Resizer[2]);
             m_Resizer[3].Dock = Pos.Right;
             m_Resizer[3].ResizeDir = Pos.Bottom | Pos.Right;
             m_Resizer[3].Resized += OnResized;
+            m_Resizer[3].Target = this;
 
             m_Resizer[8] = new Resizer(this);
             m_Resizer[8].Dock = Pos.Top;
             m_Resizer[8].ResizeDir = Pos.Top;
             m_Resizer[8].Resized += OnResized;
+            m_Resizer[8].Target = this;
 
             m_Resizer[7] = new Resizer(m_Resizer[8]);
             m_Resizer[7].Dock = Pos.Left;
             m_Resizer[7].ResizeDir = Pos.Left | Pos.Top;
             m_Resizer[7].Resized += OnResized;
+            m_Resizer[7].Target = this;
 
             m_Resizer[9] = new Resizer(m_Resizer[8]);
             m_Resizer[9].Dock = Pos.Right;
             m_Resizer[9].ResizeDir = Pos.Right | Pos.Top;
             m_Resizer[9].Resized += OnResized;
+            m_Resizer[9].Target = this;
 
             m_Resizer[4] = new Resizer(this);
             m_Resizer[4].Dock = Pos.Left;
             m_Resizer[4].ResizeDir = Pos.Left;
             m_Resizer[4].Resized += OnResized;
+            m_Resizer[4].Target = this;
 
             m_Resizer[6] = new Resizer(this);
             m_Resizer[6].Dock = Pos.Right;
             m_Resizer[6].ResizeDir = Pos.Right;
             m_Resizer[6].Resized += OnResized;
+            m_Resizer[6].Target = this;
         }
 
         /// <summary>
