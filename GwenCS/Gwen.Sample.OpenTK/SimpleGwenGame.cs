@@ -107,7 +107,7 @@ namespace Gwen.Sample.OpenTK
             renderer = new Gwen.Renderer.OpenTK();
             skin = new Gwen.Skin.TexturedBase(renderer, "DefaultSkin.png");
             //skin = new Gwen.Skin.Simple(renderer);
-            skin.DefaultFont = new Font(renderer, "Courier", 10);
+            //skin.DefaultFont = new Font(renderer, "Courier", 10);
             canvas = new Canvas(skin);
 
             input = new Input.OpenTK();
@@ -154,7 +154,7 @@ namespace Gwen.Sample.OpenTK
 
             if (stopwatch.ElapsedMilliseconds > 1000)
             {
-                test.Note = String.Format("String Cache size: {0}", renderer.TextCacheSize);
+                test.Note = String.Format("String Cache size: {0} Draw Calls: {1} Vertex Count: {2}", renderer.TextCacheSize, renderer.DrawCallCount, renderer.VertexCount);
                 test.Fps = 1000f * ftime.Count / ftime.Sum();
                 stopwatch.Restart();
 

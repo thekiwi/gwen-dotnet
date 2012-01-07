@@ -48,6 +48,7 @@ namespace Gwen.Control
         protected override void Layout(Skin.Base skin)
         {
             m_SliderBar.SetSize(15, Height);
+            UpdateBarFromValue();
         }
 
         /// <summary>

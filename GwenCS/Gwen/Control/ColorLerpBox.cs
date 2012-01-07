@@ -69,7 +69,7 @@ namespace Gwen.Control
         public void SetColor(Color value, bool onlyHue = true)
         {
             HSV hsv = value.ToHSV();
-            m_Hue = (byte) (hsv.h);
+            m_Hue = (hsv.h < 0.0f) ? (byte)0 : ((hsv.h > 255.0f) ? (byte)255 : (byte)hsv.h);
             if (!onlyHue)
             {
                 m_CursorPos.X = (int)(hsv.s * Width);
