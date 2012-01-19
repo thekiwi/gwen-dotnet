@@ -13,7 +13,7 @@ namespace Gwen.Anim
 
         protected virtual void Think()
         {
-            throw new InvalidOperationException("Pure virtual function call");
+            
         }
 
         public virtual bool Finished

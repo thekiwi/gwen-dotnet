@@ -24,7 +24,7 @@ namespace Gwen.Anim
 
         protected override void Think()
         {
-            base.Think();
+            //base.Think();
 
             if (m_Finished)
                 return;
