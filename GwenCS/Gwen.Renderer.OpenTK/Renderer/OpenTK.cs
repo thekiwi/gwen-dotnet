@@ -34,6 +34,10 @@ namespace Gwen.Renderer
         private bool m_TextureEnabled;
         static private int m_LastTextureID;
 
+        private bool m_WasBlendEnabled, m_WasTexture2DEnabled, m_WasDepthTestEnabled;
+        private int m_PrevBlendSrc, m_PrevBlendDst, m_PrevAlphaFunc;
+        private float m_PrevAlphaRef;
+
         public OpenTK()
             : base()
         {
@@ -51,9 +55,20 @@ namespace Gwen.Renderer
 
         public override void Begin()
         {
+            // Get previous parameter values before changing them.
+            GL.GetInteger(GetPName.BlendSrc, out m_PrevBlendSrc);
+            GL.GetInteger(GetPName.BlendDst, out m_PrevBlendDst);
+            GL.GetInteger(GetPName.AlphaTestFunc, out m_PrevAlphaFunc);
+            GL.GetFloat(GetPName.AlphaTestRef, out m_PrevAlphaRef);
+
             GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
             GL.AlphaFunc(AlphaFunction.Greater, 1.0f);
 
+            m_WasBlendEnabled = GL.IsEnabled(EnableCap.Blend);
+            m_WasTexture2DEnabled = GL.IsEnabled(EnableCap.Texture2D);
+            m_WasDepthTestEnabled = GL.IsEnabled(EnableCap.DepthTest);
+
+            // Set default values and enable/disable caps.
             GL.Enable(EnableCap.Blend);
             GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.DepthTest);
@@ -69,6 +84,27 @@ namespace Gwen.Renderer
         public override void End()
         {
             Flush();
+
+            GL.BindTexture(TextureTarget.Texture2D, 0);
+
+            // Restore the previous parameter values.
+            GL.BlendFunc((BlendingFactorSrc) m_PrevBlendSrc, (BlendingFactorDest) m_PrevBlendDst);
+            GL.AlphaFunc((AlphaFunction) m_PrevAlphaFunc, m_PrevAlphaRef);
+
+            if (!m_WasBlendEnabled)
+                GL.Disable(EnableCap.Blend);
+
+            if (m_WasTexture2DEnabled)
+                GL.Enable(EnableCap.Texture2D);
+
+            if (m_WasDepthTestEnabled)
+                GL.Enable(EnableCap.DepthTest);
+
+            GL.DisableClientState(ArrayCap.VertexArray);
+            GL.DisableClientState(ArrayCap.ColorArray);
+            GL.DisableClientState(ArrayCap.TextureCoordArray);
+
+            GL.Color3(1f, 1f, 1f);
         }
 
         /// <summary>
@@ -85,7 +121,7 @@ namespace Gwen.Renderer
         /// </summary>
         public void FlushTextCache()
         {
-            // todo: some auto-expiring cache? based on numner of elements or age
+            // todo: some auto-expiring cache? based on number of elements or age
             foreach (var textRenderer in m_StringCache.Values)
             {
                 textRenderer.Dispose();
@@ -328,8 +364,9 @@ namespace Gwen.Renderer
 
         public override Point MeasureText(Font font, string text)
         {
-            //Debug.Print(String.Format("MeasureText {0}", font.FaceName));
+            //Debug.Print(String.Format("MeasureText '{0}'", text));
             System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
+
             if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
             {
                 FreeFont(font);
@@ -338,14 +375,16 @@ namespace Gwen.Renderer
             }
 
             var key = new Tuple<String, Font>(text, font);
+
             if (m_StringCache.ContainsKey(key))
             {
                 var tex = m_StringCache[key].Texture;
                 return new Point(tex.Width, tex.Height);
             }
 
-            SizeF size = m_Graphics.MeasureString(text, sysFont);
-            return new Point((int)size.Width, (int)size.Height);
+            SizeF size = m_Graphics.MeasureString(text, sysFont, Point.Empty, StringFormat.GenericTypographic);
+
+            return new Point((int)Math.Round(size.Width) + ((text.EndsWith(" ")) ? 4 : 0), (int)Math.Round(size.Height));
         }
 
         public override void RenderText(Font font, Point position, string text)
@@ -357,6 +396,7 @@ namespace Gwen.Renderer
             Flush();
 
             System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
+
             if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
             {
                 FreeFont(font);
@@ -365,6 +405,7 @@ namespace Gwen.Renderer
             }
 
             var key = new Tuple<String, Font>(text, font);
+
             if (!m_StringCache.ContainsKey(key))
             {
                 // not cached - create text renderer
@@ -475,7 +516,7 @@ namespace Gwen.Renderer
                 unsafe
                 {
                     fixed (byte* ptr = &pixelData[0])
-                        bmp = new Bitmap(t.Width, t.Height, 4 * t.Width, System.Drawing.Imaging.PixelFormat.Format32bppArgb, (IntPtr)ptr);
+                        bmp = new Bitmap(t.Width, t.Height, 4 * t.Width, PixelFormat.Format32bppArgb, (IntPtr)ptr);
                 }
             }
             catch (Exception)

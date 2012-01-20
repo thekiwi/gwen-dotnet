@@ -52,7 +52,7 @@ namespace Gwen.Renderer
         /// The origin (0, 0) lies at the top-left corner of the backing store.</param>
         public void DrawString(string text, System.Drawing.Font font, Brush brush, Point point)
         {
-            gfx.DrawString(text, font, brush, point); // render text on the bitmap
+            gfx.DrawString(text, font, brush, point, StringFormat.GenericTypographic); // render text on the bitmap
             OpenTK.LoadTextureInternal(texture, bmp); // copy bitmap to gl texture
         }
 
