@@ -11,6 +11,11 @@ namespace Gwen.Control
         private readonly Label m_Label; // should be rich label with maxwidth = parent
 
         /// <summary>
+        /// Invoked when the message box has been dismissed.
+        /// </summary>
+        public GwenEventHandler Dismissed;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="MessageBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
@@ -31,10 +36,17 @@ namespace Gwen.Control
             m_Button = new Button(m_InnerPanel);
             m_Button.Text = "OK"; // todo: parametrize buttons
             m_Button.Clicked += CloseButtonPressed;
+            m_Button.Clicked += DismissedHandler;
             m_Button.Margin = Margin.Five;
             m_Button.SetSize(50, 20);
 
             Align.Center(this);
+        }
+
+        private void DismissedHandler(Base control)
+        {
+            if (Dismissed != null)
+                Dismissed.Invoke(this);
         }
 
         /// <summary>

@@ -37,6 +37,11 @@ namespace Gwen.Control
         public bool IsToggle { get { return m_IsToggle; } set { m_IsToggle = value; } }
 
         /// <summary>
+        /// Number of rows in the list box.
+        /// </summary>
+        public int RowCount { get { return m_Table.RowCount; } }
+
+        /// <summary>
         /// List of selected rows.
         /// </summary>
         public IEnumerable<TableRow> SelectedRows { get { return m_SelectedRows; } }
