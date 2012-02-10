@@ -131,10 +131,8 @@ namespace Gwen.Control.Layout
         /// </summary>
         public void RemoveAll()
         {
-            foreach (TableRow child in Children) // all should be of type TableRow
-            {
-                RemoveRow(child);
-            }
+            while (RowCount > 0)
+                RemoveRow(0);
         }
 
         /// <summary>
