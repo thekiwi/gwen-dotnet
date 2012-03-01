@@ -42,6 +42,13 @@ namespace Gwen.Control
         public int RowCount { get { return m_Table.RowCount; } }
 
         /// <summary>
+        /// Returns specific row of the ListBox.
+        /// </summary>
+        /// <param name="index">Row index.</param>
+        /// <returns>Row at the specified index.</returns>
+        public ListBoxRow this[int index] { get { return m_Table[index] as ListBoxRow; } }
+
+        /// <summary>
         /// List of selected rows.
         /// </summary>
         public IEnumerable<TableRow> SelectedRows { get { return m_SelectedRows; } }

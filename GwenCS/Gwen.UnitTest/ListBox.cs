@@ -66,7 +66,7 @@ namespace Gwen.UnitTest
         void RowSelected(Base control)
         {
             Control.ListBox list = control as Control.ListBox;
-            UnitPrint(String.Format("ListBox: RowSelected: {0}", list.SelectedRows.Last().Text));
+            UnitPrint(String.Format("ListBox: RowSelected: {0} [{1}]", list.SelectedRows.Last().Text, list[list.SelectedRowIndex].Text));
         }
 
         void RowUnSelected(Base control)

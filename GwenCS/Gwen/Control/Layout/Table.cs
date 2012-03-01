@@ -27,6 +27,13 @@ namespace Gwen.Control.Layout
         public int RowCount { get { return Children.Count; } }
 
         /// <summary>
+        /// Returns specific row of the table.
+        /// </summary>
+        /// <param name="index">Row index.</param>
+        /// <returns>Row at the specified index.</returns>
+        public TableRow this[int index] { get { return Children[index] as TableRow; } }
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="Table"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
