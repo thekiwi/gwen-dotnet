@@ -52,10 +52,10 @@ namespace Gwen.UnitTest
                 m_Font = new Font(Skin.Renderer, "Impact", 50);
 
                 Control.TextBox label = new Control.TextBox(this);
-                label.SetText("Different Font");
+                label.SetText("Different Font (autosized)");
                 label.SetPosition(10, 10 + 25*5);
                 label.Font = m_Font;
-                label.SetSize(200, 55);
+                label.SizeToContents();
             }
         }
 

@@ -110,7 +110,7 @@ namespace Gwen.Control
             SetSize(100, 20);
             MouseInputEnabled = true;
             Alignment = Pos.Center;
-            TextPadding = new Padding(3, 0, 3, 0);
+            TextPadding = new Padding(3, 3, 3, 3);
         }
 
         /// <summary>

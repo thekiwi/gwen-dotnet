@@ -5,7 +5,7 @@ using Gwen.Control;
 namespace Gwen.ControlInternal
 {
     /// <summary>
-    /// Displays text.
+    /// Displays text. Always sized to contents.
     /// </summary>
     public class Text : Base
     {
@@ -24,8 +24,7 @@ namespace Gwen.ControlInternal
             set
             {
                 m_Font = value;
-                SizeToContents(); 
-                Invalidate();
+                SizeToContents();
             }
         }
 
@@ -38,9 +37,7 @@ namespace Gwen.ControlInternal
             set
             {
                 m_String = value;
-                if (AutoSizeToContents) 
-                    SizeToContents();
-                Invalidate(); /*InvalidateParent();*/
+                SizeToContents();
             }
         }
 
@@ -52,7 +49,7 @@ namespace Gwen.ControlInternal
         /// <summary>
         /// Determines whether the control should be automatically resized to fit the text.
         /// </summary>
-        public bool AutoSizeToContents { get; set; } // [omeg] added
+        //public bool AutoSizeToContents { get; set; } // [omeg] added
 
         /// <summary>
         /// Text length in characters.
@@ -76,8 +73,8 @@ namespace Gwen.ControlInternal
         public Text(Base parent)
             : base(parent)
         {
-            Font = Skin.DefaultFont;
-            String = string.Empty;
+            m_Font = Skin.DefaultFont;
+            m_String = string.Empty;
             TextColor = Skin.Colors.Label.Default;
             MouseInputEnabled = false;
             TextColorOverride = Color.FromArgb(0, 255, 255, 255); // A==0, override disabled
@@ -106,6 +103,7 @@ namespace Gwen.ControlInternal
         protected override void Layout(Skin.Base skin)
         {
             SizeToContents();
+            base.Layout(skin);
         }
 
         /// <summary>
@@ -140,8 +138,8 @@ namespace Gwen.ControlInternal
                 return;
 
             SetSize(p.X, p.Y);
-            InvalidateParent();
             Invalidate();
+            InvalidateParent();
         }
 
         /// <summary>

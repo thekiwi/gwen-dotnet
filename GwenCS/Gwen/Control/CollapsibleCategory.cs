@@ -126,6 +126,7 @@ namespace Gwen.Control
         protected override void Render(Skin.Base skin)
         {
             skin.DrawCategoryInner(this, m_HeaderButton.ToggleState);
+            base.Render(skin);
         }
 
         /// <summary>

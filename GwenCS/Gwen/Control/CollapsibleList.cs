@@ -82,7 +82,8 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            Skin.DrawCategoryHolder(this);
+            skin.DrawCategoryHolder(this);
+            base.Render(skin);
         }
 
         /// <summary>

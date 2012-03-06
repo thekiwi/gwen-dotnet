@@ -217,7 +217,8 @@ namespace Gwen.Control.Layout
                         m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], row.GetColumn(i).Width);
                     }
                 }
-                //iBottom += pRow->Height();
+                Height += row.Height;
+                Width = row.Width;
             }
 
             InvalidateParent();

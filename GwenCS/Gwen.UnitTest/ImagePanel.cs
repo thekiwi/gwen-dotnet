@@ -12,6 +12,7 @@ namespace Gwen.UnitTest
             {
                 Control.ImagePanel img = new Control.ImagePanel(this);
                 img.ImageName = "gwen.png";
+                img.SetPosition(10, 10);
                 img.SetBounds(10, 10, 100, 100);
             }
 
@@ -19,6 +20,7 @@ namespace Gwen.UnitTest
             {
                 Control.ImagePanel img = new Control.ImagePanel(this);
                 img.ImageName = "missingimage.png";
+                img.SetPosition(120, 10);
                 img.SetBounds(120, 10, 100, 100);
             }
         }

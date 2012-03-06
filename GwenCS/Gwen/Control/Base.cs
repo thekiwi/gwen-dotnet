@@ -71,6 +71,8 @@ namespace Gwen.Control
 
         private object m_UserData;
 
+        private bool m_DrawDebugOutlines;
+
         /// <summary>
         /// Real list of children.
         /// </summary>
@@ -361,12 +363,44 @@ namespace Gwen.Control
             }
         }
 
+        /// <summary>
+        /// Leftmost coordinate of the control.
+        /// </summary>
         public int X { get { return m_Bounds.X; } set { SetPosition(value, Y); } }
+
+        /// <summary>
+        /// Topmost coordinate of the control.
+        /// </summary>
         public int Y { get { return m_Bounds.Y; } set { SetPosition(X, value); } }
+
+        // todo: Bottom/Right includes margin but X/Y not?
+
         public int Width { get { return m_Bounds.Width; } set { SetSize(value, Height); } }
         public int Height { get { return m_Bounds.Height; } set { SetSize(Width, value); } }
         public int Bottom { get { return m_Bounds.Bottom + m_Margin.Bottom; } }
         public int Right { get { return m_Bounds.Right + m_Margin.Right; } }
+
+        /// <summary>
+        /// Determines whether margin, padding and bounds outlines for the control will be drawn. Applied recursively to all children.
+        /// </summary>
+        public bool DrawDebugOutlines
+        {
+            get { return m_DrawDebugOutlines; }
+            set
+            {
+                if (m_DrawDebugOutlines == value)
+                    return;
+                m_DrawDebugOutlines = value;
+                foreach (Base child in Children)
+                {
+                    child.DrawDebugOutlines = value;
+                }
+            }
+        }
+
+        public Color PaddingOutlineColor { get; set; }
+        public Color MarginOutlineColor { get; set; }
+        public Color BoundsOutlineColor { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Base"/> class.
@@ -397,6 +431,10 @@ namespace Gwen.Control
             m_Disabled = false;
             m_CacheTextureDirty = true;
             m_CacheToTexture = false;
+
+            BoundsOutlineColor = Color.Red;
+            MarginOutlineColor = Color.Green;
+            PaddingOutlineColor = Color.Blue;
         }
 
         /// <summary>
@@ -540,7 +578,7 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Invalidates the control's children.
+        /// Invalidates the control's children (relayout/repaint).
         /// </summary>
         /// <param name="recursive">Determines whether the operation should be carried recursively.</param>
         protected virtual void InvalidateChildren(bool recursive = false)
@@ -946,7 +984,6 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected virtual void Render(Skin.Base skin)
         {
-
         }
 
         /// <summary>
@@ -1041,6 +1078,9 @@ namespace Gwen.Control
             }
 
             RenderRecursive(skin, Bounds);
+
+            if (DrawDebugOutlines)
+                skin.DrawDebugOutlines(this);
         }
 
         /// <summary>
@@ -1681,8 +1721,10 @@ namespace Gwen.Control
         }
 
         /// <summary>
-        /// Returns the total width and height of children.
+        /// Returns the total width and height of all children.
         /// </summary>
+        /// <remarks>Default implementation returns maximum size of children since the layout is unknown.
+        /// Implement this in derived compound controls to properly return their size.</remarks>
         /// <returns></returns>
         public virtual Point GetChildrenSize()
         {

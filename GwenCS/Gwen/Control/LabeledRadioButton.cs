@@ -23,21 +23,34 @@ namespace Gwen.Control
         public LabeledRadioButton(Base parent)
             : base(parent)
         {
-            SetSize(200, 19);
+            SetSize(100, 20);
 
             m_RadioButton = new RadioButton(this);
-            m_RadioButton.Dock = Pos.Left;
-            m_RadioButton.Margin = new Margin(0, 2, 2, 2);
+            //m_RadioButton.Dock = Pos.Left; // no docking, it causes resizing
+            //m_RadioButton.Margin = new Margin(0, 2, 2, 2);
             m_RadioButton.IsTabable = false;
             m_RadioButton.KeyboardInputEnabled = false;
 
             m_Label = new LabelClickable(this);
-            m_Label.Alignment = Pos.CenterV | Pos.Left;
+            m_Label.Alignment = Pos.Bottom | Pos.Left;
             m_Label.Text = "Radio Button";
-            m_Label.Dock = Pos.Fill;
+            //m_Label.Dock = Pos.Fill;
             m_Label.Clicked += m_RadioButton.Press;
             m_Label.IsTabable = false;
             m_Label.KeyboardInputEnabled = false;
+            m_Label.AutoSizeToContents = true;
+        }
+
+        protected override void Layout(Skin.Base skin)
+        {
+            // ugly stuff because we don't have anchoring without docking (docking resizes children)
+            if (m_Label.Height > m_RadioButton.Height) // usually radio is smaller than label so it gets repositioned to avoid clipping with negative Y
+            {
+                m_RadioButton.Y = (m_Label.Height - m_RadioButton.Height)/2;
+            }
+            Align.PlaceRightBottom(m_Label, m_RadioButton);
+            SizeToChildren();
+            base.Layout(skin);
         }
 
         /// <summary>

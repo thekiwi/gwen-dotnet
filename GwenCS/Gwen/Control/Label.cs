@@ -12,6 +12,7 @@ namespace Gwen.Control
         private readonly Text m_Text;
         private Pos m_Align;
         private Padding m_TextPadding;
+        private bool m_AutoSizeToContents;
 
         /// <summary>
         /// Text alignment.
@@ -32,9 +33,9 @@ namespace Gwen.Control
             set
             {
                 m_Text.Font = value;
-                if (AutoSizeToContents)
+                if (m_AutoSizeToContents)
                     SizeToContents();
-                Redraw();
+                Invalidate();
             }
         }
         
@@ -77,9 +78,9 @@ namespace Gwen.Control
         public virtual void MakeColorHighlight() { TextColor = Skin.Colors.Label.Highlight; }
 
         /// <summary>
-        /// Determines if the control should autosize to it's text.
+        /// Determines if the control should autosize to its text.
         /// </summary>
-        public bool AutoSizeToContents { get { return m_Text.AutoSizeToContents; } set { m_Text.AutoSizeToContents = value; } }
+        public bool AutoSizeToContents { get { return m_AutoSizeToContents; } set { m_AutoSizeToContents = value; Invalidate(); InvalidateParent(); } }
 
         /// <summary>
         /// Text padding.
@@ -96,10 +97,10 @@ namespace Gwen.Control
             //m_Text.Font = Skin.DefaultFont;
 
             MouseInputEnabled = false;
-            SetBounds(0, 0, 100, 10);
+            SetSize(100, 10);
             Alignment = Pos.Left | Pos.Top;
 
-            AutoSizeToContents = false;
+            m_AutoSizeToContents = false;
         }
 
         /// <summary>
@@ -139,6 +140,9 @@ namespace Gwen.Control
 
             Pos align = m_Align;
 
+            if (m_AutoSizeToContents)
+                SizeToContents();
+
             int x = m_TextPadding.Left + Padding.Left;
             int y = m_TextPadding.Top + Padding.Top;
 
@@ -153,9 +157,6 @@ namespace Gwen.Control
                 y = Height - m_Text.Height - m_TextPadding.Bottom - Padding.Bottom;
 
             m_Text.SetPosition(x, y);
-
-            if (m_Text.AutoSizeToContents)
-                SizeToContents();
         }
 
         /// <summary>
@@ -169,9 +170,10 @@ namespace Gwen.Control
                 return;
 
             m_Text.String = str;
-            if (AutoSizeToContents)
+            if (m_AutoSizeToContents)
                 SizeToContents();
-            Redraw();
+            Invalidate();
+            InvalidateParent();
 
             if (doEvents)
                 OnTextChanged();
@@ -184,6 +186,7 @@ namespace Gwen.Control
 
             SetSize(m_Text.Width + Padding.Left + Padding.Right + m_TextPadding.Left + m_TextPadding.Right, 
                 m_Text.Height + Padding.Top + Padding.Bottom + m_TextPadding.Top + m_TextPadding.Bottom);
+            InvalidateParent();
         }
 
         /// <summary>

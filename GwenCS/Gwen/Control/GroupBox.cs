@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Drawing;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Group box (container).
     /// </summary>
+    /// <remarks>Don't use autosize with docking.</remarks>
     public class GroupBox : Label
     {
         /// <summary>
@@ -20,13 +22,14 @@ namespace Gwen.Control
             MouseInputEnabled = true;
             KeyboardInputEnabled = true;
 
-            TextPadding = new Padding(10, 0, 0, 0);
+            TextPadding = new Padding(10, 0, 10, 0);
             Alignment = Pos.Top | Pos.Left;
             Invalidate();
 
             m_InnerPanel = new Base(this);
             m_InnerPanel.Dock = Pos.Fill;
-            m_InnerPanel.Padding = new Padding(0, 10, 0, 0); // [omeg] to prevent overlapping on label
+            m_InnerPanel.Margin = new Margin(5, TextHeight+5, 5, 5);
+            //Margin = new Margin(5, 5, 5, 5);
         }
 
         /// <summary>
@@ -35,8 +38,11 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Layout(Skin.Base skin)
         {
-            m_InnerPanel.Margin = new Margin(TextHeight + 3, 6, 6, 6);
             base.Layout(skin);
+            if (AutoSizeToContents)
+            {
+                DoSizeToContents();
+            }
         }
 
         /// <summary>
@@ -46,6 +52,23 @@ namespace Gwen.Control
         protected override void Render(Skin.Base skin)
         {
             skin.DrawGroupBox(this, TextX, TextHeight, TextWidth);
+        }
+
+        /// <summary>
+        /// Sizes to contents.
+        /// </summary>
+        public override void SizeToContents()
+        {
+            // we inherit from Label and shouldn't use its method.
+            DoSizeToContents();
+        }
+
+        protected virtual void DoSizeToContents()
+        {
+            m_InnerPanel.SizeToChildren();
+            SizeToChildren();
+            if (Width < TextWidth + TextPadding.Right + TextPadding.Left)
+                Width = TextWidth + TextPadding.Right + TextPadding.Left;
         }
     }
 }

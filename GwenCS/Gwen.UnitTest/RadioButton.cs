@@ -8,16 +8,30 @@ namespace Gwen.UnitTest
         public RadioButton(Base parent)
             : base(parent)
         {
-            Control.RadioButtonGroup rbc = new Control.RadioButtonGroup(this);
+            Control.RadioButtonGroup rbg = new Control.RadioButtonGroup(this, "Sample radio group");
+            rbg.SetPosition(10, 10);
 
-            rbc.AddOption("Option 1");
-            rbc.AddOption("Option 2");
-            rbc.AddOption("Option 3");
-            rbc.AddOption("\u0627\u0644\u0622\u0646 \u0644\u062D\u0636\u0648\u0631");
+            rbg.AddOption("Option 1");
+            rbg.AddOption("Option 2");
+            rbg.AddOption("Option 3");
+            rbg.AddOption("\u0627\u0644\u0622\u0646 \u0644\u062D\u0636\u0648\u0631");
+            //rbg.SizeToContents(); // it's auto
 
-            rbc.SetBounds(30, 30, 200, 200);
+            rbg.SelectionChanged += OnChange;
 
-            rbc.SelectionChanged += OnChange;
+            Control.LabeledRadioButton rb1 = new LabeledRadioButton(this);
+            rb1.Text = "Option 1";
+            rb1.SetPosition(300, 10);
+
+            Control.LabeledRadioButton rb2 = new LabeledRadioButton(this);
+            rb2.Text = "Option 2222222222222222222222222222222222";
+            rb2.SetPosition(300, 30);
+
+            Control.LabeledRadioButton rb3 = new LabeledRadioButton(this);
+            rb3.Text = "\u0627\u0644\u0622\u0646 \u0644\u062D\u0636\u0648\u0631";
+            rb3.SetPosition(300, 50);
+
+            //this.DrawDebugOutlines = true;
         }
 
         void OnChange(Base control)

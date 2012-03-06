@@ -94,6 +94,8 @@ namespace Gwen.UnitTest
                     RegisterUnitTest("TabControl", cat, test);
                     test = new ScrollControl(m_Center);
                     RegisterUnitTest("ScrollControl", cat, test);
+                    test = new Docking(m_Center);
+                    RegisterUnitTest("Docking", cat, test);
                 }
             }
             
@@ -109,6 +111,8 @@ namespace Gwen.UnitTest
 
             m_StatusBar.SendToBack();
             PrintText("Unit Test started!");
+
+            //DrawDebugOutlines = true;
         }
 
         public void RegisterUnitTest(String name, CollapsibleCategory cat, GUnit test)

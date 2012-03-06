@@ -5,7 +5,7 @@ namespace Gwen.UnitTest
 {
     public class Button : GUnit
     {
-        private readonly Control.Button buttonA, buttonB, buttonC, buttonD, buttonE, buttonF, buttonG;
+        private readonly Control.Button buttonA, buttonB, buttonC, buttonD, buttonE, buttonF, buttonG, buttonH;
 
         public Button(Base parent)
             : base(parent)
@@ -24,12 +24,12 @@ namespace Gwen.UnitTest
             buttonC = new Control.Button(this);
             buttonC.Text = "Image button";
             buttonC.SetImage("test16.png");
-            Align.PlaceBelow(buttonC, buttonB, 10);
+            Align.PlaceDownLeft(buttonC, buttonB, 10);
 
             buttonD = new Control.Button(this);
             buttonD.SetImage("test16.png");
             buttonD.SetSize(20, 20);
-            Align.PlaceBelow(buttonD, buttonC, 10);
+            Align.PlaceDownLeft(buttonD, buttonC, 10);
 
             buttonE = new Control.Button(this);
             buttonE.Text = "Toggle me";
@@ -37,17 +37,22 @@ namespace Gwen.UnitTest
             buttonE.Toggled += onToggle;
             buttonE.ToggledOn += onToggleOn;
             buttonE.ToggledOff += onToggleOff;
-            Align.PlaceBelow(buttonE, buttonD, 10);
+            Align.PlaceDownLeft(buttonE, buttonD, 10);
 
             buttonF = new Control.Button(this);
             buttonF.Text = "Disabled :D";
             buttonF.IsDisabled = true;
-            Align.PlaceBelow(buttonF, buttonE, 10);
+            Align.PlaceDownLeft(buttonF, buttonE, 10);
 
             buttonG = new Control.Button(this);
             buttonG.Text = "With Tooltip";
             buttonG.SetToolTipText("This is tooltip");
-            Align.PlaceBelow(buttonG, buttonF, 10);
+            Align.PlaceDownLeft(buttonG, buttonF, 10);
+
+            buttonH = new Control.Button(this);
+            buttonH.Text = "I'm autosized";
+            buttonH.SizeToContents();
+            Align.PlaceDownLeft(buttonH, buttonG, 10);
         }
 
         private void onButtonAc(Base control)

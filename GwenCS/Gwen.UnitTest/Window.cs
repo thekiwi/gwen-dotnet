@@ -20,7 +20,7 @@ namespace Gwen.UnitTest
             Control.Button button2 = new Control.Button(this);
             button2.SetText("Open a MessageBox");
             button2.Clicked += OpenMsgbox;
-            Align.PlaceToRight(button2, button1, 10);
+            Align.PlaceRightBottom(button2, button1, 10);
 
             m_WindowCount = 1;
         }

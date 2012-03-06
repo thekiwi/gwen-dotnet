@@ -82,6 +82,8 @@ namespace Gwen.Control
             skin.Renderer.DrawColor = Color.White;
             skin.Renderer.DrawFilledRect(new Rectangle(1, drawHeight + 1, 3, 3));
             skin.Renderer.DrawFilledRect(new Rectangle(Width - 4, drawHeight + 1, 3, 3));
+
+            base.Render(skin);
         }
 
         /// <summary>

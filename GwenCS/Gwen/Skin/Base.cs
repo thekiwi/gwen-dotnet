@@ -118,7 +118,27 @@ namespace Gwen.Skin
         public virtual void DrawNumericUpDownButton(Control.Base control, bool depressed, bool up) { }
         public virtual void DrawTreeButton(Control.Base control, bool open) { }
         public virtual void DrawTreeControl(Control.Base control) { }
-        
+
+        public virtual void DrawDebugOutlines(Control.Base control)
+        {
+            m_Renderer.DrawColor = control.PaddingOutlineColor;
+            Rectangle inner = new Rectangle(control.Bounds.Left + control.Padding.Left,
+                                            control.Bounds.Top + control.Padding.Top,
+                                            control.Bounds.Width - control.Padding.Right - control.Padding.Left,
+                                            control.Bounds.Height - control.Padding.Bottom - control.Padding.Top);
+            m_Renderer.DrawLinedRect(inner);
+
+            m_Renderer.DrawColor = control.MarginOutlineColor;
+            Rectangle outer = new Rectangle(control.Bounds.Left - control.Margin.Left,
+                                            control.Bounds.Top - control.Margin.Top,
+                                            control.Bounds.Width + control.Margin.Right + control.Margin.Left,
+                                            control.Bounds.Height + control.Margin.Bottom + control.Margin.Top);
+            m_Renderer.DrawLinedRect(outer);
+
+            m_Renderer.DrawColor = control.BoundsOutlineColor;
+            m_Renderer.DrawLinedRect(control.Bounds);
+        }
+
         public virtual void DrawTreeNode(Control.Base ctrl, bool open, bool selected, int labelHeight, int labelWidth, int halfWay, int lastBranch, bool isRoot)
         {
             Renderer.DrawColor = Colors.Tree.Lines;

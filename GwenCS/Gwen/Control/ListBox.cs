@@ -286,5 +286,24 @@ namespace Gwen.Control
             UnselectAll();
             m_Table.RemoveAll();
         }
+
+        public void SizeToContents()
+        {
+            m_Table.SizeToContents();
+            InvalidateParent();
+        }
+
+        /// <summary>
+        /// Function invoked after layout.
+        /// </summary>
+        /// <param name="skin">Skin to use.</param>
+        protected override void PostLayout(Skin.Base skin)
+        {
+            //if (m_Table.)
+            {
+                //SizeToChildren(false, true);
+                //m_SizeToContents = false;
+            }
+        }
     }
 }

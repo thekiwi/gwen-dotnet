@@ -11,13 +11,15 @@ namespace Gwen
         /// <summary>
         /// Centers the control inside its parent.
         /// </summary>
-        /// <param name="control"></param>
+        /// <param name="control">Control to center.</param>
         public static void Center(Base control)
         {
             Base parent = control.Parent;
-            if (parent == null) return;
-            control.SetPosition(parent.Padding.Left + (((parent.Width - parent.Padding.Left - parent.Padding.Right) - control.Width) / 2),
-                                (parent.Height - control.Height) / 2);
+            if (parent == null) 
+                return;
+            control.SetPosition(
+                parent.Padding.Left + (((parent.Width - parent.Padding.Left - parent.Padding.Right) - control.Width)/2),
+                (parent.Height - control.Height)/2);
         }
 
         /// <summary>
@@ -92,23 +94,23 @@ namespace Gwen
         }
 
         /// <summary>
-        /// Places the control below other control (left aligned).
+        /// Places the control below other control (left aligned), taking margins into account.
         /// </summary>
         /// <param name="control">Control to place.</param>
         /// <param name="anchor">Anchor control.</param>
         /// <param name="spacing">Optional spacing.</param>
-        public static void PlaceBelow(Base control, Base anchor, int spacing = 0)
+        public static void PlaceDownLeft(Base control, Base anchor, int spacing = 0)
         {
-            control.SetPosition(control.X, anchor.Bottom + spacing);
+            control.SetPosition(anchor.X, anchor.Bottom + spacing);
         }
 
         /// <summary>
-        /// Places the control to the right of other control (bottom aligned).
+        /// Places the control to the right of other control (bottom aligned), taking margins into account.
         /// </summary>
         /// <param name="control">Control to place.</param>
         /// <param name="anchor">Anchor control.</param>
         /// <param name="spacing">Optional spacing.</param>
-        public static void PlaceToRight(Base control, Base anchor, int spacing = 0)
+        public static void PlaceRightBottom(Base control, Base anchor, int spacing = 0)
         {
             control.SetPosition(anchor.Right + spacing, anchor.Y - control.Height + anchor.Height);
         }

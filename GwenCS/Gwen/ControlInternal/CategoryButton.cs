@@ -19,6 +19,7 @@ namespace Gwen.ControlInternal
             Alignment = Pos.Left | Pos.CenterV;
             m_Alt = false;
             IsToggle = true;
+            TextPadding = new Padding(3, 0, 3, 0);
         }
 
         /// <summary>

@@ -57,7 +57,7 @@ namespace Gwen.Control
         {
             base.Layout(skin);
 
-            Align.PlaceBelow(m_Button, m_Label, 10);
+            Align.PlaceDownLeft(m_Button, m_Label, 10);
             Align.CenterHorizontally(m_Button);
             m_InnerPanel.SizeToChildren();
             m_InnerPanel.Height += 10;

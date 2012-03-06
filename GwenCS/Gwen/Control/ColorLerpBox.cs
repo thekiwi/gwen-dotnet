@@ -161,7 +161,6 @@ namespace Gwen.Control
         /// <param name="skin">Skin to use.</param>
         protected override void Render(Skin.Base skin)
         {
-            base.Render(skin);
             if (m_Texture == null)
             {
                 byte[] pixelData = new byte[Width*Height*4];
@@ -199,6 +198,8 @@ namespace Gwen.Control
             Rectangle testRect = new Rectangle(m_CursorPos.X - 3, m_CursorPos.Y - 3, 6, 6);
 
             skin.Renderer.DrawShavedCornerRect(testRect);
+
+            base.Render(skin);
         }
     }
 }

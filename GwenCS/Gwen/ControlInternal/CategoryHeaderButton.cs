@@ -18,6 +18,7 @@ namespace Gwen.ControlInternal
             ShouldDrawBackground = false;
             IsToggle = true;
             Alignment = Pos.Center;
+            TextPadding = new Padding(3, 0, 3, 0);
         }
 
         /// <summary>

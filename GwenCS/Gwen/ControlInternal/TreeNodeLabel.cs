@@ -18,6 +18,7 @@ namespace Gwen.ControlInternal
             Alignment = Pos.Left | Pos.CenterV;
             ShouldDrawBackground = false;
             Height = 16;
+            TextPadding = new Padding(3, 0, 3, 0);
         }
 
         /// <summary>

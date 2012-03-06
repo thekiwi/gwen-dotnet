@@ -58,6 +58,7 @@
     <Compile Include="ColorPickers.cs" />
     <Compile Include="ComboBox.cs" />
     <Compile Include="CrossSplitter.cs" />
+    <Compile Include="Docking.cs" />
     <Compile Include="GroupBox.cs" />
     <Compile Include="GUnit.cs" />
     <Compile Include="ImagePanel.cs" />

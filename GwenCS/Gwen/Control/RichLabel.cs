@@ -245,7 +245,7 @@ namespace Gwen.Control
             {
                 if (prev != null && child.Y == prev.Y)
                 {
-                    Align.PlaceToRight(child, prev);
+                    Align.PlaceRightBottom(child, prev);
                 }
                 prev = child;
             }

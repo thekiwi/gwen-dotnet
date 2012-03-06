@@ -12,7 +12,8 @@ namespace Gwen.UnitTest
         {
             {
                 Control.ListBox ctrl = new Control.ListBox(this);
-                ctrl.SetBounds(10, 10, 100, 200);
+                //ctrl.SetBounds(10, 10, 100, 200);
+                ctrl.SetPosition(10, 10);
 
                 ctrl.AddRow("First");
                 ctrl.AddRow("Blue");
@@ -26,6 +27,7 @@ namespace Gwen.UnitTest
                 ctrl.AddRow("Shoes");
                 ctrl.AddRow("Shirts");
                 ctrl.AddRow("Chair");
+                ctrl.AddRow("I'm autosized");
                 ctrl.AddRow("Last");
 
                 ctrl.AllowMultiSelect = true;
@@ -33,6 +35,8 @@ namespace Gwen.UnitTest
 
                 ctrl.RowSelected += RowSelected;
                 ctrl.RowUnselected += RowUnSelected;
+
+                ctrl.SizeToContents();
             }
 
             {

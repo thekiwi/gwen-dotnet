@@ -6,10 +6,10 @@ namespace Gwen.Control
     /// <summary>
     /// Radio button group.
     /// </summary>
-    public class RadioButtonGroup : Base
+    public class RadioButtonGroup : GroupBox
     {
         private LabeledRadioButton m_Selected;
-
+        
         /// <summary>
         /// Selected radio button.
         /// </summary>
@@ -26,6 +26,11 @@ namespace Gwen.Control
         public String SelectedLabel { get { return m_Selected.Text; } }
 
         /// <summary>
+        /// Index of the selected radio button.
+        /// </summary>
+        public int SelectedIndex { get { return Children.IndexOf(m_Selected); } }
+
+        /// <summary>
         /// Invoked when the selected option has changed.
         /// </summary>
         public event GwenEventHandler SelectionChanged;
@@ -34,11 +39,14 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="RadioButtonGroup"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public RadioButtonGroup(Base parent)
+        /// <param name="label">Label for the outlining GroupBox.</param>
+        public RadioButtonGroup(Base parent, String label)
             : base(parent)
         {
             IsTabable = false;
-            KeyboardInputEnabled = false;
+            KeyboardInputEnabled = true;
+            Text = label;
+            AutoSizeToContents = true;
         }
 
         /// <summary>
@@ -64,9 +72,9 @@ namespace Gwen.Control
             lrb.Text = text;
             lrb.RadioButton.Checked += OnRadioClicked;
             lrb.Dock = Pos.Top;
-            lrb.Margin = new Margin(0, 1, 0, 1);
+            lrb.Margin = new Margin(0, 0, 0, 1); // 1 bottom
             lrb.KeyboardInputEnabled = false; // todo: true?
-            lrb.IsTabable = false;
+            lrb.IsTabable = true;
 
             Invalidate();
             return lrb;
@@ -89,20 +97,29 @@ namespace Gwen.Control
 
             OnChanged();
         }
-
+        /*
+        /// <summary>
+        /// Sizes to contents.
+        /// </summary>
+        public override void SizeToContents()
+        {
+            RecurseLayout(Skin); // options are docked so positions are not updated until layout runs
+            //base.SizeToContents();
+            int width = 0;
+            int height = 0;
+            foreach (Base child in Children)
+            {
+                width = Math.Max(child.Width, width);
+                height += child.Height;
+            }
+            SetSize(width, height);
+            InvalidateParent();
+        }
+        */
         protected virtual void OnChanged()
         {
             if (SelectionChanged != null)
                 SelectionChanged.Invoke(this);
-        }
-
-        /// <summary>
-        /// Renders the control using specified skin.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
-        {
-
         }
 
         /// <summary>

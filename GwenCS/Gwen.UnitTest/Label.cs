@@ -14,9 +14,8 @@ namespace Gwen.UnitTest
         {
             {
                 Control.Label label = new Control.Label(this);
-                label.AutoSizeToContents = true;
-                label.Text = "Standard label";
-                label.SetPosition(10, 10);
+                label.Text = "Standard label (not autosized)";
+                label.SetBounds(10, 10, 100, 10);
             }
             {
                 Control.Label label = new Control.Label(this);
@@ -87,6 +86,64 @@ namespace Gwen.UnitTest
                 label.Font = font2;
                 label.SetPosition(10, 210);
                 label.Text = "Custom Font (French Script MT 35)";
+            }
+
+            // alignment test
+            {
+                Control.Label txt = new Control.Label(this);
+                txt.SetPosition(10, 280);
+                txt.Text = "Alignment test";
+                txt.AutoSizeToContents = true;
+
+                Control.Label outer = new Control.Label(this);
+                outer.SetBounds(10, 300, 190, 190);
+                
+                Control.Label l11 = new Control.Label(outer);
+                l11.SetBounds(10, 10, 50, 50);
+                l11.Text = "TL";
+                l11.Alignment = Pos.Top | Pos.Left;
+
+                Control.Label l12 = new Control.Label(outer);
+                l12.SetBounds(70, 10, 50, 50);
+                l12.Text = "T";
+                l12.Alignment = Pos.Top|Pos.CenterH;
+
+                Control.Label l13 = new Control.Label(outer);
+                l13.SetBounds(130, 10, 50, 50);
+                l13.Text = "TR";
+                l13.Alignment = Pos.Top | Pos.Right;
+
+                Control.Label l21 = new Control.Label(outer);
+                l21.SetBounds(10, 70, 50, 50);
+                l21.Text = "L";
+                l21.Alignment = Pos.Left|Pos.CenterV;
+
+                Control.Label l22 = new Control.Label(outer);
+                l22.SetBounds(70, 70, 50, 50);
+                l22.Text = "C";
+                l22.Alignment = Pos.CenterH|Pos.CenterV;
+
+                Control.Label l23 = new Control.Label(outer);
+                l23.SetBounds(130, 70, 50, 50);
+                l23.Text = "R";
+                l23.Alignment = Pos.Right|Pos.CenterV;
+
+                Control.Label l31 = new Control.Label(outer);
+                l31.SetBounds(10, 130, 50, 50);
+                l31.Text = "BL";
+                l31.Alignment = Pos.Bottom | Pos.Left;
+
+                Control.Label l32 = new Control.Label(outer);
+                l32.SetBounds(70, 130, 50, 50);
+                l32.Text = "B";
+                l32.Alignment = Pos.Bottom | Pos.CenterH;
+
+                Control.Label l33 = new Control.Label(outer);
+                l33.SetBounds(130, 130, 50, 50);
+                l33.Text = "BR";
+                l33.Alignment = Pos.Bottom | Pos.Right;
+
+                outer.DrawDebugOutlines = true;
             }
         }
 

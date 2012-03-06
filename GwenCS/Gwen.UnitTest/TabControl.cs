@@ -19,8 +19,8 @@ namespace Gwen.UnitTest
                     Base page = button.Page;
 
                     {
-                        Control.RadioButtonGroup radio = new Control.RadioButtonGroup(page);
-                        radio.SetBounds(10, 10, 100, 100);
+                        Control.RadioButtonGroup radio = new Control.RadioButtonGroup(page, "Tab position");
+                        radio.SetPosition(10, 10);
 
                         radio.AddOption("Top").Select();
                         radio.AddOption("Bottom");
