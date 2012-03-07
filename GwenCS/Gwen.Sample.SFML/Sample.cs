@@ -41,7 +41,7 @@ namespace Gwen.Sample.SFML
                 m_Window.MouseMoved += window_MouseMoved;
                 m_Window.TextEntered += window_TextEntered;
 
-                m_Window.SetFramerateLimit(60);
+                //m_Window.SetFramerateLimit(60);
 
                 const int fps_frames = 50;
                 List<long> ftime = new List<long>(fps_frames);

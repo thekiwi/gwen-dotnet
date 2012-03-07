@@ -187,6 +187,7 @@ namespace Gwen.Sample.OpenTK
                 example.Title = "Gwen-DotNet OpenTK test";
                 example.VSync = VSyncMode.Off; // to measure performance
                 example.Run(0.0, 0.0);
+                //example.TargetRenderFrequency = 60;
             }
         }
     }

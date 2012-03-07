@@ -12,7 +12,8 @@ namespace Gwen.UnitTest
         private Control.TabControl m_TabControl;
         private Control.TabButton m_Button;
         private readonly Control.CollapsibleList m_List;
-        private Center m_Center;
+        private readonly Center m_Center;
+        private readonly Control.LabeledCheckBox m_DebugCheck;
 
         public double Fps; // set this in your rendering loop
         public String Note; // additional text to display in status bar
@@ -36,6 +37,10 @@ namespace Gwen.UnitTest
             m_Center = new Center(this);
             m_Center.Dock = Pos.Fill;
             GUnit test;
+
+            m_DebugCheck = new Control.LabeledCheckBox(m_List);
+            m_DebugCheck.Text = "Debug outlines";
+            m_DebugCheck.CheckChanged += DebugCheckChanged;
 
             {
                 CollapsibleCategory cat = m_List.Add("Non-Interactive");
@@ -125,6 +130,15 @@ namespace Gwen.UnitTest
             btn.Clicked += OnCategorySelect;
         }
 
+        private void DebugCheckChanged(Base control)
+        {
+            if (m_DebugCheck.IsChecked)
+                m_Center.DrawDebugOutlines = true;
+            else
+                m_Center.DrawDebugOutlines = false;
+            Invalidate();
+        }
+
         private void OnCategorySelect(Base control)
         {
             if (m_LastControl != null)
@@ -140,6 +154,12 @@ namespace Gwen.UnitTest
         {
             m_TextOutput.AddRow(str);
             m_TextOutput.ScrollToBottom();
+        }
+
+        protected override void Layout(Skin.Base skin)
+        {
+            base.Layout(skin);
+            m_DebugCheck.Y = m_List.Bottom - 50; // m_List seems to be too big vertically
         }
 
         protected override void Render(Skin.Base skin)

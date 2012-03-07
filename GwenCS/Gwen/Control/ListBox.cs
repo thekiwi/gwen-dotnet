@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gwen.Control.Layout;
@@ -16,6 +17,8 @@ namespace Gwen.Control
 
         private bool m_MultiSelect;
         private bool m_IsToggle;
+        private bool m_SizeToContents;
+        private Pos m_OldDock; // used while autosizing
 
         /// <summary>
         /// Determines whether multiple rows can be selected at once.
@@ -83,7 +86,7 @@ namespace Gwen.Control
         /// <summary>
         /// Column count of table rows.
         /// </summary>
-        public int ColumnCount { get { return m_Table.ColumnCount; } set { m_Table.ColumnCount = value; } }
+        public int ColumnCount { get { return m_Table.ColumnCount; } set { m_Table.ColumnCount = value; Invalidate(); } }
 
         /// <summary>
         /// Invoked when a row has been selected.
@@ -106,11 +109,12 @@ namespace Gwen.Control
 
             EnableScroll(false, true);
             AutoHideBars = true;
-            Margin = Gwen.Margin.One;
+            Margin = Margin.One;
 
             m_Table = new Table(this);
-            m_Table.Dock = Pos.Top;
+            m_Table.Dock = Pos.Fill;
             m_Table.ColumnCount = 1;
+            m_Table.BoundsChanged += TableResized;
 
             m_MultiSelect = false;
             m_IsToggle = false;
@@ -214,9 +218,20 @@ namespace Gwen.Control
 
             row.Selected += OnRowSelected;
 
-            m_Table.SizeToContents();
+            m_Table.SizeToContents(Width);
 
             return row;
+        }
+
+        /// <summary>
+        /// Sets the column width (in pixels).
+        /// </summary>
+        /// <param name="column">Column index.</param>
+        /// <param name="width">Column width.</param>
+        public void SetColumnWidth(int column, int width)
+        {
+            m_Table.SetColumnWidth(column, width);
+            Invalidate();
         }
 
         /// <summary>
@@ -286,23 +301,24 @@ namespace Gwen.Control
             UnselectAll();
             m_Table.RemoveAll();
         }
-
+        
         public void SizeToContents()
         {
-            m_Table.SizeToContents();
-            InvalidateParent();
+            m_SizeToContents = true;
+            // docking interferes with autosizing so we disable it until sizing is done
+            m_OldDock = m_Table.Dock;
+            m_Table.Dock = Pos.None;
+            m_Table.SizeToContents(0); // autosize without constraints
         }
 
-        /// <summary>
-        /// Function invoked after layout.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout(Skin.Base skin)
+        private void TableResized(Base control)
         {
-            //if (m_Table.)
+            if (m_SizeToContents)
             {
-                //SizeToChildren(false, true);
-                //m_SizeToContents = false;
+                SetSize(m_Table.Width, m_Table.Height);
+                m_SizeToContents = false;
+                m_Table.Dock = m_OldDock;
+                Invalidate();
             }
         }
     }

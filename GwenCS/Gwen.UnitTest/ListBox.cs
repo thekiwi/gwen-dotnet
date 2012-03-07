@@ -12,7 +12,6 @@ namespace Gwen.UnitTest
         {
             {
                 Control.ListBox ctrl = new Control.ListBox(this);
-                //ctrl.SetBounds(10, 10, 100, 200);
                 ctrl.SetPosition(10, 10);
 
                 ctrl.AddRow("First");
@@ -29,14 +28,36 @@ namespace Gwen.UnitTest
                 ctrl.AddRow("Chair");
                 ctrl.AddRow("I'm autosized");
                 ctrl.AddRow("Last");
-
+                
                 ctrl.AllowMultiSelect = true;
                 ctrl.SelectRowsByRegex("Bl.e|Dog");
 
                 ctrl.RowSelected += RowSelected;
                 ctrl.RowUnselected += RowUnSelected;
-
+                
                 ctrl.SizeToContents();
+            }
+
+            {
+                Table ctrl = new Table(this);
+                ctrl.SetPosition(10, 280);
+
+                ctrl.AddRow("First");
+                ctrl.AddRow("Blue");
+                ctrl.AddRow("Yellow");
+                ctrl.AddRow("Orange");
+                ctrl.AddRow("Brown");
+                ctrl.AddRow("Black");
+                ctrl.AddRow("Green");
+                ctrl.AddRow("Dog");
+                ctrl.AddRow("Cat Blue");
+                ctrl.AddRow("Shoes");
+                ctrl.AddRow("Shirts");
+                ctrl.AddRow("Chair");
+                ctrl.AddRow("I'm autosized");
+                ctrl.AddRow("Last");
+
+                ctrl.SizeToContents(0);
             }
 
             {
@@ -64,6 +85,49 @@ namespace Gwen.UnitTest
                     row.SetCellText(1, "\u5355\u5143\u6D4B\u8BD5");
                     row.SetCellText(2, "£8.95");
                 }
+            }
+
+            {
+                // fixed-size table
+                Control.Layout.Table table = new Table(this);
+                table.SetColumnCount(3);
+                table.SetBounds(350, 10, 320, 100);
+                table.SetColumnWidth(0, 100);
+                table.SetColumnWidth(1, 100);
+                table.SetColumnWidth(2, 100);
+                var row1 = table.AddRow();
+                row1.SetCellText(0, "Row 1");
+                row1.SetCellText(1, "R1 cell 1");
+                row1.SetCellText(2, "Row 1 cell 2");
+
+                table.AddRow().Text = "Row 2, slightly bigger";
+                table[1].SetCellText(1, "Center cell");
+
+                table.AddRow().Text = "Row 3, medium";
+                table[2].SetCellText(2, "Last cell");
+            }
+
+            {
+                //Control.Label outer = new Control.Label(this);
+                //outer.SetBounds(340, 140, 300, 200);
+
+                // autosized table
+                Control.Layout.Table table = new Table(this);
+                table.SetColumnCount(3);
+                table.SetPosition(350, 150);
+
+                var row1 = table.AddRow();
+                row1.SetCellText(0, "Row 1");
+                row1.SetCellText(1, "R1 cell 1");
+                row1.SetCellText(2, "Row 1 cell 2");
+
+                table.AddRow().Text = "Row 2, slightly bigger";
+                table[1].SetCellText(1, "Center cell");
+
+                table.AddRow().Text = "Row 3, medium";
+                table[2].SetCellText(2, "Last cell");
+
+                table.SizeToContents(0);
             }
         }
 

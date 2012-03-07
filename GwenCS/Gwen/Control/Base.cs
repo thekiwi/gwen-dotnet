@@ -89,6 +89,11 @@ namespace Gwen.Control
         public event GwenEventHandler HoverLeave;
 
         /// <summary>
+        /// Invoked when control's bounds have been changed.
+        /// </summary>
+        public event GwenEventHandler BoundsChanged;
+
+        /// <summary>
         /// Accelerator map.
         /// </summary>
         private readonly Dictionary<String, GwenEventHandler> m_Accelerators;
@@ -906,6 +911,9 @@ namespace Gwen.Control
             m_Bounds.Height = height;
 
             OnBoundsChanged(oldBounds);
+
+            if (BoundsChanged != null)
+                BoundsChanged.Invoke(this);
 
             return true;
         }

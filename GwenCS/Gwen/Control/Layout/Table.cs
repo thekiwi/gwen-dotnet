@@ -12,19 +12,25 @@ namespace Gwen.Control.Layout
 
         private bool m_SizeToContents;
         private int m_ColumnCount;
-        private readonly int m_DefaultRowHeight;
+        private int m_DefaultRowHeight;
+        private int m_MaxWidth; // for autosizing, if nonzero - fills last cell up to this size
 
         private readonly int[] m_ColumnWidth;
 
         /// <summary>
         /// Column count (default 1).
         /// </summary>
-        public int ColumnCount { get { return m_ColumnCount; } set { SetColumnCount(value); } }
+        public int ColumnCount { get { return m_ColumnCount; } set { SetColumnCount(value); Invalidate(); } }
 
         /// <summary>
         /// Row count.
         /// </summary>
         public int RowCount { get { return Children.Count; } }
+
+        /// <summary>
+        /// Gets or sets default height for new table rows.
+        /// </summary>
+        public int DefaultRowHeight { get { return m_DefaultRowHeight; } set { m_DefaultRowHeight = value; } }
 
         /// <summary>
         /// Returns specific row of the table.
@@ -74,7 +80,8 @@ namespace Gwen.Control.Layout
         /// <param name="width">Column width.</param>
         public void SetColumnWidth(int column, int width)
         {
-            if (m_ColumnWidth[column] == width) return;
+            if (m_ColumnWidth[column] == width) 
+                return;
             m_ColumnWidth[column] = width;
             Invalidate();
         }
@@ -84,7 +91,7 @@ namespace Gwen.Control.Layout
         /// </summary>
         /// <param name="column">Column index.</param>
         /// <returns>Column width.</returns>
-        public int SetColumnWidth(int column)
+        public int GetColumnWidth(int column)
         {
             return m_ColumnWidth[column];
         }
@@ -112,6 +119,18 @@ namespace Gwen.Control.Layout
             row.ColumnCount = m_ColumnCount;
             row.Height = m_DefaultRowHeight;
             row.Dock = Pos.Top;
+        }
+
+        /// <summary>
+        /// Adds a new row with specified text in first column.
+        /// </summary>
+        /// <param name="text">Text to add.</param>
+        /// <returns>New row.</returns>
+        public TableRow AddRow(String text)
+        {
+            var row = AddRow();
+            row.SetCellText(0, text);
+            return row;
         }
 
         /// <summary>
@@ -159,33 +178,25 @@ namespace Gwen.Control.Layout
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
-         
-            if (m_SizeToContents)
-            {
-                DoSizeToContents();
-            }
 
             bool even = false;
             foreach (TableRow row in Children)
             {
                 row.EvenRow = even;
                 even = !even;
-                for (int i = 0; i < TableRow.MaxColumns && i < m_ColumnCount; i++)
+                for (int i = 0; i < m_ColumnCount; i++)
                 {
                     row.SetColumnWidth(i, m_ColumnWidth[i]);
                 }
             }
         }
 
-        /// <summary>
-        /// Function invoked after layout.
-        /// </summary>
-        /// <param name="skin">Skin to use.</param>
         protected override void PostLayout(Skin.Base skin)
         {
+            base.PostLayout(skin);
             if (m_SizeToContents)
             {
-                SizeToChildren();
+                DoSizeToContents();
                 m_SizeToContents = false;
             }
         }
@@ -193,35 +204,44 @@ namespace Gwen.Control.Layout
         /// <summary>
         /// Sizes to fit contents.
         /// </summary>
-        public void SizeToContents()
+        public void SizeToContents(int maxWidth)
         {
+            m_MaxWidth = maxWidth;
             m_SizeToContents = true;
             Invalidate();
         }
 
         protected void DoSizeToContents()
         {
-            for (int i = 0; i < TableRow.MaxColumns; i++)
-            {
-                m_ColumnWidth[i] = 10;
-            }
+            int height = 0;
+            int width = 0;
 
             foreach (TableRow row in Children)
             {
-                row.SizeToContents();
+                row.SizeToContents(); // now all columns fit but only in this particular row
 
-                for (int i = 0; i < TableRow.MaxColumns; i++)
+                for (int i = 0; i < ColumnCount; i++)
                 {
-                    if (null != row.GetColumn(i))
+                    Base cell = row.GetColumn(i);
+                    if (null != cell)
                     {
-                        m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], row.GetColumn(i).Width);
+                        if (i < ColumnCount - 1 || m_MaxWidth == 0)
+                            m_ColumnWidth[i] = Math.Max(m_ColumnWidth[i], cell.Width + cell.Margin.Left + cell.Margin.Right);
+                        else
+                            m_ColumnWidth[i] = m_MaxWidth - width; // last cell - fill
                     }
                 }
-                Height += row.Height;
-                Width = row.Width;
+                height += row.Height;
             }
 
-            InvalidateParent();
+            // sum all column widths 
+            for (int i = 0; i < ColumnCount; i++)
+            {
+                width += m_ColumnWidth[i];
+            }
+
+            SetSize(width, height);
+            //InvalidateParent();
         }
     }
 }
