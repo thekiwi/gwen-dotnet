@@ -110,7 +110,7 @@ namespace Gwen.Sample.OpenTK
             //skin.DefaultFont = new Font(renderer, "Courier", 10);
             canvas = new Canvas(skin);
 
-            input = new Input.OpenTK();
+            input = new Input.OpenTK(this);
             input.Initialize(canvas);
 
             canvas.SetSize(Width, Height);

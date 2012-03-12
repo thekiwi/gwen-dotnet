@@ -160,7 +160,7 @@ namespace Gwen.Input
                 SFMLKeyEventArgs ev = args as SFMLKeyEventArgs;
 
                 if (ev.Args.Control && ev.Args.Alt && ev.Args.Code == Keyboard.Key.LControl)
-                    return false; // sfml bug: this is right alt
+                    return false; // this is AltGr
 
                 char ch = TranslateChar(ev.Args.Code);
                 if (ev.Down && InputHandler.DoSpecialKeys(m_Canvas, ch))

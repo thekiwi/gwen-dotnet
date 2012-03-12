@@ -10,7 +10,6 @@ namespace Gwen.Input
 
         #region Properties
 
-
         private Canvas m_Canvas = null;
 
         private int m_MouseX = 0;
@@ -21,30 +20,27 @@ namespace Gwen.Input
         #endregion
 
         #region Constructors
-        public OpenTK(GameWindow gameWindow)
+        public OpenTK(GameWindow window)
         {
-            gameWindow.KeyPress += this.KeyPress;
-
+            window.KeyPress += KeyPress;
         }
-
 
         #endregion
 
-        #region Methods
+       #region Methods
         public void Initialize(Canvas c)
         {
             m_Canvas = c;
         }
 
-
         /// <summary>
-        /// Translates control key's SFML key code to GWEN's code.
+        /// Translates control key's OpenTK key code to GWEN's code.
         /// </summary>
-        /// <param name="sfKey">SFML key code.</param>
+        /// <param name="key">OpenTK key code.</param>
         /// <returns>GWEN key code.</returns>
-        private Key TranslateKeyCode(global::OpenTK.Input.Key sfKey)
+        private Key TranslateKeyCode(global::OpenTK.Input.Key key)
         {
-            switch (sfKey)
+            switch (key)
             {
                 case global::OpenTK.Input.Key.BackSpace: return Key.Backspace;
                 case global::OpenTK.Input.Key.Enter: return Key.Return;
@@ -76,16 +72,15 @@ namespace Gwen.Input
             return Key.Invalid;
         }
 
-        
         /// <summary>
-        /// Translates alphanumeric SFML key code to character value.
+        /// Translates alphanumeric OpenTK key code to character value.
         /// </summary>
-        /// <param name="sfKey">SFML key code.</param>
+        /// <param name="key">OpenTK key code.</param>
         /// <returns>Translated character.</returns>
-        private static char TranslateChar(global::OpenTK.Input.Key sfKey)
+        private static char TranslateChar(global::OpenTK.Input.Key key)
         {
-            if (sfKey >= global::OpenTK.Input.Key.A && sfKey <= global::OpenTK.Input.Key.Z)
-                return (char)('A' + ((int)sfKey - (int) global::OpenTK.Input.Key.A));
+            if (key >= global::OpenTK.Input.Key.A && key <= global::OpenTK.Input.Key.Z)
+                return (char)('a' + ((int)key - (int) global::OpenTK.Input.Key.A));
             return ' ';
         }
 
@@ -121,32 +116,29 @@ namespace Gwen.Input
         }
 
 
-        public bool ProcessKeyDown(EventArgs args){
-            
+        public bool ProcessKeyDown(EventArgs args)
+        {
             KeyboardKeyEventArgs ev = args as KeyboardKeyEventArgs;
             char ch = TranslateChar(ev.Key);
 
             if (InputHandler.DoSpecialKeys(m_Canvas, ch))
                 return false;
-
+            /*
             if (ch != ' ')
             {
                 m_Canvas.Input_Character(ch);
             }
-
+            */
             Key iKey = TranslateKeyCode(ev.Key);
 
             return m_Canvas.Input_Key(iKey, true);
         }
 
-
-        public bool ProcessKeyUp(EventArgs args){
-
+        public bool ProcessKeyUp(EventArgs args)
+        {
             KeyboardKeyEventArgs ev = args as KeyboardKeyEventArgs;
 
             char ch = TranslateChar(ev.Key);
-
-     
 
             Key iKey = TranslateKeyCode(ev.Key);
 
@@ -157,7 +149,6 @@ namespace Gwen.Input
         {
             m_Canvas.Input_Character(e.KeyChar);   
         }
-
 
         #endregion
     }
