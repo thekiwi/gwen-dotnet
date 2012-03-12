@@ -1,6 +1,7 @@
 ﻿using System;
 using Gwen.Control;
 using OpenTK.Input;
+using OpenTK;
 
 namespace Gwen.Input
 {
@@ -15,13 +16,18 @@ namespace Gwen.Input
         private int m_MouseX = 0;
         private int m_MouseY = 0;
 
+        bool m_AltGr = false;
+
         #endregion
 
         #region Constructors
-        public OpenTK()
+        public OpenTK(GameWindow gameWindow)
         {
+            gameWindow.KeyPress += this.KeyPress;
 
         }
+
+
         #endregion
 
         #region Methods
@@ -36,7 +42,7 @@ namespace Gwen.Input
         /// </summary>
         /// <param name="sfKey">SFML key code.</param>
         /// <returns>GWEN key code.</returns>
-        private static Key TranslateKeyCode(global::OpenTK.Input.Key sfKey)
+        private Key TranslateKeyCode(global::OpenTK.Input.Key sfKey)
         {
             switch (sfKey)
             {
@@ -52,12 +58,20 @@ namespace Gwen.Input
                 case global::OpenTK.Input.Key.Home: return Key.Home;
                 case global::OpenTK.Input.Key.End: return Key.End;
                 case global::OpenTK.Input.Key.Delete: return Key.Delete;
-                case global::OpenTK.Input.Key.LControl: return Key.Control;
+                case global::OpenTK.Input.Key.LControl:
+                    this.m_AltGr = true;
+                    return Key.Control;
                 case global::OpenTK.Input.Key.LAlt: return Key.Alt;
                 case global::OpenTK.Input.Key.LShift: return Key.Shift;
                 case global::OpenTK.Input.Key.RControl: return Key.Control;
-                case global::OpenTK.Input.Key.RAlt: return Key.Alt;
+                case global::OpenTK.Input.Key.RAlt: 
+                    if (this.m_AltGr)
+                    {
+                        this.m_Canvas.Input_Key(Key.Control, false);
+                    }
+                    return Key.Alt;
                 case global::OpenTK.Input.Key.RShift: return Key.Shift;
+                
             }
             return Key.Invalid;
         }
@@ -137,6 +151,11 @@ namespace Gwen.Input
             Key iKey = TranslateKeyCode(ev.Key);
 
             return m_Canvas.Input_Key(iKey, false);
+        }
+
+        public void KeyPress(object sender, KeyPressEventArgs e)
+        {
+            m_Canvas.Input_Character(e.KeyChar);   
         }
 
 
