@@ -79,6 +79,7 @@
     <Compile Include="Control\CollapsibleList.cs" />
     <Compile Include="Control\DockBase.cs" />
     <Compile Include="Control\DockedTabControl.cs" />
+    <Compile Include="Control\VerticalSplitter.cs" />
     <Compile Include="Control\Layout\Positioner.cs" />
     <Compile Include="Control\MessageBox.cs" />
     <Compile Include="Control\ProgressBar.cs" />
@@ -143,6 +144,7 @@
     <Compile Include="Control\TreeNode.cs" />
     <Compile Include="Control\VerticalScrollBar.cs" />
     <Compile Include="Control\VerticalSlider.cs" />
+    <Compile Include="Control\HorizontalSplitter.cs" />
     <Compile Include="Control\WindowControl.cs" />
     <Compile Include="Font.cs" />
     <Compile Include="HSV.cs" />

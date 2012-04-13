@@ -18,27 +18,47 @@ namespace Gwen.UnitTest
             m_Splitter.Dock = Pos.Fill;
 
             {
-                Control.Button testButton = new Control.Button(m_Splitter);
-                testButton.SetText("TOPLEFT");
-                m_Splitter.SetPanel(0, testButton);
+                VerticalSplitter splitter = new VerticalSplitter(m_Splitter);
+                Control.Button button1 = new Control.Button(splitter);
+                button1.SetText("Vertical left");
+                Control.Button button2 = new Control.Button(splitter);
+                button2.SetText("Vertical right");
+                splitter.SetPanel(0, button1);
+                splitter.SetPanel(1, button2);
+                m_Splitter.SetPanel(0, splitter);
             }
 
             {
-                Control.Button testButton = new Control.Button(m_Splitter);
-                testButton.SetText("TOPRIGHT");
-                m_Splitter.SetPanel(1, testButton);
+                HorizontalSplitter splitter = new HorizontalSplitter(m_Splitter);
+                Control.Button button1 = new Control.Button(splitter);
+                button1.SetText("Horizontal up");
+                Control.Button button2 = new Control.Button(splitter);
+                button2.SetText("Horizontal down");
+                splitter.SetPanel(0, button1);
+                splitter.SetPanel(1, button2);
+                m_Splitter.SetPanel(1, splitter);
             }
 
             {
-                Control.Button testButton = new Control.Button(m_Splitter);
-                testButton.SetText("BOTTOMLEFT");
-                m_Splitter.SetPanel(2, testButton);
+                HorizontalSplitter splitter = new HorizontalSplitter(m_Splitter);
+                Control.Button button1 = new Control.Button(splitter);
+                button1.SetText("Horizontal up");
+                Control.Button button2 = new Control.Button(splitter);
+                button2.SetText("Horizontal down");
+                splitter.SetPanel(0, button1);
+                splitter.SetPanel(1, button2);
+                m_Splitter.SetPanel(2, splitter);
             }
 
             {
-                Control.Button testButton = new Control.Button(m_Splitter);
-                testButton.SetText("BOTTOMRIGHT");
-                m_Splitter.SetPanel(3, testButton);
+                VerticalSplitter splitter = new VerticalSplitter(m_Splitter);
+                Control.Button button1 = new Control.Button(splitter);
+                button1.SetText("Vertical left");
+                Control.Button button2 = new Control.Button(splitter);
+                button2.SetText("Vertical right");
+                splitter.SetPanel(0, button1);
+                splitter.SetPanel(1, button2);
+                m_Splitter.SetPanel(3, splitter);
             }
 
             //Status bar to hold unit testing buttons
