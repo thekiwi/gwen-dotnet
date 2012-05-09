@@ -28,7 +28,7 @@ namespace Gwen.Sample.SFML
                 const int height = 768;
 
                 // Create main window
-                m_Window = new RenderWindow(new VideoMode(width, height), "GWEN.Net SFML test", Styles.Titlebar|Styles.Close, new ContextSettings(32, 0));
+                m_Window = new RenderWindow(new VideoMode(width, height), "GWEN.Net SFML test", Styles.Titlebar|Styles.Close|Styles.Resize, new ContextSettings(32, 0));
 
                 // Setup event handlers
                 m_Window.Closed += OnClosed;
@@ -90,11 +90,11 @@ namespace Gwen.Sample.SFML
 
                 // Create GWEN input processor
                 m_Input = new Input.SFML();
-                m_Input.Initialize(m_Canvas);
+                m_Input.Initialize(m_Canvas, m_Window);
 
                 Stopwatch stopwatch = new Stopwatch();
                 stopwatch.Start();
-                while (m_Window.IsOpened())
+                while (m_Window.IsOpen())
                 {
                     m_Window.SetActive();
                     m_Window.DispatchEvents();
@@ -103,17 +103,11 @@ namespace Gwen.Sample.SFML
                     // Clear depth buffer
                     Gl.glClear(Gl.GL_DEPTH_BUFFER_BIT | Gl.GL_COLOR_BUFFER_BIT);
 
-                    m_Window.SaveGLStates();
-
-                    uint frametime = m_Window.GetFrameTime();
-
                     if (ftime.Count == fps_frames)
                         ftime.RemoveAt(0);
 
                     ftime.Add(stopwatch.ElapsedMilliseconds - lastTime);
                     lastTime = stopwatch.ElapsedMilliseconds;
-                    //ftime.Add((int)frametime);
-
 
                     if (stopwatch.ElapsedMilliseconds > 1000)
                     {
@@ -123,8 +117,6 @@ namespace Gwen.Sample.SFML
 
                     // render GWEN canvas
                     m_Canvas.RenderCanvas();
-
-                    m_Window.RestoreGLStates();
 
                     m_Window.Display();
                 }
@@ -213,10 +205,8 @@ namespace Gwen.Sample.SFML
         /// </summary>
         static void OnResized(object sender, SizeEventArgs e)
         {
-            Gl.glViewport(0, 0, (int)e.Width, (int)e.Height);
-            // todo: gwen/sfml doesn't handle resizing well
+            m_Window.SetView(new View(new FloatRect(0f, 0f, e.Width, e.Height)));
             m_Canvas.SetSize((int)e.Width, (int)e.Height);
-            // window.ConvertCoords()
         }
     }
 }

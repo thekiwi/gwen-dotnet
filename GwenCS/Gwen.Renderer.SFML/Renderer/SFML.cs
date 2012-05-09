@@ -8,6 +8,7 @@ using SFML.Window;
 using Tao.OpenGl;
 using Color = SFML.Graphics.Color;
 using Image = SFML.Graphics.Image;
+using SFMLTexture = SFML.Graphics.Texture;
 
 namespace Gwen.Renderer
 {
@@ -18,6 +19,14 @@ namespace Gwen.Renderer
     {
         private RenderTarget m_Target;
         private Color m_Color;
+        private Vector2f m_ViewScale;
+        //private SFMLTexture m_LastSampled;
+        //private Image m_SampleCache;
+        private RenderStates m_RenderState;
+        private int m_CacheSize;
+        private readonly Vertex[] m_VertexCache;
+
+        public const int CacheSize = 1024;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SFML"/> class.
@@ -26,6 +35,22 @@ namespace Gwen.Renderer
         public SFML(RenderTarget target)
         {
             m_Target = target;
+            m_VertexCache = new Vertex[CacheSize];
+        }
+
+        public override void Begin()
+        {
+            base.Begin();
+            var port = m_Target.GetViewport(m_Target.GetView());
+            var scaled = m_Target.ConvertCoords(new Vector2i(port.Width, port.Height));
+            m_ViewScale.X = (port.Width/scaled.X)*Scale;
+            m_ViewScale.Y = (port.Height/scaled.Y)*Scale;
+        }
+
+        public override void End()
+        {
+            FlushCache();
+            base.End();
         }
 
         /// <summary>
@@ -53,34 +78,24 @@ namespace Gwen.Renderer
 
         public override System.Drawing.Color PixelColor(Texture texture, uint x, uint y, System.Drawing.Color defaultColor)
         {
-            Sprite tex = texture.RendererData as Sprite;
+            SFMLTexture tex = texture.RendererData as SFMLTexture;
             if (tex == null)
                 return defaultColor;
-            var img = tex.Texture.CopyToImage();
+            var img = tex.CopyToImage();
             Color pixel = img.GetPixel(x, y);
             return System.Drawing.Color.FromArgb(pixel.A, pixel.R, pixel.G, pixel.B);
         }
-
-        public override void DrawLine(int x, int y, int a, int b)
+        /*
+        public override void DrawLine(int x1, int y1, int x2, int y2)
         {
-            Translate( ref x, ref y );
-            Translate( ref a, ref b );
-            // [omeg] todo: sfml.net should have method accepting coords to not create unnecessary objects
-            var shape = Shape.Line(new Vector2f(x, y), new Vector2f(a, b), 1.0f, m_Color);
-            m_Target.Draw(shape);
-            shape.Dispose();
-        }
+            Translate(ref x1, ref y1);
+            Translate(ref x2, ref y2);
 
-        public override void DrawFilledRect(Rectangle rect)
-        {
-            rect = Translate(rect);
-            // [omeg] todo: sfml.net should have method accepting coords to not create unnecessary objects
-            //m_Target.Draw(Shape.Rectangle(new FloatRect(rect.X, rect.Y, rect.Right, rect.Bottom), m_Color)); // [omeg] bug in gwen
-            var shape = Shape.Rectangle(new FloatRect(rect.X, rect.Y, rect.Width, rect.Height), m_Color);
-            m_Target.Draw(shape);
-            shape.Dispose();
-        }
+            Vertex[] line = {new Vertex(new Vector2f(x1, y1), m_Color), new Vertex(new Vector2f(x2, y2), m_Color)};
 
+            m_Target.Draw(line, PrimitiveType.Lines);
+        }
+        */
         /// <summary>
         /// Loads the specified font.
         /// </summary>
@@ -150,6 +165,52 @@ namespace Gwen.Renderer
             font.RendererData = null;
         }
 
+        /// <summary>
+        /// Returns dimensions of the text using specified font.
+        /// </summary>
+        /// <param name="font">Font to use.</param>
+        /// <param name="text">Text to measure.</param>
+        /// <returns>
+        /// Width and height of the rendered text.
+        /// </returns>
+        public override Point MeasureText(Font font, String text)
+        {
+            // todo: cache results, this is slow
+            global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
+
+            // If the font doesn't exist, or the font size should be changed
+            if (sfFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
+            {
+                FreeFont(font);
+                LoadFont(font);
+            }
+
+            if (sfFont == null)
+                sfFont = global::SFML.Graphics.Font.DefaultFont;
+
+            // todo: this is workaround for SFML.Net bug under mono
+            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
+            {
+                if (text[text.Length - 1] != '\0')
+                    text += '\0';
+            }
+
+            Point extents = new Point(0, sfFont.GetLineSpacing((uint)font.RealSize));
+            char prev = '\0';
+
+            for (int i = 0; i < text.Length; i++)
+            {
+                char cur = text[i];
+                sfFont.GetKerning(prev, cur, (uint)font.RealSize);
+                prev = cur;
+                if (cur == '\n' || cur == '\v')
+                    continue;
+                extents.X += sfFont.GetGlyph(cur, (uint) font.RealSize, false).Advance;
+            }
+
+            return extents;
+        }
+
         public override void RenderText(Font font, Point pos, string text)
         {
             //m_Target.SaveGLStates();
@@ -183,47 +244,27 @@ namespace Gwen.Renderer
             //m_Target.RestoreGLStates();
         }
 
-        /// <summary>
-        /// Returns dimensions of the text using specified font.
-        /// </summary>
-        /// <param name="font">Font to use.</param>
-        /// <param name="text">Text to measure.</param>
-        /// <returns>
-        /// Width and height of the rendered text.
-        /// </returns>
-        public override Point MeasureText(Font font, string text)
+        public override void DrawFilledRect(Rectangle rect)
         {
-            global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
-
-            // If the font doesn't exist, or the font size should be changed
-            if (sfFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
+            rect = Translate(rect);
+            if (m_RenderState.Texture != null || m_CacheSize + 4 >= CacheSize)
             {
-                FreeFont(font);
-                LoadFont(font);
+                FlushCache();
+                m_RenderState.Texture = null;
             }
 
-            if (sfFont == null)
-                sfFont = global::SFML.Graphics.Font.DefaultFont;
+            int right = rect.X + rect.Width;
+            int bottom = rect.Y + rect.Height;
 
-            // todo: this is workaround for SFML.Net bug under mono
-            if (Environment.OSVersion.Platform != PlatformID.Win32NT)
-            {
-                if (text[text.Length - 1] != '\0')
-                    text += '\0';
-            }
-
-            Text sfText = new Text(text);
-            sfText.Font = sfFont;
-            sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
-
-            FloatRect fr = sfText.GetRect();
-            sfText.Dispose();
-            return new Point((int)Math.Round(fr.Width), (int)Math.Round(fr.Height));
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(rect.X, rect.Y), m_Color);
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(right, rect.Y), m_Color);
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(right, bottom), m_Color);
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(rect.X, bottom), m_Color);  
         }
 
         public override void DrawTexturedRect(Texture t, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
         {
-            Sprite tex = t.RendererData as Sprite;
+            SFMLTexture tex = t.RendererData as SFMLTexture;
             if (null == tex)
             {
                 DrawMissingImage(targetRect);
@@ -233,46 +274,30 @@ namespace Gwen.Renderer
             DrawTexturedRect(tex, targetRect, u1, v1, u2, v2);
         }
 
-        protected void DrawTexturedRect(Sprite tex, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
+        protected void DrawTexturedRect(SFMLTexture tex, Rectangle targetRect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
         {
             Rectangle rect = Translate(targetRect);
-            //DrawMissingImage(rect); return;
-            
-            //m_Target.SaveGLStates();
-            int x1 = (int)(u1 * tex.Texture.Width);
-            int y1 = (int)(v1 * tex.Texture.Height);
-            int w = (int)((u2 - u1) * tex.Texture.Width);
-            int h = (int)((v2 - v1) * tex.Texture.Height);
-            var r = new IntRect(x1, y1, w, h);
-            /*
-            double delta = 0.0001;
-            if (u1 - r.Left > delta)
-                throw new InvalidOperationException("u1");
-            if (v1 - r.Top > delta)
-                throw new InvalidOperationException("v1");
-            if (u2-u1 - r.Width > delta)
-                throw new InvalidOperationException("width");
-            if (v2-v1 - r.Height > delta)
-                throw new InvalidOperationException("height");
-            */
-            tex.Position = new Vector2f(rect.X, rect.Y);
-            tex.SubRect = r;
-            tex.Width = rect.Width;
-            tex.Height = rect.Height;
-            m_Target.Draw(tex);
-            //m_Target.RestoreGLStates();
-            
-            /*
-            // original rendering code
-            tex.Texture.Bind();
-            Gl.glColor4f(1, 1, 1, 1);
-            Gl.glBegin(Gl.GL_QUADS);
-            Gl.glTexCoord2f(u1, v1); Gl.glVertex2f(rect.X, rect.Y);
-            Gl.glTexCoord2f(u1, v2); Gl.glVertex2f(rect.X, rect.Bottom);
-            Gl.glTexCoord2f(u2, v2); Gl.glVertex2f(rect.Right, rect.Bottom);
-            Gl.glTexCoord2f(u2, v1); Gl.glVertex2f(rect.Right, rect.Y);
-            Gl.glEnd();
-            */
+
+            u1 *= tex.Size.X;
+            v1 *= tex.Size.Y;
+            u2 *= tex.Size.X;
+            v2 *= tex.Size.Y;
+
+            if (m_RenderState.Texture != tex || m_CacheSize + 4 >= CacheSize)
+            {
+                FlushCache();
+
+                // enable the new texture
+                m_RenderState.Texture = tex;
+            }
+
+            int right = rect.X + rect.Width;
+            int bottom = rect.Y + rect.Height;
+
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(rect.X, rect.Y), new Vector2f(u1, v1));
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(right, rect.Y), new Vector2f(u2, v1));
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(right, bottom), new Vector2f(u2, v2));
+            m_VertexCache[m_CacheSize++] = new Vertex(new Vector2f(rect.X, bottom), new Vector2f(u1, v2));
         }
 
         public override void LoadTexture(Texture texture)
@@ -284,14 +309,12 @@ namespace Gwen.Renderer
             if (texture.RendererData != null) 
                 FreeTexture(texture);
 
-            global::SFML.Graphics.Texture tex;
-            Sprite sprite;
+            SFMLTexture sfTexture;
 
             try
             {
-                tex = new global::SFML.Graphics.Texture(texture.Name);
-                tex.Smooth = true;
-                sprite = new Sprite(tex);
+                sfTexture = new SFMLTexture(texture.Name);
+                sfTexture.Smooth = true;
             }
             catch (LoadingFailedException)
             {
@@ -300,9 +323,10 @@ namespace Gwen.Renderer
                 return;
             }
 
-            texture.Height = (int)tex.Height;
-            texture.Width = (int)tex.Width;
-            texture.RendererData = sprite;
+            texture.Width = (int)sfTexture.Size.X;
+            texture.Height = (int)sfTexture.Size.Y;
+            texture.RendererData = sfTexture;
+            texture.Failed = false;
         }
 
         /// <summary>
@@ -319,14 +343,12 @@ namespace Gwen.Renderer
             if (texture.RendererData != null)
                 FreeTexture(texture);
 
-            global::SFML.Graphics.Texture sfTexture;
-            Sprite sprite;
+            SFMLTexture sfTexture;
 
             try
             {
-                sfTexture = new global::SFML.Graphics.Texture(data);
+                sfTexture = new SFMLTexture(data);
                 sfTexture.Smooth = true;
-                sprite = new Sprite(sfTexture);
             }
             catch (LoadingFailedException)
             {
@@ -335,9 +357,10 @@ namespace Gwen.Renderer
                 return;
             }
 
-            texture.Height = (int)sfTexture.Height;
-            texture.Width = (int)sfTexture.Width;
-            texture.RendererData = sprite;        
+            texture.Width = (int)sfTexture.Size.X;
+            texture.Height = (int)sfTexture.Size.Y;
+            texture.RendererData = sfTexture;
+            texture.Failed = false;
         }
 
         // [omeg] added, pixelData are in RGBA format
@@ -350,15 +373,13 @@ namespace Gwen.Renderer
             if (texture.RendererData != null) 
                 FreeTexture(texture);
 
-            global::SFML.Graphics.Texture tex;
-            Sprite sprite;
+            SFMLTexture sfTexture;
 
             try
             {
                 var img = new Image((uint)texture.Width, (uint)texture.Height, pixelData); // SFML Image
-                tex = new global::SFML.Graphics.Texture(img);
-                tex.Smooth = true;
-                sprite = new Sprite(tex);
+                sfTexture = new SFMLTexture(img);
+                sfTexture.Smooth = true;
                 img.Dispose();
             }
             catch (LoadingFailedException)
@@ -368,12 +389,13 @@ namespace Gwen.Renderer
                 return;
             }
 
-            texture.RendererData = sprite;
+            texture.RendererData = sfTexture;
+            texture.Failed = false;
         }
 
         public override void FreeTexture(Texture texture)
         {
-            Sprite tex = texture.RendererData as Sprite;
+            SFMLTexture tex = texture.RendererData as SFMLTexture;
             if (tex != null)
                 tex.Dispose();
 
@@ -384,22 +406,39 @@ namespace Gwen.Renderer
 
         public override void StartClip()
         {
-            Rectangle rect = ClipRegion;
-            // OpenGL's coords are from the bottom left
-            // so we need to translate them here.
+            FlushCache();
+            Rectangle clip = ClipRegion;
+            clip.X = (int) Math.Round(clip.X*m_ViewScale.X);
+            clip.Y = (int) Math.Round(clip.Y*m_ViewScale.Y);
+            clip.Width = (int) Math.Round(clip.Width*m_ViewScale.X);
+            clip.Height = (int) Math.Round(clip.Height*m_ViewScale.Y);
+
             var view = m_Target.GetView();
             var v = m_Target.GetViewport(view);
             view.Dispose();
-            rect.Y = v.Height - (rect.Y + rect.Height);
+            clip.Y = v.Height - (clip.Y + clip.Height);
 
-            Gl.glScissor((int)(rect.X * Scale), (int)(rect.Y * Scale),
-                         (int)(rect.Width * Scale), (int)(rect.Height * Scale));
+            Gl.glScissor(clip.X, clip.Y, clip.Width, clip.Height);
             Gl.glEnable(Gl.GL_SCISSOR_TEST);
         }
 
         public override void EndClip()
         {
+            FlushCache();
             Gl.glDisable(Gl.GL_SCISSOR_TEST);
+        }
+
+        private void FlushCache()
+        {
+            Debug.Assert(m_CacheSize % 4 == 0);
+            if (m_CacheSize > 0)
+            {
+                // todo: get rid of array copy once Draw() supports specifying number of vertices
+                Vertex[] vc = new Vertex[m_CacheSize];
+                Array.Copy(m_VertexCache, vc, m_CacheSize);
+                m_Target.Draw(vc, PrimitiveType.Quads, m_RenderState);
+                m_CacheSize = 0;
+            }
         }
 
         #region Implementation of ICacheToTexture
@@ -451,7 +490,7 @@ namespace Gwen.Renderer
             //ri.Display();
             RenderTarget rt = m_Target;
             m_Target = m_RealRT;
-            DrawTexturedRect(new Sprite(ri.Texture), control.Bounds);
+            DrawTexturedRect(ri.Texture, control.Bounds);
             //DrawMissingImage(control.Bounds);
             m_Target = rt;
         }

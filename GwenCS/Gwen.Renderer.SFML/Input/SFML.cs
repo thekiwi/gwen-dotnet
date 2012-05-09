@@ -1,5 +1,6 @@
 ﻿using System;
 using Gwen.Control;
+using SFML.Graphics;
 using SFML.Window;
 
 namespace Gwen.Input
@@ -55,6 +56,7 @@ namespace Gwen.Input
         private Canvas m_Canvas;
         private int m_MouseX;
         private int m_MouseY;
+        private RenderTarget m_Target;
         
         public SFML()
         {
@@ -66,10 +68,12 @@ namespace Gwen.Input
         /// <summary>
         /// Sets the currently active canvas.
         /// </summary>
-        /// <param name="c">Canvas to use.</param>
-        public void Initialize(Canvas c)
+        /// <param name="canvas">Canvas to use.</param>
+        /// <param name="target">Rander target (needed for scaling).</param>
+        public void Initialize(Canvas canvas, RenderTarget target)
         {
-            m_Canvas = c;
+            m_Canvas = canvas;
+            m_Target = target;
         }
 
         /// <summary>
@@ -127,6 +131,14 @@ namespace Gwen.Input
             if (args is MouseMoveEventArgs)
             {
                 MouseMoveEventArgs ev = args as MouseMoveEventArgs;
+
+                if (m_Target != null)
+                {
+                    Vector2f coord = m_Target.ConvertCoords(new Vector2i(ev.X, ev.Y));
+                    ev.X = (int)Math.Floor(coord.X);
+                    ev.Y = (int)Math.Floor(coord.Y);
+                }
+
                 int dx = ev.X - m_MouseX;
                 int dy = ev.Y - m_MouseY;
 
