@@ -23,10 +23,10 @@ namespace Gwen.Renderer
         //private SFMLTexture m_LastSampled;
         //private Image m_SampleCache;
         private RenderStates m_RenderState;
-        private int m_CacheSize;
+        private uint m_CacheSize;
         private readonly Vertex[] m_VertexCache;
 
-        public const int CacheSize = 1024;
+        public const uint CacheSize = 1024;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SFML"/> class.
@@ -433,10 +433,7 @@ namespace Gwen.Renderer
             Debug.Assert(m_CacheSize % 4 == 0);
             if (m_CacheSize > 0)
             {
-                // todo: get rid of array copy once Draw() supports specifying number of vertices
-                Vertex[] vc = new Vertex[m_CacheSize];
-                Array.Copy(m_VertexCache, vc, m_CacheSize);
-                m_Target.Draw(vc, PrimitiveType.Quads, m_RenderState);
+                m_Target.Draw(m_VertexCache, 0, m_CacheSize, PrimitiveType.Quads, m_RenderState);
                 m_CacheSize = 0;
             }
         }
