@@ -36,6 +36,7 @@ namespace Gwen.Renderer
         {
             m_Target = target;
             m_VertexCache = new Vertex[CacheSize];
+            m_RenderState = new RenderStates(BlendMode.Alpha); // somehow worked without this in previous SFML version (May 9th 2010)
         }
 
         public override void Begin()
