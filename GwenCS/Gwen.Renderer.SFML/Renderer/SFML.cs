@@ -122,11 +122,13 @@ namespace Gwen.Renderer
                     try
                     {
                         sfFont = new global::SFML.Graphics.Font(path);
+                        sfFont.GetTexture((uint)font.Size).Smooth = font.Smooth;
+                        font.RendererData = sfFont;
                     }
                     catch (LoadingFailedException)
                     {
                         // Ideally here we should be setting the font to a system default font here.
-                        sfFont = global::SFML.Graphics.Font.DefaultFont;
+                        //sfFont = global::SFML.Graphics.Font.DefaultFont;
                         Debug.Print("LoadFont: failed");
                         ret = false;
                     }
@@ -134,14 +136,12 @@ namespace Gwen.Renderer
                 else
                 {
                     // Ideally here we should be setting the font to a system default font here.
-                    sfFont = global::SFML.Graphics.Font.DefaultFont;
+                    //sfFont = global::SFML.Graphics.Font.DefaultFont;
                     Debug.Print("LoadFont: failed");
                     ret = false;
                 }
             }
 
-            sfFont.GetTexture((uint) font.Size).Smooth = font.Smooth;
-            font.RendererData = sfFont;
             return ret;
         }
 
@@ -158,7 +158,7 @@ namespace Gwen.Renderer
             global::SFML.Graphics.Font sfFont = font.RendererData as global::SFML.Graphics.Font;
 
             // If this is the default font then don't delete it!
-            if (sfFont != global::SFML.Graphics.Font.DefaultFont)
+            //if (sfFont != global::SFML.Graphics.Font.DefaultFont)
             {
                 sfFont.Dispose();
             }
@@ -186,8 +186,7 @@ namespace Gwen.Renderer
                 LoadFont(font);
             }
 
-            if (sfFont == null)
-                sfFont = global::SFML.Graphics.Font.DefaultFont;
+            sfFont = font.RendererData as global::SFML.Graphics.Font;
 
             // todo: this is workaround for SFML.Net bug under mono
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
@@ -225,8 +224,8 @@ namespace Gwen.Renderer
                 LoadFont(font);
             }
 
-            if (sfFont == null)
-                sfFont = global::SFML.Graphics.Font.DefaultFont;
+            //if (sfFont == null)
+            //    sfFont = global::SFML.Graphics.Font.DefaultFont;
 
             // todo: this is workaround for SFML.Net bug under mono
             if (Environment.OSVersion.Platform != PlatformID.Win32NT)
@@ -235,7 +234,7 @@ namespace Gwen.Renderer
                     text += '\0';
             }
 
-            Text sfText = new Text(text);
+            Text sfText = new Text(text, sfFont);
             sfText.Font = sfFont;
             sfText.Position = new Vector2f(pos.X, pos.Y);
             sfText.CharacterSize = (uint)font.RealSize; // [omeg] round?
