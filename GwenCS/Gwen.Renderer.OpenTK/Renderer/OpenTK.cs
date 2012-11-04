@@ -103,8 +103,6 @@ namespace Gwen.Renderer
             GL.DisableClientState(ArrayCap.VertexArray);
             GL.DisableClientState(ArrayCap.ColorArray);
             GL.DisableClientState(ArrayCap.TextureCoordArray);
-
-            GL.Color3(1f, 1f, 1f);
         }
 
         /// <summary>
@@ -171,7 +169,6 @@ namespace Gwen.Renderer
             get { return m_Color; }
             set
             {
-                GL.Color4(m_Color);
                 m_Color = value;
             }
         }
@@ -213,9 +210,10 @@ namespace Gwen.Renderer
 
         private void DrawRect(Rectangle rect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
         {
-            // fake siccor test for the win!!!
             if (m_ClipEnabled)
             {
+                // cpu scissors test
+
                 if (rect.Y < ClipRegion.Y)
                 {
                     int oldHeight = rect.Height;
