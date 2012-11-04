@@ -9,7 +9,6 @@ namespace Gwen.UnitTest
         private Control.Base m_LastControl;
         private readonly Control.StatusBar m_StatusBar;
         private readonly Control.ListBox m_TextOutput;
-        private Control.TabControl m_TabControl;
         private Control.TabButton m_Button;
         private readonly Control.CollapsibleList m_List;
         private readonly Center m_Center;

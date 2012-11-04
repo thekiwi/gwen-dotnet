@@ -172,7 +172,6 @@ namespace Gwen.Control
                     return m_Parent.Skin;
 
                 throw new InvalidOperationException("GetSkin: null");
-                return null;
             }
         }
 
