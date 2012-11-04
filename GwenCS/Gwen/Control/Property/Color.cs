@@ -41,8 +41,7 @@ namespace Gwen.Control.Property
 
             String[] split = m_TextBox.Text.Split(' ');
 
-            picker.SetColor(System.Drawing.Color.FromArgb(255, 
-                Convert.ToInt32(split[0]), Convert.ToInt32(split[1]), Convert.ToInt32(split[2])), false, true);
+            picker.SetColor(GetColorFromText(), false, true);
             picker.ColorChanged += OnColorChanged;
 
             menu.Open(Pos.Right | Pos.Top);
@@ -55,8 +54,7 @@ namespace Gwen.Control.Property
         protected virtual void OnColorChanged(Control.Base control)
         {
             HSVColorPicker picker = control as HSVColorPicker;
-            System.Drawing.Color col = picker.SelectedColor;
-            m_TextBox.Text = String.Format("{0} {1} {2}", col.R, col.G, col.B);
+            SetTextFromColor(picker.SelectedColor);
             DoChanged();
         }
 
@@ -87,12 +85,42 @@ namespace Gwen.Control.Property
             get { return m_TextBox == InputHandler.KeyboardFocus; }
         }
 
+        private void SetTextFromColor(System.Drawing.Color color)
+        {
+            m_TextBox.Text = String.Format("{0} {1} {2}", color.R, color.G, color.B);
+        }
+
+        private System.Drawing.Color GetColorFromText()
+        {
+            String[] split = m_TextBox.Text.Split(' ');
+
+            byte red = 0;
+            byte green = 0;
+            byte blue = 0;
+            byte alpha = 255;
+
+            if (split.Length > 0 && split[0].Length > 0)
+            {
+                Byte.TryParse(split[0], out red);
+            }
+
+            if (split.Length > 1 && split[1].Length > 0)
+            {
+                Byte.TryParse(split[1], out green);
+            }
+
+            if (split.Length > 2 && split[2].Length > 0)
+            {
+                Byte.TryParse(split[2], out blue);
+            }
+
+            return System.Drawing.Color.FromArgb(alpha, red, green, blue);
+        }
+
         protected override void DoChanged()
         {
             base.DoChanged();
-            String[] split = m_TextBox.Text.Split(' ');
-            m_Button.Color = System.Drawing.Color.FromArgb(255, 
-                Convert.ToInt32(split[0]), Convert.ToInt32(split[1]), Convert.ToInt32(split[2]));
+            m_Button.Color = GetColorFromText();
         }
     }
 }
