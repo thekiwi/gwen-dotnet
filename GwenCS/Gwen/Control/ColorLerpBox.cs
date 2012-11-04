@@ -11,7 +11,7 @@ namespace Gwen.Control
     {
         private Point m_CursorPos;
         private bool m_Depressed;
-        private byte m_Hue;
+        private float m_Hue;
         private Texture m_Texture;
 
         /// <summary>
@@ -69,7 +69,8 @@ namespace Gwen.Control
         public void SetColor(Color value, bool onlyHue = true)
         {
             HSV hsv = value.ToHSV();
-            m_Hue = (hsv.h < 0.0f) ? (byte)0 : ((hsv.h > 255.0f) ? (byte)255 : (byte)hsv.h);
+            m_Hue = hsv.h;
+
             if (!onlyHue)
             {
                 m_CursorPos.X = (int)(hsv.s * Width);
