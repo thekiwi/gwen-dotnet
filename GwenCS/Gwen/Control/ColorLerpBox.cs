@@ -184,6 +184,7 @@ namespace Gwen.Control
                 m_Texture.LoadRaw(Width, Height, pixelData);
             }
 
+            skin.Renderer.DrawColor = Color.White;
             skin.Renderer.DrawTexturedRect(m_Texture, RenderBounds);
 
 

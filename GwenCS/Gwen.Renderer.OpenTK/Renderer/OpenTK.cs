@@ -283,9 +283,6 @@ namespace Gwen.Renderer
                 }
             }
 
-            if (m_TextureEnabled)
-                m_Color = Color.White;
-
             int vertexIndex = m_StartVert + m_iVertNum;
             m_Vertices[vertexIndex].x = rect.X;
             m_Vertices[vertexIndex].y = rect.Y;
@@ -411,12 +408,10 @@ namespace Gwen.Renderer
 
                 Point size = MeasureText(font, text);
                 TextRenderer tr = new TextRenderer(size.X, size.Y, this);
-                Brush brush = new SolidBrush(DrawColor); // todo: cache
-                tr.DrawString(text, sysFont, brush, Point.Empty); // renders string on the texture
+                tr.DrawString(text, sysFont, Brushes.White, Point.Empty); // renders string on the texture
 
                 DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
 
-                brush.Dispose();
                 m_StringCache[key] = tr;
             }
             else
@@ -538,6 +533,8 @@ namespace Gwen.Renderer
                 PixelFormat.Format32bppArgb);
 
             GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
+
+            m_LastTextureID = glTex;
 
             bmp.UnlockBits(data);
             bmp.Dispose();
