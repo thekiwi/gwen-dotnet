@@ -30,16 +30,17 @@ namespace Gwen.UnitTest
             m_Button = BottomDock.TabControl.AddPage("Output", m_TextOutput);
             BottomDock.Height = 200;
 
+            m_DebugCheck = new Control.LabeledCheckBox(m_List);
+            m_DebugCheck.Text = "Debug outlines";
+            m_DebugCheck.CheckChanged += DebugCheckChanged;
+
             m_StatusBar = new Control.StatusBar(this);
             m_StatusBar.Dock = Pos.Bottom;
+            m_StatusBar.AddControl(m_DebugCheck, true);
 
             m_Center = new Center(this);
             m_Center.Dock = Pos.Fill;
             GUnit test;
-
-            m_DebugCheck = new Control.LabeledCheckBox(m_List);
-            m_DebugCheck.Text = "Debug outlines";
-            m_DebugCheck.CheckChanged += DebugCheckChanged;
 
             {
                 CollapsibleCategory cat = m_List.Add("Non-Interactive");
@@ -115,8 +116,6 @@ namespace Gwen.UnitTest
 
             m_StatusBar.SendToBack();
             PrintText("Unit Test started!");
-
-            //DrawDebugOutlines = true;
         }
 
         public void RegisterUnitTest(String name, CollapsibleCategory cat, GUnit test)
@@ -158,7 +157,6 @@ namespace Gwen.UnitTest
         protected override void Layout(Skin.Base skin)
         {
             base.Layout(skin);
-            m_DebugCheck.Y = m_List.Bottom - 50; // m_List seems to be too big vertically
         }
 
         protected override void Render(Skin.Base skin)
