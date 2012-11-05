@@ -38,6 +38,8 @@ namespace Gwen.Renderer
         private int m_PrevBlendSrc, m_PrevBlendDst, m_PrevAlphaFunc;
         private float m_PrevAlphaRef;
 
+        private StringFormat m_StringFormat;
+
         public OpenTK()
             : base()
         {
@@ -45,6 +47,8 @@ namespace Gwen.Renderer
             m_VertexSize = Marshal.SizeOf(m_Vertices[0]);
             m_StringCache = new Dictionary<Tuple<String, Font>, TextRenderer>();
             m_Graphics = Graphics.FromImage(new Bitmap(1024, 1024, PixelFormat.Format32bppArgb));
+            m_StringFormat = new StringFormat(StringFormat.GenericTypographic);
+            m_StringFormat.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
         }
 
         public override void Dispose()
@@ -377,9 +381,9 @@ namespace Gwen.Renderer
                 return new Point(tex.Width, tex.Height);
             }
 
-            SizeF size = m_Graphics.MeasureString(text, sysFont, Point.Empty, StringFormat.GenericTypographic);
+            SizeF size = m_Graphics.MeasureString(text, sysFont, Point.Empty, m_StringFormat);
 
-            return new Point((int)Math.Round(size.Width) + ((text.EndsWith(" ")) ? 4 : 0), (int)Math.Round(size.Height));
+            return new Point((int)Math.Round(size.Width), (int)Math.Round(size.Height));
         }
 
         public override void RenderText(Font font, Point position, string text)
@@ -408,7 +412,7 @@ namespace Gwen.Renderer
 
                 Point size = MeasureText(font, text);
                 TextRenderer tr = new TextRenderer(size.X, size.Y, this);
-                tr.DrawString(text, sysFont, Brushes.White, Point.Empty); // renders string on the texture
+                tr.DrawString(text, sysFont, Brushes.White, Point.Empty, m_StringFormat); // renders string on the texture
 
                 DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
 

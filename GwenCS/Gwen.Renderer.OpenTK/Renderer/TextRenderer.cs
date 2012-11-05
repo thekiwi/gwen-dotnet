@@ -35,10 +35,19 @@ namespace Gwen.Renderer
 
             bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             gfx = Graphics.FromImage(bmp);
-            //gfx.TextRenderingHint = TextRenderingHint.AntiAlias;
-            gfx.TextRenderingHint = TextRenderingHint.AntiAliasGridFit;
-            gfx.Clear(Color.Transparent);
 
+            // NOTE:    TextRenderingHint.AntiAliasGridFit looks sharper and in most cases better
+            //          but it comes with a some problems.
+            //
+            //          1.  Graphic.MeasureString and format.MeasureCharacterRanges 
+            //              seem to return wrong values because of this.
+            //
+            //          2.  While typing the kerning changes in random places in the sentence.
+            // 
+            //          Until 1st problem is fixed we should use TextRenderingHint.AntiAlias...  :-(
+
+            gfx.TextRenderingHint = TextRenderingHint.AntiAlias;
+            gfx.Clear(Color.Transparent);
             texture = new Texture(renderer) {Width = width, Height = height};
         }
 
@@ -50,9 +59,9 @@ namespace Gwen.Renderer
         /// <param name="brush">The <see cref="System.Drawing.Brush"/> that will be used.</param>
         /// <param name="point">The location of the text on the backing store, in 2d pixel coordinates.
         /// The origin (0, 0) lies at the top-left corner of the backing store.</param>
-        public void DrawString(string text, System.Drawing.Font font, Brush brush, Point point)
+        public void DrawString(string text, System.Drawing.Font font, Brush brush, Point point, StringFormat format)
         {
-            gfx.DrawString(text, font, brush, point, StringFormat.GenericTypographic); // render text on the bitmap
+            gfx.DrawString(text, font, brush, point, format); // render text on the bitmap
             OpenTK.LoadTextureInternal(texture, bmp); // copy bitmap to gl texture
         }
 
