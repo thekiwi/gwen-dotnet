@@ -11,7 +11,7 @@ namespace Gwen.UnitTest
         public RichLabel(Base parent) : base(parent)
         {
             Control.RichLabel label = new Control.RichLabel(this);
-            label.SetBounds(10, 10, 200, 200);
+            label.SetBounds(10, 10, 400, 200);
 
             f1 = new Font(Skin.Renderer, "Arial", 15);
             label.AddText("This test uses Arial 15, Red. Padding. ", Color.Red, f1);
