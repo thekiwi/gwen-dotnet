@@ -201,12 +201,11 @@ namespace Gwen.Control
             // Draw caret
             float time = Platform.Neutral.GetTimeInSeconds() - m_LastInputTime;
 
-            if ((time % 1.0f) > 0.5f)
-                skin.Renderer.DrawColor = Color.White;
-            else
+            if ((time % 1.0f) <= 0.5f)
+            {
                 skin.Renderer.DrawColor = Color.Black;
-
-            skin.Renderer.DrawFilledRect(m_CaretBounds);
+                skin.Renderer.DrawFilledRect(m_CaretBounds);
+            }
         }
 
         protected virtual void RefreshCursorBounds()
