@@ -1,4 +1,6 @@
-﻿using System;
+﻿//#define DEBUG_TEXT_MEASURE
+
+using System;
 using System.Drawing;
 using Gwen.Control;
 
@@ -94,6 +96,26 @@ namespace Gwen.ControlInternal
                 skin.Renderer.DrawColor = TextColorOverride;
 
             skin.Renderer.RenderText(Font, Point.Empty, TextOverride ?? String);
+
+            #if DEBUG_TEXT_MEASURE
+            {
+                Point lastPos = Point.Empty;
+
+                for (int i = 0; i < m_String.Length + 1; i++)
+                {
+                    String sub = (TextOverride ?? String).Substring(0, i);
+                    Point p = Skin.Renderer.MeasureText(Font, sub);
+
+                    Rectangle rect = new Rectangle();
+                    rect.Location = lastPos;
+                    rect.Size = new Size(p.X - lastPos.X, p.Y);
+                    skin.Renderer.DrawColor = Color.FromArgb(64, 0, 0, 0);
+                    skin.Renderer.DrawLinedRect(rect);
+
+                    lastPos = new Point(rect.Right, 0);
+                }
+            }
+            #endif
         }
 
         /// <summary>
@@ -151,14 +173,11 @@ namespace Gwen.ControlInternal
         {
             if (Length == 0 || index == 0)
             {
-                return new Point(1, 0);
+                return new Point(0, 0);
             }
 
             String sub = (TextOverride ?? String).Substring(0, index);
             Point p = Skin.Renderer.MeasureText(Font, sub);
-
-            if (p.Y >= Font.Size)
-                p = new Point(p.X, p.Y - Font.Size);
 
             return p;
         }
@@ -176,7 +195,7 @@ namespace Gwen.ControlInternal
             for (int i = 0; i < String.Length + 1; i++)
             {
                 Point cp = GetCharacterPosition(i);
-                int dist = Math.Abs(cp.X - p.X) + Math.Abs(cp.Y - p.Y); // this isn't proper // [omeg] todo: sqrt
+                int dist = Math.Abs(cp.X - p.X); // TODO: handle multiline
 
                 if (dist > distance) 
                     continue;
