@@ -199,7 +199,9 @@ namespace Gwen.Control
             }
 
             // Draw caret
-            if (Math.IEEERemainder(Platform.Neutral.GetTimeInSeconds() - m_LastInputTime, 1.0f) > 0.5f) // todo: ok?
+            float time = Platform.Neutral.GetTimeInSeconds() - m_LastInputTime;
+
+            if ((time % 1.0f) > 0.5f)
                 skin.Renderer.DrawColor = Color.White;
             else
                 skin.Renderer.DrawColor = Color.Black;
