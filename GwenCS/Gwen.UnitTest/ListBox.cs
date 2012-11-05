@@ -40,7 +40,7 @@ namespace Gwen.UnitTest
 
             {
                 Table ctrl = new Table(this);
-                ctrl.SetPosition(10, 280);
+                ctrl.SetPosition(120, 10);
 
                 ctrl.AddRow("First");
                 ctrl.AddRow("Blue");
@@ -62,7 +62,7 @@ namespace Gwen.UnitTest
 
             {
                 Control.ListBox ctrl = new Control.ListBox(this);
-                ctrl.SetBounds(120, 10, 200, 200);
+                ctrl.SetBounds(220, 10, 200, 200);
                 ctrl.ColumnCount = 3;
                 //ctrl.AllowMultiSelect = true;
                 ctrl.RowSelected += RowSelected;
@@ -91,7 +91,7 @@ namespace Gwen.UnitTest
                 // fixed-size table
                 Control.Layout.Table table = new Table(this);
                 table.SetColumnCount(3);
-                table.SetBounds(350, 10, 320, 100);
+                table.SetBounds(450, 10, 320, 100);
                 table.SetColumnWidth(0, 100);
                 table.SetColumnWidth(1, 100);
                 table.SetColumnWidth(2, 100);
@@ -114,7 +114,7 @@ namespace Gwen.UnitTest
                 // autosized table
                 Control.Layout.Table table = new Table(this);
                 table.SetColumnCount(3);
-                table.SetPosition(350, 150);
+                table.SetPosition(450, 150);
 
                 var row1 = table.AddRow();
                 row1.SetCellText(0, "Row 1");
