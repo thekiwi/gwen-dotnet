@@ -561,7 +561,7 @@ namespace Gwen.Control
 
         protected virtual void MakeCaretVisible()
         {
-            int caretPos = GetCharacterPosition(m_CursorPos).X; // was m_Text.Get...
+            int caretPos = GetCharacterPosition(m_CursorPos).X - TextX;
 
             // If the caret is already in a semi-good position, leave it.
             {
