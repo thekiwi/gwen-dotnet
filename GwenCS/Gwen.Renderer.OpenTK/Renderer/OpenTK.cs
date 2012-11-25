@@ -15,15 +15,14 @@ namespace Gwen.Renderer
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct Vertex
         {
-            public float x, y;
+            public short x, y;
             public float u, v;
             public byte r, g, b, a;
         }
 
-        private const int MaxVerts = 65536;
+        private const int MaxVerts = 1024;
         private Color m_Color;
-        private int m_iVertNum;
-        private int m_StartVert;
+        private int m_VertNum;
         private readonly Vertex[] m_Vertices;
         private readonly int m_VertexSize;
 
@@ -37,10 +36,11 @@ namespace Gwen.Renderer
         private bool m_WasBlendEnabled, m_WasTexture2DEnabled, m_WasDepthTestEnabled;
         private int m_PrevBlendSrc, m_PrevBlendDst, m_PrevAlphaFunc;
         private float m_PrevAlphaRef;
+        private bool m_RestoreRenderState;
 
         private StringFormat m_StringFormat;
 
-        public OpenTK()
+        public OpenTK(bool restoreRenderState = true)
             : base()
         {
             m_Vertices = new Vertex[MaxVerts];
@@ -49,6 +49,7 @@ namespace Gwen.Renderer
             m_Graphics = Graphics.FromImage(new Bitmap(1024, 1024, PixelFormat.Format32bppArgb));
             m_StringFormat = new StringFormat(StringFormat.GenericTypographic);
             m_StringFormat.FormatFlags |= StringFormatFlags.MeasureTrailingSpaces;
+            m_RestoreRenderState = restoreRenderState;
         }
 
         public override void Dispose()
@@ -59,50 +60,58 @@ namespace Gwen.Renderer
 
         public override void Begin()
         {
-            // Get previous parameter values before changing them.
-            GL.GetInteger(GetPName.BlendSrc, out m_PrevBlendSrc);
-            GL.GetInteger(GetPName.BlendDst, out m_PrevBlendDst);
-            GL.GetInteger(GetPName.AlphaTestFunc, out m_PrevAlphaFunc);
-            GL.GetFloat(GetPName.AlphaTestRef, out m_PrevAlphaRef);
+            if (m_RestoreRenderState)
+            {
+                // Get previous parameter values before changing them.
+                GL.GetInteger(GetPName.BlendSrc, out m_PrevBlendSrc);
+                GL.GetInteger(GetPName.BlendDst, out m_PrevBlendDst);
+                GL.GetInteger(GetPName.AlphaTestFunc, out m_PrevAlphaFunc);
+                GL.GetFloat(GetPName.AlphaTestRef, out m_PrevAlphaRef);
 
-            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
-            GL.AlphaFunc(AlphaFunction.Greater, 1.0f);
-
-            m_WasBlendEnabled = GL.IsEnabled(EnableCap.Blend);
-            m_WasTexture2DEnabled = GL.IsEnabled(EnableCap.Texture2D);
-            m_WasDepthTestEnabled = GL.IsEnabled(EnableCap.DepthTest);
+                m_WasBlendEnabled = GL.IsEnabled(EnableCap.Blend);
+                m_WasTexture2DEnabled = GL.IsEnabled(EnableCap.Texture2D);
+                m_WasDepthTestEnabled = GL.IsEnabled(EnableCap.DepthTest);
+            }
 
             // Set default values and enable/disable caps.
+            GL.BlendFunc(BlendingFactorSrc.SrcAlpha, BlendingFactorDest.OneMinusSrcAlpha);
+            GL.AlphaFunc(AlphaFunction.Greater, 1.0f);
             GL.Enable(EnableCap.Blend);
-            GL.Disable(EnableCap.Texture2D);
             GL.Disable(EnableCap.DepthTest);
+            GL.Disable(EnableCap.Texture2D);
 
-            m_StartVert = 0;
-            m_iVertNum = 0;
+            m_VertNum = 0;
             m_DrawCallCount = 0;
             m_ClipEnabled = false;
             m_TextureEnabled = false;
             m_LastTextureID = -1;
+
+            GL.EnableClientState(ArrayCap.VertexArray);
+            GL.EnableClientState(ArrayCap.ColorArray);
+            GL.EnableClientState(ArrayCap.TextureCoordArray);
         }
 
         public override void End()
         {
             Flush();
 
-            GL.BindTexture(TextureTarget.Texture2D, 0);
+            if (m_RestoreRenderState)
+            {
+                GL.BindTexture(TextureTarget.Texture2D, 0);
 
-            // Restore the previous parameter values.
-            GL.BlendFunc((BlendingFactorSrc) m_PrevBlendSrc, (BlendingFactorDest) m_PrevBlendDst);
-            GL.AlphaFunc((AlphaFunction) m_PrevAlphaFunc, m_PrevAlphaRef);
+                // Restore the previous parameter values.
+                GL.BlendFunc((BlendingFactorSrc)m_PrevBlendSrc, (BlendingFactorDest)m_PrevBlendDst);
+                GL.AlphaFunc((AlphaFunction)m_PrevAlphaFunc, m_PrevAlphaRef);
 
-            if (!m_WasBlendEnabled)
-                GL.Disable(EnableCap.Blend);
+                if (!m_WasBlendEnabled)
+                    GL.Disable(EnableCap.Blend);
 
-            if (m_WasTexture2DEnabled)
-                GL.Enable(EnableCap.Texture2D);
+                if (m_WasTexture2DEnabled && !m_TextureEnabled)
+                    GL.Enable(EnableCap.Texture2D);
 
-            if (m_WasDepthTestEnabled)
-                GL.Enable(EnableCap.DepthTest);
+                if (m_WasDepthTestEnabled)
+                    GL.Enable(EnableCap.DepthTest);
+            }
 
             GL.DisableClientState(ArrayCap.VertexArray);
             GL.DisableClientState(ArrayCap.ColorArray);
@@ -116,8 +125,7 @@ namespace Gwen.Renderer
 
         public int DrawCallCount { get { return m_DrawCallCount; } }
 
-        public int VertexCount { get { return m_StartVert + m_iVertNum; } }
-
+        public int VertexCount { get { return m_VertNum; } }
         /// <summary>
         /// Clears the text rendering cache. Make sure to call this if cached strings size becomes too big (check TextCacheSize).
         /// </summary>
@@ -133,25 +141,21 @@ namespace Gwen.Renderer
 
         private unsafe void Flush()
         {
-            if (m_iVertNum == 0) return;
+            if (m_VertNum == 0) return;
 
-            GL.EnableClientState(ArrayCap.VertexArray);
-            fixed (float* ptr1 = &m_Vertices[0].x)
-                GL.VertexPointer(2, VertexPointerType.Float, m_VertexSize, (IntPtr)ptr1);
-
-            GL.EnableClientState(ArrayCap.ColorArray);
+            fixed (short* ptr1 = &m_Vertices[0].x)
             fixed (byte* ptr2 = &m_Vertices[0].r)
-                GL.ColorPointer(4, ColorPointerType.UnsignedByte, m_VertexSize, (IntPtr)ptr2);
-
-            GL.EnableClientState(ArrayCap.TextureCoordArray);
             fixed (float* ptr3 = &m_Vertices[0].u)
+            {
+                GL.VertexPointer(2, VertexPointerType.Short, m_VertexSize, (IntPtr)ptr1);
+                GL.ColorPointer(4, ColorPointerType.UnsignedByte, m_VertexSize, (IntPtr)ptr2);
                 GL.TexCoordPointer(2, TexCoordPointerType.Float, m_VertexSize, (IntPtr)ptr3);
 
-            GL.DrawArrays(BeginMode.Quads, m_StartVert, m_iVertNum);
+                GL.DrawArrays(BeginMode.Quads, 0, m_VertNum);
+            }
 
             m_DrawCallCount++;
-            m_StartVert += m_iVertNum;
-            m_iVertNum = 0;
+            m_VertNum = 0;
         }
 
         public override void DrawFilledRect(Rectangle rect)
@@ -199,14 +203,22 @@ namespace Gwen.Renderer
             int tex = (int)t.RendererData;
             rect = Translate(rect);
 
-            if (!m_TextureEnabled || tex != m_LastTextureID)
+            bool differentTexture = (tex != m_LastTextureID);
+            if (!m_TextureEnabled || differentTexture)
             {
                 Flush();
-                GL.BindTexture(TextureTarget.Texture2D, tex);
-                GL.Enable(EnableCap.Texture2D);
+            }
 
-                m_LastTextureID = tex;
+            if (!m_TextureEnabled)
+            {
+                GL.Enable(EnableCap.Texture2D);
                 m_TextureEnabled = true;
+            }
+
+            if (differentTexture)
+            {
+                GL.BindTexture(TextureTarget.Texture2D, tex);
+                m_LastTextureID = tex;
             }
 
             DrawRect(rect, u1, v1, u2, v2);
@@ -214,6 +226,11 @@ namespace Gwen.Renderer
 
         private void DrawRect(Rectangle rect, float u1 = 0, float v1 = 0, float u2 = 1, float v2 = 1)
         {
+            if (m_VertNum + 4 >= MaxVerts)
+            {
+                Flush();
+            }
+
             if (m_ClipEnabled)
             {
                 // cpu scissors test
@@ -287,9 +304,9 @@ namespace Gwen.Renderer
                 }
             }
 
-            int vertexIndex = m_StartVert + m_iVertNum;
-            m_Vertices[vertexIndex].x = rect.X;
-            m_Vertices[vertexIndex].y = rect.Y;
+            int vertexIndex = m_VertNum;
+            m_Vertices[vertexIndex].x = (short)rect.X;
+            m_Vertices[vertexIndex].y = (short)rect.Y;
             m_Vertices[vertexIndex].u = u1;
             m_Vertices[vertexIndex].v = v1;
             m_Vertices[vertexIndex].r = m_Color.R;
@@ -298,8 +315,8 @@ namespace Gwen.Renderer
             m_Vertices[vertexIndex].a = m_Color.A;
 
             vertexIndex++;
-            m_Vertices[vertexIndex].x = rect.X + rect.Width;
-            m_Vertices[vertexIndex].y = rect.Y;
+            m_Vertices[vertexIndex].x = (short)(rect.X + rect.Width);
+            m_Vertices[vertexIndex].y = (short)rect.Y;
             m_Vertices[vertexIndex].u = u2;
             m_Vertices[vertexIndex].v = v1;
             m_Vertices[vertexIndex].r = m_Color.R;
@@ -308,8 +325,8 @@ namespace Gwen.Renderer
             m_Vertices[vertexIndex].a = m_Color.A;
 
             vertexIndex++;
-            m_Vertices[vertexIndex].x = rect.X + rect.Width;
-            m_Vertices[vertexIndex].y = rect.Y + rect.Height;
+            m_Vertices[vertexIndex].x = (short)(rect.X + rect.Width);
+            m_Vertices[vertexIndex].y = (short)(rect.Y + rect.Height);
             m_Vertices[vertexIndex].u = u2;
             m_Vertices[vertexIndex].v = v2;
             m_Vertices[vertexIndex].r = m_Color.R;
@@ -318,8 +335,8 @@ namespace Gwen.Renderer
             m_Vertices[vertexIndex].a = m_Color.A;
 
             vertexIndex++;
-            m_Vertices[vertexIndex].x = rect.X;
-            m_Vertices[vertexIndex].y = rect.Y + rect.Height;
+            m_Vertices[vertexIndex].x = (short)rect.X;
+            m_Vertices[vertexIndex].y = (short)(rect.Y + rect.Height);
             m_Vertices[vertexIndex].u = u1;
             m_Vertices[vertexIndex].v = v2;
             m_Vertices[vertexIndex].r = m_Color.R;
@@ -327,7 +344,7 @@ namespace Gwen.Renderer
             m_Vertices[vertexIndex].b = m_Color.B;
             m_Vertices[vertexIndex].a = m_Color.A;
 
-            m_iVertNum += 4;
+            m_VertNum += 4;
         }
 
         public override bool LoadFont(Font font)
@@ -570,7 +587,6 @@ namespace Gwen.Renderer
             byte[] data = new byte[4 * texture.Width * texture.Height];
             fixed (byte* ptr = &data[0])
             {
-                //GL.GetTexImage(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, PixelType.UnsignedByte, (IntPtr)ptr);
                 GL.GetTexImage(TextureTarget.Texture2D, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)ptr);
                 pixel = Color.FromArgb(data[offset + 3], data[offset + 0], data[offset + 1], data[offset + 2]);
             }
