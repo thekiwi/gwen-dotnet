@@ -234,12 +234,13 @@ namespace Gwen.Renderer
             if (m_ClipEnabled)
             {
                 // cpu scissors test
+                var scaledClipRegion = Util.ScaledRect(ClipRegion, Scale);
 
-                if (rect.Y < ClipRegion.Y)
+                if (rect.Y < scaledClipRegion.Y)
                 {
                     int oldHeight = rect.Height;
-                    int delta = ClipRegion.Y - rect.Y;
-                    rect.Y = ClipRegion.Y;
+                    int delta = scaledClipRegion.Y - rect.Y;
+                    rect.Y = scaledClipRegion.Y;
                     rect.Height -= delta;
 
                     if (rect.Height <= 0)
@@ -252,10 +253,10 @@ namespace Gwen.Renderer
                     v1 += dv * (v2 - v1);
                 }
 
-                if ((rect.Y + rect.Height) > (ClipRegion.Y + ClipRegion.Height))
+                if ((rect.Y + rect.Height) > (scaledClipRegion.Y + scaledClipRegion.Height))
                 {
                     int oldHeight = rect.Height;
-                    int delta = (rect.Y + rect.Height) - (ClipRegion.Y + ClipRegion.Height);
+                    int delta = (rect.Y + rect.Height) - (scaledClipRegion.Y + scaledClipRegion.Height);
 
                     rect.Height -= delta;
 
@@ -269,11 +270,11 @@ namespace Gwen.Renderer
                     v2 -= dv * (v2 - v1);
                 }
 
-                if (rect.X < ClipRegion.X)
+                if (rect.X < scaledClipRegion.X)
                 {
                     int oldWidth = rect.Width;
-                    int delta = ClipRegion.X - rect.X;
-                    rect.X = ClipRegion.X;
+                    int delta = scaledClipRegion.X - rect.X;
+                    rect.X = scaledClipRegion.X;
                     rect.Width -= delta;
 
                     if (rect.Width <= 0)
@@ -286,10 +287,10 @@ namespace Gwen.Renderer
                     u1 += du * (u2 - u1);
                 }
 
-                if ((rect.X + rect.Width) > (ClipRegion.X + ClipRegion.Width))
+                if ((rect.X + rect.Width) > (scaledClipRegion.X + scaledClipRegion.Width))
                 {
                     int oldWidth = rect.Width;
-                    int delta = (rect.X + rect.Width) - (ClipRegion.X + ClipRegion.Width);
+                    int delta = (rect.X + rect.Width) - (scaledClipRegion.X + scaledClipRegion.Width);
 
                     rect.Width -= delta;
 

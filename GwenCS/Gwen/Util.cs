@@ -29,6 +29,11 @@ namespace Gwen
             return new Rectangle(Round(x), Round(y), Round(w), Round(h));
         }
 
+        public static Rectangle ScaledRect(Rectangle rect, float scale)
+        {
+            return FloatRect(rect.X * scale, rect.Y * scale, rect.Width * scale, rect.Height * scale);
+        }
+
         public static int Clamp(int x, int min, int max)
         {
             if (x < min)
