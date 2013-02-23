@@ -26,7 +26,7 @@ namespace Gwen
 
         public static Rectangle FloatRect(float x, float y, float w, float h)
         {
-            return new Rectangle((int)x, (int)y, (int)w, (int)h);
+            return new Rectangle(Round(x), Round(y), Round(w), Round(h));
         }
 
         public static int Clamp(int x, int min, int max)

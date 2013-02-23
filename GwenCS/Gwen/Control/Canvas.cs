@@ -219,8 +219,11 @@ namespace Gwen.Control
             if (IsHidden)
                 return false;
 
-            // Todo: Handle scaling here..
-            //float fScale = 1.0f / Scale();
+            float inverseScale = 1.0f / Scale;
+            x = Util.Round(x * inverseScale);
+            y = Util.Round(y * inverseScale);
+            dx = Util.Round(dx * inverseScale);
+            dy = Util.Round(dy * inverseScale);
 
             InputHandler.OnMouseMoved(this, x, y, dx, dy);
 
