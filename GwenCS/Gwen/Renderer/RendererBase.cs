@@ -9,10 +9,8 @@ namespace Gwen.Renderer
     /// </summary>
     public class RendererBase : IDisposable
     {
-        //public Random rnd;
         private Point m_RenderOffset;
         private Rectangle m_ClipRegion;
-        //protected ICacheToTexture m_RTT;
 
         public float Scale { get; set; }
 
@@ -21,11 +19,8 @@ namespace Gwen.Renderer
         /// </summary>
         protected RendererBase()
         {
-            //rnd = new Random();
             m_RenderOffset = Point.Empty;
             Scale = 1.0f;
-            if (CTT != null)
-                CTT.Initialize();
         }
         
         /// <summary>
@@ -34,8 +29,6 @@ namespace Gwen.Renderer
         /// <filterpriority>2</filterpriority>
         public virtual void Dispose()
         {
-            if (CTT != null)
-                CTT.ShutDown();
             GC.SuppressFinalize(this);
         }
 
@@ -169,11 +162,6 @@ namespace Gwen.Renderer
             DrawColor = Color.Red;
             DrawFilledRect(rect);
         }
-
-        /// <summary>
-        /// Cache to texture provider.
-        /// </summary>
-        public virtual ICacheToTexture CTT { get { return null; } }
 
         /// <summary>
         /// Loads the specified font.

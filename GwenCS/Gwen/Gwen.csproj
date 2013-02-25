@@ -163,7 +163,6 @@
     <Compile Include="DragDrop\DragAndDrop.cs" />
     <Compile Include="DragDrop\Package.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Renderer\ICacheToTexture.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="Renderer\RendererBase.cs" />
     <Compile Include="Skin\SkinBase.cs" />
