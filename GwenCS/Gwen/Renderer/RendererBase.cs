@@ -7,7 +7,7 @@ namespace Gwen.Renderer
     /// <summary>
     /// Base renderer.
     /// </summary>
-    public class RendererBase : IDisposable
+    public abstract class RendererBase : IDisposable
     {
         private Point m_RenderOffset;
         private Rectangle m_ClipRegion;
@@ -88,15 +88,15 @@ namespace Gwen.Renderer
         /// <param name="y"></param>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        public virtual void DrawLine(int x, int y, int a, int b)
-        {}
+		public virtual void DrawLine(int x, int y, int a, int b)
+		{
+		}
 
         /// <summary>
         /// Draws a solid filled rectangle.
         /// </summary>
         /// <param name="rect"></param>
-        public virtual void DrawFilledRect(Rectangle rect)
-        {}
+		public abstract void DrawFilledRect(Rectangle rect);
 
         /// <summary>
         /// Starts clipping to the current clipping rectangle.
@@ -114,31 +114,27 @@ namespace Gwen.Renderer
         /// Loads the specified texture.
         /// </summary>
         /// <param name="t"></param>
-        public virtual void LoadTexture(Texture t)
-        {}
+		public abstract void LoadTexture(Texture t);
 
         /// <summary>
         /// Initializes texture from raw pixel data.
         /// </summary>
         /// <param name="t">Texture to initialize. Dimensions need to be set.</param>
         /// <param name="pixelData">Pixel data in RGBA format.</param>
-        public virtual void LoadTextureRaw(Texture t, byte[] pixelData)
-        {}
+		public abstract void LoadTextureRaw(Texture t, byte[] pixelData);
 
         /// <summary>
         /// Initializes texture from image file data.
         /// </summary>
         /// <param name="t">Texture to initialize.</param>
         /// <param name="data">Image file as stream.</param>
-        public virtual void LoadTextureStream(Texture t, Stream data)
-        {}
+		public abstract void LoadTextureStream(Texture t, Stream data);
 
         /// <summary>
         /// Frees the specified texture.
         /// </summary>
         /// <param name="t">Texture to free.</param>
-        public virtual void FreeTexture(Texture t)
-        {}
+		public abstract void FreeTexture(Texture t);
 
         /// <summary>
         /// Draws textured rectangle.
@@ -149,8 +145,7 @@ namespace Gwen.Renderer
         /// <param name="v1">Texture coordinate v1.</param>
         /// <param name="u2">Texture coordinate u2.</param>
         /// <param name="v2">Texture coordinate v2.</param>
-        public virtual void DrawTexturedRect(Texture t, Rectangle targetRect, float u1=0, float v1=0, float u2=1, float v2=1)
-        {}
+		public abstract void DrawTexturedRect(Texture t, Rectangle targetRect, float u1=0, float v1=0, float u2=1, float v2=1);
 
         /// <summary>
         /// Draws "missing image" default texture.
@@ -199,52 +194,7 @@ namespace Gwen.Renderer
         /// <param name="font">Font to use.</param>
         /// <param name="position">Top-left corner of the text.</param>
         /// <param name="text">Text to render.</param>
-        public virtual void RenderText(Font font, Point position, String text)
-        {
-            float size = font.Size * Scale;
-
-            for ( int i=0; i<text.Length; i++ )
-            {
-                char chr = text[i];
-
-                if ( chr == ' ' ) 
-                    continue;
-
-                Rectangle r = Util.FloatRect(position.X + i * size * 0.4f, position.Y, size * 0.4f - 1, size);
-
-                /*
-                    This isn't important, it's just me messing around changing the
-                    shape of the rect based on the letter.. just for fun.
-                */
-                if ( chr == 'l' || chr == 'i' || chr == '!' || chr == 't' )
-                {
-                    r.Width = 1;
-                }
-                else if ( chr >= 'a' && chr <= 'z' )
-                {
-                    r.Y = (int)(r.Y + size * 0.5f);
-                    r.Height = (int)(r.Height - size * 0.4f);
-                }
-                else if ( chr == '.' || chr == ',' )
-                {
-                    r.X += 2;
-                    r.Y += r.Height - 2;
-                    r.Width = 2;
-                    r.Height = 2;
-                }
-                else if ( chr == '\'' || chr == '`'  || chr == '"' )
-                {
-                    r.X += 3;
-                    r.Width = 2;
-                    r.Height = 2;
-                }
-
-                if ( chr == 'o' || chr == 'O' || chr == '0' )
-                    DrawLinedRect( r );	
-                else
-                    DrawFilledRect( r );
-            }
-        }
+		public abstract void RenderText(Font font, Point position, String text);
 
         //
         // No need to implement these functions in your derived class, but if 
