@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Drawing;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Image container.
     /// </summary>
-    public class ImagePanel : Base
+    public class ImagePanel : ControlBase
     {
         private readonly Texture m_Texture;
         private readonly float[] m_uv;
@@ -16,7 +17,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ImagePanel"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ImagePanel(Base parent)
+        public ImagePanel(ControlBase parent)
             : base(parent)
         {
             m_uv = new float[4];
@@ -59,7 +60,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             base.Render(skin);
             skin.Renderer.DrawColor = m_DrawColor;

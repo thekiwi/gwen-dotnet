@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class NumericUpDown : GUnit
     {
-        public NumericUpDown(Base parent)
+        public NumericUpDown(ControlBase parent)
             : base(parent)
         {
             Control.NumericUpDown ctrl = new Control.NumericUpDown(this);
@@ -16,7 +16,7 @@ namespace Gwen.UnitTest
             ctrl.ValueChanged += OnValueChanged;
         }
 
-        void OnValueChanged(Base control)
+        void OnValueChanged(ControlBase control)
         {
             UnitPrint(String.Format("NumericUpDown: ValueChanged: {0}", ((Control.NumericUpDown)control).Value));
         }

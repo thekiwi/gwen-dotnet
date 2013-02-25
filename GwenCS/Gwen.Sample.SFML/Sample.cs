@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -52,7 +52,7 @@ namespace Gwen.Sample.SFML
 
                 // Create GWEN skin
                 //Skin.Simple skin = new Skin.Simple(GwenRenderer);
-                Skin.TexturedBase skin = new Skin.TexturedBase(gwenRenderer, "DefaultSkin.png");
+                Skin.TexturedSkin skin = new Skin.TexturedSkin(gwenRenderer, "DefaultSkin.png");
 
                 // set default font
                 Font defaultFont = new Font(gwenRenderer) {Size = 10, FaceName = "Arial Unicode MS"};

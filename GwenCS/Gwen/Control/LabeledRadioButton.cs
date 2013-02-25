@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// RadioButton with label.
     /// </summary>
-    public class LabeledRadioButton : Base
+    public class LabeledRadioButton : ControlBase
     {
         private readonly RadioButton m_RadioButton;
         private readonly LabelClickable m_Label;
@@ -20,7 +21,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="LabeledRadioButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabeledRadioButton(Base parent)
+        public LabeledRadioButton(ControlBase parent)
             : base(parent)
         {
             SetSize(100, 20);
@@ -41,7 +42,7 @@ namespace Gwen.Control
             m_Label.AutoSizeToContents = true;
         }
 
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             // ugly stuff because we don't have anchoring without docking (docking resizes children)
             if (m_Label.Height > m_RadioButton.Height) // usually radio is smaller than label so it gets repositioned to avoid clipping with negative Y
@@ -57,7 +58,7 @@ namespace Gwen.Control
         /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus(Skin.Base skin)
+        protected override void RenderFocus(SkinBase skin)
         {
             if (InputHandler.KeyboardFocus != this) return;
             if (!IsTabable) return;

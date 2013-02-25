@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
+using Gwen.Renderer;
 
 namespace Gwen.Skin.Texturing
 {
@@ -31,12 +32,12 @@ namespace Gwen.Skin.Texturing
         }
 
         // can't have this as default param
-        public void Draw(Renderer.Base render, Rectangle r)
+        public void Draw(RendererBase render, Rectangle r)
         {
             Draw(render, r, Color.White);
         }
 
-        public void Draw(Renderer.Base render, Rectangle r, Color col)
+        public void Draw(RendererBase render, Rectangle r, Color col)
         {
             if (m_Texture == null)
                 return;
@@ -45,7 +46,7 @@ namespace Gwen.Skin.Texturing
             render.DrawTexturedRect(m_Texture, r, m_uv[0], m_uv[1], m_uv[2], m_uv[3]);
         }
 
-        public void DrawCenter(Renderer.Base render, Rectangle r)
+        public void DrawCenter(RendererBase render, Rectangle r)
         {
             if (m_Texture == null)
                 return;
@@ -53,7 +54,7 @@ namespace Gwen.Skin.Texturing
             DrawCenter(render, r, Color.White);
         }
 
-        public void DrawCenter(Renderer.Base render, Rectangle r, Color col)
+        public void DrawCenter(RendererBase render, Rectangle r, Color col)
         {
             r.X += (int)((r.Width - m_Width) * 0.5);
             r.Y += (int)((r.Height - m_Height) * 0.5);

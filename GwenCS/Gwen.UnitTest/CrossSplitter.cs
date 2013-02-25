@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.UnitTest
 {
@@ -8,7 +9,7 @@ namespace Gwen.UnitTest
         private int m_CurZoom;
         private readonly Control.CrossSplitter m_Splitter;
 
-        public CrossSplitter(Base parent)
+        public CrossSplitter(ControlBase parent)
             : base(parent)
         {
             m_CurZoom = 0;
@@ -94,7 +95,7 @@ namespace Gwen.UnitTest
             }
         }
 
-        void ZoomTest(Base control)
+        void ZoomTest(ControlBase control)
         {
             m_Splitter.Zoom(m_CurZoom);
             m_CurZoom++;
@@ -102,23 +103,23 @@ namespace Gwen.UnitTest
                 m_CurZoom = 0;
         }
 
-        void UnZoomTest(Base control)
+        void UnZoomTest(ControlBase control)
         {
             m_Splitter.UnZoom();
         }
 
-        void CenterPanels(Base control)
+        void CenterPanels(ControlBase control)
         {
             m_Splitter.CenterPanels();
             m_Splitter.UnZoom();
         }
 
-        void ToggleSplitters(Base control)
+        void ToggleSplitters(ControlBase control)
         {
             m_Splitter.SplittersVisible = !m_Splitter.SplittersVisible;
         }
 
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             
         }

@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
     /// <summary>
     /// Color square.
     /// </summary>
-    public class ColorDisplay : Base
+    public class ColorDisplay : ControlBase
     {
         private Color m_Color;
         //private bool m_DrawCheckers;
@@ -16,7 +17,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="ColorDisplay"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorDisplay(Base parent) : base(parent)
+        public ColorDisplay(ControlBase parent) : base(parent)
         {
             SetSize(32, 32);
             m_Color = Color.FromArgb(255, 255, 0, 0);
@@ -27,7 +28,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawColorDisplay(this, m_Color);
         }

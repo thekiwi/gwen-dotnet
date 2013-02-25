@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -19,7 +20,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="TreeControl"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TreeControl(Base parent)
+        public TreeControl(ControlBase parent)
             : base(parent)
         {
             m_TreeControl = this;
@@ -48,7 +49,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             if (ShouldDrawBackground)
                 skin.DrawTreeControl(this);
@@ -59,7 +60,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="oldChildBounds"></param>
         /// <param name="child"></param>
-        protected override void OnChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, Base child)
+        protected override void OnChildBoundsChanged(System.Drawing.Rectangle oldChildBounds, ControlBase child)
         {
             if (m_ScrollControl != null)
                 m_ScrollControl.UpdateScrollBars();
@@ -86,7 +87,7 @@ namespace Gwen.Control
         /// Handler for node selected event.
         /// </summary>
         /// <param name="Control">Node selected.</param>
-        protected virtual void OnNodeSelected(Base Control)
+        protected virtual void OnNodeSelected(ControlBase Control)
         {
             if (!m_MultiSelect /*|| InputHandler.InputHandler.IsKeyDown(Key.Control)*/)
                 UnselectAll();

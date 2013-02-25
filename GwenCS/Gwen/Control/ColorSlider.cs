@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// HSV hue selector.
     /// </summary>
-    public class ColorSlider : Base
+    public class ColorSlider : ControlBase
     {
         private int m_SelectedDist;
         private bool m_Depressed;
@@ -22,7 +23,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ColorSlider"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorSlider(Base parent)
+        public ColorSlider(ControlBase parent)
             : base(parent)
         {
             SetSize(32, 128);
@@ -44,7 +45,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             //Is there any way to move this into skin? Not for now, no idea how we'll "actually" render these
 

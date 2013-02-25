@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
@@ -15,7 +16,7 @@ namespace Gwen.ControlInternal
         /// </summary>
         /// <param name="parent">Parent control.</param>
         /// <param name="owner">Window that owns this button.</param>
-        public CloseButton(Base parent, WindowControl owner)
+        public CloseButton(ControlBase parent, WindowControl owner)
             : base(parent)
         {
             m_Window = owner;
@@ -25,7 +26,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawWindowCloseButton(this, IsDepressed && IsHovered, IsHovered && ShouldDrawHover, !m_Window.IsOnTop);
         }

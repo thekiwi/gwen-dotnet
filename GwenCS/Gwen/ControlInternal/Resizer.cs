@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Gwen.Control;
@@ -21,7 +21,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="Resizer"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Resizer(Base parent)
+        public Resizer(ControlBase parent)
             : base(parent)
         {
             m_ResizeDir = Pos.Left;

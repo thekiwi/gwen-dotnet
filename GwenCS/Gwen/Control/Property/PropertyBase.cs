@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 
 namespace Gwen.Control.Property
 {
     /// <summary>
     /// Base control for property entry.
     /// </summary>
-    public class Base : Control.Base
+    public class PropertyBase : ControlBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Base"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Base(Control.Base parent) : base(parent)
+        public PropertyBase(ControlBase parent) : base(parent)
         {
             Height = 17;
         }
@@ -37,7 +37,7 @@ namespace Gwen.Control.Property
                 ValueChanged.Invoke(this);
         }
 
-        protected virtual void OnValueChanged(Control.Base control)
+        protected virtual void OnValueChanged(ControlBase control)
         {
             DoChanged();
         }

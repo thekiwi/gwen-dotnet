@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -47,7 +48,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ProgressBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ProgressBar(Base parent)
+        public ProgressBar(ControlBase parent)
             : base(parent)
         {
             MouseInputEnabled = false; // [omeg] what? was true
@@ -64,7 +65,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawProgressBar(this, m_Horizontal, m_Progress);
         }

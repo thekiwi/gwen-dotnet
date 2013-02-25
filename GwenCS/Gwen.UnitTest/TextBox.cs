@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Control;
 
@@ -10,7 +10,7 @@ namespace Gwen.UnitTest
         private readonly Font m_Font2;
         private readonly Font m_Font3;
 
-        public TextBox(Base parent)
+        public TextBox(ControlBase parent)
             : base(parent)
         {
             int row = 0;
@@ -167,13 +167,13 @@ namespace Gwen.UnitTest
             base.Dispose();
         }
 
-        void OnEdit(Base control)
+        void OnEdit(ControlBase control)
         {
             Control.TextBox box = control as Control.TextBox;
             UnitPrint(String.Format("TextBox: OnEdit: {0}", box.Text));
         }
 
-        void OnSubmit(Base control)
+        void OnSubmit(ControlBase control)
         {
             Control.TextBox box = control as Control.TextBox;
             UnitPrint(String.Format("TextBox: OnSubmit: {0}", box.Text));

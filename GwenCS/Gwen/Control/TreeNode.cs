@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Linq;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Tree control node.
     /// </summary>
-    public class TreeNode : Base
+    public class TreeNode : ControlBase
     {
         public const int TreeIndentation = 14;
 
@@ -116,7 +117,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="TreeNode"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TreeNode(Base parent)
+        public TreeNode(ControlBase parent)
             : base(parent)
         {
             m_ToggleButton = new TreeToggleButton(this);
@@ -129,7 +130,7 @@ namespace Gwen.Control
             m_Title.DoubleClickedLeft += OnDoubleClickName;
             m_Title.Clicked += OnClickName;
 
-            m_InnerPanel = new Base(this);
+            m_InnerPanel = new ControlBase(this);
             m_InnerPanel.Dock = Pos.Top;
             m_InnerPanel.Height = 100;
             m_InnerPanel.Margin = new Margin(TreeIndentation, 1, 0, 0);
@@ -144,7 +145,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             int bottom = 0;
             if (m_InnerPanel.Children.Count > 0)
@@ -160,7 +161,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             if (m_ToggleButton != null)
             {
@@ -189,7 +190,7 @@ namespace Gwen.Control
         /// Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout(Skin.Base skin)
+        protected override void PostLayout(SkinBase skin)
         {
             if (SizeToChildren(false, true))
             {
@@ -258,7 +259,7 @@ namespace Gwen.Control
         public void ExpandAll()
         {
             Open();
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 TreeNode node = child as TreeNode;
                 if (node == null)
@@ -276,7 +277,7 @@ namespace Gwen.Control
             if (m_Title != null)
                 m_Title.ToggleState = false;
 
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 TreeNode node = child as TreeNode;
                 if (node == null)
@@ -289,7 +290,7 @@ namespace Gwen.Control
         /// Handler for the toggle button.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnToggleButtonPress(Base control)
+        protected virtual void OnToggleButtonPress(ControlBase control)
         {
             if (m_ToggleButton.ToggleState)
             {
@@ -305,7 +306,7 @@ namespace Gwen.Control
         /// Handler for label double click.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnDoubleClickName(Base control)
+        protected virtual void OnDoubleClickName(ControlBase control)
         {
             if (!m_ToggleButton.IsVisible)
                 return;
@@ -316,7 +317,7 @@ namespace Gwen.Control
         /// Handler for label click.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnClickName(Base control)
+        protected virtual void OnClickName(ControlBase control)
         {
             if (LabelPressed != null)
                 LabelPressed.Invoke(this);

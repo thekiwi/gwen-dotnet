@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -19,7 +20,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="RadioButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public RadioButton(Base parent)
+        public RadioButton(ControlBase parent)
             : base(parent)
         {
             SetSize(15, 15);
@@ -31,7 +32,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawRadioButton(this, IsChecked, IsDepressed);
         }

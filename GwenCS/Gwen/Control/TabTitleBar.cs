@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Gwen.DragDrop;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -8,7 +9,7 @@ namespace Gwen.Control
     /// </summary>
     public class TabTitleBar : Label
     {
-        public TabTitleBar(Base parent) : base(parent)
+        public TabTitleBar(ControlBase parent) : base(parent)
         {
             MouseInputEnabled = true;
             TextPadding = new Padding(5, 2, 5, 2);
@@ -21,7 +22,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawTabTitleBar(this);
         }

@@ -1,19 +1,20 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Splitter control.
     /// </summary>
-    public class CrossSplitter : Base
+    public class CrossSplitter : ControlBase
     {
         private readonly SplitterBar m_VSplitter;
         private readonly SplitterBar m_HSplitter;
         private readonly SplitterBar m_CSplitter;
 
-        private readonly Base[] m_Sections;
+        private readonly ControlBase[] m_Sections;
 
         private float m_HVal; // 0-1
         private float m_VVal; // 0-1
@@ -40,10 +41,10 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="CrossSplitter"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CrossSplitter(Base parent)
+        public CrossSplitter(ControlBase parent)
             : base(parent)
         {
-            m_Sections = new Base[4];
+            m_Sections = new ControlBase[4];
 
             m_VSplitter = new SplitterBar(this);
             m_VSplitter.SetPosition(0, 128);
@@ -123,19 +124,19 @@ namespace Gwen.Control
             m_CSplitter.MoveTo((Width - m_CSplitter.Width) * (m_HVal), (Height - m_CSplitter.Height) * (m_VVal));
         }
 
-        protected void OnCenterMoved(Base control)
+        protected void OnCenterMoved(ControlBase control)
         {
             CalculateValueCenter();
             Invalidate();
         }
 
-        protected void OnVerticalMoved(Base control)
+        protected void OnVerticalMoved(ControlBase control)
         {
             m_VVal = CalculateValueVertical();
             Invalidate();
         }
 
-        protected void OnHorizontalMoved(Base control)
+        protected void OnHorizontalMoved(ControlBase control)
         {
             m_HVal = CalculateValueHorizontal();
             Invalidate();
@@ -161,7 +162,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             m_VSplitter.SetSize(Width, m_BarSize);
             m_HSplitter.SetSize(m_BarSize, Height);
@@ -197,7 +198,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="index">Section index (0-3).</param>
         /// <param name="panel">Control to assign.</param>
-        public void SetPanel(int index, Base panel)
+        public void SetPanel(int index, ControlBase panel)
         {
             m_Sections[index] = panel;
 
@@ -215,7 +216,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="index">Section index (0-3).</param>
         /// <returns>Specified section.</returns>
-        public Base GetPanel(int index)
+        public ControlBase GetPanel(int index)
         {
             return m_Sections[index];
         }

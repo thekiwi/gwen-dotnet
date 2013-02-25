@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Control;
 
@@ -6,7 +6,7 @@ namespace Gwen.UnitTest
 {
     public class ColorPickers : GUnit
     {
-        public ColorPickers(Base parent) : base(parent)
+        public ColorPickers(ControlBase parent) : base(parent)
         {
             ColorPicker rgbPicker = new ColorPicker(this);
             rgbPicker.SetPosition(10, 10);
@@ -18,7 +18,7 @@ namespace Gwen.UnitTest
             hsvPicker.ColorChanged += ColorChanged;
         }
 
-        void ColorChanged(Base control)
+        void ColorChanged(ControlBase control)
         {
             IColorPicker picker = control as IColorPicker;
             Color c = picker.SelectedColor;

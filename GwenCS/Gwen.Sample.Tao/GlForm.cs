@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -13,7 +13,7 @@ namespace Gwen.Sample.Tao
     {
         private Canvas canvas;
         private Gwen.Renderer.Tao renderer;
-        private Gwen.Skin.Base skin;
+        private Gwen.SkinBase skin;
         private Gwen.UnitTest.UnitTest test;
 
         const int fps_frames = 50;
@@ -43,7 +43,7 @@ namespace Gwen.Sample.Tao
             Gl.glViewport(0, 0, glControl.Width, glControl.Height);
 
             renderer = new Gwen.Renderer.Tao();
-            skin = new Gwen.Skin.TexturedBase(renderer, "DefaultSkin.png");
+            skin = new Gwen.Skin.TexturedSkin(renderer, "DefaultSkin.png");
             //skin = new Gwen.Skin.Simple(renderer);
             canvas = new Canvas(skin);
             canvas.SetSize(glControl.Width, glControl.Height);

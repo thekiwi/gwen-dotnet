@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -11,7 +12,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="LabelClickable"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public LabelClickable(Base parent)
+        public LabelClickable(ControlBase parent)
             : base(parent)
         {
             IsToggle = false;
@@ -22,7 +23,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             // no button look
         }

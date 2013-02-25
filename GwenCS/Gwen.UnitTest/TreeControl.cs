@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class TreeControl : GUnit
     {
-        public TreeControl(Base parent)
+        public TreeControl(ControlBase parent)
             : base(parent)
         {
             {
@@ -57,19 +57,19 @@ namespace Gwen.UnitTest
             }
         }
 
-        void NodeCollapsed(Base control)
+        void NodeCollapsed(ControlBase control)
         {
             TreeNode node = control as TreeNode;
             UnitPrint(String.Format("Node collapsed: {0}", node.Text));
         }
 
-        void NodeExpanded(Base control)
+        void NodeExpanded(ControlBase control)
         {
             TreeNode node = control as TreeNode;
             UnitPrint(String.Format("Node expanded: {0}", node.Text));
         }
 
-        void NodeSelected(Base control)
+        void NodeSelected(ControlBase control)
         {
             TreeNode node = control as TreeNode;
             UnitPrint(String.Format("Node selected: {0}", node.Text));

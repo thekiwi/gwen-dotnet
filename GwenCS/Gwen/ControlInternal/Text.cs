@@ -1,15 +1,16 @@
-﻿//#define DEBUG_TEXT_MEASURE
+//#define DEBUG_TEXT_MEASURE
 
 using System;
 using System.Drawing;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
     /// <summary>
     /// Displays text. Always sized to contents.
     /// </summary>
-    public class Text : Base
+    public class Text : ControlBase
     {
         private String m_String;
         private Font m_Font;
@@ -72,7 +73,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="Text"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Text(Base parent)
+        public Text(ControlBase parent)
             : base(parent)
         {
             m_Font = Skin.DefaultFont;
@@ -86,7 +87,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             if (Length == 0 || Font == null) return;
 
@@ -122,7 +123,7 @@ namespace Gwen.ControlInternal
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             SizeToContents();
             base.Layout(skin);

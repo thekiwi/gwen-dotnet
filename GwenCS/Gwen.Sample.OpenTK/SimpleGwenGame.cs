@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -17,7 +17,7 @@ namespace Gwen.Sample.OpenTK
     {
         private Gwen.Input.OpenTK input;
         private Gwen.Renderer.OpenTK renderer;
-        private Gwen.Skin.Base skin;
+        private Gwen.Skin.SkinBase skin;
         private Gwen.Control.Canvas canvas;
         private UnitTest.UnitTest test;
 
@@ -105,7 +105,7 @@ namespace Gwen.Sample.OpenTK
             GL.ClearColor(Color.MidnightBlue);
 
             renderer = new Gwen.Renderer.OpenTK();
-            skin = new Gwen.Skin.TexturedBase(renderer, "DefaultSkin.png");
+            skin = new Gwen.Skin.TexturedSkin(renderer, "DefaultSkin.png");
             //skin = new Gwen.Skin.Simple(renderer);
             //skin.DefaultFont = new Font(renderer, "Courier", 10);
             canvas = new Canvas(skin);

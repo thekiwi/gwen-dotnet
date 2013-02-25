@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 
 namespace Gwen.Control.Property
 {
     /// <summary>
     /// Checkable property.
     /// </summary>
-    public class Check : Base
+    public class Check : PropertyBase
     {
         protected readonly Control.CheckBox m_CheckBox;
 
@@ -13,7 +13,7 @@ namespace Gwen.Control.Property
         /// Initializes a new instance of the <see cref="Check"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Check(Control.Base parent)
+        public Check(ControlBase parent)
             : base(parent)
         {
             m_CheckBox = new Control.CheckBox(this);

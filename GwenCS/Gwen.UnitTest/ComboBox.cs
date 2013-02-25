@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class ComboBox : GUnit
     {
-        public ComboBox(Base parent)
+        public ComboBox(ControlBase parent)
             : base(parent)
         {
             {
@@ -42,7 +42,7 @@ namespace Gwen.UnitTest
             }
         }
 
-        void OnComboSelect(Base control)
+        void OnComboSelect(ControlBase control)
         {
             Control.ComboBox combo = control as Control.ComboBox;
             UnitPrint(String.Format("ComboBox: OnComboSelect: {0}", combo.SelectedItem.Text));

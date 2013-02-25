@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Control;
 
@@ -10,7 +10,7 @@ namespace Gwen.UnitTest
         private readonly Font font2;
         private readonly Font font3;
 
-        public Label(Base parent) : base(parent)
+        public Label(ControlBase parent) : base(parent)
         {
             {
                 Control.Label label = new Control.Label(this);

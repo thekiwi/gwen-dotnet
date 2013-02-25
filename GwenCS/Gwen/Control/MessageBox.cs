@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -21,7 +22,7 @@ namespace Gwen.Control
         /// <param name="parent">Parent control.</param>
         /// <param name="text">Message to display.</param>
         /// <param name="caption">Window caption.</param>
-        public MessageBox(Base parent, String text, String caption = "") 
+        public MessageBox(ControlBase parent, String text, String caption = "") 
             : base(parent, caption, true)
         {
             DeleteOnClose = true;
@@ -43,7 +44,7 @@ namespace Gwen.Control
             Align.Center(this);
         }
 
-        private void DismissedHandler(Base control)
+        private void DismissedHandler(ControlBase control)
         {
             if (Dismissed != null)
                 Dismissed.Invoke(this);
@@ -53,7 +54,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Linq;
 using Gwen.Control;
 using Gwen.Control.Layout;
@@ -7,7 +7,7 @@ namespace Gwen.UnitTest
 {
     public class ListBox : GUnit
     {
-        public ListBox(Base parent)
+        public ListBox(ControlBase parent)
             : base(parent)
         {
             {
@@ -131,13 +131,13 @@ namespace Gwen.UnitTest
             }
         }
 
-        void RowSelected(Base control)
+        void RowSelected(ControlBase control)
         {
             Control.ListBox list = control as Control.ListBox;
             UnitPrint(String.Format("ListBox: RowSelected: {0} [{1}]", list.SelectedRows.Last().Text, list[list.SelectedRowIndex].Text));
         }
 
-        void RowUnSelected(Base control)
+        void RowUnSelected(ControlBase control)
         {
             // todo: how to determine which one was unselected (store somewhere)
             // or pass row as the event param?

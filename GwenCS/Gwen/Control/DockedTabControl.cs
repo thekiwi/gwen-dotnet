@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -18,7 +19,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="DockedTabControl"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public DockedTabControl(Base parent)
+        public DockedTabControl(ControlBase parent)
             : base(parent)
         {
             Dock = Pos.Fill;
@@ -32,7 +33,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             TabStrip.IsHidden = (TabCount <= 1);
             UpdateTitleBar();
@@ -68,7 +69,7 @@ namespace Gwen.Control
         public void MoveTabsTo(DockedTabControl target)
         {
             var children = TabStrip.Children.ToArray(); // copy because collection will be modified
-            foreach (Base child in children)
+            foreach (ControlBase child in children)
             {
                 TabButton button = child as TabButton;
                 if (button == null)

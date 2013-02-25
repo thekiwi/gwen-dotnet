@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
@@ -20,7 +21,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="ColorButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorButton(Base parent) : base(parent)
+        public ColorButton(ControlBase parent) : base(parent)
         {
             m_Color = Color.Black;
             Text = String.Empty;
@@ -30,7 +31,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.Renderer.DrawColor = m_Color;
             skin.Renderer.DrawFilledRect(RenderBounds);

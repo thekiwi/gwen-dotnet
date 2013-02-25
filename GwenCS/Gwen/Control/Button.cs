@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -104,7 +105,7 @@ namespace Gwen.Control
         /// Control constructor.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Button(Base parent)
+        public Button(ControlBase parent)
             : base(parent)
         {
             SetSize(100, 20);
@@ -124,7 +125,7 @@ namespace Gwen.Control
         /// <summary>
         /// "Clicks" the button.
         /// </summary>
-        public virtual void Press(Base control = null)
+        public virtual void Press(ControlBase control = null)
         {
             OnClicked();
         }
@@ -133,7 +134,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             base.Render(skin);
 
@@ -265,7 +266,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
             if (m_Image != null)

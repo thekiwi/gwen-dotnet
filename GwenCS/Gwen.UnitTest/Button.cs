@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
@@ -7,7 +7,7 @@ namespace Gwen.UnitTest
     {
         private readonly Control.Button buttonA, buttonB, buttonC, buttonD, buttonE, buttonF, buttonG, buttonH;
 
-        public Button(Base parent)
+        public Button(ControlBase parent)
             : base(parent)
         {
             buttonA = new Control.Button(this);
@@ -55,32 +55,32 @@ namespace Gwen.UnitTest
             Align.PlaceDownLeft(buttonH, buttonG, 10);
         }
 
-        private void onButtonAc(Base control)
+        private void onButtonAc(ControlBase control)
         {
             UnitPrint("Button: Clicked");
         }
 
-        private void onButtonAp(Base control)
+        private void onButtonAp(ControlBase control)
         {
             UnitPrint("Button: Pressed");
         }
 
-        private void onButtonAr(Base control)
+        private void onButtonAr(ControlBase control)
         {
             UnitPrint("Button: Released");
         }
 
-        private void onToggle(Base control)
+        private void onToggle(ControlBase control)
         {
             UnitPrint("Button: Toggled");
         }
 
-        private void onToggleOn(Base control)
+        private void onToggleOn(ControlBase control)
         {
             UnitPrint("Button: OnToggleOn");
         }
 
-        private void onToggleOff(Base control)
+        private void onToggleOff(ControlBase control)
         {
             UnitPrint("Button: ToggledOff");
         }

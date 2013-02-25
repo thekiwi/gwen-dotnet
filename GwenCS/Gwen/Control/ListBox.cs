@@ -1,9 +1,10 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Gwen.Control.Layout;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -102,7 +103,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ListBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ListBox(Base parent)
+        public ListBox(ControlBase parent)
             : base(parent)
         {
             m_SelectedRows = new List<TableRow>();
@@ -167,7 +168,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="control">Row to select.</param>
         /// <param name="clearOthers">Determines whether to deselect previously selected rows.</param>
-        public void SelectRow(Base control, bool clearOthers = false)
+        public void SelectRow(ControlBase control, bool clearOthers = false)
         {
             if (!AllowMultiSelect || clearOthers)
                 UnselectAll();
@@ -238,7 +239,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawListBox(this);
         }
@@ -274,7 +275,7 @@ namespace Gwen.Control
         /// Handler for the row selection event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnRowSelected(Base control)
+        protected virtual void OnRowSelected(ControlBase control)
         {
             // [omeg] changed default behavior
             bool clear = false;// !InputHandler.InputHandler.IsShiftDown;
@@ -311,7 +312,7 @@ namespace Gwen.Control
             m_Table.SizeToContents(0); // autosize without constraints
         }
 
-        private void TableResized(Base control)
+        private void TableResized(ControlBase control)
         {
             if (m_SizeToContents)
             {

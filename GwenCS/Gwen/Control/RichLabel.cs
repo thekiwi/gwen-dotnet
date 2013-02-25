@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Multiline label with text chunks having different color/font.
     /// </summary>
-    public class RichLabel : Base
+    public class RichLabel : ControlBase
     {
         protected struct TextBlock
         {
@@ -31,7 +32,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="RichLabel"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public RichLabel(Base parent)
+        public RichLabel(ControlBase parent)
             : base(parent)
         {
             newline = new string[] { Environment.NewLine };
@@ -233,15 +234,15 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
             if (m_NeedsRebuild)
                 Rebuild();
 
             // align bottoms. this is still not ideal, need to take font metrics into account.
-            Base prev = null;
-            foreach (Base child in Children)
+            ControlBase prev = null;
+            foreach (ControlBase child in Children)
             {
                 if (prev != null && child.Y == prev.Y)
                 {

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
@@ -19,7 +20,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="SliderBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public SliderBar(Base parent)
+        public SliderBar(ControlBase parent)
             : base(parent)
         {
             Target = this;
@@ -30,7 +31,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawSliderButton(this, IsHeld, IsHorizontal);
         }

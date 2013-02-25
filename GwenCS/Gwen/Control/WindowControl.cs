@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Linq;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -51,7 +52,7 @@ namespace Gwen.Control
         /// <param name="parent">Parent control.</param>
         /// <param name="caption">Window caption.</param>
         /// <param name="modal">Determines whether the window should be modal.</param>
-        public WindowControl(Base parent, String caption = "", bool modal = false)
+        public WindowControl(ControlBase parent, String caption = "", bool modal = false)
             : base(parent)
         {
             m_TitleBar = new Dragger(this);
@@ -77,7 +78,7 @@ namespace Gwen.Control
             m_CloseButton.Name = "closeButton";
 
             //Create a blank content control, dock it to the top - Should this be a ScrollControl?
-            m_InnerPanel = new Base(this);
+            m_InnerPanel = new ControlBase(this);
             m_InnerPanel.Dock = Pos.Fill;
             GetResizer(8).Hide();
             BringToFront();
@@ -91,7 +92,7 @@ namespace Gwen.Control
                 MakeModal();
         }
 
-        protected virtual void CloseButtonPressed(Base control)
+        protected virtual void CloseButtonPressed(ControlBase control)
         {
             IsHidden = true;
 
@@ -137,7 +138,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             bool hasFocus = IsOnTop;
 
@@ -153,7 +154,7 @@ namespace Gwen.Control
         /// Renders under the actual control (shadows etc).
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderUnder(Skin.Base skin)
+        protected override void RenderUnder(SkinBase skin)
         {
             base.RenderUnder(skin);
             skin.DrawShadow(this);
@@ -169,7 +170,7 @@ namespace Gwen.Control
         /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus(Skin.Base skin)
+        protected override void RenderFocus(SkinBase skin)
         {
             
         }

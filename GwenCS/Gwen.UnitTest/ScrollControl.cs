@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class ScrollControl : GUnit
     {
-        public ScrollControl(Base parent)
+        public ScrollControl(ControlBase parent)
             : base(parent)
         {
             {

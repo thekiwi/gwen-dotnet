@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Base class for scrollbars.
     /// </summary>
-    public class ScrollBar : Base
+    public class ScrollBar : ControlBase
     {
         protected readonly ScrollBarButton[] m_ScrollButton;
         protected readonly ScrollBarBar m_Bar;
@@ -51,7 +52,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ScrollBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        protected ScrollBar(Base parent) : base(parent)
+        protected ScrollBar(ControlBase parent) : base(parent)
         {
             m_ScrollButton = new ScrollBarButton[2];
             m_ScrollButton[0] = new ScrollBarButton(this);
@@ -100,7 +101,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawScrollBar(this, IsHorizontal, m_Depressed);
         }
@@ -109,7 +110,7 @@ namespace Gwen.Control
         /// Handler for the BarMoved event.
         /// </summary>
         /// <param name="control">The control.</param>
-        protected virtual void OnBarMoved(Base control)
+        protected virtual void OnBarMoved(ControlBase control)
         {
             if (BarMoved != null)
                 BarMoved.Invoke(this);

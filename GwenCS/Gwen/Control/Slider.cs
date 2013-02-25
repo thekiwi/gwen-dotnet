@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.ControlInternal;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Base slider.
     /// </summary>
-    public class Slider : Base
+    public class Slider : ControlBase
     {
         protected readonly SliderBar m_SliderBar;
         protected bool m_SnapToNotches;
@@ -63,7 +64,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="Slider"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        protected Slider(Base parent)
+        protected Slider(ControlBase parent)
             : base(parent)
         {
             SetBounds(new Rectangle(0, 0, 32, 128));
@@ -177,7 +178,7 @@ namespace Gwen.Control
             
         }
 
-        protected virtual void OnMoved(Base control)
+        protected virtual void OnMoved(ControlBase control)
         {
             SetValueInternal(CalculateValue());
         }
@@ -225,7 +226,7 @@ namespace Gwen.Control
         /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus(Skin.Base skin)
+        protected override void RenderFocus(SkinBase skin)
         {
             if (InputHandler.KeyboardFocus != this) return;
             if (!IsTabable) return;

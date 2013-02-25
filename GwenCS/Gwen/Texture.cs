@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.IO;
+using Gwen.Renderer;
 
 namespace Gwen
 {
@@ -33,13 +34,13 @@ namespace Gwen
         /// </summary>
         public int Height { get; set; }
 
-        private readonly Renderer.Base m_Renderer;
+        private readonly RendererBase m_Renderer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Texture"/> class.
         /// </summary>
         /// <param name="renderer">Renderer to use.</param>
-        public Texture(Renderer.Base renderer)
+        public Texture(RendererBase renderer)
         {
             m_Renderer = renderer;
             Width = 4;

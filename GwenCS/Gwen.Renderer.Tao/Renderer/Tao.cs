@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,7 +8,7 @@ using Tao.OpenGl;
 
 namespace Gwen.Renderer
 {
-    public class Tao : Base
+    public class Tao : RendererBase
     {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct Vertex

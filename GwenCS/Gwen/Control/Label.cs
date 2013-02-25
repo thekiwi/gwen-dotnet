@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Static text label.
     /// </summary>
-    public class Label : Base
+    public class Label : ControlBase
     {
         private readonly Text m_Text;
         private Pos m_Align;
@@ -91,7 +92,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="Label"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Label(Base parent) : base(parent)
+        public Label(ControlBase parent) : base(parent)
         {
             m_Text = new Text(this);
             //m_Text.Font = Skin.DefaultFont;
@@ -134,7 +135,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 
@@ -204,7 +205,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
         }
     }

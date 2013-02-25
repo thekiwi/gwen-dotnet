@@ -1,16 +1,18 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Gwen.Anim;
 using Gwen.DragDrop;
 using Gwen.Input;
+using Gwen.Renderer;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Canvas control. It should be the root parent for all other controls.
     /// </summary>
-    public class Canvas : Base
+    public class Canvas : ControlBase
     {
         private bool m_NeedsRedraw;
         private float m_Scale;
@@ -18,8 +20,8 @@ namespace Gwen.Control
         private Color m_BackgroundColor;
 
         // [omeg] these are not created by us, so no disposing
-        internal Base FirstTab;
-        internal Base NextTab;
+        internal ControlBase FirstTab;
+        internal ControlBase NextTab;
 
         private readonly List<IDisposable> m_DisposeQueue; // dictionary for faster access?
 
@@ -60,7 +62,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="Canvas"/> class.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        public Canvas(Skin.Base skin)
+        public Canvas(SkinBase skin)
         {
             SetBounds(0, 0, 10000, 10000);
             SetSkin(skin);
@@ -108,7 +110,7 @@ namespace Gwen.Control
         {
             DoThink();
 
-            Renderer.Base render = Skin.Renderer;
+            RendererBase render = Skin.Renderer;
 
             render.Begin();
 
@@ -139,7 +141,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             //skin.Renderer.rnd = new Random(1);
             base.Render(skin);
@@ -186,7 +188,7 @@ namespace Gwen.Control
         /// Adds given control to the delete queue and detaches it from canvas. Don't call from Dispose, it modifies child list.
         /// </summary>
         /// <param name="control">Control to delete.</param>
-        public void AddDelayedDelete(Base control)
+        public void AddDelayedDelete(ControlBase control)
         {
             if (!m_DisposeQueue.Contains(control))
             {

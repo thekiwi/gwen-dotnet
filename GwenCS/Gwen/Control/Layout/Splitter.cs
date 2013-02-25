@@ -1,22 +1,23 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control.Layout
 {
     /// <summary>
     /// Base splitter class.
     /// </summary>
-    public class Splitter : Base
+    public class Splitter : ControlBase
     {
-        private readonly Base[] m_Panel;
+        private readonly ControlBase[] m_Panel;
         private readonly bool[] m_Scale;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Splitter"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Splitter(Base parent) : base(parent)
+        public Splitter(ControlBase parent) : base(parent)
         {
-            m_Panel = new Base[2];
+            m_Panel = new ControlBase[2];
             m_Scale = new bool[2];
             m_Scale[0] = true;
             m_Scale[1] = true;
@@ -28,7 +29,7 @@ namespace Gwen.Control.Layout
         /// <param name="panelIndex">Panel index (0-1).</param>
         /// <param name="panel">Panel contents.</param>
         /// <param name="noScale">Determines whether the content is to be scaled.</param>
-        public void SetPanel(int panelIndex, Base panel, bool noScale = false)
+        public void SetPanel(int panelIndex, ControlBase panel, bool noScale = false)
         {
             if (panelIndex < 0 || panelIndex > 1)
                 throw new ArgumentException("Invalid panel index", "panelIndex");
@@ -47,7 +48,7 @@ namespace Gwen.Control.Layout
         /// </summary>
         /// <param name="panelIndex">Panel index (0-1).</param>
         /// <returns></returns>
-        Base GetPanel(int panelIndex)
+        ControlBase GetPanel(int panelIndex)
         {
             if (panelIndex < 0 || panelIndex > 1)
                 throw new ArgumentException("Invalid panel index", "panelIndex");
@@ -58,12 +59,12 @@ namespace Gwen.Control.Layout
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             LayoutVertical(skin);
         }
 
-        protected virtual void LayoutVertical(Skin.Base skin)
+        protected virtual void LayoutVertical(SkinBase skin)
         {
             int w = Width;
             int h = Height;
@@ -87,7 +88,7 @@ namespace Gwen.Control.Layout
             }
         }
 
-        protected virtual void LayoutHorizontal(Skin.Base skin)
+        protected virtual void LayoutHorizontal(SkinBase skin)
         {
             throw new NotImplementedException();
         }

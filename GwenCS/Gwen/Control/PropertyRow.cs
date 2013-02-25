@@ -1,15 +1,17 @@
-﻿using System;
+using System;
 using Gwen.ControlInternal;
+using Gwen.Control.Property;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Single property row.
     /// </summary>
-    public class PropertyRow : Base
+    public class PropertyRow : ControlBase
     {
         private readonly Label m_Label;
-        private readonly Property.Base m_Property;
+        private readonly PropertyBase m_Property;
         private bool m_LastEditing;
         private bool m_LastHover;
 
@@ -49,7 +51,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="parent">Parent control.</param>
         /// <param name="prop">Property control associated with this row.</param>
-        public PropertyRow(Base parent, Property.Base prop)
+        public PropertyRow(ControlBase parent, PropertyBase prop)
             : base(parent)
         {
             PropertyRowLabel label = new PropertyRowLabel(this);
@@ -68,7 +70,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             /* SORRY */
             if (IsEditing != m_LastEditing)
@@ -91,7 +93,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             Properties parent = Parent as Properties;
             if (null == parent) return;
@@ -104,7 +106,7 @@ namespace Gwen.Control
             }
         }
 
-        protected virtual void OnValueChanged(Base control)
+        protected virtual void OnValueChanged(ControlBase control)
         {
             if (ValueChanged != null)
                 ValueChanged.Invoke(this);

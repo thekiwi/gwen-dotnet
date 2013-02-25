@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -46,7 +47,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="HorizontalScrollBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public HorizontalScrollBar(Base parent)
+        public HorizontalScrollBar(ControlBase parent)
             : base(parent)
         {
             m_Bar.IsHorizontal = true;
@@ -64,7 +65,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 
@@ -92,13 +93,13 @@ namespace Gwen.Control
             }
         }
 
-        public void NudgeLeft(Base control)
+        public void NudgeLeft(ControlBase control)
         {
             if (!IsDisabled)
                 SetScrollAmount(ScrollAmount - NudgeAmount, true);
         }
 
-        public void NudgeRight(Base control)
+        public void NudgeRight(ControlBase control)
         {
             if (!IsDisabled)
                 SetScrollAmount(ScrollAmount + NudgeAmount, true);
@@ -189,7 +190,7 @@ namespace Gwen.Control
         /// Handler for the BarMoved event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected override void OnBarMoved(Base control)
+        protected override void OnBarMoved(ControlBase control)
         {
             if (m_Bar.IsHeld)
             {

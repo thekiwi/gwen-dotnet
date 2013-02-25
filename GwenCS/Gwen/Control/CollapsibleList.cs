@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -21,7 +22,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="CollapsibleList"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CollapsibleList(Base parent) : base(parent)
+        public CollapsibleList(ControlBase parent) : base(parent)
         {
             EnableScroll(false, true);
             AutoHideBars = true;
@@ -34,7 +35,7 @@ namespace Gwen.Control
         /// </summary>
         public Button GetSelectedButton()
         {
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 CollapsibleCategory cat = child as CollapsibleCategory;
                 if (cat == null)
@@ -80,7 +81,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawCategoryHolder(this);
             base.Render(skin);
@@ -91,7 +92,7 @@ namespace Gwen.Control
         /// </summary>
         public virtual void UnselectAll()
         {
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 CollapsibleCategory cat = child as CollapsibleCategory;
                 if (cat == null)
@@ -105,7 +106,7 @@ namespace Gwen.Control
         /// Handler for ItemSelected event.
         /// </summary>
         /// <param name="control">Event source: <see cref="CollapsibleList"/>.</param>
-        protected virtual void OnCategorySelected(Base control)
+        protected virtual void OnCategorySelected(ControlBase control)
         {
             CollapsibleCategory cat = control as CollapsibleCategory;
             if (cat == null) return;
@@ -118,7 +119,7 @@ namespace Gwen.Control
         /// Handler for category collapsed event.
         /// </summary>
         /// <param name="control">Event source: <see cref="CollapsibleCategory"/>.</param>
-        protected virtual void OnCategoryCollapsed(Base control)
+        protected virtual void OnCategoryCollapsed(ControlBase control)
         {
             CollapsibleCategory cat = control as CollapsibleCategory;
             if (cat == null) return;

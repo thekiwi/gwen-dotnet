@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -12,7 +13,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="VerticalSlider"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public VerticalSlider(Base parent)
+        public VerticalSlider(ControlBase parent)
             : base(parent)
         {
             m_SliderBar.IsHorizontal = false;
@@ -45,7 +46,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             m_SliderBar.SetSize(Width, 15);
             UpdateBarFromValue();
@@ -55,7 +56,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawSlider(this, false, m_SnapToNotches ? m_NotchCount : 0, m_SliderBar.Height);
         }

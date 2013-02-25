@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// CollapsibleCategory control. Used in CollapsibleList.
     /// </summary>
-    public class CollapsibleCategory : Base
+    public class CollapsibleCategory : ControlBase
     {
         private readonly Button m_HeaderButton;
         private readonly CollapsibleList m_List;
@@ -54,7 +55,7 @@ namespace Gwen.Control
         /// </summary>
         public Button GetSelectedButton()
         {
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 CategoryButton button = child as CategoryButton;
                 if (button == null)
@@ -71,7 +72,7 @@ namespace Gwen.Control
         /// Handler for header button toggle event.
         /// </summary>
         /// <param name="control">Source control.</param>
-        protected virtual void OnHeaderToggle(Base control)
+        protected virtual void OnHeaderToggle(ControlBase control)
         {
             if (Collapsed != null)
                 Collapsed.Invoke(this);
@@ -81,7 +82,7 @@ namespace Gwen.Control
         /// Handler for Selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnSelected(Base control)
+        protected virtual void OnSelected(ControlBase control)
         {
             CategoryButton child = control as CategoryButton;
             if (child == null) return;
@@ -123,7 +124,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawCategoryInner(this, m_HeaderButton.ToggleState);
             base.Render(skin);
@@ -134,7 +135,7 @@ namespace Gwen.Control
         /// </summary>
         public void UnselectAll()
         {
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 CategoryButton button = child as CategoryButton;
                 if (button == null)
@@ -148,7 +149,7 @@ namespace Gwen.Control
         /// Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout(Skin.Base skin)
+        protected override void PostLayout(SkinBase skin)
         {
             if (IsCollapsed)
             {
@@ -161,7 +162,7 @@ namespace Gwen.Control
 
             // alternate row coloring
             bool b = true;
-            foreach (Base child in Children)
+            foreach (ControlBase child in Children)
             {
                 CategoryButton button = child as CategoryButton;
                 if (button == null)

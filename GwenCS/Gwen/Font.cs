@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Renderer;
 
 namespace Gwen
 {
@@ -35,12 +36,12 @@ namespace Gwen
         /// </summary>
         public float RealSize { get; set; }
 
-        private readonly Renderer.Base m_Renderer;
+        private readonly RendererBase m_Renderer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Font"/> class.
         /// </summary>
-        public Font(Renderer.Base renderer)
+        public Font(RendererBase renderer)
             : this(renderer, "Arial", 10)
         {
 
@@ -52,7 +53,7 @@ namespace Gwen
         /// <param name="renderer">Renderer to use.</param>
         /// <param name="faceName">Face name.</param>
         /// <param name="size">Font size.</param>
-        public Font(Renderer.Base renderer, String faceName, int size = 10)
+        public Font(RendererBase renderer, String faceName, int size = 10)
         {
             m_Renderer = renderer;
             FaceName = faceName;

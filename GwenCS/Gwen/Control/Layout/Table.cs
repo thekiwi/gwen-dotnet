@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using System.Linq;
+using Gwen.Skin;
 
 namespace Gwen.Control.Layout
 {
     /// <summary>
     /// Base class for multi-column tables.
     /// </summary>
-    public class Table : Base
+    public class Table : ControlBase
     {
         // only children of this control should be TableRow.
 
@@ -43,7 +44,7 @@ namespace Gwen.Control.Layout
         /// Initializes a new instance of the <see cref="Table"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Table(Base parent) : base(parent)
+        public Table(ControlBase parent) : base(parent)
         {
             m_ColumnCount = 1;
             m_DefaultRowHeight = 22;
@@ -175,7 +176,7 @@ namespace Gwen.Control.Layout
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 
@@ -191,7 +192,7 @@ namespace Gwen.Control.Layout
             }
         }
 
-        protected override void PostLayout(Skin.Base skin)
+        protected override void PostLayout(SkinBase skin)
         {
             base.PostLayout(skin);
             if (m_SizeToContents)
@@ -222,7 +223,7 @@ namespace Gwen.Control.Layout
 
                 for (int i = 0; i < ColumnCount; i++)
                 {
-                    Base cell = row.GetColumn(i);
+                    ControlBase cell = row.GetColumn(i);
                     if (null != cell)
                     {
                         if (i < ColumnCount - 1 || m_MaxWidth == 0)

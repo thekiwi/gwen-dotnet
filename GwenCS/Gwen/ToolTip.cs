@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+using System.Drawing;
 using Gwen.Control;
+using Gwen.Skin;
+using Gwen.Renderer;
 
 namespace Gwen
 {
@@ -8,13 +10,13 @@ namespace Gwen
     /// </summary>
     public static class ToolTip
     {
-        private static Base g_ToolTip;
+        private static ControlBase g_ToolTip;
 
         /// <summary>
         /// Enables tooltip display for the specified control.
         /// </summary>
         /// <param name="control">Target control.</param>
-        public static void Enable(Base control)
+        public static void Enable(ControlBase control)
         {
             if (null == control.ToolTip)
                 return;
@@ -26,7 +28,7 @@ namespace Gwen
         /// Disables tooltip display for the specified control.
         /// </summary>
         /// <param name="control">Target control.</param>
-        public static void Disable(Base control)
+        public static void Disable(ControlBase control)
         {
             if (g_ToolTip == control)
             {
@@ -38,7 +40,7 @@ namespace Gwen
         /// Disables tooltip display for the specified control.
         /// </summary>
         /// <param name="control">Target control.</param>
-        public static void ControlDeleted(Base control)
+        public static void ControlDeleted(ControlBase control)
         {
             Disable(control);
         }
@@ -47,11 +49,11 @@ namespace Gwen
         /// Renders the currently visible tooltip.
         /// </summary>
         /// <param name="skin"></param>
-        public static void RenderToolTip(Skin.Base skin)
+        public static void RenderToolTip(SkinBase skin)
         {
             if (null == g_ToolTip) return;
 
-            Renderer.Base render = skin.Renderer;
+            RendererBase render = skin.Renderer;
 
             Point oldRenderOffset = render.RenderOffset;
             Point mousePos = Input.InputHandler.MousePosition;

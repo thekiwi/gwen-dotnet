@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class CollapsibleList : GUnit
     {
-        public CollapsibleList(Base parent)
+        public CollapsibleList(ControlBase parent)
             : base(parent)
         {
             Control.CollapsibleList control = new Control.CollapsibleList(this);
@@ -50,13 +50,13 @@ namespace Gwen.UnitTest
             }
         }
 
-        void OnSelection(Base control)
+        void OnSelection(ControlBase control)
         {
             Control.CollapsibleList list = control as Control.CollapsibleList;
             UnitPrint(String.Format("CollapsibleList: Selected: {0}", list.GetSelectedButton().Text));
         }
 
-        void OnCollapsed(Base control)
+        void OnCollapsed(ControlBase control)
         {
             Control.CollapsibleCategory cat = control as Control.CollapsibleCategory;
             UnitPrint(String.Format("CollapsibleCategory: CategoryCollapsed: {0} {1}", cat.Text, cat.IsCollapsed));

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
@@ -8,7 +8,7 @@ namespace Gwen.UnitTest
         private int m_WindowCount;
         private readonly Random rand;
 
-        public Window(Base parent)
+        public Window(ControlBase parent)
             : base(parent)
         {
             rand = new Random();
@@ -25,7 +25,7 @@ namespace Gwen.UnitTest
             m_WindowCount = 1;
         }
 
-        void OpenWindow(Base control)
+        void OpenWindow(ControlBase control)
         {
             Control.WindowControl window = new Control.WindowControl(GetCanvas());
             window.Caption = String.Format("Window {0}", m_WindowCount);
@@ -35,7 +35,7 @@ namespace Gwen.UnitTest
             m_WindowCount++;
         }
 
-        void OpenMsgbox(Base control)
+        void OpenMsgbox(ControlBase control)
         {
             MessageBox window = new MessageBox(GetCanvas(), String.Format("Window {0}   MessageBox window = new MessageBox(GetCanvas(), String.Format(  MessageBox window = new MessageBox(GetCanvas(), String.Format(", m_WindowCount));
             window.SetPosition(rand.Next(700), rand.Next(400));

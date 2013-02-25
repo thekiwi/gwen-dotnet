@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -11,7 +12,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="StatusBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public StatusBar(Base parent)
+        public StatusBar(ControlBase parent)
             : base(parent)
         {
             Height = 22;
@@ -26,7 +27,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="control">Control to add.</param>
         /// <param name="right">Determines whether the control should be added to the right side of the bar.</param>
-        public void AddControl(Base control, bool right)
+        public void AddControl(ControlBase control, bool right)
         {
             control.Parent = this;
             control.Dock = right ? Pos.Right : Pos.Left;
@@ -36,7 +37,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawStatusBar(this);
         }

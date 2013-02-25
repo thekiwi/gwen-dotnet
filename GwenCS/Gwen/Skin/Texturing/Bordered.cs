@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+using System.Drawing;
+using Gwen.Renderer;
 
 namespace Gwen.Skin.Texturing
 {
@@ -33,7 +34,7 @@ namespace Gwen.Skin.Texturing
             Init(texture, x, y, w, h, inMargin, drawMarginScale);
         }
 
-        void DrawRect(Renderer.Base render, int i, int x, int y, int w, int h)
+        void DrawRect(RendererBase render, int i, int x, int y, int w, int h)
         {
             render.DrawTexturedRect(m_Texture,
                                     new Rectangle(x, y, w, h),
@@ -87,12 +88,12 @@ namespace Gwen.Skin.Texturing
         }
 
         // can't have this as default param
-        public void Draw(Renderer.Base render, Rectangle r)
+        public void Draw(RendererBase render, Rectangle r)
         {
             Draw(render, r, Color.White);
         }
 
-        public void Draw(Renderer.Base render, Rectangle r, Color col)
+        public void Draw(RendererBase render, Rectangle r, Color col)
         {
             if (m_Texture == null)
                 return;

@@ -1,7 +1,8 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Linq;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -31,7 +32,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="Menu"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Menu(Base parent)
+        public Menu(ControlBase parent)
             : base(parent)
         {
             SetBounds(0, 0, 10, 10);
@@ -47,7 +48,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawMenu(this, IconMarginDisabled);
         }
@@ -56,7 +57,7 @@ namespace Gwen.Control
         /// Renders under the actual control (shadows etc).
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderUnder(Skin.Base skin)
+        protected override void RenderUnder(SkinBase skin)
         {
             base.RenderUnder(skin);
             skin.DrawShadow(this);
@@ -78,7 +79,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             int childrenHeight = Children.Sum(child => child != null ? child.Height : 0);
 
@@ -160,7 +161,7 @@ namespace Gwen.Control
         /// Mouse hover handler.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnHoverItem(Base control)
+        protected virtual void OnHoverItem(ControlBase control)
         {
             if (!ShouldHoverOpenMenu) return;
 

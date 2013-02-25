@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using Gwen.Control;
 using Gwen.Control.Layout;
+using Gwen.Skin;
 
 namespace Gwen.UnitTest
 {
     public class UnitTest : DockBase
     {
-        private Control.Base m_LastControl;
+        private ControlBase m_LastControl;
         private readonly Control.StatusBar m_StatusBar;
         private readonly Control.ListBox m_TextOutput;
         private Control.TabButton m_Button;
@@ -17,7 +18,7 @@ namespace Gwen.UnitTest
         public double Fps; // set this in your rendering loop
         public String Note; // additional text to display in status bar
 
-        public UnitTest(Base parent) : base(parent)
+        public UnitTest(ControlBase parent) : base(parent)
         {
             Dock = Pos.Fill;
             SetSize(1024, 768);
@@ -128,7 +129,7 @@ namespace Gwen.UnitTest
             btn.Clicked += OnCategorySelect;
         }
 
-        private void DebugCheckChanged(Base control)
+        private void DebugCheckChanged(ControlBase control)
         {
             if (m_DebugCheck.IsChecked)
                 m_Center.DrawDebugOutlines = true;
@@ -137,13 +138,13 @@ namespace Gwen.UnitTest
             Invalidate();
         }
 
-        private void OnCategorySelect(Base control)
+        private void OnCategorySelect(ControlBase control)
         {
             if (m_LastControl != null)
             {
                 m_LastControl.Hide();
             }
-            Base test = control.UserData as Base;
+            ControlBase test = control.UserData as ControlBase;
             test.Show();
             m_LastControl = test;
         }
@@ -154,12 +155,12 @@ namespace Gwen.UnitTest
             m_TextOutput.ScrollToBottom();
         }
 
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
         }
 
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             m_StatusBar.Text = String.Format("GWEN.Net Unit Test - {0:F0} fps. {1}", Fps, Note);
 

@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class MenuStrip : GUnit
     {
-        public MenuStrip(Base parent)
+        public MenuStrip(ControlBase parent)
             : base(parent)
         {
             Control.MenuStrip menu = new Control.MenuStrip(this);
@@ -91,7 +91,7 @@ namespace Gwen.UnitTest
             }
         }
 
-        void MenuItemSelect(Base control)
+        void MenuItemSelect(ControlBase control)
         {
             MenuItem item = control as MenuItem;
             UnitPrint(String.Format("Menu item selected: {0}", item.Text));

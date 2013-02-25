@@ -1,14 +1,15 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// RGBA color picker.
     /// </summary>
-    public class ColorPicker : Base, IColorPicker
+    public class ColorPicker : ControlBase, IColorPicker
     {
         private Color m_Color;
 
@@ -46,7 +47,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ColorPicker"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ColorPicker(Base parent) : base(parent)
+        public ColorPicker(ControlBase parent) : base(parent)
         {
             MouseInputEnabled = true;
 
@@ -84,7 +85,7 @@ namespace Gwen.Control
             slider.ValueChanged += SlidersMoved;
         }
 
-        private void NumericTyped(Base control)
+        private void NumericTyped(ControlBase control)
         {
             TextBoxNumeric box = control as TextBoxNumeric;
             if (null == box)
@@ -162,7 +163,7 @@ namespace Gwen.Control
                 ColorChanged.Invoke(this);
         }
 
-        private void SlidersMoved(Base control)
+        private void SlidersMoved(ControlBase control)
         {
             /*
             HorizontalSlider* redSlider		= gwen_cast<HorizontalSlider>(	FindChildByName( "RedSlider",   true ) );
@@ -183,7 +184,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 

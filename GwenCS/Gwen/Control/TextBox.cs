@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -84,7 +85,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="TextBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public TextBox(Base parent)
+        public TextBox(ControlBase parent)
             : base(parent)
         {
             SetSize(200, 20);
@@ -113,7 +114,7 @@ namespace Gwen.Control
         /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus(Skin.Base skin)
+        protected override void RenderFocus(SkinBase skin)
         {
             // nothing
         }
@@ -182,7 +183,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             base.Render(skin);
 
@@ -234,7 +235,7 @@ namespace Gwen.Control
         /// Handler for Paste event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnPaste(Base from)
+        protected override void OnPaste(ControlBase from)
         {
             base.OnPaste(from);
             InsertText(Platform.Neutral.GetClipboardText());
@@ -244,7 +245,7 @@ namespace Gwen.Control
         /// Handler for Copy event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnCopy(Base from)
+        protected override void OnCopy(ControlBase from)
         {
             if (!HasSelection) return;
             base.OnCopy(from);
@@ -256,7 +257,7 @@ namespace Gwen.Control
         /// Handler for Cut event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnCut(Base from)
+        protected override void OnCut(ControlBase from)
         {
             if (!HasSelection) return;
             base.OnCut(from);
@@ -269,7 +270,7 @@ namespace Gwen.Control
         /// Handler for Select All event.
         /// </summary>
         /// <param name="from">Source control.</param>
-        protected override void OnSelectAll(Base from)
+        protected override void OnSelectAll(ControlBase from)
         {
             //base.OnSelectAll(from);
             m_CursorEnd = 0;
@@ -588,7 +589,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 

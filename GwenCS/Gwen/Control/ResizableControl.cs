@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.ControlInternal;
 
@@ -7,7 +7,7 @@ namespace Gwen.Control
     /// <summary>
     /// Base resizable control.
     /// </summary>
-    public class ResizableControl : Base
+    public class ResizableControl : ControlBase
     {
         private bool m_ClampMovement;
         private readonly Resizer[] m_Resizer;
@@ -26,7 +26,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ResizableControl"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ResizableControl(Base parent)
+        public ResizableControl(ControlBase parent)
             : base(parent)
         {
             m_Resizer = new Resizer[10];
@@ -86,7 +86,7 @@ namespace Gwen.Control
         /// Handler for the resized event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnResized(Base control)
+        protected virtual void OnResized(ControlBase control)
         {
             if (Resized != null)
                 Resized.Invoke(this);
@@ -145,7 +145,7 @@ namespace Gwen.Control
             if (height < minSize.Y) height = minSize.Y;
 
             // Clamp to parent's window
-            Base parent = Parent;
+            ControlBase parent = Parent;
             if (parent != null && m_ClampMovement)
             {
                 if (x + width > parent.Width) x = parent.Width - width;

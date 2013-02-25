@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Gwen.Control.Layout;
 using Gwen.ControlInternal;
 
@@ -30,7 +30,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="NumericUpDown"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public NumericUpDown(Base parent)
+        public NumericUpDown(ControlBase parent)
             : base(parent)
         {
             SetSize(100, 20);
@@ -91,7 +91,7 @@ namespace Gwen.Control
         /// Handler for the button up event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnButtonUp(Base control)
+        protected virtual void OnButtonUp(ControlBase control)
         {
             Value = m_Value + 1;
         }
@@ -100,7 +100,7 @@ namespace Gwen.Control
         /// Handler for the button down event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnButtonDown(Base control)
+        protected virtual void OnButtonDown(ControlBase control)
         {
             Value = m_Value - 1;
         }

@@ -7,7 +7,7 @@ namespace Gwen.Renderer
     /// <summary>
     /// Base renderer.
     /// </summary>
-    public class Base : IDisposable
+    public class RendererBase : IDisposable
     {
         //public Random rnd;
         private Point m_RenderOffset;
@@ -19,7 +19,7 @@ namespace Gwen.Renderer
         /// <summary>
         /// Initializes a new instance of the <see cref="Base"/> class.
         /// </summary>
-        protected Base()
+        protected RendererBase()
         {
             //rnd = new Random();
             m_RenderOffset = Point.Empty;
@@ -40,7 +40,7 @@ namespace Gwen.Renderer
         }
 
 #if DEBUG
-        ~Base()
+        ~RendererBase()
         {
             throw new InvalidOperationException(String.Format("IDisposable object finalized: {0}", GetType()));
             //Debug.Print(String.Format("IDisposable object finalized: {0}", GetType()));

@@ -1,18 +1,19 @@
-﻿using System;
+using System;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
     /// <summary>
     /// Modal control for windows.
     /// </summary>
-    public class Modal : Base
+    public class Modal : ControlBase
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Modal"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Modal(Base parent)
+        public Modal(ControlBase parent)
             : base(parent)
         {
             KeyboardInputEnabled = true;
@@ -25,7 +26,7 @@ namespace Gwen.ControlInternal
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             SetBounds(0, 0, GetCanvas().Width, GetCanvas().Height);
         }
@@ -34,7 +35,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawModalControl(this);
         }

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
@@ -14,7 +15,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="CategoryButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CategoryButton(Base parent) : base(parent)
+        public CategoryButton(ControlBase parent) : base(parent)
         {
             Alignment = Pos.Left | Pos.CenterV;
             m_Alt = false;
@@ -26,25 +27,25 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             if (m_Alt)
             {
                 if (IsDepressed || ToggleState)
-                    Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Selected;
+					Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Selected;
                 else if (IsHovered)
-                    Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Hover;
+					Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button_Hover;
                 else
-                    Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button;
+					Skin.Renderer.DrawColor = skin.Colors.Category.LineAlt.Button;
             }
             else
             {
                 if (IsDepressed || ToggleState)
-                    Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button_Selected;
+					Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button_Selected;
                 else if (IsHovered)
-                    Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button_Hover;
+					Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button_Hover;
                 else
-                    Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button;
+					Skin.Renderer.DrawColor = skin.Colors.Category.Line.Button;
             }
 
             skin.Renderer.DrawFilledRect(RenderBounds);

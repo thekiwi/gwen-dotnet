@@ -1,12 +1,13 @@
-﻿using System;
+using System;
 using Gwen.Control;
+using Gwen.Skin;
 
 namespace Gwen.ControlInternal
 {
     /// <summary>
     /// ComboBox arrow.
     /// </summary>
-    public class DownArrow : Base
+    public class DownArrow : ControlBase
     {
         private readonly ComboBox m_ComboBox;
 
@@ -27,7 +28,7 @@ namespace Gwen.ControlInternal
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawComboBoxArrow(this, m_ComboBox.IsHovered, m_ComboBox.IsDepressed, m_ComboBox.IsOpen, m_ComboBox.IsDisabled);
         }

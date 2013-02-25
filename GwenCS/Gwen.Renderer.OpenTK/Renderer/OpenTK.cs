@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -10,7 +10,7 @@ using PixelFormat = System.Drawing.Imaging.PixelFormat;
 
 namespace Gwen.Renderer
 {
-    public class OpenTK : Base
+    public class OpenTK : RendererBase
     {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct Vertex

@@ -1,14 +1,16 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.ControlInternal;
 using Gwen.DragDrop;
+using Gwen.Renderer;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Base for dockable containers.
     /// </summary>
-    public class DockBase : Base
+    public class DockBase : ControlBase
     {
         private DockBase m_Left;
         private DockBase m_Right;
@@ -51,7 +53,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="DockBase"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public DockBase(Base parent)
+        public DockBase(ControlBase parent)
             : base(parent)
         {
             Padding = Padding.One;
@@ -106,7 +108,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
 
         }
@@ -274,7 +276,7 @@ namespace Gwen.Control
             }
         }
 
-        protected virtual void OnTabRemoved(Base control)
+        protected virtual void OnTabRemoved(ControlBase control)
         {
             DoRedundancyCheck();
             DoConsolidateCheck();
@@ -418,12 +420,12 @@ namespace Gwen.Control
         /// Renders over the actual control (overlays).
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderOver(Skin.Base skin)
+        protected override void RenderOver(SkinBase skin)
         {
             if (!m_DrawHover)
                 return;
 
-            Renderer.Base render = skin.Renderer;
+            RendererBase render = skin.Renderer;
             render.DrawColor = Color.FromArgb(20, 255, 200, 255);
             render.DrawFilledRect(RenderBounds);
 

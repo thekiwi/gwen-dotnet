@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.ControlInternal
@@ -12,7 +12,7 @@ namespace Gwen.ControlInternal
         /// Initializes a new instance of the <see cref="CategoryHeaderButton"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CategoryHeaderButton(Base parent)
+        public CategoryHeaderButton(ControlBase parent)
             : base(parent)
         {
             ShouldDrawBackground = false;

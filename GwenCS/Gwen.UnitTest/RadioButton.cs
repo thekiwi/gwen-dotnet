@@ -1,11 +1,11 @@
-﻿using System;
+using System;
 using Gwen.Control;
 
 namespace Gwen.UnitTest
 {
     public class RadioButton : GUnit
     {
-        public RadioButton(Base parent)
+        public RadioButton(ControlBase parent)
             : base(parent)
         {
             Control.RadioButtonGroup rbg = new Control.RadioButtonGroup(this, "Sample radio group");
@@ -34,7 +34,7 @@ namespace Gwen.UnitTest
             //this.DrawDebugOutlines = true;
         }
 
-        void OnChange(Base control)
+        void OnChange(ControlBase control)
         {
             RadioButtonGroup rbc = control as RadioButtonGroup;
             LabeledRadioButton rb = rbc.Selected;

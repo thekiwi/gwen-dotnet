@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Drawing;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -13,7 +14,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="GroupBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public GroupBox(Base parent)
+        public GroupBox(ControlBase parent)
             : base(parent)
         {
             // Set to true, because it's likely that our  
@@ -26,7 +27,7 @@ namespace Gwen.Control
             Alignment = Pos.Top | Pos.Left;
             Invalidate();
 
-            m_InnerPanel = new Base(this);
+            m_InnerPanel = new ControlBase(this);
             m_InnerPanel.Dock = Pos.Fill;
             m_InnerPanel.Margin = new Margin(5, TextHeight+5, 5, 5);
             //Margin = new Margin(5, 5, 5, 5);
@@ -36,7 +37,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
             if (AutoSizeToContents)
@@ -49,7 +50,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawGroupBox(this, TextX, TextHeight, TextWidth);
         }

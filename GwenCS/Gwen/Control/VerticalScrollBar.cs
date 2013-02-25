@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.Input;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -38,7 +39,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="VerticalScrollBar"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public VerticalScrollBar(Base parent)
+        public VerticalScrollBar(ControlBase parent)
             : base(parent)
         {
             m_Bar.IsVertical = true;
@@ -56,7 +57,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             base.Layout(skin);
 
@@ -85,13 +86,13 @@ namespace Gwen.Control
             }
         }
 
-        public virtual void NudgeUp(Base control)
+        public virtual void NudgeUp(ControlBase control)
         {
             if (!IsDisabled)
                 SetScrollAmount(ScrollAmount - NudgeAmount, true);
         }
 
-        public virtual void NudgeDown(Base control)
+        public virtual void NudgeDown(ControlBase control)
         {
             if (!IsDisabled)
                 SetScrollAmount(ScrollAmount + NudgeAmount, true);
@@ -179,7 +180,7 @@ namespace Gwen.Control
         /// Handler for the BarMoved event.
         /// </summary>
         /// <param name="control">The control.</param>
-        protected override void OnBarMoved(Base control)
+        protected override void OnBarMoved(ControlBase control)
         {
             if (m_Bar.IsHeld)
             {

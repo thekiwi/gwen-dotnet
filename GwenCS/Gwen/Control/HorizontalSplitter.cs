@@ -1,13 +1,14 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
-    public class HorizontalSplitter : Base
+    public class HorizontalSplitter : ControlBase
     {
         private readonly SplitterBar m_VSplitter;
-        private readonly Base[] m_Sections;
+        private readonly ControlBase[] m_Sections;
 
         private float m_VVal; // 0-1
         private int m_BarSize; // pixels
@@ -32,10 +33,10 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="CrossSplitter"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public HorizontalSplitter(Base parent)
+        public HorizontalSplitter(ControlBase parent)
             : base(parent)
         {
-            m_Sections = new Base[2];
+            m_Sections = new ControlBase[2];
             
             m_VSplitter = new SplitterBar(this);
             m_VSplitter.SetPosition(0, 128);
@@ -89,7 +90,7 @@ namespace Gwen.Control
             m_VSplitter.MoveTo(m_VSplitter.X, (Height - m_VSplitter.Height) * (m_VVal));
         }
         
-        protected void OnVerticalMoved(Base control)
+        protected void OnVerticalMoved(ControlBase control)
         {
             m_VVal = CalculateValueVertical();
             Invalidate();
@@ -104,7 +105,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             m_VSplitter.SetSize(Width, m_BarSize);
             
@@ -130,7 +131,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="index">Section index (0-3).</param>
         /// <param name="panel">Control to assign.</param>
-        public void SetPanel(int index, Base panel)
+        public void SetPanel(int index, ControlBase panel)
         {
             m_Sections[index] = panel;
             
@@ -148,7 +149,7 @@ namespace Gwen.Control
         /// </summary>
         /// <param name="index">Section index (0-3).</param>
         /// <returns>Specified section.</returns>
-        public Base GetPanel(int index)
+        public ControlBase GetPanel(int index)
         {
             return m_Sections[index];
         }

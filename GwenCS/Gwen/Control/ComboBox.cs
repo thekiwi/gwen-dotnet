@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -10,7 +11,7 @@ namespace Gwen.Control
     public class ComboBox : Button
     {
         private readonly Menu m_Menu;
-        private readonly Base m_Button;
+        private readonly ControlBase m_Button;
         private MenuItem m_SelectedItem;
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="ComboBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public ComboBox(Base parent)
+        public ComboBox(ControlBase parent)
             : base(parent)
         {
             SetSize(100, 20);
@@ -80,7 +81,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawComboBox(this, IsDepressed, IsOpen);
         }
@@ -119,7 +120,7 @@ namespace Gwen.Control
         /// Internal handler for item selected event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnItemSelected(Base control)
+        protected virtual void OnItemSelected(ControlBase control)
         {
             //Convert selected to a menu item
             MenuItem item = control as MenuItem;
@@ -140,7 +141,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             m_Button.Position(Pos.Right|Pos.CenterV, 4, 0);
             base.Layout(skin);
@@ -230,7 +231,7 @@ namespace Gwen.Control
         /// Renders the focus overlay.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void RenderFocus(Skin.Base skin)
+        protected override void RenderFocus(SkinBase skin)
         {
             
         }

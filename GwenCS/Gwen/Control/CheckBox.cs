@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -27,7 +28,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="CheckBox"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public CheckBox(Base parent)
+        public CheckBox(ControlBase parent)
             : base(parent)
         {
             SetSize(15, 15);
@@ -88,7 +89,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             base.Render(skin);
             skin.DrawCheckBox(this, m_Checked, IsDepressed);

@@ -1,6 +1,7 @@
-﻿using System;
+using System;
 using System.Drawing;
 using Gwen.ControlInternal;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
@@ -13,7 +14,7 @@ namespace Gwen.Control
         private bool m_Checkable;
         private bool m_Checked;
         private Menu m_Menu;
-        private Base m_SubmenuArrow;
+        private ControlBase m_SubmenuArrow;
         private Label m_Accelerator;
 
         /// <summary>
@@ -111,7 +112,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="MenuItem"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public MenuItem(Base parent)
+        public MenuItem(ControlBase parent)
             : base(parent)
         {
             m_OnStrip = false;
@@ -126,7 +127,7 @@ namespace Gwen.Control
         /// Renders the control using specified skin.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Render(Skin.Base skin)
+        protected override void Render(SkinBase skin)
         {
             skin.DrawMenuItem(this, IsMenuOpen, m_Checkable ? m_Checked : false);
         }
@@ -135,7 +136,7 @@ namespace Gwen.Control
         /// Lays out the control's interior according to alignment, padding, dock etc.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void Layout(Skin.Base skin)
+        protected override void Layout(SkinBase skin)
         {
             if (m_SubmenuArrow != null)
             {

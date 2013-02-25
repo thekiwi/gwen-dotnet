@@ -1,13 +1,15 @@
-﻿using System;
+using System;
 using System.Windows.Forms;
 using Gwen.ControlInternal;
+using Gwen.Control.Property;
+using Gwen.Skin;
 
 namespace Gwen.Control
 {
     /// <summary>
     /// Properties table.
     /// </summary>
-    public class Properties : Base
+    public class Properties : ControlBase
     {
         private readonly SplitterBar m_SplitterBar;
 
@@ -25,7 +27,7 @@ namespace Gwen.Control
         /// Initializes a new instance of the <see cref="Properties"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
-        public Properties(Base parent)
+        public Properties(ControlBase parent)
             : base(parent)
         {
             m_SplitterBar = new SplitterBar(this);
@@ -39,7 +41,7 @@ namespace Gwen.Control
         /// Function invoked after layout.
         /// </summary>
         /// <param name="skin">Skin to use.</param>
-        protected override void PostLayout(Skin.Base skin)
+        protected override void PostLayout(SkinBase skin)
         {
             m_SplitterBar.Height = 0;
 
@@ -55,7 +57,7 @@ namespace Gwen.Control
         /// Handles the splitter moved event.
         /// </summary>
         /// <param name="control">Event source.</param>
-        protected virtual void OnSplitterMoved(Base control)
+        protected virtual void OnSplitterMoved(ControlBase control)
         {
             InvalidateChildren();
         }
@@ -78,7 +80,7 @@ namespace Gwen.Control
         /// <param name="prop">Property control.</param>
         /// <param name="value">Initial value.</param>
         /// <returns>Newly created row.</returns>
-        public PropertyRow Add(String label, Property.Base prop, String value="")
+        public PropertyRow Add(String label, PropertyBase prop, String value="")
         {
             PropertyRow row = new PropertyRow(this, prop);
             row.Dock = Pos.Top;
@@ -91,7 +93,7 @@ namespace Gwen.Control
             return row;
         }
 
-        private void OnRowValueChanged(Base control)
+        private void OnRowValueChanged(ControlBase control)
         {
             if (ValueChanged != null)
                 ValueChanged.Invoke(control);
