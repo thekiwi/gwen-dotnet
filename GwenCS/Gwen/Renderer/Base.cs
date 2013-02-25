@@ -349,13 +349,13 @@ namespace Gwen.Renderer
         private int TranslateX(int x)
         {
             int x1 = x + m_RenderOffset.X;
-            return Util.Ceil(x1 * Scale);
+            return Util.Round(x1 * Scale);
         }
 
         private int TranslateY(int y)
         {
             int y1 = y + m_RenderOffset.Y;
-            return Util.Ceil(y1 * Scale);
+            return Util.Round(y1 * Scale);
         }
 
         /// <summary>
