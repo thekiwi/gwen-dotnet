@@ -5,8 +5,7 @@ using Gwen.Controls;
 using Gwen.Drawing.Texturing;
 
 namespace Gwen.Drawing
-{
-    #region UI element textures
+{    
     public struct SkinTextures
     {
         public Bordered StatusBar;
@@ -265,7 +264,6 @@ namespace Gwen.Drawing
         public _Tab Tab;
         public _CategoryList CategoryList;
     }
-    #endregion
 
     /// <summary>
     /// Base textured skin.
@@ -277,7 +275,7 @@ namespace Gwen.Drawing
         private readonly Texture m_Texture;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="TexturedBase"/> class.
+        /// Initializes a new instance of the <see cref="TexturedSkin"/> class.
         /// </summary>
         /// <param name="renderer">Renderer to use.</param>
         /// <param name="textureName">Name of the skin texture map.</param>
@@ -309,8 +307,7 @@ namespace Gwen.Drawing
             m_Texture.Dispose();
             base.Dispose();
         }
-
-        #region Initialization
+        
         private void InitializeColors()
         {
             Colors.Window.TitleActive   = Renderer.PixelColor(m_Texture, 4 + 8*0, 508, Color.Red);
@@ -499,10 +496,8 @@ namespace Gwen.Drawing
             Textures.CategoryList.Outer  = new Bordered(m_Texture, 256, 384, 63, 63, Margin.Eight);
             Textures.CategoryList.Inner  = new Bordered(m_Texture, 256 + 64, 384, 63, 63, new Margin(8, 21, 8, 8));
             Textures.CategoryList.Header = new Bordered(m_Texture, 320, 352, 63, 31, Margin.Eight);
-        }
-        #endregion
-
-        #region UI elements
+        }        
+        
         public override void DrawButton(Control control, bool depressed, bool hovered, bool disabled)
         {
             if (disabled)
@@ -1177,7 +1172,6 @@ namespace Gwen.Drawing
                 Textures.CategoryList.Header.Draw(Renderer, control.RenderBounds);
             else
                 Textures.CategoryList.Inner.Draw(Renderer, control.RenderBounds);
-        }
-        #endregion
+        }        
     }
 }

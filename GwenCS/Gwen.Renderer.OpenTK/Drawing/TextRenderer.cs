@@ -23,7 +23,7 @@ namespace Gwen.Drawing
         /// <param name="width">The width of the backing store in pixels.</param>
         /// <param name="height">The height of the backing store in pixels.</param>
         /// <param name="renderer">GWEN renderer.</param>
-        public TextRenderer(int width, int height, Gwen.Drawing.OpenTKRenderer renderer)
+        public TextRenderer(int width, int height, OpenTKRenderer renderer)
         {
             if (width <= 0)
                 throw new ArgumentOutOfRangeException("width");
@@ -59,10 +59,11 @@ namespace Gwen.Drawing
         /// <param name="brush">The <see cref="System.Drawing.Brush"/> that will be used.</param>
         /// <param name="point">The location of the text on the backing store, in 2d pixel coordinates.
         /// The origin (0, 0) lies at the top-left corner of the backing store.</param>
+        /// <param name="format">The format of the string</param>
         public void DrawString(string text, System.Drawing.Font font, Brush brush, Point point, StringFormat format)
         {
             gfx.DrawString(text, font, brush, point, format); // render text on the bitmap
-            Gwen.Drawing.OpenTKRenderer.LoadTextureInternal(texture, bmp); // copy bitmap to gl texture
+            OpenTKRenderer.LoadTextureInternal(texture, bmp); // copy bitmap to gl texture
         }
 
         void Dispose(bool manual)

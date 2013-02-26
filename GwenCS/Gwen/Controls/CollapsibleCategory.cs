@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using Gwen.Controls.Internal;
 using Gwen.Drawing;
 
@@ -55,17 +56,7 @@ namespace Gwen.Controls
         /// </summary>
         public Button GetSelectedButton()
         {
-            foreach (Control child in Children)
-            {
-                CategoryButton button = child as CategoryButton;
-                if (button == null)
-                    continue;
-
-                if (button.ToggleState)
-                    return button;
-            }
-
-            return null;
+            return Children.OfType<CategoryButton>().FirstOrDefault(button => button.ToggleState);
         }
 
         /// <summary>

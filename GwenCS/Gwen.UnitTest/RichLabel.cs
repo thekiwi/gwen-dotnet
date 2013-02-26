@@ -1,4 +1,3 @@
-using System;
 using System.Drawing;
 using Gwen.Controls;
 using Font = Gwen.Drawing.Font;

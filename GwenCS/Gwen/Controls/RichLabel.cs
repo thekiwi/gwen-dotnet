@@ -119,9 +119,9 @@ namespace Gwen.Controls
             }
 
             String newString = String.Empty;
-            for (int i = 0; i < spaced.Length; i++)
+            foreach (string word in spaced)
             {
-                wordSize = Skin.Renderer.MeasureText(font, newString + spaced[i]);
+                wordSize = Skin.Renderer.MeasureText(font, newString + word);
                 if (wordSize.X > spaceLeft)
                 {
                     CreateLabel(newString, block, ref x, ref y, ref lineHeight, true);
@@ -130,7 +130,7 @@ namespace Gwen.Controls
                     break;
                 }
 
-                newString += spaced[i];
+                newString += word;
             }
 
             int newstr_len = newString.Length;

@@ -10,19 +10,14 @@ namespace Gwen.UnitTest
             : base(parent)
         {
             {
-                Controls.PropertyTable props = new Controls.PropertyTable(this);
+                var props = new PropertyTable(this);
                 props.ValueChanged += OnChanged;
 
                 props.SetBounds(10, 10, 150, 300);
-
-                {
-                    {
-                        PropertyRow pRow = props.Add("First Name");
-                    }
-
-                    props.Add("Middle Name");
-                    props.Add("Last Name");
-                }
+                
+                props.Add("First Name");
+                props.Add("Middle Name");
+                props.Add("Last Name");                
             }
 
             {
@@ -30,7 +25,7 @@ namespace Gwen.UnitTest
                 ptree.SetBounds(200, 10, 200, 200);
 
                 {
-                    Controls.PropertyTable props = ptree.Add("Item One");
+                    var props = ptree.Add("Item One");
                     props.ValueChanged += OnChanged;
 
                     props.Add("Middle Name");
@@ -39,7 +34,7 @@ namespace Gwen.UnitTest
                 }
 
                 {
-                    Controls.PropertyTable props = ptree.Add("Item Two");
+                    PropertyTable props = ptree.Add("Item Two");
                     props.ValueChanged += OnChanged;
                     
                     props.Add("More Items");

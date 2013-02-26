@@ -12,7 +12,6 @@ namespace Gwen.Controls.Layout
         public const int MaxColumns = 5;
 
         private int m_ColumnCount;
-        private bool m_EvenRow;
         private readonly Label[] m_Columns;
 
         internal Label GetColumn(int index)
@@ -33,7 +32,7 @@ namespace Gwen.Controls.Layout
         /// <summary>
         /// Indicates whether the row is even or odd (used for alternate coloring).
         /// </summary>
-        public bool EvenRow { get { return m_EvenRow; } set { m_EvenRow = value; } }
+        public bool EvenRow { get; set; }
 
         /// <summary>
         /// Text of the first column.

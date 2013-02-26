@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Gwen.Anim.Size
+﻿namespace Gwen.Anim.Size
 {
     class Height : TimedAnimation
     {

@@ -358,7 +358,7 @@ namespace Gwen.Controls
 
             m_HoverRect = RenderBounds;
 
-            int HelpBarWidth = 0;
+            int HelpBarWidth;
 
             if (dir == Pos.Left)
             {

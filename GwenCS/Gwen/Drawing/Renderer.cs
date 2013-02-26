@@ -15,7 +15,7 @@ namespace Gwen.Drawing
         public float Scale { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Base"/> class.
+        /// Initializes a new instance of the <see cref="Renderer"/> class.
         /// </summary>
         protected Renderer()
         {

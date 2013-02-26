@@ -1,4 +1,3 @@
-using System;
 using Gwen.Controls;
 using Gwen.Drawing;
 

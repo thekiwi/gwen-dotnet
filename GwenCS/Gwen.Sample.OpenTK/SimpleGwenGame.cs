@@ -16,8 +16,8 @@ namespace Gwen.Sample.OpenTK
     /// </summary>
     public class SimpleWindow : GameWindow
     {
-        private Gwen.Input.OpenTK input;
-        private Drawing.OpenTKRenderer renderer;
+        private Input.OpenTK input;
+        private OpenTKRenderer renderer;
         private Skin skin;
         private Canvas canvas;
         private UnitTest.UnitTest test;
@@ -26,7 +26,7 @@ namespace Gwen.Sample.OpenTK
         private readonly List<long> ftime;
         private readonly Stopwatch stopwatch;
         private long lastTime;
-        private bool altDown = false;
+        private bool altDown;
 
         public SimpleWindow()
             : base(1024, 768)
@@ -110,7 +110,7 @@ namespace Gwen.Sample.OpenTK
         {
             GL.ClearColor(Color.MidnightBlue);
 
-            renderer = new Drawing.OpenTKRenderer();
+            renderer = new OpenTKRenderer();
             skin = new TexturedSkin(renderer, "DefaultSkin.png");
             //skin = new Gwen.Skin.SimpleSkin(renderer);
             //skin.DefaultFont = new Font(renderer, "Courier", 10);
@@ -169,7 +169,7 @@ namespace Gwen.Sample.OpenTK
                 }
                 
                 stopwatch.Restart();
-                base.Title = "FPS: " + 1000f * ftime.Count / ftime.Sum();                
+                Title = "FPS: " + 1000f * ftime.Count / ftime.Sum();                
 
                 if (renderer.TextCacheSize > 1000) // each cached string is an allocated texture, flush the cache once in a while in your real project
                     renderer.FlushTextCache();

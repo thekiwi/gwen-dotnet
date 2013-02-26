@@ -7,27 +7,16 @@ namespace Gwen.Input
 {
     public class OpenTK
     {
+        private Canvas m_Canvas;
+        private int m_MouseX;
+        private int m_MouseY;
+        bool m_AltGr;
 
-        #region Properties
-
-        private Canvas m_Canvas = null;
-
-        private int m_MouseX = 0;
-        private int m_MouseY = 0;
-
-        bool m_AltGr = false;
-
-        #endregion
-
-        #region Constructors
         public OpenTK(GameWindow window)
         {
             window.KeyPress += KeyPress;
         }
 
-        #endregion
-
-       #region Methods
         public void Initialize(Canvas c)
         {
             m_Canvas = c;
@@ -55,15 +44,15 @@ namespace Gwen.Input
                 case global::OpenTK.Input.Key.End: return Key.End;
                 case global::OpenTK.Input.Key.Delete: return Key.Delete;
                 case global::OpenTK.Input.Key.LControl:
-                    this.m_AltGr = true;
+                    m_AltGr = true;
                     return Key.Control;
                 case global::OpenTK.Input.Key.LAlt: return Key.Alt;
                 case global::OpenTK.Input.Key.LShift: return Key.Shift;
                 case global::OpenTK.Input.Key.RControl: return Key.Control;
                 case global::OpenTK.Input.Key.RAlt: 
-                    if (this.m_AltGr)
+                    if (m_AltGr)
                     {
-                        this.m_Canvas.Input_Key(Key.Control, false);
+                        m_Canvas.Input_Key(Key.Control, false);
                     }
                     return Key.Alt;
                 case global::OpenTK.Input.Key.RShift: return Key.Shift;
@@ -138,8 +127,6 @@ namespace Gwen.Input
         {
             KeyboardKeyEventArgs ev = args as KeyboardKeyEventArgs;
 
-            char ch = TranslateChar(ev.Key);
-
             Key iKey = TranslateKeyCode(ev.Key);
 
             return m_Canvas.Input_Key(iKey, false);
@@ -149,7 +136,5 @@ namespace Gwen.Input
         {
             m_Canvas.Input_Character(e.KeyChar);   
         }
-
-        #endregion
     }
 }

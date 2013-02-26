@@ -12,27 +12,24 @@ namespace Gwen.Controls
     {
         public const int TreeIndentation = 14;
 
-        protected TreeControl m_TreeControl;
         protected Button m_ToggleButton;
         protected Button m_Title;
-        private bool m_Root;
         private bool m_Selected;
-        private bool m_Selectable;
 
         /// <summary>
         /// Indicates whether this is a root node.
         /// </summary>
-        public bool IsRoot { get { return m_Root; } set { m_Root = value; } }
+        public bool IsRoot { get; set; }
 
         /// <summary>
         /// Parent tree control.
         /// </summary>
-        public TreeControl TreeControl { get { return m_TreeControl; } set { m_TreeControl = value; } }
+        public TreeControl TreeControl { get; set; }
 
         /// <summary>
         /// Determines whether the node is selectable.
         /// </summary>
-        public bool IsSelectable { get { return m_Selectable; } set { m_Selectable = value; } }
+        public bool IsSelectable { get; set; }
 
         /// <summary>
         /// Indicates whether the node is selected.
@@ -56,24 +53,24 @@ namespace Gwen.Controls
                     SelectionChanged.Invoke(this);
 
                 // propagate to root parent (tree)
-                if (m_TreeControl != null && m_TreeControl.SelectionChanged != null)
-                    m_TreeControl.SelectionChanged.Invoke(this);
+                if (TreeControl != null && TreeControl.SelectionChanged != null)
+                    TreeControl.SelectionChanged.Invoke(this);
 
                 if (value)
                 {
                     if (Selected != null)
                         Selected.Invoke(this);
 
-                    if (m_TreeControl != null && m_TreeControl.Selected != null)
-                        m_TreeControl.Selected.Invoke(this);
+                    if (TreeControl != null && TreeControl.Selected != null)
+                        TreeControl.Selected.Invoke(this);
                 }
                 else
                 {
                     if (Unselected != null)
                         Unselected.Invoke(this);
 
-                    if (m_TreeControl != null && m_TreeControl.Unselected != null)
-                        m_TreeControl.Unselected.Invoke(this);
+                    if (TreeControl != null && TreeControl.Unselected != null)
+                        TreeControl.Unselected.Invoke(this);
                 }
             }
         }
@@ -136,9 +133,9 @@ namespace Gwen.Controls
             m_InnerPanel.Margin = new Margin(TreeIndentation, 1, 0, 0);
             m_InnerPanel.Hide();
 
-            m_Root = false;
+            IsRoot = false;
             m_Selected = false;
-            m_Selectable = true;
+            IsSelectable = true;
         }
 
         /// <summary>
@@ -154,7 +151,7 @@ namespace Gwen.Controls
             }
 
             skin.DrawTreeNode(this, m_InnerPanel.IsVisible, IsSelected, m_Title.Height, m_Title.TextRight,
-                (int)(m_ToggleButton.Y + m_ToggleButton.Height * 0.5f), bottom, m_TreeControl == Parent); // IsRoot
+                (int)(m_ToggleButton.Y + m_ToggleButton.Height * 0.5f), bottom, TreeControl == Parent); // IsRoot
         }
 
         /// <summary>
@@ -209,11 +206,11 @@ namespace Gwen.Controls
             node.Text = label;
             node.Dock = Pos.Top;
             node.IsRoot = this is TreeControl;
-            node.TreeControl = m_TreeControl;
+            node.TreeControl = TreeControl;
 
-            if (m_TreeControl != null)
+            if (TreeControl != null)
             {
-                m_TreeControl.OnNodeAdded(node);
+                TreeControl.OnNodeAdded(node);
             }
 
             return node;
@@ -230,8 +227,8 @@ namespace Gwen.Controls
 
             if (Expanded != null)
                 Expanded.Invoke(this);
-            if (m_TreeControl != null && m_TreeControl.Expanded != null)
-                m_TreeControl.Expanded.Invoke(this);
+            if (TreeControl != null && TreeControl.Expanded != null)
+                TreeControl.Expanded.Invoke(this);
 
             Invalidate();
         }
@@ -247,8 +244,8 @@ namespace Gwen.Controls
 
             if (Collapsed != null)
                 Collapsed.Invoke(this);
-            if (m_TreeControl != null && m_TreeControl.Collapsed != null)
-                m_TreeControl.Collapsed.Invoke(this);
+            if (TreeControl != null && TreeControl.Collapsed != null)
+                TreeControl.Collapsed.Invoke(this);
 
             Invalidate();
         }

@@ -1,4 +1,3 @@
-using System;
 using Gwen.Controls;
 
 namespace Gwen.Input

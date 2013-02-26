@@ -11,17 +11,14 @@ namespace Gwen.Controls
     /// </summary>
     public class Menu : ScrollControl
     {
-        private bool m_DisableIconMargin;
-        private bool m_DeleteOnClose;
-
         internal override bool IsMenuComponent { get { return true; } }
-        
-        public bool IconMarginDisabled { get { return m_DisableIconMargin; } set { m_DisableIconMargin = value; } }
-        
+
+        public bool IconMarginDisabled { get; set; }
+
         /// <summary>
         /// Determines whether the menu should be disposed on close.
         /// </summary>
-        public bool DeleteOnClose { get { return m_DeleteOnClose; } set { m_DeleteOnClose = value; } }
+        public bool DeleteOnClose { get; set; }
 
         /// <summary>
         /// Determines whether the menu should open on mouse hover.

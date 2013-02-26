@@ -3,7 +3,7 @@ using Gwen.Drawing;
 namespace Gwen.Controls.Internal
 {
     /// <summary>
-    /// Drag&drop highlight.
+    /// Drag & drop highlight.
     /// </summary>
     public class Highlight : Control
     {

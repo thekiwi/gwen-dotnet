@@ -155,8 +155,6 @@ namespace Gwen.UnitTest
                 label.SetPosition(10, 10 + 28 * row);
                 label.Font = m_Font2;
                 label.SizeToContents();
-
-                row += 2;
             }
         }
 

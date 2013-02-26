@@ -40,7 +40,6 @@ namespace Gwen.Controls.Internal
             if (null == m_Target) return;
             if (!m_Held) return;
 
-            Rectangle oldBounds = m_Target.Bounds;
             Rectangle bounds = m_Target.Bounds;
 
             Point min = m_Target.MinimumSize;

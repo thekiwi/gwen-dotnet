@@ -9,8 +9,7 @@ namespace Gwen.UnitTest
     {
         private Control m_LastControl;
         private readonly Controls.StatusBar m_StatusBar;
-        private readonly Controls.ListBox m_TextOutput;
-        private TabButton m_Button;
+        private readonly Controls.ListBox m_TextOutput;        
         private readonly Controls.CollapsibleList m_List;
         private readonly Center m_Center;
         private readonly LabeledCheckBox m_DebugCheck;
@@ -28,7 +27,7 @@ namespace Gwen.UnitTest
             LeftDock.Width = 150;
 
             m_TextOutput = new Controls.ListBox(BottomDock);
-            m_Button = BottomDock.TabControl.AddPage("Output", m_TextOutput);
+            BottomDock.TabControl.AddPage("Output", m_TextOutput);
             BottomDock.Height = 200;
 
             m_DebugCheck = new LabeledCheckBox(m_List);
@@ -153,11 +152,6 @@ namespace Gwen.UnitTest
         {
             m_TextOutput.AddRow(str);
             m_TextOutput.ScrollToBottom();
-        }
-
-        protected override void Layout(Skin skin)
-        {
-            base.Layout(skin);
         }
 
         protected override void Render(Skin skin)

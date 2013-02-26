@@ -36,7 +36,7 @@ namespace Gwen.Drawing
         public Renderer Renderer { get { return m_Renderer; } }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Base"/> class.
+        /// Initializes a new instance of the <see cref="Skin"/> class.
         /// </summary>
         /// <param name="renderer">Renderer to use.</param>
         protected Skin(Renderer renderer)
@@ -86,7 +86,6 @@ namespace Gwen.Drawing
             m_DefaultFont.Size = size;
         }
 
-        #region UI elements
         public virtual void DrawButton(Control control, bool depressed, bool hovered, bool disabled) { }
         public virtual void DrawTabButton(Control control, bool active, Pos dir) { }
         public virtual void DrawTabControl(Control control) { }
@@ -195,17 +194,14 @@ namespace Gwen.Drawing
             m_Renderer.DrawFilledRect(new Rectangle(rect.X, rect.Y, BorderLeft, rect.Height));
             m_Renderer.DrawFilledRect(new Rectangle(rect.X + BorderLeft, rect.Y, rect.Width - BorderLeft, BorderTop));
         }
-#endregion
-
-        #region Symbols for Simple skin
+        
         /*
         Here we're drawing a few symbols such as the directional arrows and the checkbox check
 
         Texture'd skins don't generally use these - but the Simple skin does. We did originally
         use the marlett font to draw these.. but since that's a Windows font it wasn't a very
         good cross platform solution.
-        */
-        
+        */        
         public virtual void DrawArrowDown(Rectangle rect)
         {
             float x = (rect.Width / 5.0f);
@@ -265,6 +261,5 @@ namespace Gwen.Drawing
             m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 3.0f, rect.Y + y * 1.0f, x * 2, y * 2));
             m_Renderer.DrawFilledRect(Util.FloatRect(rect.X + x * 4.0f, rect.Y + y * 0.0f, x * 2, y * 2));
         }
-        #endregion
     }
 }

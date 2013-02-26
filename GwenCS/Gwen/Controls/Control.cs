@@ -48,28 +48,15 @@ namespace Gwen.Controls
         private Padding m_Padding;
         private Margin m_Margin;
 
-        private String m_Name;
-
-        private bool m_RestrictToParent;
-        private bool m_Disabled;
         private bool m_Hidden;
-        private bool m_MouseInputEnabled;
-        private bool m_KeyboardInputEnabled;
-        private bool m_DrawBackground;
 
         private Pos m_Dock;
 
         private System.Windows.Forms.Cursor m_Cursor;
 
-        private bool m_Tabable;
-
         private bool m_NeedsLayout;
-        private bool m_CacheTextureDirty;
-        private bool m_CacheToTexture;
 
         private Package m_DragAndDrop_Package;
-
-        private object m_UserData;
 
         private bool m_DrawDebugOutlines;
 
@@ -252,7 +239,7 @@ namespace Gwen.Controls
         /// <summary>
         /// User data associated with the control.
         /// </summary>
-        public object UserData { get { return m_UserData; } set { m_UserData = value; } }
+        public object UserData { get; set; }
 
         /// <summary>
         /// Indicates whether the control is hovered by mouse pointer.
@@ -267,7 +254,7 @@ namespace Gwen.Controls
         /// <summary>
         /// Indicates whether the control is disabled.
         /// </summary>
-        public bool IsDisabled { get { return m_Disabled; } set { m_Disabled = value; } }
+        public bool IsDisabled { get; set; }
 
         /// <summary>
         /// Indicates whether the control is hidden.
@@ -277,17 +264,17 @@ namespace Gwen.Controls
         /// <summary>
         /// Determines whether the control's position should be restricted to parent's bounds.
         /// </summary>
-        public bool RestrictToParent { get { return m_RestrictToParent; } set { m_RestrictToParent = value; } }
+        public bool RestrictToParent { get; set; }
 
         /// <summary>
         /// Determines whether the control receives mouse input events.
         /// </summary>
-        public bool MouseInputEnabled { get { return m_MouseInputEnabled; } set { m_MouseInputEnabled = value; } }
+        public bool MouseInputEnabled { get; set; }
 
         /// <summary>
         /// Determines whether the control receives keyboard input events.
         /// </summary>
-        public bool KeyboardInputEnabled { get { return m_KeyboardInputEnabled; } set { m_KeyboardInputEnabled = value; } }
+        public bool KeyboardInputEnabled { get; set; }
 
         /// <summary>
         /// Gets or sets the mouse cursor when the cursor is hovering the control.
@@ -297,22 +284,22 @@ namespace Gwen.Controls
         /// <summary>
         /// Indicates whether the control is tabable (can be focused by pressing Tab).
         /// </summary>
-        public bool IsTabable { get { return m_Tabable; } set { m_Tabable = value; } }
+        public bool IsTabable { get; set; }
 
         /// <summary>
         /// Indicates whether control's background should be drawn during rendering.
         /// </summary>
-        public bool ShouldDrawBackground { get { return m_DrawBackground; } set { m_DrawBackground = value; } }
+        public bool ShouldDrawBackground { get; set; }
 
         /// <summary>
         /// Indicates whether the renderer should cache drawing to a texture to improve performance (at the cost of memory).
         /// </summary>
-        public bool ShouldCacheToTexture { get { return m_CacheToTexture; } set { m_CacheToTexture = value; /*Children.ForEach(x => x.ShouldCacheToTexture=value);*/ } }
+        public bool ShouldCacheToTexture { get; set; }
 
         /// <summary>
         /// Gets or sets the control's internal name.
         /// </summary>
-        public String Name { get { return m_Name; } set { m_Name = value; } }
+        public string Name { get; set; }
 
         /// <summary>
         /// Control's size and position relative to the parent.
@@ -407,7 +394,7 @@ namespace Gwen.Controls
         public Color BoundsOutlineColor { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Base"/> class.
+        /// Initializes a new instance of the <see cref="Control"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
         public Control(Control parent = null)
@@ -429,12 +416,10 @@ namespace Gwen.Controls
 
             Invalidate();
             Cursor = System.Windows.Forms.Cursors.Default;
-            //ToolTip = null;
             IsTabable = false;
             ShouldDrawBackground = true;
-            m_Disabled = false;
-            m_CacheTextureDirty = true;
-            m_CacheToTexture = false;
+            IsDisabled = false;
+            ShouldCacheToTexture = false;
 
             BoundsOutlineColor = Color.Red;
             MarginOutlineColor = Color.Green;
@@ -614,7 +599,6 @@ namespace Gwen.Controls
         public virtual void Invalidate()
         {
             m_NeedsLayout = true;
-            m_CacheTextureDirty = true;
         }
 
         /// <summary>
@@ -689,7 +673,7 @@ namespace Gwen.Controls
         /// <returns>Found control or null.</returns>
         public virtual Control FindChildByName(String name, bool recursive = false)
         {
-            Control b = m_Children.Find(x => x.m_Name == name);
+            Control b = m_Children.Find(x => x.Name == name);
             if (b != null)
                 return b;
 
@@ -1432,7 +1416,7 @@ namespace Gwen.Controls
             {
                 Pos dock = child.Dock;
 
-                if (!(0 != (dock & Pos.Fill)))
+                if (0 == (dock & Pos.Fill))
                     continue;
 
                 Margin margin = child.Margin;
@@ -1724,7 +1708,6 @@ namespace Gwen.Controls
         public virtual void Redraw()
         {
             UpdateColors();
-            m_CacheTextureDirty = true;
             if (m_Parent != null)
                 m_Parent.Redraw();
         }

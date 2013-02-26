@@ -1,4 +1,3 @@
-using System;
 using Gwen.Controls;
 
 namespace Gwen.UnitTest
@@ -99,13 +98,13 @@ namespace Gwen.UnitTest
                 Controls.GroupBox gb8 = new Controls.GroupBox(gb7);
                 gb8.Text = "Group Box while";
                 gb8.Dock = Pos.Top;
-                gb8.Margin = Gwen.Margin.Five;
+                gb8.Margin = Margin.Five;
                 gb8.AutoSizeToContents = true;
 
                 Controls.GroupBox gb9 = new Controls.GroupBox(gb7);
                 gb9.Text = "u Group Box";
                 gb9.Dock = Pos.Bottom;
-                gb9.Padding = Gwen.Padding.Five;
+                gb9.Padding = Padding.Five;
                 gb9.AutoSizeToContents = true;
             }
             

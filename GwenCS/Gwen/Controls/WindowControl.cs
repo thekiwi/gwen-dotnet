@@ -57,7 +57,7 @@ namespace Gwen.Controls
         {
             m_TitleBar = new Dragger(this);
             m_TitleBar.Height = 24;
-            m_TitleBar.Padding = Gwen.Padding.Zero;
+            m_TitleBar.Padding = Padding.Zero;
             m_TitleBar.Margin = new Margin(0, 0, 0, 4);
             m_TitleBar.Target = this;
             m_TitleBar.Dock = Pos.Top;
@@ -131,7 +131,7 @@ namespace Gwen.Controls
         /// </summary>
         public override bool IsOnTop
         {
-            get { return Parent.Children.Where(x => x is WindowControl).Last() == this; }
+            get { return Parent.Children.Last(x => x is WindowControl) == this; }
         }
 
         /// <summary>

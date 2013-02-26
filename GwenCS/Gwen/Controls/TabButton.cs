@@ -142,7 +142,6 @@ namespace Gwen.Controls
         {
             if (down)
             {
-                var count = Parent.Children.Count;
                 int me = Parent.Children.IndexOf(this);
                 if (me - 1 >= 0)
                 {

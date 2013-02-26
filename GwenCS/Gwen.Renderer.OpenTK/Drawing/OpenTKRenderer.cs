@@ -41,7 +41,6 @@ namespace Gwen.Drawing
         private StringFormat m_StringFormat;
 
         public OpenTKRenderer(bool restoreRenderState = true)
-            : base()
         {
             m_Vertices = new Vertex[MaxVerts];
             m_VertexSize = Marshal.SizeOf(m_Vertices[0]);
@@ -350,7 +349,7 @@ namespace Gwen.Drawing
 
         public override bool LoadFont(Font font)
         {
-            Debug.Print(String.Format("LoadFont {0}", font.FaceName));
+            Debug.Print("LoadFont {0}", font.FaceName);
             font.RealSize = font.Size * Scale;
             System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
 
@@ -366,11 +365,11 @@ namespace Gwen.Drawing
 
         public override void FreeFont(Font font)
         {
-            Debug.Print(String.Format("FreeFont {0}", font.FaceName));
+            Debug.Print("FreeFont {0}", font.FaceName);
             if (font.RendererData == null)
                 return;
 
-            Debug.Print(String.Format("FreeFont {0} - actual free", font.FaceName));
+            Debug.Print("FreeFont {0} - actual free", font.FaceName);
             System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
             if (sysFont == null)
                 throw new InvalidOperationException("Freeing empty font");
@@ -410,7 +409,7 @@ namespace Gwen.Drawing
             if (!m_StringCache.TryGetValue(key, out tr))                        
             {
                 // not cached - create text renderer
-                Debug.Print(String.Format("RenderText: caching \"{0}\", {1}", text, font.FaceName));
+                Debug.Print("RenderText: caching \"{0}\", {1}", text, font.FaceName);
 
                 Point size = MeasureText(font, text);
                 tr = new TextRenderer(size.X, size.Y, this);
@@ -478,7 +477,7 @@ namespace Gwen.Drawing
             switch (lock_format)
             {
                 case PixelFormat.Format32bppArgb:
-                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
+                    GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Bgra, PixelType.UnsignedByte, data.Scan0);
                     break;
                 default:
                     // invalid
@@ -555,7 +554,7 @@ namespace Gwen.Drawing
             var data = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly,
                 PixelFormat.Format32bppArgb);
 
-            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
+            GL.TexImage2D(TextureTarget.Texture2D, 0, PixelInternalFormat.Rgba, t.Width, t.Height, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, data.Scan0);
 
             m_LastTextureID = glTex;
 
@@ -589,7 +588,7 @@ namespace Gwen.Drawing
             byte[] data = new byte[4 * texture.Width * texture.Height];
             fixed (byte* ptr = &data[0])
             {
-                GL.GetTexImage(TextureTarget.Texture2D, 0, global::OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)ptr);
+                GL.GetTexImage(TextureTarget.Texture2D, 0, OpenTK.Graphics.OpenGL.PixelFormat.Rgba, PixelType.UnsignedByte, (IntPtr)ptr);
                 pixel = Color.FromArgb(data[offset + 3], data[offset + 0], data[offset + 1], data[offset + 2]);
             }
             // Retrieving the entire texture for a single pixel read

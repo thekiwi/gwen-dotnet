@@ -8,7 +8,7 @@ namespace Gwen.Controls.Properties
     public class Property : Control
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Base"/> class.
+        /// Initializes a new instance of the <see cref="Property"/> class.
         /// </summary>
         /// <param name="parent">Parent control.</param>
         public Property(Control parent) : base(parent)

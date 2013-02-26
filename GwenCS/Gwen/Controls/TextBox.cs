@@ -380,7 +380,7 @@ namespace Gwen.Controls
             if (m_CursorPos > 0)
                 m_CursorPos--;
 
-            if (!Input.InputHandler.IsShiftDown)
+            if (!InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -404,7 +404,7 @@ namespace Gwen.Controls
             if (m_CursorPos < TextLength)
                 m_CursorPos++;
 
-            if (!Input.InputHandler.IsShiftDown)
+            if (!InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -426,7 +426,7 @@ namespace Gwen.Controls
             if (!down) return true;
             m_CursorPos = 0;
 
-            if (!Input.InputHandler.IsShiftDown)
+            if (!InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -447,7 +447,7 @@ namespace Gwen.Controls
             base.OnKeyEnd(down);
             m_CursorPos = TextLength;
 
-            if (!Input.InputHandler.IsShiftDown)
+            if (!InputHandler.IsShiftDown)
             {
                 m_CursorEnd = m_CursorPos;
             }
@@ -528,7 +528,7 @@ namespace Gwen.Controls
             {
                 CursorPos = c;
 
-                if (!Input.InputHandler.IsShiftDown)
+                if (!InputHandler.IsShiftDown)
                     CursorEnd = c;
 
                 InputHandler.MouseFocus = this;

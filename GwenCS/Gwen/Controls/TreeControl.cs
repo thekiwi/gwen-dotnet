@@ -22,7 +22,7 @@ namespace Gwen.Controls
         public TreeControl(Control parent)
             : base(parent)
         {
-            m_TreeControl = this;
+            TreeControl = this;
 
             RemoveChild(m_ToggleButton, true);
             m_ToggleButton = null;

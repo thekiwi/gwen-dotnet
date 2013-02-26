@@ -49,7 +49,6 @@ namespace Gwen.Drawing
             m_colModal = Color.FromArgb(150, 25, 25, 25);
         }
 
-        #region UI elements
         public override void DrawButton(Control control, bool depressed, bool hovered, bool disabled)
         {
             int w = control.Width;
@@ -481,8 +480,7 @@ namespace Gwen.Drawing
 
         public override void DrawSlider(Control control, bool horizontal, int numNotches, int barSize)
         {
-            Rectangle rect = control.RenderBounds;
-            Rectangle notchRect = rect;
+            Rectangle rect = control.RenderBounds;            
 
             if (horizontal)
             {
@@ -701,6 +699,5 @@ namespace Gwen.Drawing
         {
             // todo
         }
-        #endregion
     }
 }
