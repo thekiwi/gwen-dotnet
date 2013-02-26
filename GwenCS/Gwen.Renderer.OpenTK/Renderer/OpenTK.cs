@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Threading;
 using OpenTK.Graphics.OpenGL;
@@ -381,66 +382,67 @@ namespace Gwen.Renderer
 
         public override Point MeasureText(Font font, string text)
         {
-            //Debug.Print(String.Format("MeasureText '{0}'", text));
-            System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
-
-            if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
-            {
-                FreeFont(font);
-                LoadFont(font);
-                sysFont = font.RendererData as System.Drawing.Font;
-            }
+            System.Drawing.Font sysFont = GetSystemFont(font);
 
             var key = new Tuple<String, Font>(text, font);
 
             if (m_StringCache.ContainsKey(key))
             {
                 var tex = m_StringCache[key].Texture;
-                return new Point(tex.Width, tex.Height);
+                return new Point(Util.Round(tex.Width / Scale), Util.Round(tex.Height / Scale));
             }
 
             SizeF size = m_Graphics.MeasureString(text, sysFont, Point.Empty, m_StringFormat);
 
-            return new Point((int)Math.Round(size.Width), (int)Math.Round(size.Height));
+            return new Point(Util.Round(size.Width), Util.Round(size.Height));
         }
 
         public override void RenderText(Font font, Point position, string text)
         {
-            //Debug.Print(String.Format("RenderText {0}", font.FaceName));
-
             // The DrawString(...) below will bind a new texture
             // so make sure everything is rendered!
             Flush();
 
-            System.Drawing.Font sysFont = font.RendererData as System.Drawing.Font;
-
-            if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 2)
-            {
-                FreeFont(font);
-                LoadFont(font);
-                sysFont = font.RendererData as System.Drawing.Font;
-            }
+            System.Drawing.Font sysFont = GetSystemFont(font);
 
             var key = new Tuple<String, Font>(text, font);
 
-            if (!m_StringCache.ContainsKey(key))
+            TextRenderer tr;
+            if (!m_StringCache.TryGetValue(key, out tr))                        
             {
                 // not cached - create text renderer
                 Debug.Print(String.Format("RenderText: caching \"{0}\", {1}", text, font.FaceName));
 
                 Point size = MeasureText(font, text);
-                TextRenderer tr = new TextRenderer(size.X, size.Y, this);
+                tr = new TextRenderer(size.X, size.Y, this);
                 tr.DrawString(text, sysFont, Brushes.White, Point.Empty, m_StringFormat); // renders string on the texture
-
-                DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
-
+                
                 m_StringCache[key] = tr;
             }
-            else
+            
+            DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, Util.Round(tr.Texture.Width / Scale), Util.Round(tr.Texture.Height / Scale)));            
+        }
+
+        private System.Drawing.Font GetSystemFont(Font font)
+        {
+            var sysFont = font.RendererData as System.Drawing.Font;
+
+            if (sysFont == null || Math.Abs(font.RealSize - font.Size * Scale) > 0.01)
             {
-                TextRenderer tr = m_StringCache[key];
-                DrawTexturedRect(tr.Texture, new Rectangle(position.X, position.Y, tr.Texture.Width, tr.Texture.Height));
+                // Remove the previously cached strings using this font
+                var stringsToRemove = m_StringCache.Where(x => x.Key.Item2 == font).ToList();
+                stringsToRemove.ForEach(x =>
+                    {
+                        m_StringCache.Remove(x.Key);
+                        x.Key.Item2.Dispose();
+                        x.Value.Dispose();
+                    });
+
+                FreeFont(font);
+                LoadFont(font);
+                sysFont = font.RendererData as System.Drawing.Font;
             }
+            return sysFont;
         }
 
         internal static void LoadTextureInternal(Texture t, Bitmap bmp)

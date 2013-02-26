@@ -33,8 +33,9 @@ namespace Gwen.Renderer
             if (GraphicsContext.CurrentContext == null)
                 throw new InvalidOperationException("No GraphicsContext is current on the calling thread.");
 
-            bmp = new Bitmap(width, height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            bmp = new Bitmap(Util.Round(width * renderer.Scale), Util.Round(height * renderer.Scale), System.Drawing.Imaging.PixelFormat.Format32bppArgb);
             gfx = Graphics.FromImage(bmp);
+            gfx.ScaleTransform(renderer.Scale, renderer.Scale);
 
             // NOTE:    TextRenderingHint.AntiAliasGridFit looks sharper and in most cases better
             //          but it comes with a some problems.
