@@ -151,7 +151,7 @@
     <Compile Include="Input\KeyData.cs" />
     <Compile Include="Margin.cs" />
     <Compile Include="Padding.cs" />
-    <Compile Include="Key.cs" />
+    <Compile Include="Input\Key.cs" />
     <Compile Include="Platform\Windows.cs" />
     <Compile Include="Pos.cs" />
     <Compile Include="Platform\Neutral.cs" />
