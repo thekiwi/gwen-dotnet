@@ -1,14 +1,14 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class RadioButton : GUnit
     {
-        public RadioButton(ControlBase parent)
+        public RadioButton(Control parent)
             : base(parent)
         {
-            Control.RadioButtonGroup rbg = new Control.RadioButtonGroup(this, "Sample radio group");
+            RadioButtonGroup rbg = new RadioButtonGroup(this, "Sample radio group");
             rbg.SetPosition(10, 10);
 
             rbg.AddOption("Option 1");
@@ -19,22 +19,22 @@ namespace Gwen.UnitTest
 
             rbg.SelectionChanged += OnChange;
 
-            Control.LabeledRadioButton rb1 = new LabeledRadioButton(this);
+            LabeledRadioButton rb1 = new LabeledRadioButton(this);
             rb1.Text = "Option 1";
             rb1.SetPosition(300, 10);
 
-            Control.LabeledRadioButton rb2 = new LabeledRadioButton(this);
+            LabeledRadioButton rb2 = new LabeledRadioButton(this);
             rb2.Text = "Option 2222222222222222222222222222222222";
             rb2.SetPosition(300, 30);
 
-            Control.LabeledRadioButton rb3 = new LabeledRadioButton(this);
+            LabeledRadioButton rb3 = new LabeledRadioButton(this);
             rb3.Text = "\u0627\u0644\u0622\u0646 \u0644\u062D\u0636\u0648\u0631";
             rb3.SetPosition(300, 50);
 
             //this.DrawDebugOutlines = true;
         }
 
-        void OnChange(ControlBase control)
+        void OnChange(Control control)
         {
             RadioButtonGroup rbc = control as RadioButtonGroup;
             LabeledRadioButton rb = rbc.Selected;

@@ -1,14 +1,14 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class NumericUpDown : GUnit
     {
-        public NumericUpDown(ControlBase parent)
+        public NumericUpDown(Control parent)
             : base(parent)
         {
-            Control.NumericUpDown ctrl = new Control.NumericUpDown(this);
+            Controls.NumericUpDown ctrl = new Controls.NumericUpDown(this);
             ctrl.SetBounds(10, 10, 50, 20);
             ctrl.Value = 50;
             ctrl.Max = 100;
@@ -16,9 +16,9 @@ namespace Gwen.UnitTest
             ctrl.ValueChanged += OnValueChanged;
         }
 
-        void OnValueChanged(ControlBase control)
+        void OnValueChanged(Control control)
         {
-            UnitPrint(String.Format("NumericUpDown: ValueChanged: {0}", ((Control.NumericUpDown)control).Value));
+            UnitPrint(String.Format("NumericUpDown: ValueChanged: {0}", ((Controls.NumericUpDown)control).Value));
         }
     }
 }

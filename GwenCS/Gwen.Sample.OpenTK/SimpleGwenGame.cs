@@ -2,11 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Gwen.Controls;
+using Gwen.Drawing;
 using OpenTK;
 using OpenTK.Input;
 using OpenTK.Graphics.OpenGL;
 using System.Drawing;
-using Gwen.Control;
 
 namespace Gwen.Sample.OpenTK
 {
@@ -16,9 +17,9 @@ namespace Gwen.Sample.OpenTK
     public class SimpleWindow : GameWindow
     {
         private Gwen.Input.OpenTK input;
-        private Gwen.Renderer.OpenTK renderer;
-        private Gwen.Skin.SkinBase skin;
-        private Gwen.Control.Canvas canvas;
+        private Drawing.OpenTKRenderer renderer;
+        private Skin skin;
+        private Canvas canvas;
         private UnitTest.UnitTest test;
 
         const int fps_frames = 50;
@@ -94,6 +95,11 @@ namespace Gwen.Sample.OpenTK
         void Mouse_Wheel(object sender, MouseWheelEventArgs args)
         {
             input.ProcessMouseMessage(args);
+
+            if (args.Delta > 0)
+                canvas.Scale += 0.1f;
+            else if (args.Delta < 0)
+                canvas.Scale -= 0.1f;
         }
 
         /// <summary>
@@ -104,9 +110,9 @@ namespace Gwen.Sample.OpenTK
         {
             GL.ClearColor(Color.MidnightBlue);
 
-            renderer = new Gwen.Renderer.OpenTK();
-            skin = new Gwen.Skin.TexturedSkin(renderer, "DefaultSkin.png");
-            //skin = new Gwen.Skin.Simple(renderer);
+            renderer = new Drawing.OpenTKRenderer();
+            skin = new TexturedSkin(renderer, "DefaultSkin.png");
+            //skin = new Gwen.Skin.SimpleSkin(renderer);
             //skin.DefaultFont = new Font(renderer, "Courier", 10);
             canvas = new Canvas(skin);
 
@@ -117,6 +123,7 @@ namespace Gwen.Sample.OpenTK
             canvas.ShouldDrawBackground = true;
             canvas.BackgroundColor = Color.FromArgb(255, 150, 170, 170);
             //canvas.KeyboardInputEnabled = true;
+            //canvas.Scale = 2;
 
             test = new UnitTest.UnitTest(canvas);
 
@@ -154,9 +161,15 @@ namespace Gwen.Sample.OpenTK
 
             if (stopwatch.ElapsedMilliseconds > 1000)
             {
-                test.Note = String.Format("String Cache size: {0} Draw Calls: {1} Vertex Count: {2}", renderer.TextCacheSize, renderer.DrawCallCount, renderer.VertexCount);
-                test.Fps = 1000f * ftime.Count / ftime.Sum();
+                if (test != null)
+                {
+                    test.Note = String.Format("String Cache size: {0} Draw Calls: {1} Vertex Count: {2}",
+                                              renderer.TextCacheSize, renderer.DrawCallCount, renderer.VertexCount);
+                    test.Fps = 1000f*ftime.Count/ftime.Sum();
+                }
+                
                 stopwatch.Restart();
+                base.Title = "FPS: " + 1000f * ftime.Count / ftime.Sum();                
 
                 if (renderer.TextCacheSize > 1000) // each cached string is an allocated texture, flush the cache once in a while in your real project
                     renderer.FlushTextCache();

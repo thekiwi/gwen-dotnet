@@ -1,16 +1,16 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class ImagePanel : GUnit
     {
-        public ImagePanel(ControlBase parent)
+        public ImagePanel(Control parent)
             : base(parent)
         {
             // Normal
             {
-                Control.ImagePanel img = new Control.ImagePanel(this);
+                Controls.ImagePanel img = new Controls.ImagePanel(this);
                 img.ImageName = "gwen.png";
                 img.SetPosition(10, 10);
                 img.SetBounds(10, 10, 100, 100);
@@ -18,7 +18,7 @@ namespace Gwen.UnitTest
 
             // Missing
             {
-                Control.ImagePanel img = new Control.ImagePanel(this);
+                Controls.ImagePanel img = new Controls.ImagePanel(this);
                 img.ImageName = "missingimage.png";
                 img.SetPosition(120, 10);
                 img.SetBounds(120, 10, 100, 100);

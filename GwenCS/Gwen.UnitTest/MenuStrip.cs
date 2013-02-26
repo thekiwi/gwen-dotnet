@@ -1,17 +1,17 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class MenuStrip : GUnit
     {
-        public MenuStrip(ControlBase parent)
+        public MenuStrip(Control parent)
             : base(parent)
         {
-            Control.MenuStrip menu = new Control.MenuStrip(this);
+            Controls.MenuStrip menu = new Controls.MenuStrip(this);
 
             {
-                Control.MenuItem root = menu.AddItem("File");
+                MenuItem root = menu.AddItem("File");
                 root.Menu.AddItem("New", "test16.png", "Ctrl+N").SetAction(MenuItemSelect);
                 root.Menu.AddItem("Load", "test16.png", "Ctrl+L").SetAction(MenuItemSelect);
                 root.Menu.AddItem("Save", String.Empty, "Ctrl+S").SetAction(MenuItemSelect);
@@ -20,20 +20,20 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.MenuItem pRoot = menu.AddItem("\u043F\u0438\u0440\u0430\u0442\u0441\u0442\u0432\u043E");
+                MenuItem pRoot = menu.AddItem("\u043F\u0438\u0440\u0430\u0442\u0441\u0442\u0432\u043E");
                 pRoot.Menu.AddItem("\u5355\u5143\u6D4B\u8BD5").SetAction(MenuItemSelect);
                 pRoot.Menu.AddItem("\u0111\u01A1n v\u1ECB th\u1EED nghi\u1EC7m", "test16.png").SetAction(MenuItemSelect);
             }
 
             {
-                Control.MenuItem pRoot = menu.AddItem("Submenu");
+                MenuItem pRoot = menu.AddItem("Submenu");
 
-                Control.MenuItem pCheckable = pRoot.Menu.AddItem("Checkable");
+                MenuItem pCheckable = pRoot.Menu.AddItem("Checkable");
                 pCheckable.IsCheckable = true;
                 pCheckable.IsCheckable = true;
 
                 {
-                    Control.MenuItem pRootB = pRoot.Menu.AddItem("Two");
+                    MenuItem pRootB = pRoot.Menu.AddItem("Two");
                     pRootB.Menu.AddItem("Two.One");
                     pRootB.Menu.AddItem("Two.Two");
                     pRootB.Menu.AddItem("Two.Three");
@@ -50,7 +50,7 @@ namespace Gwen.UnitTest
                 pRoot.Menu.AddItem("Five");
 
                 {
-                    Control.MenuItem pRootB = pRoot.Menu.AddItem("Six");
+                    MenuItem pRootB = pRoot.Menu.AddItem("Six");
                     pRootB.Menu.AddItem("Six.One");
                     pRootB.Menu.AddItem("Six.Two");
                     pRootB.Menu.AddItem("Six.Three");
@@ -58,19 +58,19 @@ namespace Gwen.UnitTest
                     pRootB.Menu.AddItem("Six.Five", "test16.png");
 
                     {
-                        Control.MenuItem pRootC = pRootB.Menu.AddItem("Six.Six");
+                        MenuItem pRootC = pRootB.Menu.AddItem("Six.Six");
                         pRootC.Menu.AddItem("Sheep");
                         pRootC.Menu.AddItem("Goose");
                         {
-                            Control.MenuItem pRootD = pRootC.Menu.AddItem("Camel");
+                            MenuItem pRootD = pRootC.Menu.AddItem("Camel");
                             pRootD.Menu.AddItem("Eyes");
                             pRootD.Menu.AddItem("Nose");
                             {
-                                Control.MenuItem pRootE = pRootD.Menu.AddItem("Hair");
+                                MenuItem pRootE = pRootD.Menu.AddItem("Hair");
                                 pRootE.Menu.AddItem("Blonde");
                                 pRootE.Menu.AddItem("Black");
                                 {
-                                    Control.MenuItem pRootF = pRootE.Menu.AddItem("Red");
+                                    MenuItem pRootF = pRootE.Menu.AddItem("Red");
                                     pRootF.Menu.AddItem("Light");
                                     pRootF.Menu.AddItem("Medium");
                                     pRootF.Menu.AddItem("Dark");
@@ -91,7 +91,7 @@ namespace Gwen.UnitTest
             }
         }
 
-        void MenuItemSelect(ControlBase control)
+        void MenuItemSelect(Control control)
         {
             MenuItem item = control as MenuItem;
             UnitPrint(String.Format("Menu item selected: {0}", item.Text));

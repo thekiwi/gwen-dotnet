@@ -1,6 +1,7 @@
-using System;
+﻿using System;
 using System.Drawing;
-using Gwen.Control;
+using Gwen.Controls;
+using Font = Gwen.Drawing.Font;
 
 namespace Gwen.UnitTest
 {
@@ -10,7 +11,7 @@ namespace Gwen.UnitTest
         private readonly Font m_Font2;
         private readonly Font m_Font3;
 
-        public TextBox(ControlBase parent)
+        public TextBox(Control parent)
             : base(parent)
         {
             int row = 0;
@@ -20,7 +21,7 @@ namespace Gwen.UnitTest
             m_Font3 = new Font(Skin.Renderer, "Arial", 14);
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("Type something here");
                 label.SetPosition(10, 10 + 25 * row);
                 label.TextChanged += OnEdit;
@@ -29,7 +30,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBoxPassword label = new Control.TextBoxPassword(this);
+                TextBoxPassword label = new TextBoxPassword(this);
                 //label.MaskCharacter = '@';
                 label.SetText("secret");
                 label.TextChanged += OnEdit;
@@ -38,7 +39,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("Select All Text On Focus");
                 label.SetPosition(10, 10 + 25 * row);
                 label.SelectAllOnFocus = true;
@@ -46,7 +47,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("Different Coloured Text, for some reason");
                 label.TextColor = Color.ForestGreen;
                 label.SetPosition(10, 10 + 25 * row);
@@ -54,7 +55,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBoxNumeric(this);
+                Controls.TextBox label = new TextBoxNumeric(this);
                 label.SetText("200456698");
                 label.TextColor = Color.LightCoral;
                 label.SetPosition(10, 10 + 25 * row);
@@ -64,7 +65,7 @@ namespace Gwen.UnitTest
             row++;
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -74,7 +75,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("..............................................................");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -84,7 +85,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("public override void SetText(string str, bool doEvents = true)");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -94,7 +95,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("あおい　うみから　やってきた");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -106,7 +107,7 @@ namespace Gwen.UnitTest
             row++;
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -116,7 +117,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("..............................................................");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -126,7 +127,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("public override void SetText(string str, bool doEvents = true)");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -136,7 +137,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("あおい　うみから　やってきた");
                 label.TextColor = Color.Black;
                 label.SetPosition(10, 10 + 28 * row);
@@ -149,7 +150,7 @@ namespace Gwen.UnitTest
 
             {
 
-                Control.TextBox label = new Control.TextBox(this);
+                Controls.TextBox label = new Controls.TextBox(this);
                 label.SetText("Different Font (autosized)");
                 label.SetPosition(10, 10 + 28 * row);
                 label.Font = m_Font2;
@@ -167,15 +168,15 @@ namespace Gwen.UnitTest
             base.Dispose();
         }
 
-        void OnEdit(ControlBase control)
+        void OnEdit(Control control)
         {
-            Control.TextBox box = control as Control.TextBox;
+            Controls.TextBox box = control as Controls.TextBox;
             UnitPrint(String.Format("TextBox: OnEdit: {0}", box.Text));
         }
 
-        void OnSubmit(ControlBase control)
+        void OnSubmit(Control control)
         {
-            Control.TextBox box = control as Control.TextBox;
+            Controls.TextBox box = control as Controls.TextBox;
             UnitPrint(String.Format("TextBox: OnSubmit: {0}", box.Text));
         }
     }

@@ -1,5 +1,5 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.Input
 {
@@ -10,7 +10,7 @@ namespace Gwen.Input
     {
         public readonly bool[] KeyState;
         public readonly float [] NextRepeat;
-        public ControlBase Target;
+        public Control Target;
         public bool LeftMouseDown;
         public bool RightMouseDown;
 

@@ -1,5 +1,5 @@
 ﻿using System;
-using Gwen.Control;
+using Gwen.Controls;
 using OpenTK.Input;
 using OpenTK;
 

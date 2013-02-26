@@ -47,9 +47,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Gwen.Renderer.OpenTK\Gwen.Renderer.OpenTK.csproj">
+    <ProjectReference Include="..\Gwen.Renderer.OpenTK\Gwen.OpenTK.csproj">
       <Project>{41650C82-D630-4E5C-845A-F1513C8FDC99}</Project>
-      <Name>Gwen.Renderer.OpenTK</Name>
+      <Name>Gwen.OpenTK</Name>
     </ProjectReference>
     <ProjectReference Include="..\Gwen.UnitTest\Gwen.UnitTest.csproj">
       <Project>{1E28C643-0671-4EDF-ADEE-B75D33BAE5AF}</Project>

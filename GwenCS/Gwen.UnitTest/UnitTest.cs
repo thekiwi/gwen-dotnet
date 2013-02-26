@@ -1,41 +1,41 @@
 using System;
-using Gwen.Control;
-using Gwen.Control.Layout;
-using Gwen.Skin;
+using Gwen.Controls;
+using Gwen.Controls.Layout;
+using Gwen.Drawing;
 
 namespace Gwen.UnitTest
 {
     public class UnitTest : DockBase
     {
-        private ControlBase m_LastControl;
-        private readonly Control.StatusBar m_StatusBar;
-        private readonly Control.ListBox m_TextOutput;
-        private Control.TabButton m_Button;
-        private readonly Control.CollapsibleList m_List;
+        private Control m_LastControl;
+        private readonly Controls.StatusBar m_StatusBar;
+        private readonly Controls.ListBox m_TextOutput;
+        private TabButton m_Button;
+        private readonly Controls.CollapsibleList m_List;
         private readonly Center m_Center;
-        private readonly Control.LabeledCheckBox m_DebugCheck;
+        private readonly LabeledCheckBox m_DebugCheck;
 
         public double Fps; // set this in your rendering loop
         public String Note; // additional text to display in status bar
 
-        public UnitTest(ControlBase parent) : base(parent)
+        public UnitTest(Control parent) : base(parent)
         {
             Dock = Pos.Fill;
             SetSize(1024, 768);
-            m_List = new Control.CollapsibleList(this);
+            m_List = new Controls.CollapsibleList(this);
 
             LeftDock.TabControl.AddPage("Unit tests", m_List);
             LeftDock.Width = 150;
 
-            m_TextOutput = new Control.ListBox(BottomDock);
+            m_TextOutput = new Controls.ListBox(BottomDock);
             m_Button = BottomDock.TabControl.AddPage("Output", m_TextOutput);
             BottomDock.Height = 200;
 
-            m_DebugCheck = new Control.LabeledCheckBox(m_List);
+            m_DebugCheck = new LabeledCheckBox(m_List);
             m_DebugCheck.Text = "Debug outlines";
             m_DebugCheck.CheckChanged += DebugCheckChanged;
 
-            m_StatusBar = new Control.StatusBar(this);
+            m_StatusBar = new Controls.StatusBar(this);
             m_StatusBar.Dock = Pos.Bottom;
             m_StatusBar.AddControl(m_DebugCheck, true);
 
@@ -121,7 +121,7 @@ namespace Gwen.UnitTest
 
         public void RegisterUnitTest(String name, CollapsibleCategory cat, GUnit test)
         {
-            Control.Button btn = cat.Add(name);
+            Controls.Button btn = cat.Add(name);
             test.Dock = Pos.Fill;
             test.Hide();
             test.UnitTest = this;
@@ -129,7 +129,7 @@ namespace Gwen.UnitTest
             btn.Clicked += OnCategorySelect;
         }
 
-        private void DebugCheckChanged(ControlBase control)
+        private void DebugCheckChanged(Control control)
         {
             if (m_DebugCheck.IsChecked)
                 m_Center.DrawDebugOutlines = true;
@@ -138,13 +138,13 @@ namespace Gwen.UnitTest
             Invalidate();
         }
 
-        private void OnCategorySelect(ControlBase control)
+        private void OnCategorySelect(Control control)
         {
             if (m_LastControl != null)
             {
                 m_LastControl.Hide();
             }
-            ControlBase test = control.UserData as ControlBase;
+            Control test = control.UserData as Control;
             test.Show();
             m_LastControl = test;
         }
@@ -155,12 +155,12 @@ namespace Gwen.UnitTest
             m_TextOutput.ScrollToBottom();
         }
 
-        protected override void Layout(SkinBase skin)
+        protected override void Layout(Skin skin)
         {
             base.Layout(skin);
         }
 
-        protected override void Render(SkinBase skin)
+        protected override void Render(Skin skin)
         {
             m_StatusBar.Text = String.Format("GWEN.Net Unit Test - {0:F0} fps. {1}", Fps, Note);
 

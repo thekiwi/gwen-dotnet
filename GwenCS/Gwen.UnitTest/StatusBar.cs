@@ -1,27 +1,27 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class StatusBar : GUnit
     {
-        public StatusBar(ControlBase parent)
+        public StatusBar(Control parent)
             : base(parent)
         {
-            Control.StatusBar sb = new Control.StatusBar(this);
-            Control.Label left = new Control.Label(sb);
+            Controls.StatusBar sb = new Controls.StatusBar(this);
+            Controls.Label left = new Controls.Label(sb);
             left.Text = "Label added to left";
             sb.AddControl(left, false);
 
-            Control.Label right = new Control.Label(sb);
+            Controls.Label right = new Controls.Label(sb);
             right.Text = "Label added to right";
             sb.AddControl(right, true);
 
-            Control.Button bl = new Control.Button(sb);
+            Controls.Button bl = new Controls.Button(sb);
             bl.Text = "Left button";
             sb.AddControl(bl, false);
 
-            Control.Button br = new Control.Button(sb);
+            Controls.Button br = new Controls.Button(sb);
             br.Text = "Right button";
             sb.AddControl(br, true);
         }

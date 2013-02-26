@@ -1,13 +1,13 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
-    public class GUnit : ControlBase
+    public class GUnit : Control
     {
         public UnitTest UnitTest;
 
-        public GUnit(ControlBase parent) : base(parent)
+        public GUnit(Control parent) : base(parent)
         {
             
         }

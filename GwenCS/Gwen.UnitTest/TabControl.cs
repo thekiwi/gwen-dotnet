@@ -1,25 +1,25 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class TabControl : GUnit
     {
-        private readonly Control.TabControl m_DockControl;
+        private readonly Controls.TabControl m_DockControl;
 
-        public TabControl(ControlBase parent)
+        public TabControl(Control parent)
             : base(parent)
         {
             {
-                m_DockControl = new Control.TabControl(this);
+                m_DockControl = new Controls.TabControl(this);
                 m_DockControl.SetBounds(10, 10, 200, 200);
 
                 {
-                    Control.TabButton button = m_DockControl.AddPage("Controls");
-                    ControlBase page = button.Page;
+                    TabButton button = m_DockControl.AddPage("Controls");
+                    Control page = button.Page;
 
                     {
-                        Control.RadioButtonGroup radio = new Control.RadioButtonGroup(page, "Tab position");
+                        RadioButtonGroup radio = new RadioButtonGroup(page, "Tab position");
                         radio.SetPosition(10, 10);
 
                         radio.AddOption("Top").Select();
@@ -38,7 +38,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TabControl dragMe = new Control.TabControl(this);
+                Controls.TabControl dragMe = new Controls.TabControl(this);
                 dragMe.SetBounds(220, 10, 200, 200);
 
                 dragMe.AddPage("You");
@@ -51,7 +51,7 @@ namespace Gwen.UnitTest
             }
         }
 
-        void OnDockChange(ControlBase control)
+        void OnDockChange(Control control)
         {
             RadioButtonGroup rc = (RadioButtonGroup)control;
 

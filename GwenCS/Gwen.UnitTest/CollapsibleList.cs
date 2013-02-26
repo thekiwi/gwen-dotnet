@@ -1,21 +1,21 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class CollapsibleList : GUnit
     {
-        public CollapsibleList(ControlBase parent)
+        public CollapsibleList(Control parent)
             : base(parent)
         {
-            Control.CollapsibleList control = new Control.CollapsibleList(this);
+            Controls.CollapsibleList control = new Controls.CollapsibleList(this);
             control.SetSize(100, 200);
             control.SetPosition(10, 10);
             control.ItemSelected += OnSelection;
             control.CategoryCollapsed += OnCollapsed;
 
             {
-                Control.CollapsibleCategory cat = control.Add("Category One");
+                CollapsibleCategory cat = control.Add("Category One");
                 cat.Add("Hello");
                 cat.Add("Two");
                 cat.Add("Three");
@@ -23,7 +23,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.CollapsibleCategory cat = control.Add("Shopping");
+                CollapsibleCategory cat = control.Add("Shopping");
                 cat.Add("Special");
                 cat.Add("Two Noses");
                 cat.Add("Orange ears");
@@ -42,7 +42,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.CollapsibleCategory cat = control.Add("Category One");
+                CollapsibleCategory cat = control.Add("Category One");
                 cat.Add("Hello");
                 cat.Add("Two");
                 cat.Add("Three");
@@ -50,15 +50,15 @@ namespace Gwen.UnitTest
             }
         }
 
-        void OnSelection(ControlBase control)
+        void OnSelection(Control control)
         {
-            Control.CollapsibleList list = control as Control.CollapsibleList;
+            Controls.CollapsibleList list = control as Controls.CollapsibleList;
             UnitPrint(String.Format("CollapsibleList: Selected: {0}", list.GetSelectedButton().Text));
         }
 
-        void OnCollapsed(ControlBase control)
+        void OnCollapsed(Control control)
         {
-            Control.CollapsibleCategory cat = control as Control.CollapsibleCategory;
+            CollapsibleCategory cat = control as CollapsibleCategory;
             UnitPrint(String.Format("CollapsibleCategory: CategoryCollapsed: {0} {1}", cat.Text, cat.IsCollapsed));
         }
     }

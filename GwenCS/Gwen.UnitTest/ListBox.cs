@@ -1,17 +1,17 @@
-using System;
+﻿using System;
 using System.Linq;
-using Gwen.Control;
-using Gwen.Control.Layout;
+using Gwen.Controls;
+using Gwen.Controls.Layout;
 
 namespace Gwen.UnitTest
 {
     public class ListBox : GUnit
     {
-        public ListBox(ControlBase parent)
+        public ListBox(Control parent)
             : base(parent)
         {
             {
-                Control.ListBox ctrl = new Control.ListBox(this);
+                Controls.ListBox ctrl = new Controls.ListBox(this);
                 ctrl.SetPosition(10, 10);
 
                 ctrl.AddRow("First");
@@ -61,7 +61,7 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.ListBox ctrl = new Control.ListBox(this);
+                Controls.ListBox ctrl = new Controls.ListBox(this);
                 ctrl.SetBounds(220, 10, 200, 200);
                 ctrl.ColumnCount = 3;
                 //ctrl.AllowMultiSelect = true;
@@ -89,7 +89,7 @@ namespace Gwen.UnitTest
 
             {
                 // fixed-size table
-                Control.Layout.Table table = new Table(this);
+                Table table = new Table(this);
                 table.SetColumnCount(3);
                 table.SetBounds(450, 10, 320, 100);
                 table.SetColumnWidth(0, 100);
@@ -112,7 +112,7 @@ namespace Gwen.UnitTest
                 //outer.SetBounds(340, 140, 300, 200);
 
                 // autosized table
-                Control.Layout.Table table = new Table(this);
+                Table table = new Table(this);
                 table.SetColumnCount(3);
                 table.SetPosition(450, 150);
 
@@ -131,17 +131,17 @@ namespace Gwen.UnitTest
             }
         }
 
-        void RowSelected(ControlBase control)
+        void RowSelected(Control control)
         {
-            Control.ListBox list = control as Control.ListBox;
+            Controls.ListBox list = control as Controls.ListBox;
             UnitPrint(String.Format("ListBox: RowSelected: {0} [{1}]", list.SelectedRows.Last().Text, list[list.SelectedRowIndex].Text));
         }
 
-        void RowUnSelected(ControlBase control)
+        void RowUnSelected(Control control)
         {
             // todo: how to determine which one was unselected (store somewhere)
             // or pass row as the event param?
-            Control.ListBox list = control as Control.ListBox;
+            Controls.ListBox list = control as Controls.ListBox;
             UnitPrint(String.Format("ListBox: OnRowUnselected"));
         }
     }

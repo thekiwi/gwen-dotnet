@@ -1,15 +1,15 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class ComboBox : GUnit
     {
-        public ComboBox(ControlBase parent)
+        public ComboBox(Control parent)
             : base(parent)
         {
             {
-                Control.ComboBox combo = new Control.ComboBox(this);
+                Controls.ComboBox combo = new Controls.ComboBox(this);
                 combo.SetPosition(50, 50);
                 combo.Width = 200;
 
@@ -24,14 +24,14 @@ namespace Gwen.UnitTest
 
             {
                 // Empty..
-                Control.ComboBox combo = new Control.ComboBox(this);
+                Controls.ComboBox combo = new Controls.ComboBox(this);
                 combo.SetPosition(50, 80);
                 combo.Width = 200;
             }
 
             {
                 // Empty..
-                Control.ComboBox combo = new Control.ComboBox(this);
+                Controls.ComboBox combo = new Controls.ComboBox(this);
                 combo.SetPosition(50, 110);
                 combo.Width = 200;
 
@@ -42,9 +42,9 @@ namespace Gwen.UnitTest
             }
         }
 
-        void OnComboSelect(ControlBase control)
+        void OnComboSelect(Control control)
         {
-            Control.ComboBox combo = control as Control.ComboBox;
+            Controls.ComboBox combo = control as Controls.ComboBox;
             UnitPrint(String.Format("ComboBox: OnComboSelect: {0}", combo.SelectedItem.Text));
         }
     }

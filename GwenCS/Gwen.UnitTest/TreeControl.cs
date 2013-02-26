@@ -1,18 +1,18 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
 
 namespace Gwen.UnitTest
 {
     public class TreeControl : GUnit
     {
-        public TreeControl(ControlBase parent)
+        public TreeControl(Control parent)
             : base(parent)
         {
             {
-                Control.TreeControl ctrl = new Control.TreeControl(this);
+                Controls.TreeControl ctrl = new Controls.TreeControl(this);
 
                 ctrl.AddNode("Node One");
-                Control.TreeNode node = ctrl.AddNode("Node Two");
+                TreeNode node = ctrl.AddNode("Node Two");
                 node.AddNode("Node Two Inside");
                 node.AddNode("Eyes");
                 node.AddNode("Brown").AddNode("Node Two Inside").AddNode("Eyes").AddNode("Brown");
@@ -29,15 +29,15 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.TreeControl ctrl = new Control.TreeControl(this);
+                Controls.TreeControl ctrl = new Controls.TreeControl(this);
 
                 ctrl.AllowMultiSelect = true;
 
                 ctrl.AddNode("Node One");
-                Control.TreeNode node = ctrl.AddNode("Node Two");
+                TreeNode node = ctrl.AddNode("Node Two");
                 node.AddNode("Node Two Inside");
                 node.AddNode("Eyes");
-                Control.TreeNode nodeTwo = node.AddNode("Brown").AddNode("Node Two Inside").AddNode("Eyes");
+                TreeNode nodeTwo = node.AddNode("Brown").AddNode("Node Two Inside").AddNode("Eyes");
                 nodeTwo.AddNode("Brown");
                 nodeTwo.AddNode("Green");
                 nodeTwo.AddNode("Slime");
@@ -57,19 +57,19 @@ namespace Gwen.UnitTest
             }
         }
 
-        void NodeCollapsed(ControlBase control)
+        void NodeCollapsed(Control control)
         {
             TreeNode node = control as TreeNode;
             UnitPrint(String.Format("Node collapsed: {0}", node.Text));
         }
 
-        void NodeExpanded(ControlBase control)
+        void NodeExpanded(Control control)
         {
             TreeNode node = control as TreeNode;
             UnitPrint(String.Format("Node expanded: {0}", node.Text));
         }
 
-        void NodeSelected(ControlBase control)
+        void NodeSelected(Control control)
         {
             TreeNode node = control as TreeNode;
             UnitPrint(String.Format("Node selected: {0}", node.Text));

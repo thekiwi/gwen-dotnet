@@ -1,6 +1,7 @@
 using System;
 using System.Drawing;
-using Gwen.Control;
+using Gwen.Controls;
+using Font = Gwen.Drawing.Font;
 
 namespace Gwen.UnitTest
 {
@@ -8,9 +9,9 @@ namespace Gwen.UnitTest
     {
         private Font f1, f2, f3;
 
-        public RichLabel(ControlBase parent) : base(parent)
+        public RichLabel(Control parent) : base(parent)
         {
-            Control.RichLabel label = new Control.RichLabel(this);
+            Controls.RichLabel label = new Controls.RichLabel(this);
             label.SetBounds(10, 10, 400, 200);
 
             f1 = new Font(Skin.Renderer, "Arial", 15);

@@ -1,22 +1,23 @@
 using System;
-using Gwen.Control;
+using Gwen.Controls;
+using Gwen.Controls.Properties;
 
 namespace Gwen.UnitTest
 {
     public class Properties : GUnit
     {
-        public Properties(ControlBase parent)
+        public Properties(Control parent)
             : base(parent)
         {
             {
-                Control.Properties props = new Control.Properties(this);
+                Controls.PropertyTable props = new Controls.PropertyTable(this);
                 props.ValueChanged += OnChanged;
 
                 props.SetBounds(10, 10, 150, 300);
 
                 {
                     {
-                        Control.PropertyRow pRow = props.Add("First Name");
+                        PropertyRow pRow = props.Add("First Name");
                     }
 
                     props.Add("Middle Name");
@@ -25,11 +26,11 @@ namespace Gwen.UnitTest
             }
 
             {
-                Control.PropertyTree ptree = new Control.PropertyTree(this);
+                PropertyTree ptree = new PropertyTree(this);
                 ptree.SetBounds(200, 10, 200, 200);
 
                 {
-                    Control.Properties props = ptree.Add("Item One");
+                    Controls.PropertyTable props = ptree.Add("Item One");
                     props.ValueChanged += OnChanged;
 
                     props.Add("Middle Name");
@@ -38,13 +39,13 @@ namespace Gwen.UnitTest
                 }
 
                 {
-                    Control.Properties props = ptree.Add("Item Two");
+                    Controls.PropertyTable props = ptree.Add("Item Two");
                     props.ValueChanged += OnChanged;
                     
                     props.Add("More Items");
-                    props.Add("Bacon", new Control.Property.Check(props), "1");
+                    props.Add("Bacon", new CheckProperty(props), "1");
                     props.Add("To Fill");
-                    props.Add("Colour", new Control.Property.Color(props), "255 0 0");
+                    props.Add("Colour", new ColorProperty(props), "255 0 0");
                     props.Add("Out Here");
                 }
 
@@ -52,7 +53,7 @@ namespace Gwen.UnitTest
             }
         }
 
-        void OnChanged(ControlBase control)
+        void OnChanged(Control control)
         {
             PropertyRow row = control as PropertyRow;
             UnitPrint(String.Format("Property changed: {0}", row.Value));
